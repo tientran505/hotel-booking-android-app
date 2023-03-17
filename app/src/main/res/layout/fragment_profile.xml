@@ -1,17 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<!--<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:background="@color/purple_200"-->
+<!--    tools:context=".ProfileFragment">-->
+
+<!--    &lt;!&ndash; TODO: Update blank fragment layout &ndash;&gt;-->
+
+<!--    <TextView-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:text="Profile Fragment"-->
+<!--        android:textSize="26dp" />-->
+
+<!--</FrameLayout>-->
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/purple_200"
     tools:context=".ProfileFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <ImageView
+        android:id="@+id/avtImgv"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Profile Fragment"
-        android:textSize="26dp"
-        android:layout_gravity="center"/>
+        android:layout_height="120dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.054"
+        android:src="@drawable/default_avt" />
 
-</FrameLayout>
+    <Button
+        android:id="@+id/viewProfileBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="220dp"
+        android:text="View profile"
+        android:textAllCaps="false"
+        android:textColor="#000000"
+        android:backgroundTint="#FFFFFF"
+        android:gravity="left|center_vertical"
+        style="?android:attr/borderlessButtonStyle"
+        android:drawableLeft="@drawable/ic_person_outline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/myReviewBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Reviews"
+        android:textAllCaps="false"
+        android:textColor="#000000"
+        android:backgroundTint="#FFFFFF"
+        android:gravity="left|center_vertical"
+        style="?android:attr/borderlessButtonStyle"
+        android:drawableLeft="@drawable/ic_review_outline"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewProfileBtn" />
+
+    <Button
+        android:id="@+id/helpMeBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Help &amp; Information"
+        android:textAllCaps="false"
+        android:textColor="#000000"
+        android:backgroundTint="#FFFFFF"
+        style="?android:attr/borderlessButtonStyle"
+        android:drawableLeft="@drawable/ic_help_outline"
+        android:gravity="left|center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myReviewBtn" />
+
+    <Button
+        android:id="@+id/myBookingBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="My Bookings"
+        android:textAllCaps="false"
+        android:textColor="#000000"
+        android:backgroundTint="#FFFFFF"
+        style="?android:attr/borderlessButtonStyle"
+        android:drawableLeft="@drawable/ic_order_approve"
+        android:gravity="left|center_vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/helpMeBtn" />
+
+    <Button
+        android:id="@+id/signOutBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Sign Out"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:backgroundTint="#EE4B2B"
+        android:gravity="left|center_vertical"
+        android:drawableLeft="@drawable/ic_logout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/myBookingBtn" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
