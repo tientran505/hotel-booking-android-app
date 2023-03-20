@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "823421392498",
+    "firebase_url": "https://hotel-booking-app-b6d5b-default-rtdb.firebaseio.com",
+    "project_id": "hotel-booking-app-b6d5b",
+    "storage_bucket": "hotel-booking-app-b6d5b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823421392498:android:f7aa3b8db28a8d2477d4eb",
+        "android_client_info": {
+          "package_name": "com.example.stayfinder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "823421392498-d1p3667ve1g5o9beu9hvaqs2gg8im0i2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.stayfinder",
+            "certificate_hash": "761e433aa6fc1fb0b0bde18b63d776e7e273b7fc"
+          }
+        },
+        {
+          "client_id": "823421392498-vrn5qmqd86q3ip6q19fgsng7v6qis8d5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDo3MPbZT1L_vfc9GNWzqbLATdHYZqtQp4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "823421392498-vrn5qmqd86q3ip6q19fgsng7v6qis8d5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
