@@ -85,7 +85,7 @@ class BookingFragment : Fragment() {
         }
         else{
             layout.setVisibility(View.VISIBLE)
-            messageLayoutShow("There was no booking to show","Login or Register to Start",false, layout)
+            messageLayoutShow("Login or Register to Start","",false, layout)
             rv?.setVisibility(View.INVISIBLE)
         }
 
@@ -110,7 +110,7 @@ class BookingFragment : Fragment() {
             }
             else{
                 layout.setVisibility(View.VISIBLE)
-                messageLayoutShow("There was no booking to show","Login or Register to Start",false, layout)
+                messageLayoutShow("Login or Register to Start","",false, layout)
                 rv?.setVisibility(View.INVISIBLE)
             }
 
@@ -134,7 +134,7 @@ class BookingFragment : Fragment() {
             }
             else{
                 layout.setVisibility(View.VISIBLE)
-                messageLayoutShow("There was no booking Done","Login or Register to Start",false, layout)
+                messageLayoutShow("Login or Register to Start","",false, layout)
                 rv?.setVisibility(View.INVISIBLE)
             }
         }
@@ -156,7 +156,7 @@ class BookingFragment : Fragment() {
             }
             else{
                 layout.setVisibility(View.VISIBLE)
-                messageLayoutShow("There was no booking you canceled","Login or Register to Start",false, layout)
+                messageLayoutShow("Login or Register to Start","",false, layout)
                 rv?.setVisibility(View.INVISIBLE)
             }
         }
