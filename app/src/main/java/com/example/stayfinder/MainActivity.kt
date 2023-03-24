@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.profile -> {
-                    replaceFragment(ProfileFragment())
+                    replaceFragment(SignUpFragment())
                 }
             }
             true
