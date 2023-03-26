@@ -33,6 +33,7 @@ class HomeFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var dateET: EditText? = null
+    private var roomET: EditText? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,6 +89,15 @@ class HomeFragment : Fragment() {
             }
 
             dateRangePicker.show(requireActivity().supportFragmentManager, "DatePicker")
+        }
+
+        roomET = view.findViewById(R.id.roomInfoET)
+        roomET?.setOnClickListener {
+            val modalBottomSheet = RoomSelectionBottomSheetDialog("")
+
+
+            modalBottomSheet.show(requireActivity().supportFragmentManager
+                , RoomSelectionBottomSheetDialog.TAG)
         }
 
         return view
