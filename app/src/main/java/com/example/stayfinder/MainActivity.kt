@@ -41,9 +41,11 @@ class MainActivity : AppCompatActivity() {
                         .getLastSignedInAccount(applicationContext); //get account sign in?
 
                     if(account == null){ // user does not login
-                        replaceFragment(SignUpFragment())
+                        replaceFragment(LogInFragment())
+                    }else{
+                        replaceFragment(ProfileFragment())
                     }
-                    replaceFragment(ProfileFragment())
+
                 }
             }
             true

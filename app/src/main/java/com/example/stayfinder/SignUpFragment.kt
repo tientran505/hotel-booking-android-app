@@ -52,18 +52,6 @@ class SignUpFragment : Fragment() {
     }
 
     fun createRequest(){
-//        var signInRequest = BeginSignInRequest.builder()
-//            .setGoogleIdTokenRequestOptions(
-//                BeginSignInRequest.GoogleIdTokenRequestOptions.builder()
-//                    .setSupported(true)
-//                    // Your server's client ID, not your Android client ID.
-//                    .setServerClientId(getString(R.string.client_id))
-//                    // Only show accounts previously used to sign in.
-//                    .setFilterByAuthorizedAccounts(true)
-//                    .build()
-//            )
-//            .build()
-
         mGoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                                 .requestEmail()
                                 .build()
@@ -82,11 +70,7 @@ class SignUpFragment : Fragment() {
         createRequest()
 
         logInGGBtn!!.setOnClickListener {
-
             goToSignIn()
-
-
-
         }
 
         // Inflate the layout for this fragment
