@@ -54,7 +54,7 @@
         android:text="Sign In"
         android:textAllCaps="false"
         android:textColor="#ffffff"
-        android:background="#42A5F5"
+        android:background="#003580"
 
 
         app:layout_constraintEnd_toEndOf="@+id/inputPasswordEt"
