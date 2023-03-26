@@ -41,6 +41,7 @@ class SignUpFragment : Fragment() {
 
     private lateinit var view:View;
     private lateinit var logInGGBtn:Button;
+    private lateinit var switch2LogIn: Button;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,10 +68,20 @@ class SignUpFragment : Fragment() {
         view = inflater.inflate(R.layout.fragment_sign_up, container, false)
 
         logInGGBtn = view.findViewById(R.id.logInWithGGBtn);
+        switch2LogIn = view.findViewById(R.id.goSignInPageBtn)
         createRequest()
 
         logInGGBtn!!.setOnClickListener {
             goToSignIn()
+        }
+
+        switch2LogIn!!.setOnClickListener {
+
+
+            var transaction = activity?.supportFragmentManager?.beginTransaction()
+            transaction!!.replace(R.id.frameLayout,LogInFragment());
+            transaction.commit()
+
         }
 
         // Inflate the layout for this fragment
@@ -125,5 +136,6 @@ class SignUpFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+
     }
 }

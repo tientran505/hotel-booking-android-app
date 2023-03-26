@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ProfileFragment">
 
-
     <TextView
         android:id="@+id/titleFragmentTv"
         android:layout_width="wrap_content"
