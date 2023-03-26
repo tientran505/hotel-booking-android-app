@@ -1,13 +1,22 @@
 package com.example.stayfinder
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.util.Pair
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.divider.MaterialDivider
+import com.google.android.material.divider.MaterialDividerItemDecoration
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -41,9 +50,44 @@ class HomeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
         dateET = view.findViewById(R.id.dateET)
+
         dateET?.setOnClickListener {
-            val dateRangePicker = MaterialDatePicker.Builder.dateRangePicker()
-                .setTitleText("Select Dates")
+            val today = MaterialDatePicker.todayInUtcMilliseconds()
+            val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+            calendar.timeInMillis = today
+            calendar.add(Calendar.MONTH, 15)
+
+            val dateRangePicker = MaterialDatePicker
+                .Builder
+                .dateRangePicker()
+                .setTitleText("Select a date range")
+                .setCalendarConstraints(
+                    CalendarConstraints.Builder()
+                        .setStart(today)
+                        .setEnd(calendar.timeInMillis)
+                        .setValidator(DateValidatorPointForward.now())
+                        .build()
+                )
+                .build()
+
+
+            dateRangePicker.addOnPositiveButtonClickListener {
+                Toast.makeText(requireContext(), "${dateRangePicker.headerText} is selected"
+                    , Toast.LENGTH_LONG).show()
+                dateET?.setText(dateRangePicker.headerText)
+            }
+
+            dateRangePicker.addOnNegativeButtonClickListener {
+                Toast.makeText(requireContext(), "${dateRangePicker.headerText} is cancelled"
+                    , Toast.LENGTH_LONG).show()
+            }
+
+            dateRangePicker.addOnCancelListener {
+                Toast.makeText(requireContext(), "DateRangePicker is cancelled"
+                    , Toast.LENGTH_LONG).show()
+            }
+
+            dateRangePicker.show(requireActivity().supportFragmentManager, "DatePicker")
         }
 
         return view

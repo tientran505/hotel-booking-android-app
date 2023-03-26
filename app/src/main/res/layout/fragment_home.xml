@@ -11,40 +11,64 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/locationET"
+        <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="45dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="45dp"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Enter Destination"
+            android:layout_marginStart="30dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginEnd="30dp"
+            android:background="@drawable/custom_border_layout"
+            android:divider="@drawable/linear_layout_divider"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:showDividers="middle|none"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/dateET"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Select Date"
-            app:layout_constraintEnd_toEndOf="@+id/locationET"
-            app:layout_constraintStart_toStartOf="@+id/locationET"
-            app:layout_constraintTop_toBottomOf="@+id/locationET" />
+            <EditText
+                android:id="@+id/locationET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:clickable="true"
+                android:drawableStart="@drawable/ic_search"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:focusable="false"
+                android:hint="Enter Destination"
+                android:inputType="textPersonName"
+                android:paddingVertical="10dp"
+                android:paddingStart="5dp" />
 
-        <EditText
-            android:id="@+id/roomInfoET"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Select room information"
-            app:layout_constraintEnd_toEndOf="@+id/dateET"
-            app:layout_constraintStart_toStartOf="@+id/dateET"
-            app:layout_constraintTop_toBottomOf="@+id/dateET" />
+            <EditText
+                android:id="@+id/dateET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:clickable="true"
+                android:drawableStart="@drawable/ic_calendar"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:focusable="false"
+                android:hint="Select Date"
+                android:inputType="textPersonName"
+                android:paddingVertical="10dp"
+                android:paddingStart="5dp" />
+
+            <EditText
+                android:id="@+id/roomInfoET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawableStart="@drawable/ic_profile_home"
+                android:drawablePadding="10dp"
+                android:ems="10"
+                android:focusable="false"
+                android:hint="Select room information"
+                android:inputType="textPersonName"
+                android:paddingVertical="10dp"
+                android:paddingLeft="5dp" />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
