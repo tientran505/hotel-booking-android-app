@@ -24,33 +24,23 @@
     android:layout_height="match_parent"
     tools:context=".ProfileFragment">
 
-    <ImageView
-        android:id="@+id/avtImgv"
-        android:layout_width="wrap_content"
-        android:layout_height="120dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.054"
-        android:src="@drawable/default_avt" />
 
     <Button
         android:id="@+id/viewProfileBtn"
+        style="?android:attr/borderlessButtonStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="220dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#FFFFFF"
+        android:drawableLeft="@drawable/ic_person_outline"
+        android:gravity="left|center_vertical"
         android:text="View profile"
         android:textAllCaps="false"
         android:textColor="#000000"
-        android:backgroundTint="#FFFFFF"
-        android:gravity="left|center_vertical"
-        style="?android:attr/borderlessButtonStyle"
-        android:drawableLeft="@drawable/ic_person_outline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/profile_fragment" />
 
     <Button
         android:id="@+id/myReviewBtn"
@@ -110,6 +100,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myBookingBtn" />
+
+    <FrameLayout
+        android:id="@+id/profile_fragment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </FrameLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

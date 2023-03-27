@@ -14,9 +14,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-interface BottomSheetListener {
-    fun onBottomSheetDismissed(text: String)
-}
 
 class RoomSelectionBottomSheetDialog(text: String) : BottomSheetDialogFragment() {
     var roomLabel: TextView? = null
@@ -37,12 +34,6 @@ class RoomSelectionBottomSheetDialog(text: String) : BottomSheetDialogFragment()
     val MAX_ADULTS = 25
     val MIN_CHILD = 0
     val MAX_CHILD = 10
-
-    private var mListener: BottomSheetListener? = null
-
-    fun setListener(listener: BottomSheetListener) {
-        mListener = listener
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -129,26 +120,6 @@ class RoomSelectionBottomSheetDialog(text: String) : BottomSheetDialogFragment()
         }
 
         return view
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        try {
-            mListener = context as BottomSheetListener
-        } catch (e: java.lang.ClassCastException) {
-            throw ClassCastException("$context must implement BottomSheetListener")
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        mListener = null
-    }
-
-    override fun onDismiss(dialog: DialogInterface) {
-        super.onDismiss(dialog)
-
-        mListener?.onBottomSheetDismissed("Result")
     }
 
     companion object {

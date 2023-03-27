@@ -20,7 +20,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        setSupportActionBar(findViewById(R.id.my_toolbar))
         actionBarSetup()
         replaceFragment(HomeFragment())
 
@@ -39,7 +38,7 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.profile -> {
-                    replaceFragment(SignUpFragment())
+                    replaceFragment(ProfileFragment())
                 }
             }
             true
