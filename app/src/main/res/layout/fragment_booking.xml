@@ -22,6 +22,7 @@
             android:layout_marginTop="15dp"
             android:background="@drawable/custom_button_booking"
             android:text="Active"
+            android:textColor="@color/black"
             android:textAllCaps="false"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -33,6 +34,8 @@
             android:layout_marginStart="15dp"
             android:background="@drawable/custom_button_booking"
             android:text="Done"
+            android:textColor="@color/black"
+
             android:textAllCaps="false"
             app:layout_constraintStart_toEndOf="@+id/activeBtn"
             app:layout_constraintTop_toTopOf="@+id/activeBtn" />
@@ -40,6 +43,7 @@
         <android.widget.Button
             android:id="@+id/cancelBtn"
             android:layout_width="90dp"
+            android:textColor="@color/black"
             android:layout_height="wrap_content"
             android:layout_marginStart="15dp"
             android:background="@drawable/custom_button_booking"
