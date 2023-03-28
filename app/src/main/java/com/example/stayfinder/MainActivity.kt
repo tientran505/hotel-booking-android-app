@@ -21,7 +21,19 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         actionBarSetup()
-        replaceFragment(HomeFragment())
+
+        val intent = intent
+        val fragmentInfo = intent.getStringExtra("fragment")
+        if (fragmentInfo != null) {
+            if (fragmentInfo == "profile") {
+                binding.bottomNavigationView.selectedItemId = R.id.profile
+                replaceFragment(ProfileFragment())
+            }
+        }
+        else {
+            replaceFragment(HomeFragment())
+        }
+
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             when(it.itemId) {

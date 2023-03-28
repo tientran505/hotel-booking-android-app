@@ -1,12 +1,11 @@
 package com.example.stayfinder
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.TextView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -15,15 +14,20 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [AnonymousUser.newInstance] factory method to
+ * Use the [LoginUser.newInstance] factory method to
  * create an instance of this fragment.
  */
-class AnonymousUser : Fragment() {
+class LoginUser() : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private var loginBtn: Button? = null
-    private var registerBtn: Button? = null
+
+    private var nameTV: TextView? = null
+    private var nameUser: String? = null
+
+    constructor(name: String) : this() {
+        this.nameUser = name
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,20 +42,12 @@ class AnonymousUser : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view = inflater.inflate(R.layout.fragment_anonymous_user, container, false)
+        val view =  inflater.inflate(R.layout.fragment_login_user, container, false)
 
-        loginBtn = view.findViewById(R.id.loginProfileBtn)
-        registerBtn = view.findViewById(R.id.signupProfileBtn)
+        nameTV = view.findViewById(R.id.nameTV)
 
-        loginBtn?.setOnClickListener {
-            val intent = Intent(requireContext(), Login::class.java)
-            startActivity(intent)
-        }
+        nameTV?.setText(this.nameUser)
 
-        registerBtn?.setOnClickListener {
-            val intent = Intent(requireContext(), SignUp::class.java)
-            startActivity(intent)
-        }
 
         return view
     }
@@ -63,12 +59,12 @@ class AnonymousUser : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment AnonymousUser.
+         * @return A new instance of fragment LoginUser.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            AnonymousUser().apply {
+            LoginUser().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

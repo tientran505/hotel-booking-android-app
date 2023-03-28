@@ -2,6 +2,7 @@ package com.example.stayfinder
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
@@ -21,6 +22,10 @@ class SignUp : AppCompatActivity() {
         setContentView(R.layout.activity_sign_up)
 
         initUI()
+
+        val menu = supportActionBar
+        menu?.setDisplayHomeAsUpEnabled(true)
+        menu?.setHomeButtonEnabled(true)
 
         signUpBtn?.setOnClickListener {
             val auth: FirebaseAuth = Firebase.auth
@@ -44,6 +49,15 @@ class SignUp : AppCompatActivity() {
                     }
                 }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun initUI() {
