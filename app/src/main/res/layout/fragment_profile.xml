@@ -28,12 +28,13 @@
         android:id="@+id/avtImgv"
         android:layout_width="wrap_content"
         android:layout_height="120dp"
+        android:src="@drawable/default_avt"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.054"
-        android:src="@drawable/default_avt" />
+        app:layout_constraintVertical_bias="0.026" />
 
     <Button
         android:id="@+id/viewProfileBtn"
@@ -101,15 +102,39 @@
         android:id="@+id/signOutBtn"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:backgroundTint="#FFFFFF"
+        android:drawableLeft="@drawable/ic_logout"
+        android:gravity="left|center_vertical"
         android:text="Sign Out"
         android:textAllCaps="false"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="#EE4B2B"
-        android:gravity="left|center_vertical"
-        android:drawableLeft="@drawable/ic_logout"
+        android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/myBookingBtn" />
+
+    <TextView
+        android:id="@+id/emailTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="User Email"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/avtImgv" />
+
+    <TextView
+        android:id="@+id/displayNameTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:text="DisplayName"
+        android:textStyle="bold"
+        android:textSize="15dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/emailTv" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

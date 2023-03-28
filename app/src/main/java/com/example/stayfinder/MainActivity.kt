@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.stayfinder.databinding.ActivityMainBinding
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -35,7 +37,15 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.profile -> {
-                    replaceFragment(SignUpFragment())
+                    val account: GoogleSignInAccount? = GoogleSignIn
+                        .getLastSignedInAccount(applicationContext); //get account sign in?
+
+                    if(account == null){ // user does not login
+                        replaceFragment(LogInFragment())
+                    }else{
+                        replaceFragment(ProfileFragment())
+                    }
+
                 }
             }
             true

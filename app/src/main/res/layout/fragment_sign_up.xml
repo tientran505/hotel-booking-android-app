@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".ProfileFragment">
 
-
     <TextView
         android:id="@+id/titleFragmentTv"
         android:layout_width="wrap_content"
@@ -54,7 +53,7 @@
         android:text="Sign Up"
         android:textAllCaps="false"
         android:textColor="#ffffff"
-        android:background="#42A5F5"
+        android:background="#003580"
 
 
         app:layout_constraintEnd_toEndOf="@+id/inputPasswordEt"
