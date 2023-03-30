@@ -1,6 +1,7 @@
 package com.example.stayfinder
 
 class SavedListItem:java.io.Serializable {
+    var id: String?=""
     public var titlename: String? = ""
     public var name: String? = ""
     public var img: Int? = null

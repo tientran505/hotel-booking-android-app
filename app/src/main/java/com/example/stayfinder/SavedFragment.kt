@@ -1,5 +1,6 @@
 package com.example.stayfinder
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +8,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
+
+
+
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -28,11 +33,13 @@ class SavedFragment : Fragment() {
 
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
+
         }
 
 
@@ -54,6 +61,10 @@ class SavedFragment : Fragment() {
         savedList.add(SavedList("Vũng Tàu", "5 saved"))
         savedList.add(SavedList("Vũng Tàu", "5 saved"))
 
+        val dialog = this.context?.let { BottomSheetDialog(it) }
+        val viewdia = layoutInflater.inflate(R.layout.list_dialog_layout, null)
+        dialog!!.setContentView(viewdia)
+
         val myList = view.findViewById<RecyclerView>(R.id.horizontalScrollView) as RecyclerView
 
         var horadapter = HorizontalAdapter(itemList)
@@ -65,7 +76,8 @@ class SavedFragment : Fragment() {
 
         horadapter.setOnItemClickListener(object: HorizontalAdapter.onItemClickListener{
             override fun onItemClick(position: Int){
-
+                val intent = Intent(activity, DetailListActivity::class.java)
+                startActivity(intent)
             }
         })
 
@@ -76,7 +88,7 @@ class SavedFragment : Fragment() {
 
         listadapter.setOnItemClickListener((object : SavedListAdapter.onItemClickListener{
             override fun onItemClick(position: Int){
-
+                dialog.show()
             }
         }))
 
