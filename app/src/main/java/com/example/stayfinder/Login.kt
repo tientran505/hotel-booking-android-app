@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
+import com.example.stayfinder.user.User
 import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -23,6 +24,7 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.delay
 
@@ -46,6 +48,8 @@ class Login : AppCompatActivity() {
 
         initUI()
 
+        Log.i("slog", "ONCREATE")
+
         val menu = supportActionBar
         menu?.setDisplayHomeAsUpEnabled(true)
         menu?.setHomeButtonEnabled(true)
@@ -66,12 +70,6 @@ class Login : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         // Sign in success, update UI with the signed-in user's information
-                        val user = auth.currentUser
-                        Log.i("userLog", user.toString())
-
-                        Toast.makeText(this, "Login successful.",
-                            Toast.LENGTH_SHORT).show()
-
                         Handler().postDelayed(Runnable {
                             val intent = Intent(this, MainActivity::class.java)
                             intent.putExtra("fragment", "profile")
@@ -111,7 +109,7 @@ class Login : AppCompatActivity() {
 
     private fun createRequest(){
         mGoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.client_id))
+            .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
 
@@ -125,11 +123,9 @@ class Login : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (requestCode == RC_SIGN_IN) {
             val task: Task<GoogleSignInAccount> = GoogleSignIn
                 .getSignedInAccountFromIntent(data)
-
 
             try {
                 val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
@@ -138,22 +134,36 @@ class Login : AppCompatActivity() {
                 progressDialog?.setTitle("Login with gmail")
                 progressDialog?.setMessage("Verifying...")
                 progressDialog?.show()
+
                 auth.signInWithCredential(credential)
                     .addOnCompleteListener(this) { it ->
                         if (it.isSuccessful) {
                             // Sign in success, update UI with the signed-in user's information
-                            val user = auth.currentUser
-                            Log.i("userLog", user.toString())
+                            val authUser = auth.currentUser
 
-                            Toast.makeText(this, "Login with email successful.",
-                                Toast.LENGTH_SHORT).show()
+                            if (authUser != null) {
+                                Log.i("chiplog", " Hello ")
+                                val db = Firebase.firestore
+
+                                val user = User(authUser)
+                                db.collection("users").document(user.uid).set(user)
+                                    .addOnSuccessListener {
+                                        Toast.makeText(this, "User data added successfully",
+                                            Toast.LENGTH_SHORT).show()
+                                    }
+                                    .addOnFailureListener {
+                                        Toast.makeText(this, "Error adding user data with" +
+                                                " exception: $it",
+                                            Toast.LENGTH_SHORT).show()
+                                    }
+                            }
 
                             Handler().postDelayed(Runnable {
                                 val intent = Intent(this, MainActivity::class.java)
                                 intent.putExtra("fragment", "profile")
                                 startActivity(intent)
                                 finishAffinity()
-                            }, 2000)
+                            }, 1000)
                         }
                         else {
                             // If sign in fails, display a message to the user.
@@ -163,14 +173,11 @@ class Login : AppCompatActivity() {
                         progressDialog?.dismiss()
                     }
 
-                //reload activity
-                this.finish()
-                this.startActivity(this.intent)
-
             } catch (e: ApiException) {
                 Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
                 Log.e("BUG===========", e.message!!)
             }
+
         }
     }
 }

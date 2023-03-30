@@ -47,8 +47,6 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Toast.makeText(requireContext(), "Fragment created", Toast.LENGTH_SHORT).show()
-
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
@@ -77,9 +75,10 @@ class ProfileFragment : Fragment() {
         { AnonymousUser() }
         else
         {
-            if (user.displayName == null || user.displayName == "") { LoginUser(user.email.toString()) }
-            else {LoginUser(user.displayName.toString())}
+            LoginUser(user)
+
         }
+
         val transaction = childFragmentManager.beginTransaction()
 
         transaction.replace(R.id.profile_fragment, childFragment).commit()
