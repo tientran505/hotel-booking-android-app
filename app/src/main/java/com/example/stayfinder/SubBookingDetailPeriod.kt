@@ -1,24 +1,20 @@
 package com.example.stayfinder
 
-import android.app.DatePickerDialog
-import android.content.Context
 import android.os.Bundle
 import android.text.InputType
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
-import java.util.Calendar
+import java.util.concurrent.TimeUnit
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -44,7 +40,12 @@ class SubBookingDetailPeriod : Fragment() {
     }
     lateinit var dateStart: TextView
     lateinit var dateEnd: TextView
-
+    lateinit var periodTv: TextView
+    lateinit var costTv: TextView
+    lateinit var taxTv: TextView
+    var daysDiff: Long = 0
+    var price: Double =0.0
+    var tax: String? =""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,13 +53,19 @@ class SubBookingDetailPeriod : Fragment() {
         // Inflate the layout for this fragment
         val dateStartInput :String? = this.arguments?.getString("dateStart")
         val dateEndInput :String? = this.arguments?.getString("dateEnd")
+        tax = this.arguments?.getString("tax")
+        price =  requireArguments().getDouble("price")
         val view: View? = inflater.inflate(R.layout.fragment_sub_booking_detail_period, container, false)
         dateStart = view!!.findViewById(R.id.datestartTv)
         dateEnd = view.findViewById(R.id.dateendTv)
+        periodTv = view.findViewById(R.id.periodTv)
+        costTv = view.findViewById(R.id.costTv)
+        taxTv = view.findViewById(R.id.taxTv)
         dateStart.inputType = InputType.TYPE_NULL
         dateEnd.inputType = InputType.TYPE_NULL
         dateStart.text = dateStartInput
         dateEnd.text = dateEndInput
+        setDay()
         dateStart?.setOnClickListener {
             val today = MaterialDatePicker.todayInUtcMilliseconds()
             val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
@@ -91,6 +98,7 @@ class SubBookingDetailPeriod : Fragment() {
 //                calendar.timeInMillis = it.second
                 val end = formatter.format(it.second)
                 dateEnd.setText(end.toString())
+                setDay()
             }
             dateRangePicker.addOnNegativeButtonClickListener {
                 Toast.makeText(requireContext(), "${dateRangePicker.headerText} is cancelled"
@@ -108,20 +116,18 @@ class SubBookingDetailPeriod : Fragment() {
         return view
     }
 
-    fun checkDateValidate(startdate: String, enddate: String) :Boolean{
-        val sdf = SimpleDateFormat("MM/dd/yyyy")
-        val firstDate: Date = sdf.parse(startdate)
-        val secondDate: Date = sdf.parse(enddate)
-        print(firstDate.toString())
-        print(secondDate.toString())
-        val cmp = firstDate.compareTo(secondDate)
-        when {
-            cmp < 0 -> {
-                return true
-            }
-            else -> {
-               return false
-            }
+    fun setDay()  {
+        val startdate = dateStart.text.toString()
+        val enddate = dateEnd.text.toString()
+        val formatter = SimpleDateFormat("dd-MM-yyyy")
+        val start = formatter.parse(startdate)
+        val end = formatter.parse(enddate)
+        daysDiff = TimeUnit.DAYS.convert(end.getTime() - start.getTime(), TimeUnit.MILLISECONDS)
+        periodTv.setText("Price for $daysDiff night(s) (" + startdate+ " - "+enddate+")")
+        val moneyexchange = DecimalFormat("###,###,###,###.##"+" US$");
+        costTv.setText(moneyexchange.format(price*daysDiff))
+        if(tax != null || tax !=""){
+            taxTv.setText(tax)
         }
     }
 

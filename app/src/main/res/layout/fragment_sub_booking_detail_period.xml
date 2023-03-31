@@ -4,117 +4,157 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
-    tools:context=".SubBookingDetailPeriod">
+    tools:context=".SubBookingDetailPeriod"
+
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
         android:orientation="vertical"
+        android:background="@color/lightgrey"
         >
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:padding="10dp">
-
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
+            android:gravity="center"
+            android:background="@color/white"
             android:orientation="vertical"
-            android:paddingBottom="10dp"
+            android:layout_marginVertical="10sp"
             >
 
-            <TextView
-                android:id="@+id/datestartLB"
+            <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nhận phòng"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:padding="10dp"
-                ></TextView>
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_marginHorizontal="25sp"
+                android:layout_marginVertical="20sp"
 
-            <TextView
-                android:id="@+id/datestartTv"
-                android:layout_width="match_parent"
+                >
+
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:id="@+id/datestartLB"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Check in"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold"></TextView>
+
+                    <TextView
+                        android:id="@+id/datestartTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="2/2/2023"
+                        android:textColor="@color/primary"
+                        android:layout_marginVertical="10sp"
+                        android:textSize="20sp"></TextView>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:orientation="vertical"
+                    >
+
+                    <TextView
+                        android:id="@+id/dateendLB"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Check out"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold"></TextView>
+
+                    <TextView
+                        android:id="@+id/dateendTv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="3/3/2023"
+                        android:layout_marginVertical="10sp"
+                        android:textColor="@color/primary"
+                        android:textSize="20sp"></TextView>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="2/2/2023"
-                android:textColor="@color/teal_200"
-                android:textSize="18sp"
-                android:textStyle="bold"></TextView>
+                android:layout_weight="1"
+                android:adjustViewBounds="true"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="25sp"
+                android:layout_marginBottom="30sp"
+                >
 
+                <TextView
+                    android:id="@+id/detailRoomLb"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Number of Room Booking and Customer"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:textStyle="bold"></TextView>
+
+                <TextView
+                    android:id="@+id/detailRoomTv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="10sp"
+                    android:text="1 phòng + 2 người lớn + không có trẻ em"
+                    android:textColor="@color/primary"
+                    android:textSize="20sp"></TextView>
+            </LinearLayout>
         </LinearLayout>
+
         <LinearLayout
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
             android:orientation="vertical"
-            android:paddingBottom="10dp"
+            android:background="@color/white"
+            android:padding="25sp"
             >
 
             <TextView
-                android:id="@+id/dateendLB"
+                android:id="@+id/periodTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Trả phòng"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:padding="10dp"
-                ></TextView>
+                android:text="giá cho 1 đêm"
+                android:textColor="#040404"
+                android:textSize="15sp">
 
-            <TextView
-                android:id="@+id/dateendTv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="3/3/2023"
-                android:textColor="@color/teal_200"
-                android:textSize="18sp"
-                android:textStyle="bold">
             </TextView>
-        </LinearLayout>
-    </LinearLayout>
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:layout_marginLeft="5dp"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:orientation="vertical"
-            android:padding="10dp"
-            android:paddingLeft="20dp"
-            >
 
             <TextView
-                android:id="@+id/detailRoomLb"
+                android:id="@+id/costTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Nhận phòng"
-                android:textColor="@color/black"
-                android:textStyle="bold"
-                android:padding="10dp"
-                ></TextView>
+                android:text="giá "
+                android:layout_marginVertical="10sp"
+                android:textColor="#000000"
+                android:textSize="35sp"></TextView>
 
             <TextView
-                android:id="@+id/detailRoomTv"
+                android:id="@+id/taxTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="5dp"
-                android:text="1 phòng + 2 người lớn + không có trẻ em"
-                android:textColor="@color/teal_200"
-                android:textSize="18sp"
-                android:textStyle="bold"></TextView>
+                android:text="Tax included"
+                android:layout_marginVertical="10sp"
+                android:textSize="16sp"></TextView>
+
         </LinearLayout>
     </LinearLayout>
+
 </FrameLayout>
