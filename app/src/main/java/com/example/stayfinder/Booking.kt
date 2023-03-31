@@ -5,15 +5,17 @@ import android.os.Parcelable
 
 class Booking() {
     var titlename: String? = ""
-    var period: String? = ""
+    var dateStart: String? = ""
+    var dateEnd: String? = ""
     var price: Double? = 0.0
     var status: String? = ""
     var img: Int? = null
 
-    constructor(titlename: String, period: String, price: Double,status: String, img: Int) : this()
+    constructor(titlename: String, dateStart: String,dateEnd: String, price: Double,status: String, img: Int) : this()
     {
         this.titlename = titlename
-        this.period = period
+        this.dateStart = dateStart
+        this.dateEnd= dateEnd
         this.price= price
         this.status= status
         this.img=img

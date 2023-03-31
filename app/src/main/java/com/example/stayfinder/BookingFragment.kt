@@ -54,11 +54,11 @@ class BookingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 1","4-5Feb",2000000.0,"Active",R.drawable.ic_launcher_foreground))
-        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 2","4-5Feb",2000000.0,"Active",R.drawable.ic_launcher_foreground))
-        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 3","4-5Feb",2000000.0,"Active",R.drawable.ic_launcher_foreground))
-        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 4","4-5Feb",2000000.0,"Cancel",R.drawable.ic_launcher_foreground))
-        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 5","4-5Feb",2000000.0,"Cancel",R.drawable.ic_launcher_foreground))
+        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 1","4 Feb","5 Feb",2000000.0,"Active",R.drawable.ic_launcher_foreground))
+        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 2","4 Feb","5 Feb",2000000.0,"Active",R.drawable.ic_launcher_foreground))
+        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 3","4 Feb","5 Feb",2000000.0,"Active",R.drawable.ic_launcher_foreground))
+        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 4","4 Feb","5 Feb",2000000.0,"Cancel",R.drawable.ic_launcher_foreground))
+        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 5","4 Feb","5 Feb",2000000.0,"Cancel",R.drawable.ic_launcher_foreground))
 
         // Inflate the layout for this fragment
         var view: View? = null

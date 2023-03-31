@@ -29,7 +29,7 @@ class BookingAdapter (private var item: ArrayList<Booking>) : RecyclerView.Adapt
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val moneyexchange = DecimalFormat("###,###,###,###.##"+"đ");
         holder.nameTv.setText(this.item[position].titlename)
-        holder.infoTv.setText(this.item[position].period + " - "+moneyexchange.format(this.item[position].price))
+        holder.infoTv.setText(this.item[position].dateStart+ " - "+ this.item[position].dateEnd + " _ "+moneyexchange.format(this.item[position].price))
         holder.statusTv.setText(this.item[position].status)
         if(this.item[position].status == "Cancel"){
             holder.statusTv.setTextColor(Color.parseColor("#d13838"))
