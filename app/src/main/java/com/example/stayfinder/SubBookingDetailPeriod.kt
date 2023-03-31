@@ -11,6 +11,9 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.TextView
 import android.widget.Toast
+import com.google.android.material.datepicker.CalendarConstraints
+import com.google.android.material.datepicker.DateValidatorPointForward
+import com.google.android.material.datepicker.MaterialDatePicker
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -56,53 +59,55 @@ class SubBookingDetailPeriod : Fragment() {
         dateEnd.inputType = InputType.TYPE_NULL
         dateStart.text = dateStartInput
         dateEnd.text = dateEndInput
-        dateStart.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                showDatePicker(dateStart)
-//                view.hideKeyboard()
+        dateStart?.setOnClickListener {
+            val today = MaterialDatePicker.todayInUtcMilliseconds()
+            val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+            calendar.timeInMillis = today
+            calendar.add(Calendar.MONTH, 15)
+            val dateRangePicker = MaterialDatePicker
+                .Builder
+                .dateRangePicker()
+                .setTitleText("Select a date range")
+                .setCalendarConstraints(
+                    CalendarConstraints.Builder()
+                        .setStart(today)
+                        .setEnd(calendar.timeInMillis)
+                        .setValidator(DateValidatorPointForward.now())
+                        .build()
+                )
+                .build()
+
+
+            dateRangePicker.addOnPositiveButtonClickListener {it->
+                Toast.makeText(requireContext(), "${dateRangePicker.headerText} is selected"
+                    , Toast.LENGTH_LONG).show()
+                val dateperiod = dateRangePicker.headerText.toString()
+                print(dateperiod)
+//                calendar.setTimeInMillis(it.first);
+//                calendar.timeInMillis = it.first
+                val formatter = SimpleDateFormat("dd-MM-yyyy")
+                val start = formatter.format(it.first)
+                dateStart.setText(start.toString())
+//                calendar.timeInMillis = it.second
+                val end = formatter.format(it.second)
+                dateEnd.setText(end.toString())
             }
-        }
-        dateStart.setOnClickListener{
-            showDatePicker(dateStart)
-        }
-        dateEnd.setOnFocusChangeListener { _, hasFocus ->
-            if (hasFocus) {
-                showDatePicker(dateEnd)
-//                view.hideKeyboard()
+            dateRangePicker.addOnNegativeButtonClickListener {
+                Toast.makeText(requireContext(), "${dateRangePicker.headerText} is cancelled"
+                    , Toast.LENGTH_LONG).show()
             }
+
+            dateRangePicker.addOnCancelListener {
+                Toast.makeText(requireContext(), "DateRangePicker is cancelled"
+                    , Toast.LENGTH_LONG).show()
+            }
+
+            dateRangePicker.show(requireActivity().supportFragmentManager, "DatePicker")
         }
-        dateEnd.setOnClickListener{
-            showDatePicker(dateEnd)
-        }
+
         return view
     }
-    private fun showDatePicker(datetv: TextView) {
-        val datestring = datetv.text.toString()
-        val day : Int = datestring.substringBefore('/',datestring).toInt()
-        val month : Int = datestring.substringAfter('/',datestring).substringBefore('/',datestring).toInt() -1
-        val year : Int = datestring.substringAfter('/',datestring).substringAfter('/',datestring).toInt()
 
-        val datePickerDialog = DatePickerDialog(this.requireContext(), { _, year, monthOfYear, dayOfMonth ->
-            val validDate = "0${dayOfMonth}".takeLast(2) + "/" +
-                    "0${monthOfYear + 1}".takeLast(2) + "/" + "$year"
-
-            datetv.text = validDate
-
-            if(!checkDateValidate(dateStart.text.toString(), dateEnd.text.toString())){
-
-                if(datetv.id == dateStart.id){
-                    Toast.makeText(this.context, "You have choose wrong date, start date is after end date, please choose another start date", Toast.LENGTH_LONG).show()
-                    showDatePicker(dateStart)
-                }
-                else{
-                    Toast.makeText(this.context, "You have choose wrong date, end date is before start date, please choose another end date", Toast.LENGTH_LONG).show()
-                    showDatePicker(dateEnd)
-                }
-            }
-        }, year, month, day)
-        datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
-        datePickerDialog!!.show()
-    }
     fun checkDateValidate(startdate: String, enddate: String) :Boolean{
         val sdf = SimpleDateFormat("MM/dd/yyyy")
         val firstDate: Date = sdf.parse(startdate)
@@ -118,10 +123,6 @@ class SubBookingDetailPeriod : Fragment() {
                return false
             }
         }
-    }
-    fun View.hideKeyboard() {
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(windowToken, 0)
     }
 
     companion object {

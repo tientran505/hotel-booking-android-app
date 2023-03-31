@@ -5,7 +5,12 @@
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
     tools:context=".SubBookingDetailPeriod">
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="vertical"
+        >
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
@@ -22,6 +27,7 @@
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:orientation="vertical"
+            android:paddingBottom="10dp"
             >
 
             <TextView
@@ -53,6 +59,7 @@
             android:layout_weight="1"
             android:adjustViewBounds="true"
             android:orientation="vertical"
+            android:paddingBottom="10dp"
             >
 
             <TextView
@@ -77,5 +84,37 @@
             </TextView>
         </LinearLayout>
     </LinearLayout>
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:adjustViewBounds="true"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:paddingLeft="20dp"
+            >
 
+            <TextView
+                android:id="@+id/detailRoomLb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Nhận phòng"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:padding="10dp"
+                ></TextView>
+
+            <TextView
+                android:id="@+id/detailRoomTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:text="1 phòng + 2 người lớn + không có trẻ em"
+                android:textColor="@color/teal_200"
+                android:textSize="18sp"
+                android:textStyle="bold"></TextView>
+        </LinearLayout>
+    </LinearLayout>
 </FrameLayout>
