@@ -10,10 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
-
-
-
-
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
 private const val ARG_PARAM1 = "param1"
@@ -76,8 +72,7 @@ class SavedFragment : Fragment() {
 
         horadapter.setOnItemClickListener(object: HorizontalAdapter.onItemClickListener{
             override fun onItemClick(position: Int){
-                val intent = Intent(activity, DetailListActivity::class.java)
-                startActivity(intent)
+
             }
         })
 
@@ -86,11 +81,19 @@ class SavedFragment : Fragment() {
         allList.adapter = listadapter
         allList.layoutManager = LinearLayoutManager(this.context)
 
-        listadapter.setOnItemClickListener((object : SavedListAdapter.onItemClickListener{
-            override fun onItemClick(position: Int){
+        listadapter.setOnIconClickListener((object : SavedListAdapter.onIconClickListener{
+            override fun onIconClick(position: Int) {
                 dialog.show()
             }
         }))
+
+        listadapter.setOnItemClickListener((object : SavedListAdapter.onItemClickListener{
+            override fun onItemClick(position: Int){
+                val intent = Intent(activity, DetailListActivity::class.java)
+                startActivity(intent)
+            }
+        }))
+
 
         return view
     }

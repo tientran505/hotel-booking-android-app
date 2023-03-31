@@ -7,7 +7,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
-class DetailListAdapter(private val lists: List<RoomDetail>):
+class DetailListAdapter(private val lists: List<HotelDetail>):
     RecyclerView.Adapter<DetailListAdapter.ViewHolder>() {
 
     inner class ViewHolder(listItemView: View, listener: onItemClickListener)
@@ -49,7 +49,7 @@ class DetailListAdapter(private val lists: List<RoomDetail>):
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item: RoomDetail = lists.get(position)
+        val item: HotelDetail = lists.get(position)
         val priceView = holder.price
         val typeView = holder.type
         val titleView = holder.title
