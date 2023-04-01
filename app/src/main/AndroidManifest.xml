@@ -31,16 +31,15 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD2iPE1hYByh63Ok_gGW8Dj1neT3aigGqM" />
-
         <activity
-            android:name=".MapsActivity"
+            android:name=".BookingDetailActivity"
             android:exported="false"
             android:label="@string/title_activity_maps" />
         <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".BookingDetailActivity"
+            android:name=".MapsActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
