@@ -52,6 +52,12 @@ class SubBookingDetailImage : Fragment() {
             }
             1 -> {
                 img1.setImageResource(bookingDetail.img[0])
+                if(bookingDetail.img[0] != null){
+                    Glide.with(this)
+                        .load(bookingDetail.img[0])
+                        .apply(RequestOptions().centerCrop)
+                        .into(img1)
+                }
                 noImageET.setText("")
             }
             2 -> {

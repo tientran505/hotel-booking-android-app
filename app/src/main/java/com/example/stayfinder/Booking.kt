@@ -2,6 +2,7 @@ package com.example.stayfinder
 
 import android.os.Parcel
 import android.os.Parcelable
+import java.net.URL
 
 class Booking() {
     var titlename: String? = ""
@@ -9,9 +10,9 @@ class Booking() {
     var dateEnd: String? = ""
     var price: Double? = 0.0
     var status: String? = ""
-    var img: Int? = null
+    lateinit var img : ArrayList<URL>
 
-    constructor(titlename: String, dateStart: String,dateEnd: String, price: Double,status: String, img: Int) : this()
+    constructor(titlename: String, dateStart: String,dateEnd: String, price: Double,status: String, img: ArrayList<URL>) : this()
     {
         this.titlename = titlename
         this.dateStart = dateStart

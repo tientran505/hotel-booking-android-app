@@ -1,23 +1,25 @@
 package com.example.stayfinder
 
-class FeedBack {
-    var titlename: String? = ""
-    var dateStart: String? = ""
-    var dateEnd: String? = ""
-    var price: Double? = 0.0
-    var status: String? = ""
-    var img: Int? = null
+import java.net.URL
 
-    constructor(titlename: String, dateStart: String,dateEnd: String, price: Double,status: String, img: Int) : this()
+class FeedBack() {
+    var username: String? = ""
+    lateinit var avarta: URL
+    var title: String? = ""
+    var content: String? = ""
+    var reviewDate: String? = ""
+    var rating: Double? = 0.0
+    lateinit var img : ArrayList<URL>
+
+    constructor(username: String,avarta: URL,title: String, content: String,reviewDate: String, rating: Double, img : ArrayList<URL>) : this()
     {
-        this.titlename = titlename
-        this.dateStart = dateStart
-        this.dateEnd= dateEnd
-        this.price= price
-        this.status= status
+        this.username = username
+        this.avarta = avarta
+        this.title=title
+        this.content = content
+        this.reviewDate= reviewDate
+        this.rating= rating
         this.img=img
     }
-    constructor(titlename: String):this(){
-        this.titlename = titlename
-    }
+
 }
