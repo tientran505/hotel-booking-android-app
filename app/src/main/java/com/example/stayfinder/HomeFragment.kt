@@ -11,12 +11,16 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.core.util.Pair
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.stayfinder.city.City
+import com.example.stayfinder.city.CityAdapter
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.divider.MaterialDivider
 import com.google.android.material.divider.MaterialDividerItemDecoration
 import java.util.*
+import kotlin.math.log
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,6 +38,22 @@ class HomeFragment : Fragment() {
     private var param2: String? = null
     private var dateET: EditText? = null
     private var roomET: EditText? = null
+    private val cities = listOf<City>(
+        City("HCMC"),
+        City("Hanoi"),
+        City("Da Lat"),
+        City("Da Nang"),
+        City("Vung Tau"),
+        City("Can Tho"),
+        City("Phu Quoc"),
+        City("Sa Pa"),
+        City("Ha Giang"),
+        City("Bac Ninh"),
+        City("My Tho")
+    )
+
+    private lateinit var rvCity: RecyclerView
+    private lateinit var cityAdapter: CityAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +71,15 @@ class HomeFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
         dateET = view.findViewById(R.id.dateET)
+        rvCity = view.findViewById(R.id.cityNameRV)
+        rvCity.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+        cityAdapter = CityAdapter(cities)
+        cityAdapter.onItemClick = { position ->
+            Log.i("ttlog", position.toString())
+            cityAdapter.setSelectedPosition(position)
+        }
+        rvCity.adapter = cityAdapter
 
         dateET?.setOnClickListener {
             val today = MaterialDatePicker.todayInUtcMilliseconds()
@@ -99,6 +128,8 @@ class HomeFragment : Fragment() {
             modalBottomSheet.show(requireActivity().supportFragmentManager
                 , RoomSelectionBottomSheetDialog.TAG)
         }
+
+
 
         return view
     }
