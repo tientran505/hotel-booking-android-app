@@ -24,6 +24,10 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.firestore.FirebaseFirestore
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -43,7 +47,7 @@ class LoginUser() : Fragment() {
     private var nameTV: TextView? = null
     private var nameUser: String? = null
 
-    private var avatarImg: ShapeableImageView? = null
+    private lateinit var avatarImg: ShapeableImageView
     private var user: FirebaseUser? = null
 
     private lateinit var imageUri: Uri
@@ -98,12 +102,15 @@ class LoginUser() : Fragment() {
 
 
         if (this.user?.photoUrl != null) {
-            Picasso.with(this.context).load(this.user?.photoUrl).into(avatarImg)
-            avatarImg?.setImageURI(this.user?.photoUrl)
+//            Picasso.with(this.context).load(this.user?.photoUrl).into(avatarImg)
+//            avatarImg?.setImageURI(this.user?.photoUrl)
+            Glide.with(this)
+                .load(this.user?.photoUrl)
+                .apply(RequestOptions().centerCrop())
+                .into(avatarImg)
         }
 
-
-        avatarImg?.setOnClickListener {
+        avatarImg.setOnClickListener {
             activityResultLauncher.launch(appPerms)
         }
 
@@ -120,50 +127,6 @@ class LoginUser() : Fragment() {
         startActivityForResult(intent, REQUEST_CODE)
     }
 
-    private fun checkPermission() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(
-                requireActivity(),
-                Manifest.permission.READ_EXTERNAL_STORAGE
-            )
-        ) {
-            // Explain why the app needs this permission
-            Toast.makeText(
-                requireContext(),
-                "Permission is required to choose an image from the gallery",
-                Toast.LENGTH_SHORT
-            ).show()
-        }
-
-
-        Log.i("checklog", "1")
-        if (Build.VERSION.SDK_INT >= 23) {
-
-            if (ContextCompat.checkSelfPermission(
-                    requireContext(),
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) == PackageManager.PERMISSION_GRANTED
-            ) {
-                Log.i("checklog", "2")
-
-                pickImageFromGallery()
-            } else {
-                Log.i("checklog", "4")
-
-                requestPermissions(
-                    arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                    PERMISSION_REQUEST_CODE
-                )
-
-                Log.i("checklog", "5")
-
-            }
-        } else {
-            Log.i("checklog", "3")
-
-            pickImageFromGallery()
-        }
-    }
-
     private fun uploadImg() {
         val storageRef = Firebase.storage.reference
         val imgRef = storageRef.child("imgs")
@@ -174,6 +137,28 @@ class LoginUser() : Fragment() {
         uploadTask
             .addOnSuccessListener {
                 Toast.makeText(requireContext(), "Image uploaded successfully", Toast.LENGTH_SHORT).show()
+
+                imageRef.downloadUrl.addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        val imgUrl = it.result.toString()
+                        val profileUpdates = UserProfileChangeRequest.Builder()
+                            .setPhotoUri(Uri.parse(imgUrl))
+                            .build()
+
+                        user?.updateProfile(profileUpdates)
+                            ?.addOnCompleteListener {
+                                if (it.isSuccessful) {
+                                    Toast.makeText(requireContext(), "Profile picture updated successfully"
+                                        , Toast.LENGTH_SHORT).show()
+                                }
+                                else {
+                                    Toast.makeText(requireContext(), "Failed to update profile picture"
+                                        , Toast.LENGTH_SHORT).show()
+                                }
+                            }
+
+                    }
+                }
             }
             .addOnFailureListener {
                 Toast.makeText(requireContext(), "Error uploading image", Toast.LENGTH_SHORT).show()
@@ -187,8 +172,11 @@ class LoginUser() : Fragment() {
 
             imageUri = data?.data!!
 
-            Picasso.with(this.context).load(imageUri).into(avatarImg)
-            avatarImg?.setImageURI(imageUri)
+            Glide.with(this)
+                .load(imageUri)
+                .apply(RequestOptions().centerCrop())
+                .into(avatarImg)
+
             uploadImg()
         }
     }

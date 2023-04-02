@@ -11,64 +11,107 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginEnd="30dp"
-            android:background="@drawable/custom_border_layout"
-            android:divider="@drawable/linear_layout_divider"
-            android:orientation="vertical"
-            android:padding="10dp"
-            android:showDividers="middle|none"
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <EditText
-                android:id="@+id/locationET"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:clickable="true"
-                android:drawableStart="@drawable/ic_search"
-                android:drawablePadding="10dp"
-                android:ems="10"
-                android:focusable="false"
-                android:hint="Enter Destination"
-                android:inputType="textPersonName"
-                android:paddingVertical="10dp"
-                android:paddingStart="5dp" />
+                android:orientation="vertical">
 
-            <EditText
-                android:id="@+id/dateET"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:clickable="true"
-                android:drawableStart="@drawable/ic_calendar"
-                android:drawablePadding="10dp"
-                android:ems="10"
-                android:focusable="false"
-                android:hint="Select Date"
-                android:inputType="textPersonName"
-                android:paddingVertical="10dp"
-                android:paddingStart="5dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginEnd="30dp"
+                    android:background="@drawable/custom_border_layout"
+                    android:divider="@drawable/linear_layout_divider"
+                    android:orientation="vertical"
+                    android:padding="10dp"
+                    android:showDividers="middle|none"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
 
-            <EditText
-                android:id="@+id/roomInfoET"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:drawableStart="@drawable/ic_profile_home"
-                android:drawablePadding="10dp"
-                android:ems="10"
-                android:focusable="false"
-                android:hint="Select room information"
-                android:inputType="textPersonName"
-                android:paddingVertical="10dp"
-                android:paddingLeft="5dp" />
-        </LinearLayout>
+                    <EditText
+                        android:id="@+id/dateET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:clickable="true"
+                        android:drawableStart="@drawable/ic_calendar"
+                        android:drawablePadding="10dp"
+                        android:ems="10"
+                        android:focusable="false"
+                        android:hint="Select Date"
+                        android:inputType="textPersonName"
+                        android:paddingVertical="10dp"
+                        android:paddingStart="5dp" />
+
+                    <EditText
+                        android:id="@+id/locationET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:clickable="true"
+                        android:drawableStart="@drawable/ic_search"
+                        android:drawablePadding="10dp"
+                        android:ems="10"
+                        android:focusable="false"
+                        android:hint="Enter Destination"
+                        android:inputType="textPersonName"
+                        android:paddingVertical="10dp"
+                        android:paddingStart="5dp" />
+
+                    <EditText
+                        android:id="@+id/roomInfoET"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:drawableStart="@drawable/ic_profile_home"
+                        android:drawablePadding="10dp"
+                        android:ems="10"
+                        android:focusable="false"
+                        android:hint="Select room information"
+                        android:inputType="textPersonName"
+                        android:paddingVertical="10dp"
+                        android:paddingLeft="5dp" />
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Top hotels curated only for you 💙"
+                    android:textSize="20dp"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/cityNameRV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/curatedHotelRV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp" />
+
+            </LinearLayout>
+        </ScrollView>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </FrameLayout>
