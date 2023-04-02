@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:layout_gravity="center_horizontal"
     tools:context=".SubBookingDetailPeriod"
-
     >
     <LinearLayout
         android:layout_width="match_parent"
@@ -96,7 +95,7 @@
                 android:adjustViewBounds="true"
                 android:orientation="vertical"
                 android:layout_marginHorizontal="25sp"
-                android:layout_marginBottom="30sp"
+                android:layout_marginBottom="15sp"
                 >
 
                 <TextView
@@ -124,7 +123,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:background="@color/white"
-            android:padding="25sp"
+            android:padding="10sp"
+            android:layout_marginBottom="10sp"
             >
 
             <TextView
@@ -151,7 +151,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Tax included"
-                android:layout_marginVertical="10sp"
+                android:layout_marginVertical="5sp"
                 android:textSize="16sp"></TextView>
 
         </LinearLayout>

@@ -38,12 +38,8 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        Toast.makeText(applicationContext,"1",Toast.LENGTH_LONG).show()
 //        fusedClient = LocationServices.getFusedLocationProviderClient(this)
-
         searchMap()
-
-
     }
     private fun getLocationUser(){
         if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED
@@ -77,13 +73,7 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
         }
 
         val templatlng = getLocationFromAddress(address)
-        if (templatlng != null) {
-            print(templatlng.latitude)
-        }
-        else{
-            Toast.makeText(applicationContext,"templatlng null",Toast.LENGTH_LONG).show()
 
-        }
         if(templatlng != null){
             currentLocation = Location(LocationManager.NETWORK_PROVIDER)
             currentLocation.latitude = templatlng.latitude
@@ -111,6 +101,7 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
             val mapFragment = supportFragmentManager
                 .findFragmentById(R.id.map) as SupportMapFragment
             mapFragment.getMapAsync(this)
+
         }
 
 
@@ -131,7 +122,6 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
     fun getLocationFromAddress( strAddress: String?): LatLng? {
 
         val coder = Geocoder(this, Locale.getDefault())
-        System.out.println(Locale.getDefault());
         val addressList: List<Address>?
         var LatLan: LatLng? = null
 

@@ -11,11 +11,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
-import android.widget.RelativeLayout
-import android.widget.Toast
+import android.widget.*
 import androidx.core.app.ActivityCompat
+import com.example.stayfinder.databinding.ActivityMapsBinding
 
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -43,19 +41,19 @@ class SubBookingDetailAddress : Fragment(), OnMapReadyCallback{
     private lateinit var fusedClient: FusedLocationProviderClient;
     private lateinit var currentLocation : Location
     private var REQUEST_CODE = 101;
-//    lateinit var addressET: EditText
-//    lateinit var searchBT: Button
-    val address = "135 Trần Hưng Đạo, phường Cầu Ông Lãnh, Quận 1, Thành phố Hồ Chí Minh"
+
+    var address = "135 Đường Trần Hưng Đạo, Cầu Ông Lãnh, Quận 1, Thành phố Hồ Chí Minh, Việt Nam"
     var addressfind =""
-    lateinit var layout: RelativeLayout
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view =  inflater.inflate(R.layout.fragment_sub_booking_detail_address, container, false)
+        val bookingDetail :bookingDetail? = this.getArguments()?.getSerializable("BookingDetail") as bookingDetail?
+        address = bookingDetail!!.address.toString()
+        val addressTv = view!!.findViewById<TextView>(R.id.addressTv)
+        addressTv.setText(address)
         searchMap()
-
-
         return view
     }
     fun searchMap(){
@@ -90,8 +88,7 @@ class SubBookingDetailAddress : Fragment(), OnMapReadyCallback{
             addressfind+= addressestemp!![0].featureName
 
             Toast.makeText(context ,addressfind, Toast.LENGTH_LONG).show()
-            val mapFragment = getParentFragmentManager()
-                .findFragmentById(R.id.map) as SupportMapFragment
+            val mapFragment:SupportMapFragment =getChildFragmentManager().findFragmentById(R.id.map) as SupportMapFragment
             mapFragment.getMapAsync(this)
         }
 
@@ -130,8 +127,7 @@ class SubBookingDetailAddress : Fragment(), OnMapReadyCallback{
     override fun onMapReady(googleMap: GoogleMap) {//        mMap = googleMap
 
         val latLng = LatLng(currentLocation.latitude,currentLocation.longitude)
-        val marketOptions = MarkerOptions().position(latLng).title("Current Location")
-
+        val marketOptions = MarkerOptions().position(latLng).title(addressfind)
         googleMap?.animateCamera(CameraUpdateFactory.newLatLng(latLng))
         googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,17f))
         googleMap?.addMarker(marketOptions)

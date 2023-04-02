@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".BookingDetailActivity">
+
     <Button
         android:id="@+id/button4"
         android:layout_width="0dp"
@@ -22,44 +23,52 @@
         android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="70dp"
         android:contentDescription="@string/app_name"
-        android:minHeight="100dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/button4"
+        app:layout_constraintBottom_toBottomOf="@+id/button4"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
         tools:ignore="ScrollViewCount">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-                <FrameLayout
-                    android:id="@+id/fame1"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></FrameLayout>
 
-                <FrameLayout
-                    android:id="@+id/fame2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></FrameLayout>
-                <FrameLayout
-                    android:id="@+id/fame3"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></FrameLayout>
-                <FrameLayout
-                    android:id="@+id/fame4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></FrameLayout>
-                <FrameLayout
-                    android:id="@+id/fame5"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></FrameLayout>
-                <FrameLayout
-                    android:id="@+id/fame6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></FrameLayout>
-            </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+
+            <FrameLayout
+                android:id="@+id/fame1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/fame2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/fame3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/fame4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/fame5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/fame6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></FrameLayout>
+        </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

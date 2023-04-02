@@ -51,11 +51,11 @@ class SubBookingDetailPeriod : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val dateStartInput :String? = this.arguments?.getString("dateStart")
-        val dateEndInput :String? = this.arguments?.getString("dateEnd")
-        tax = this.arguments?.getString("tax")
-        price =  requireArguments().getDouble("price")
-        val view: View? = inflater.inflate(R.layout.fragment_sub_booking_detail_period, container, false)
+        val bookingDetail :bookingDetail? = this.getArguments()?.getSerializable("BookingDetail") as bookingDetail?
+        tax = "   "
+        print(tax)
+        price = bookingDetail!!.pricebernight!!
+        val view: View? = inflater.inflate(R.layout.fragment_sub_booking_detail_period_cost, container, false)
         dateStart = view!!.findViewById(R.id.datestartTv)
         dateEnd = view.findViewById(R.id.dateendTv)
         periodTv = view.findViewById(R.id.periodTv)
@@ -63,8 +63,8 @@ class SubBookingDetailPeriod : Fragment() {
         taxTv = view.findViewById(R.id.taxTv)
         dateStart.inputType = InputType.TYPE_NULL
         dateEnd.inputType = InputType.TYPE_NULL
-        dateStart.text = dateStartInput
-        dateEnd.text = dateEndInput
+        dateStart.text = bookingDetail!!.dateStart
+        dateEnd.text = bookingDetail!!.dateEnd
         setDay()
         dateStart?.setOnClickListener {
             val today = MaterialDatePicker.todayInUtcMilliseconds()
