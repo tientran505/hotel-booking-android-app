@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import java.text.DecimalFormat
 
 class BookingAdapter (private var item: ArrayList<Booking>) : RecyclerView.Adapter<BookingAdapter.ViewHolder>() {
+
     class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
         val nameTv = listItemView.findViewById<TextView>(R.id.nameTv)
         val infoTv = listItemView.findViewById<TextView>(R.id.infoTv)
@@ -40,7 +43,11 @@ class BookingAdapter (private var item: ArrayList<Booking>) : RecyclerView.Adapt
         else if(this.item[position].status == "Completed") {
             holder.statusTv.setTextColor(Color.parseColor("#3d59bf"))
         }
-        this.item[position].img?.let { holder.img.setImageResource(it) }
+//        this.item[position].img?.let { holder.img.setImageResource(it) }
+        Glide.with(holder.itemView)
+            .load(this.item[position].img)
+            .apply(RequestOptions().centerCrop())
+            .into(holder.img)
     }
     fun updateList( list: ArrayList<Booking>){
         this.item = list

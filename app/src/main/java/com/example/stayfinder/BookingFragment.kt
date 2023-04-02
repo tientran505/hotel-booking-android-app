@@ -8,9 +8,9 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.net.URL
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -54,11 +54,11 @@ class BookingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 1","4 Feb","5 Feb",2000000.0,"Active",R.drawable.ic_launcher_foreground))
-        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 2","4 Feb","5 Feb",2000000.0,"Active",R.drawable.ic_launcher_foreground))
-        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 3","4 Feb","5 Feb",2000000.0,"Active",R.drawable.ic_launcher_foreground))
-        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 4","4 Feb","5 Feb",2000000.0,"Cancel",R.drawable.ic_launcher_foreground))
-        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 5","4 Feb","5 Feb",2000000.0,"Cancel",R.drawable.ic_launcher_foreground))
+        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 1","4 Feb","5 Feb",2000000.0,"Active",URL("https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F124%2F1246280%2F1246280_16061017110043391702.jpg%3Fca%3D6%26ce%3D1%26s%3D1024x768&tbnid=6v7Euel4ecy_8M&vet=12ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ..i&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fl-hotel%2Fhotel%2Fkhon-kaen-th.html&docid=mssDHIF707HKHM&w=1024&h=768&q=hotel%20image&ved=2ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ")))
+        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 2","4 Feb","5 Feb",2000000.0,"Active",URL("https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F124%2F1246280%2F1246280_16061017110043391702.jpg%3Fca%3D6%26ce%3D1%26s%3D1024x768&tbnid=6v7Euel4ecy_8M&vet=12ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ..i&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fl-hotel%2Fhotel%2Fkhon-kaen-th.html&docid=mssDHIF707HKHM&w=1024&h=768&q=hotel%20image&ved=2ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ")))
+        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 3","4 Feb","5 Feb",2000000.0,"Active",URL("https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F124%2F1246280%2F1246280_16061017110043391702.jpg%3Fca%3D6%26ce%3D1%26s%3D1024x768&tbnid=6v7Euel4ecy_8M&vet=12ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ..i&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fl-hotel%2Fhotel%2Fkhon-kaen-th.html&docid=mssDHIF707HKHM&w=1024&h=768&q=hotel%20image&ved=2ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ")))
+        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 4","4 Feb","5 Feb",2000000.0,"Cancel",URL("https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F124%2F1246280%2F1246280_16061017110043391702.jpg%3Fca%3D6%26ce%3D1%26s%3D1024x768&tbnid=6v7Euel4ecy_8M&vet=12ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ..i&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fl-hotel%2Fhotel%2Fkhon-kaen-th.html&docid=mssDHIF707HKHM&w=1024&h=768&q=hotel%20image&ved=2ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ")))
+        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 5","4 Feb","5 Feb",2000000.0,"Cancel",URL("https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F124%2F1246280%2F1246280_16061017110043391702.jpg%3Fca%3D6%26ce%3D1%26s%3D1024x768&tbnid=6v7Euel4ecy_8M&vet=12ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ..i&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fl-hotel%2Fhotel%2Fkhon-kaen-th.html&docid=mssDHIF707HKHM&w=1024&h=768&q=hotel%20image&ved=2ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ")))
 
         // Inflate the layout for this fragment
         var view: View? = null

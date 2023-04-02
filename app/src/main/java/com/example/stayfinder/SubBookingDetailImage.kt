@@ -7,6 +7,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import java.net.URL
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -48,53 +51,148 @@ class SubBookingDetailImage : Fragment() {
         var noImageET = view!!.findViewById<TextView>(R.id.noImageET)
         when (bookingDetail?.img?.size!!) {
             0 -> {
-
+                noImageET.setText("")
             }
             1 -> {
-                img1.setImageResource(bookingDetail.img[0])
                 if(bookingDetail.img[0] != null){
                     Glide.with(this)
                         .load(bookingDetail.img[0])
-                        .apply(RequestOptions().centerCrop)
+                        .apply(RequestOptions().centerCrop())
                         .into(img1)
                 }
                 noImageET.setText("")
             }
             2 -> {
-                img1.setImageResource(bookingDetail.img[0])
-                img2.setImageResource(bookingDetail.img[1])
+                if(bookingDetail.img[0] != null){
+                    Glide.with(this)
+                        .load(bookingDetail.img[0])
+                        .apply(RequestOptions().centerCrop())
+                        .into(img1)
+                }
+                if(bookingDetail.img[1] != null){
+                    Glide.with(this)
+                        .load(bookingDetail.img[0])
+                        .apply(RequestOptions().centerCrop())
+                        .into(img2)
+                }
                 noImageET.setText("")
             }
             3 -> {
-                img1.setImageResource(bookingDetail.img[0])
-                img2.setImageResource(bookingDetail.img[1])
-                img3.setImageResource(bookingDetail.img[2])
+                if(bookingDetail.img[0] != null){
+                    Glide.with(this)
+                        .load(bookingDetail.img[0])
+                        .apply(RequestOptions().centerCrop())
+                        .into(img1)
+                }
+                if(bookingDetail.img[1] != null){
+                    Glide.with(this)
+                        .load(bookingDetail.img[0])
+                        .apply(RequestOptions().centerCrop())
+                        .into(img2)
+                }
+                if(bookingDetail.img[2] != null){
+                    Glide.with(this)
+                        .load(bookingDetail.img[0])
+                        .apply(RequestOptions().centerCrop())
+                        .into(img3)
+                }
                 noImageET.setText("")
             }
             4 -> {
-                img1.setImageResource(bookingDetail.img[0])
-                img2.setImageResource(bookingDetail.img[1])
-                img3.setImageResource(bookingDetail.img[2])
-                img4.setImageResource(bookingDetail.img[3])
+                if(bookingDetail.img[0] != null){
+                    Glide.with(this)
+                        .load(bookingDetail.img[0])
+                        .apply(RequestOptions().centerCrop())
+                        .into(img1)
+                }
+                if(bookingDetail.img[1] != null){
+                    Glide.with(this)
+                        .load(bookingDetail.img[0])
+                        .apply(RequestOptions().centerCrop())
+                        .into(img2)
+                }
+                if(bookingDetail.img[2] != null){
+                    Glide.with(this)
+                        .load(bookingDetail.img[0])
+                        .apply(RequestOptions().centerCrop())
+                        .into(img3)
+                }
+                if(bookingDetail.img[3] != null){
+                    Glide.with(this)
+                        .load(bookingDetail.img[0])
+                        .apply(RequestOptions().centerCrop())
+                        .into(img4)
+                }
                 noImageET.setText("")
             }
             5 -> {
-                img1.setImageResource(bookingDetail.img[0])
-                img2.setImageResource(bookingDetail.img[1])
-                img3.setImageResource(bookingDetail.img[2])
-                img4.setImageResource(bookingDetail.img[3])
-                img5.setImageResource(bookingDetail.img[4])
+                if(bookingDetail.img[0] != null){
+                    Glide.with(this)
+                        .load(bookingDetail.img[0])
+                        .apply(RequestOptions().centerCrop())
+                        .into(img1)
+                }
+                if(bookingDetail.img[1] != null){
+                    Glide.with(this)
+                        .load(bookingDetail.img[0])
+                        .apply(RequestOptions().centerCrop())
+                        .into(img2)
+                }
+                if(bookingDetail.img[2] != null){
+                    Glide.with(this)
+                        .load(bookingDetail.img[0])
+                        .apply(RequestOptions().centerCrop())
+                        .into(img3)
+                }
+                if(bookingDetail.img[3] != null){
+                    Glide.with(this)
+                        .load(bookingDetail.img[0])
+                        .apply(RequestOptions().centerCrop())
+                        .into(img4)
+                }
+                if(bookingDetail.img[4] != null){
+                    Glide.with(this)
+                        .load(bookingDetail.img[0])
+                        .apply(RequestOptions().centerCrop())
+                        .into(img5)
+                }
                 noImageET.setText("")
             }
             else -> {
-                img1.setImageResource(bookingDetail.img[0])
-                img2.setImageResource(bookingDetail.img[1])
-                img3.setImageResource(bookingDetail.img[2])
-                img4.setImageResource(bookingDetail.img[3])
-                img5.setImageResource(bookingDetail.img[4])
+                if(bookingDetail.img[0] != null){
+                    Glide.with(this)
+                        .load(bookingDetail.img[0])
+                        .apply(RequestOptions().centerCrop())
+                        .into(img1)
+                }
+                if(bookingDetail.img[1] != null){
+                    Glide.with(this)
+                        .load(bookingDetail.img[0])
+                        .apply(RequestOptions().centerCrop())
+                        .into(img2)
+                }
+                if(bookingDetail.img[2] != null){
+                    Glide.with(this)
+                        .load(bookingDetail.img[0])
+                        .apply(RequestOptions().centerCrop())
+                        .into(img3)
+                }
+                if(bookingDetail.img[3] != null){
+                    Glide.with(this)
+                        .load(bookingDetail.img[0])
+                        .apply(RequestOptions().centerCrop())
+                        .into(img4)
+                }
+                if(bookingDetail.img[4] != null){
+                    Glide.with(this)
+                        .load(bookingDetail.img[0])
+                        .apply(RequestOptions().centerCrop())
+                        .into(img5)
+                }
                 noImageET.setText("+"+(bookingDetail.img.size - 5).toString())
             }
         }
+
         return view
     }
 

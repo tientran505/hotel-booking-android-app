@@ -1,18 +1,19 @@
 package com.example.stayfinder
 
 import java.io.Serializable
+import java.net.URL
 
 class bookingDetail () : Serializable {
     var titlename: String? = ""
     var pricebernight: Double? = 0.0
-    lateinit var img: ArrayList<Int>
+    lateinit var img: ArrayList<URL>
     var favor: Boolean = false
 //    var rating: Double? = 0.0
     var dateStart = ""
     var dateEnd = ""
     var address: String? =""
     var descript: String? =""
-    constructor(titlename: String,dateStart:String, dateEnd:String, pricebernight: Double,address: String, img: ArrayList<Int>, favor: Boolean,rating: Double,descript: String) : this()
+    constructor(titlename: String,dateStart:String, dateEnd:String, pricebernight: Double,address: String, img: ArrayList<URL>, favor: Boolean,rating: Double,descript: String) : this()
     {
         this.titlename = titlename
         this.dateStart = dateStart
