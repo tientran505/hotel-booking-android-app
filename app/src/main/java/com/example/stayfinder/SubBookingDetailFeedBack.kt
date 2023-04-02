@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.RatingBar
+import android.widget.Toast
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,13 +31,21 @@ class SubBookingDetailFeedBack : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
-
+    lateinit var ratingbar: RatingBar
+    private lateinit var button: Button
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sub_booking_detail_feed_back, container, false)
+        val view: View? =inflater.inflate(R.layout.fragment_sub_booking_detail_feed_back, container, false)
+        ratingbar=view!!.findViewById(R.id.ratingBar);
+        button=view!!.findViewById(R.id.button);
+        button.setOnClickListener {
+            val rating = "${ratingbar.getRating()} + hehee"
+            Toast.makeText(context, rating, Toast.LENGTH_LONG).show();
+        }
+        return view
     }
 
     companion object {

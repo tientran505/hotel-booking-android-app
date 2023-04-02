@@ -13,19 +13,21 @@ class BookingDetailActivity : AppCompatActivity() {
             arrayListOf(R.drawable.ic_love,R.drawable.ic_home,R.drawable.ic_logout,R.drawable.ic_travel,R.drawable.ic_google,R.drawable.ic_love),false,4.8,"The Sóng Vũng Tàu Homestay - Vũng Tàu Land")
         val bundle = Bundle()
         bundle.putSerializable("BookingDetail", a)
-        val fragInfo1 = SubBookingDetailImage()
-        fragInfo1.setArguments(bundle);
-        val fragInfo2 = SubBookingDetailPeriod()
-        fragInfo2.setArguments(bundle);
-        val fragInfo3 = SubBookingDetailAddress()
-        fragInfo3.setArguments(bundle);
-        val fragInfo4 = SubBookingDetailDescription()
-        fragInfo4.setArguments(bundle);
-        fm.beginTransaction().replace(R.id.fame1, fragInfo1).commit();
-        fm.beginTransaction().replace(R.id.fame2, fragInfo2).commit();
-        fm.beginTransaction().replace(R.id.fame3, fragInfo3).commit();
-        fm.beginTransaction().replace(R.id.fame4, fragInfo4).commit();
-
+//        val fragInfo1 = SubBookingDetailImage()
+//        fragInfo1.setArguments(bundle);
+//        val fragInfo2 = SubBookingDetailPeriod()
+//        fragInfo2.setArguments(bundle);
+//        val fragInfo3 = SubBookingDetailAddress()
+//        fragInfo3.setArguments(bundle);
+//        val fragInfo4 = SubBookingDetailDescription()
+//        fragInfo4.setArguments(bundle);
+        val fragInfo5 = SubBookingDetailFeedBack()
+        fragInfo5.setArguments(bundle);
+//        fm.beginTransaction().replace(R.id.fame1, fragInfo1).commit();
+//        fm.beginTransaction().replace(R.id.fame2, fragInfo2).commit();
+//        fm.beginTransaction().replace(R.id.fame3, fragInfo3).commit();
+//        fm.beginTransaction().replace(R.id.fame4, fragInfo4).commit();
+        fm.beginTransaction().replace(R.id.fame5, fragInfo5).commit();
         //        fm.beginTransaction().replace(R.id.fame1, subBookingDetail_Image(a.titlename!!,a.img)).commit()
 //        fm.beginTransaction().replace(R.id.fame2, subBookingDetail_Image(a.titlename!!,a.img)).commit()
 
