@@ -7,7 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.RatingBar
+import android.widget.TextView
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,12 +42,24 @@ class SubBookingDetailFeedBack : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view: View? =inflater.inflate(R.layout.fragment_sub_booking_detail_feed_back, container, false)
-        ratingbar=view!!.findViewById(R.id.ratingBar);
-        button=view!!.findViewById(R.id.button);
-        button.setOnClickListener {
-            val rating = "${ratingbar.getRating()} + hehee"
-            Toast.makeText(context, rating, Toast.LENGTH_LONG).show();
+//        ratingbar=view!!.findViewById(R.id.ratingBar);
+//        button=view!!.findViewById(R.id.button);
+//        button.setOnClickListener {
+//            val rating = "${ratingbar.getRating()}"
+//            Toast.makeText(context, rating, Toast.LENGTH_LONG).show();
+//        }
+        val bookingDetail :bookingDetail? = this.getArguments()?.getSerializable("BookingDetail") as bookingDetail?
+        val textView = view!!.findViewById<TextView>(R.id.textView)
+        if (bookingDetail != null) {
+            textView.setText("Customer reviews about "+ bookingDetail.titlename)
+            println(bookingDetail.titlename)
         }
+        val feedBacks :ArrayList<FeedBack>? = this.getArguments()?.getSerializable("FeedBack Array") as ArrayList<FeedBack>?
+        println(feedBacks?.get(0)?.title)
+        val recyclerview = view!!.findViewById<RecyclerView>(R.id.recyclerview)
+        recyclerview?.layoutManager = LinearLayoutManager(this.context)
+        val adapter = feedBacks?.let { FeedbackAdapter(it) }
+        recyclerview?.adapter = adapter
         return view
     }
 

@@ -8,7 +8,7 @@ class bookingDetail () : Serializable {
     var pricebernight: Double? = 0.0
     lateinit var img: ArrayList<URL>
     var favor: Boolean = false
-//    var rating: Double? = 0.0
+    var rating: Double? = 0.0
     var dateStart = ""
     var dateEnd = ""
     var address: String? =""
@@ -23,7 +23,7 @@ class bookingDetail () : Serializable {
         this.favor = favor
         this.address = address
         this.descript = descript
-
+        this.rating = rating
     }
 //    constructor(titlename: String):this(){
 //        this.titlename = titlename

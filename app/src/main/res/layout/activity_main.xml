@@ -26,7 +26,6 @@
         app:layout_constraintEnd_toEndOf="@+id/my_toolbar"
         app:layout_constraintTop_toTopOf="@+id/my_toolbar"
         app:srcCompat="@drawable/ic_baseline_notifications_24" />
-
     <FrameLayout
         android:id="@+id/frameLayout"
         android:layout_width="0dp"

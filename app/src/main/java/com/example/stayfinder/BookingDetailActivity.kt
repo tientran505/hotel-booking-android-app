@@ -13,9 +13,22 @@ class BookingDetailActivity : AppCompatActivity() {
         val a =bookingDetail("The Sóng Vũng Tàu Homestay - Vũng Tàu Land","30-3-2023", "31-3-2023",8.2,"28 Thi Sách, Phường Thắng Tam, Vũng Tàu Việt Nam",
             arrayListOf(URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg")),false,4.8,"The Sóng Vũng Tàu Homestay - Vũng Tàu Land")
         val bundle = Bundle()
+
+        val b = arrayListOf<FeedBack>(
+            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
+            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
+            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
+            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
+            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
+            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
+            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
+            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
+        )
+        bundle.putSerializable("FeedBack Array", b)
         bundle.putSerializable("BookingDetail", a)
-        val fragInfo1 = SubBookingDetailImage()
-        fragInfo1.setArguments(bundle);
+
+//        val fragInfo1 = SubBookingDetailImage()
+//        fragInfo1.setArguments(bundle);
 //        val fragInfo2 = SubBookingDetailPeriod()
 //        fragInfo2.setArguments(bundle);
 //        val fragInfo3 = SubBookingDetailAddress()
@@ -24,7 +37,7 @@ class BookingDetailActivity : AppCompatActivity() {
 //        fragInfo4.setArguments(bundle);
         val fragInfo5 = SubBookingDetailFeedBack()
         fragInfo5.setArguments(bundle);
-        fm.beginTransaction().replace(R.id.fame1, fragInfo1).commit();
+//        fm.beginTransaction().replace(R.id.fame1, fragInfo1).commit();
 //        fm.beginTransaction().replace(R.id.fame2, fragInfo2).commit();
 //        fm.beginTransaction().replace(R.id.fame3, fragInfo3).commit();
 //        fm.beginTransaction().replace(R.id.fame4, fragInfo4).commit();

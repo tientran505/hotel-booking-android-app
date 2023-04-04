@@ -38,7 +38,7 @@ class SubBookingDetailDescription : Fragment() {
         val bookingDetail :bookingDetail? = this.getArguments()?.getSerializable("BookingDetail") as bookingDetail?
         val view: View? = inflater.inflate(R.layout.fragment_sub_booking_detail_description, container, false)
         val expendTv = view!!.findViewById<ExpandableTextView>(R.id.expand_text_view)
-        expendTv.setText(bookingDetail!!.descript.toString() )
+        expendTv.setText(bookingDetail!!.descript )
         return view
     }
 
