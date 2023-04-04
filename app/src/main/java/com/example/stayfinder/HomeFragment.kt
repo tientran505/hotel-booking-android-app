@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stayfinder.city.City
 import com.example.stayfinder.city.CityAdapter
+import com.example.stayfinder.hotel.Hotel
+import com.example.stayfinder.hotel.HotelAdapter
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -38,22 +40,13 @@ class HomeFragment : Fragment() {
     private var param2: String? = null
     private var dateET: EditText? = null
     private var roomET: EditText? = null
-    private val cities = listOf<City>(
-        City("HCMC"),
-        City("Hanoi"),
-        City("Da Lat"),
-        City("Da Nang"),
-        City("Vung Tau"),
-        City("Can Tho"),
-        City("Phu Quoc"),
-        City("Sa Pa"),
-        City("Ha Giang"),
-        City("Bac Ninh"),
-        City("My Tho")
-    )
+
 
     private lateinit var rvCity: RecyclerView
     private lateinit var cityAdapter: CityAdapter
+
+    private lateinit var rvHotel: RecyclerView
+    private lateinit var hotelAdapter: HotelAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -70,17 +63,17 @@ class HomeFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
+        initRoomSelection(view)
+        initCityName(view)
+        initCuratedHotel(view)
+
+        return view
+    }
+
+
+
+    private fun initRoomSelection(view: View) {
         dateET = view.findViewById(R.id.dateET)
-        rvCity = view.findViewById(R.id.cityNameRV)
-        rvCity.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
-        cityAdapter = CityAdapter(cities)
-        cityAdapter.onItemClick = { position ->
-            Log.i("ttlog", position.toString())
-            cityAdapter.setSelectedPosition(position)
-        }
-        rvCity.adapter = cityAdapter
-
         dateET?.setOnClickListener {
             val today = MaterialDatePicker.todayInUtcMilliseconds()
             val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
@@ -119,7 +112,6 @@ class HomeFragment : Fragment() {
 
             dateRangePicker.show(requireActivity().supportFragmentManager, "DatePicker")
         }
-
         roomET = view.findViewById(R.id.roomInfoET)
         roomET?.setOnClickListener {
             val modalBottomSheet = RoomSelectionBottomSheetDialog("")
@@ -128,10 +120,73 @@ class HomeFragment : Fragment() {
             modalBottomSheet.show(requireActivity().supportFragmentManager
                 , RoomSelectionBottomSheetDialog.TAG)
         }
+    }
 
+    private fun initCityName(view: View) {
+        val cities = listOf(
+            City("HCMC"),
+            City("Hanoi"),
+            City("Da Lat"),
+            City("Da Nang"),
+            City("Vung Tau"),
+            City("Can Tho"),
+            City("Phu Quoc"),
+            City("Sa Pa"),
+            City("Ha Giang"),
+            City("Bac Ninh"),
+            City("My Tho")
+        )
 
+        rvCity = view.findViewById(R.id.cityNameRV)
+        rvCity.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-        return view
+        cityAdapter = CityAdapter(cities)
+        cityAdapter.onItemClick = { position ->
+            Log.i("ttlog", position.toString())
+            cityAdapter.setSelectedPosition(position)
+        }
+        rvCity.adapter = cityAdapter
+    }
+
+    private fun initCuratedHotel(view: View) {
+        val hotels = listOf(
+            Hotel("HCMC", "Sherwood Residence", 4.5.toFloat(), 4500000.0.toFloat(),
+                3200000.0.toFloat(), false),
+            Hotel("HCMC", "Somerset Ho Chi Minh City", 5.0.toFloat(), 4500000.0.toFloat(),
+                3200000.0.toFloat(), true),
+            Hotel("HCMC", "SILA Urban Living", 3.3.toFloat(), 4500000.0.toFloat(),
+                3200000.0.toFloat(), true),
+            Hotel("HCMC", "La vela Saigon Hotel", 2.5.toFloat(), 4500000.0.toFloat(),
+                3200000.0.toFloat(), false),
+            Hotel("HCMC", "Novotel Saigon", 3.0.toFloat(), 4500000.0.toFloat(),
+                3200000.0.toFloat(), false),
+            Hotel("HCMC", "Villa Song Saigon", 4.8.toFloat(), 4500000.0.toFloat(),
+                3200000.0.toFloat(), false),
+            Hotel("HCMC", "Norfolk mansion - Luxury Service Ap..", 50.toFloat(), 4500000.0.toFloat(),
+                3200000.0.toFloat(), true),
+            Hotel("HCMC", "CityHouse - Ariosa", 4.5.toFloat(), 4500000.0.toFloat(),
+                3200000.0.toFloat(), false),
+            Hotel("HCMC", "Sherwood Residence", 4.5.toFloat(), 4500000.0.toFloat(),
+                3200000.0.toFloat(), true),
+            Hotel("HCMC", "Sherwood Residence", 4.5.toFloat(), 4500000.0.toFloat(),
+                3200000.0.toFloat(), false),
+        )
+
+        rvHotel = view.findViewById(R.id.curatedHotelRV)
+        rvHotel.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+        hotelAdapter = HotelAdapter(hotels)
+        hotelAdapter.onImageViewClick = {position ->
+            Log.i("hotel", "Bookmark $position clicked")
+            hotelAdapter.setBookmark(position)
+        }
+
+        hotelAdapter.onItemClick = {position ->
+            Log.i("hotel", "Item $position clicked")
+        }
+
+        rvHotel.adapter = hotelAdapter
+
     }
 
     companion object {

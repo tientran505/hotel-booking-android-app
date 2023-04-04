@@ -33,8 +33,6 @@
                     android:background="@drawable/custom_border_layout"
                     android:divider="@drawable/linear_layout_divider"
                     android:orientation="vertical"
-                    android:padding="10dp"
-                    android:showDividers="middle|none"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -48,11 +46,19 @@
                         android:drawableStart="@drawable/ic_calendar"
                         android:drawablePadding="10dp"
                         android:ems="10"
+                        android:layout_marginVertical="5dp"
+                        android:layout_marginHorizontal="10dp"
                         android:focusable="false"
                         android:hint="Select Date"
                         android:inputType="textPersonName"
                         android:paddingVertical="10dp"
                         android:paddingStart="5dp" />
+
+                    <View
+                        android:id="@+id/divider1"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="?android:attr/listDivider" />
 
                     <EditText
                         android:id="@+id/locationET"
@@ -60,19 +66,29 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
                         android:clickable="true"
+                        android:layout_marginVertical="5dp"
                         android:drawableStart="@drawable/ic_search"
                         android:drawablePadding="10dp"
                         android:ems="10"
+                        android:layout_marginHorizontal="10dp"
                         android:focusable="false"
                         android:hint="Enter Destination"
                         android:inputType="textPersonName"
                         android:paddingVertical="10dp"
                         android:paddingStart="5dp" />
 
+                    <View
+                        android:id="@+id/divider2"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:background="?android:attr/listDivider" />
+
                     <EditText
                         android:id="@+id/roomInfoET"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="10dp"
+                        android:layout_marginTop="5dp"
                         android:background="@android:color/transparent"
                         android:drawableStart="@drawable/ic_profile_home"
                         android:drawablePadding="10dp"
@@ -82,6 +98,15 @@
                         android:inputType="textPersonName"
                         android:paddingVertical="10dp"
                         android:paddingLeft="5dp" />
+
+                    <Button
+                        android:id="@+id/searchBtn"
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:backgroundTint="#009fe3"
+                        android:text="Search"
+                        android:layout_marginHorizontal="5dp"
+                        android:textAllCaps="false" />
 
                 </LinearLayout>
 
@@ -100,6 +125,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
+                    android:paddingStart="10dp"
+                    android:clipToPadding="false"
                     android:orientation="horizontal">
 
                 </androidx.recyclerview.widget.RecyclerView>
@@ -108,7 +135,7 @@
                     android:id="@+id/curatedHotelRV"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp" />
+                    android:layout_marginTop="10dp"/>
 
             </LinearLayout>
         </ScrollView>

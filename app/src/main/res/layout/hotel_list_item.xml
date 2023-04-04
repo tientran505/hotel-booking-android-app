@@ -2,24 +2,32 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-
+    android:layout_height="300dp"
+    android:layout_marginHorizontal="15dp"
+    android:background="@drawable/bg_rounded_corners"
+    android:paddingBottom="5dp"
+    >
     <ImageView
         android:id="@+id/hotelIV"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintCircleRadius="50dp"
+        app:layout_constraintCircleAngle="45"
+
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/hotelNameTV"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="5dp"
         android:layout_marginEnd="5dp"
+        android:textStyle="bold"
         android:text="Somerset Ho Chi Minh City"
         app:layout_constraintEnd_toEndOf="@+id/hotelIV"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,9 +41,9 @@
         android:layout_marginTop="5dp"
         android:isIndicator="true"
         android:max="5"
-        android:rating="3.5"
-        app:layout_constraintStart_toStartOf="@+id/textView8"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        android:rating="4.0"
+        app:layout_constraintStart_toStartOf="@+id/hotelNameTV"
+        app:layout_constraintTop_toBottomOf="@+id/hotelNameTV" />
 
     <TextView
         android:id="@+id/originalPriceTV"
@@ -45,7 +53,7 @@
         android:text="4.042.500 VND"
         android:textSize="10dp"
 
-        app:layout_constraintStart_toStartOf="@+id/textView8"
+        app:layout_constraintStart_toStartOf="@+id/hotelNameTV"
         app:layout_constraintTop_toBottomOf="@+id/hotelRB" />
 
     <TextView
@@ -58,4 +66,14 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="@+id/originalPriceTV"
         app:layout_constraintTop_toBottomOf="@+id/originalPriceTV" />
+
+    <ImageView
+        android:id="@+id/bookmarkIV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintEnd_toEndOf="@+id/hotelIV"
+        app:layout_constraintTop_toTopOf="@+id/hotelIV"
+        app:srcCompat="@drawable/ic_bookmark_border" />
 </androidx.constraintlayout.widget.ConstraintLayout>
