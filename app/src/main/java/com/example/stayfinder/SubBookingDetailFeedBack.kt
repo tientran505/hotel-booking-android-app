@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import java.net.URL
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,28 +35,30 @@ class SubBookingDetailFeedBack : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
-    lateinit var ratingbar: RatingBar
-    private lateinit var button: Button
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
+        println("1111111111111111111111111")
         val view: View? =inflater.inflate(R.layout.fragment_sub_booking_detail_feed_back, container, false)
-//        ratingbar=view!!.findViewById(R.id.ratingBar);
-//        button=view!!.findViewById(R.id.button);
-//        button.setOnClickListener {
-//            val rating = "${ratingbar.getRating()}"
-//            Toast.makeText(context, rating, Toast.LENGTH_LONG).show();
-//        }
-        val bookingDetail :bookingDetail? = this.getArguments()?.getSerializable("BookingDetail") as bookingDetail?
+        val feedBacks :ArrayList<FeedBack>? = arrayListOf(
+            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
+            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
+            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
+            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
+            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
+            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
+            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
+            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
+        )
+//        val bookingDetail :bookingDetail? = this.getArguments()?.getSerializable("BookingDetail") as bookingDetail?
+//        val bookingid = this.getArguments()?.getString("booking_id")
         val textView = view!!.findViewById<TextView>(R.id.textView)
-        if (bookingDetail != null) {
-            textView.setText("Customer reviews about "+ bookingDetail.titlename)
-            println(bookingDetail.titlename)
-        }
-        val feedBacks :ArrayList<FeedBack>? = this.getArguments()?.getSerializable("FeedBack Array") as ArrayList<FeedBack>?
-        println(feedBacks?.get(0)?.title)
+//        if (bookingid != null) {
+            textView.setText("Customer reviews about the place ")
+//        }
+
         val recyclerview = view!!.findViewById<RecyclerView>(R.id.recyclerview)
         recyclerview?.layoutManager = LinearLayoutManager(this.context)
         val adapter = feedBacks?.let { FeedbackAdapter(it) }
@@ -64,15 +67,6 @@ class SubBookingDetailFeedBack : Fragment() {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SubBookingDetailFeedBack.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             SubBookingDetailFeedBack().apply {

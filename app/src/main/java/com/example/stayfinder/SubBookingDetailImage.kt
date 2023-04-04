@@ -1,5 +1,6 @@
 package com.example.stayfinder
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -49,6 +50,7 @@ class SubBookingDetailImage : Fragment() {
         var img4 = view!!.findViewById<ImageView>(R.id.imageView4)
         var img5 = view!!.findViewById<ImageView>(R.id.imageView5)
         var noImageET = view!!.findViewById<TextView>(R.id.noImageET)
+        print((bookingDetail?.img?.size?.minus(5)).toString())
         when (bookingDetail?.img?.size!!) {
             0 -> {
                 noImageET.setText("")
@@ -189,8 +191,16 @@ class SubBookingDetailImage : Fragment() {
                         .apply(RequestOptions().centerCrop())
                         .into(img5)
                 }
+
                 noImageET.setText("+"+(bookingDetail.img.size - 5).toString())
             }
+        }
+        img1.setOnClickListener{
+            val intent = Intent(this.context, BookingDetailActivity2::class.java)
+            intent.putExtra("fragment_type","image");
+            intent.putExtra("booking_id",bookingDetail.id);
+            intent.putExtra("type","grid")
+            startActivity(intent)
         }
 
         return view

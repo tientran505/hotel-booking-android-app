@@ -10,41 +10,33 @@ class BookingDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_booking_detail)
         val fm: FragmentManager = supportFragmentManager
-        val a =bookingDetail("The Sóng Vũng Tàu Homestay - Vũng Tàu Land","30-3-2023", "31-3-2023",8.2,"28 Thi Sách, Phường Thắng Tam, Vũng Tàu Việt Nam",
-            arrayListOf(URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg")),false,4.8,"The Sóng Vũng Tàu Homestay - Vũng Tàu Land")
+        val a =bookingDetail("1233","The Sóng Vũng Tàu Homestay - Vũng Tàu Land","30-3-2023", "31-3-2023",8.2,"28 Thi Sách, Phường Thắng Tam, Vũng Tàu Việt Nam",
+            arrayListOf(URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg")),false,4.8,
+            "Khách sạn Signature Boutique Hotel hiện đại, trang nhã này có các phòng kiểu boutique với Wi-Fi miễn phí và nhà hàng riêng. Khách sạn tọa lạc tại một con hẻm yên tĩnh, cách Đường Nguyễn Trãi ở Thành phố Hồ Chí Minh chỉ vài bước chân.\n" +
+                    "\n" +
+                    "Signature Boutique Hotel cách chợ Bến Thành 2 km. Các điểm tham quan địa phương bao gồm Bảo tàng Chiến tranh, Nhà thờ Đức Bà và Dinh Thống Nhất cách đó 15 phút lái xe. Từ nơi nghỉ này đến Sân bay Quốc tế Tân Sơn Nhất mất 30 phút đi xe hơi.\n" +
+                    "\n" +
+                    "Các phòng máy lạnh tại đây có sàn trải thảm và truyền hình cáp màn hình phẳng với truy cập Internet. Các phòng tắm đá cẩm thạch có vách kính trong suốt và đi kèm với vòi sen nước nóng cũng như đồ vệ sinh cá nhân miễn phí.\n" +
+                    "\n" +
+                    "Ngoài lễ tân 24 giờ, khách sạn còn có bàn bán tour, dịch vụ thu đổi ngoại tệ cũng như dịch vụ đặt vé. Dịch vụ giặt là và ủi được cung cấp với một khoản phụ phí.\n" +
+                    "\n" +
+                    "Ẩm thực Việt Nam và quốc tế được phục vụ tại nhà hàng trong nhà của khách sạn. Nhà hàng mở cửa từ 07:00-23:00.\n" +
+                    "\n" +
+                    "Các cặp đôi đặc biệt thích địa điểm này — họ cho điểm 8,4 cho kỳ nghỉ dành cho 2 người.")
         val bundle = Bundle()
-
-        val b = arrayListOf<FeedBack>(
-            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
-            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
-            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
-            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
-            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
-            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
-            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
-            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
-        )
-        bundle.putSerializable("FeedBack Array", b)
         bundle.putSerializable("BookingDetail", a)
-
-//        val fragInfo1 = SubBookingDetailImage()
-//        fragInfo1.setArguments(bundle);
-//        val fragInfo2 = SubBookingDetailPeriod()
-//        fragInfo2.setArguments(bundle);
-//        val fragInfo3 = SubBookingDetailAddress()
-//        fragInfo3.setArguments(bundle);
-//        val fragInfo4 = SubBookingDetailDescription()
-//        fragInfo4.setArguments(bundle);
-        val fragInfo5 = SubBookingDetailFeedBack()
-        fragInfo5.setArguments(bundle);
-//        fm.beginTransaction().replace(R.id.fame1, fragInfo1).commit();
-//        fm.beginTransaction().replace(R.id.fame2, fragInfo2).commit();
-//        fm.beginTransaction().replace(R.id.fame3, fragInfo3).commit();
-//        fm.beginTransaction().replace(R.id.fame4, fragInfo4).commit();
-        fm.beginTransaction().replace(R.id.fame5, fragInfo5).commit();
-        //        fm.beginTransaction().replace(R.id.fame1, subBookingDetail_Image(a.titlename!!,a.img)).commit()
-//        fm.beginTransaction().replace(R.id.fame2, subBookingDetail_Image(a.titlename!!,a.img)).commit()
-
+        val fragInfo1 = SubBookingDetailImage()
+        fragInfo1.setArguments(bundle);
+        val fragInfo2 = SubBookingDetailPeriod()
+        fragInfo2.setArguments(bundle);
+        val fragInfo3 = SubBookingDetailAddress()
+        fragInfo3.setArguments(bundle);
+        val fragInfo4 = SubBookingDetailDescription()
+        fragInfo4.setArguments(bundle);
+        fm.beginTransaction().replace(R.id.fame1, fragInfo1).commit();
+        fm.beginTransaction().replace(R.id.fame2, fragInfo2).commit();
+        fm.beginTransaction().replace(R.id.fame3, fragInfo3).commit();
+        fm.beginTransaction().replace(R.id.fame4, fragInfo4).commit();
     }
 
 }

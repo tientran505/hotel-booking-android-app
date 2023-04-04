@@ -1,10 +1,12 @@
 package com.example.stayfinder
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RelativeLayout
 import android.widget.TextView
 import com.ms.square.android.expandabletextview.ExpandableTextView
 
@@ -39,6 +41,38 @@ class SubBookingDetailDescription : Fragment() {
         val view: View? = inflater.inflate(R.layout.fragment_sub_booking_detail_description, container, false)
         val expendTv = view!!.findViewById<ExpandableTextView>(R.id.expand_text_view)
         expendTv.setText(bookingDetail!!.descript )
+        val ratingTv = view!!.findViewById<TextView>(R.id.ratingTv)
+        ratingTv.setText(bookingDetail.rating.toString())
+        val EvaluateTv= view!!.findViewById<TextView>(R.id.EvaluateTv)
+        if(bookingDetail.rating!! < 2.0){
+            EvaluateTv.setText("Very Poor")
+        }
+        else if(bookingDetail.rating!! <4.0){
+            EvaluateTv.setText("Very Poor")
+        }
+        else if (bookingDetail.rating!! <6.0){
+            EvaluateTv.setText("Average")
+
+        }
+        else if (bookingDetail.rating!! <8.0){
+            EvaluateTv.setText("Good")
+        }
+        else{
+            EvaluateTv.setText("Excelent")
+        }
+        if(bookingDetail.noFeedback!=0){
+            val noFeedbackTv = view!!.findViewById<TextView>(R.id.noFeedbackTv)
+            noFeedbackTv.setText(bookingDetail.noFeedback.toString()+" have leave a feedback for this place")
+        }
+
+        val FeedbackBtn = view!!.findViewById<RelativeLayout>(R.id.FeedbackBtn)
+        FeedbackBtn.setOnClickListener{
+            val intent = Intent(this.context, BookingDetailActivity2::class.java)
+            intent.putExtra("fragment_type","feebback");
+            intent.putExtra("booking_id",bookingDetail.id);
+            startActivity(intent)
+        }
+
         return view
     }
 

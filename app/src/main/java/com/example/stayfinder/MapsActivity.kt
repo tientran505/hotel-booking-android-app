@@ -32,12 +32,14 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
     private lateinit var currentLocation : Location
     private var REQUEST_CODE = 101;
 
-    val address = "135 Đường Trần Hưng Đạo, Cầu Ông Lãnh, Quận 1, Thành phố Hồ Chí Minh, Việt Nam"
+    var address = ""
     var addressfind =""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val bundle = intent.extras
+        address = bundle!!.getString("address").toString()
 //        fusedClient = LocationServices.getFusedLocationProviderClient(this)
         searchMap()
     }
@@ -131,7 +133,6 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
             if (addressList == null) {
                 return null
             }
-            Toast.makeText(applicationContext,addressList[0].toString(),Toast.LENGTH_LONG).show()
             val location = addressList[0]
             LatLan = LatLng(location.latitude, location.longitude)
         } catch (ex: IOException) {

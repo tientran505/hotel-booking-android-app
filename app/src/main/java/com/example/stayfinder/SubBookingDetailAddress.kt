@@ -7,14 +7,13 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.app.ActivityCompat
-import com.example.stayfinder.databinding.ActivityMapsBinding
-
+import androidx.fragment.app.Fragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -42,7 +41,7 @@ class SubBookingDetailAddress : Fragment(), OnMapReadyCallback{
     private lateinit var currentLocation : Location
     private var REQUEST_CODE = 101;
 
-    var address = "135 Đường Trần Hưng Đạo, Cầu Ông Lãnh, Quận 1, Thành phố Hồ Chí Minh, Việt Nam"
+    var address = ""
     var addressfind =""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -87,12 +86,10 @@ class SubBookingDetailAddress : Fragment(), OnMapReadyCallback{
             addressfind+= addressestemp!![0].postalCode
             addressfind+= addressestemp!![0].featureName
 
-            Toast.makeText(context ,addressfind, Toast.LENGTH_LONG).show()
             val mapFragment:SupportMapFragment =getChildFragmentManager().findFragmentById(R.id.map) as SupportMapFragment
             mapFragment.getMapAsync(this)
+
         }
-
-
     }
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -113,7 +110,7 @@ class SubBookingDetailAddress : Fragment(), OnMapReadyCallback{
         var LatLan: LatLng? = null
         try {
             // May throw an IOException
-            address = coder.getFromLocationName(strAddress!!, 5)
+            address = coder.getFromLocationName(strAddress!!, 1)
             if (address == null) {
                 return null
             }
@@ -125,12 +122,17 @@ class SubBookingDetailAddress : Fragment(), OnMapReadyCallback{
         return LatLan
     }
     override fun onMapReady(googleMap: GoogleMap) {//        mMap = googleMap
-
         val latLng = LatLng(currentLocation.latitude,currentLocation.longitude)
         val marketOptions = MarkerOptions().position(latLng).title(addressfind)
         googleMap?.animateCamera(CameraUpdateFactory.newLatLng(latLng))
         googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,17f))
         googleMap?.addMarker(marketOptions)
+
+        googleMap.setOnMapClickListener {
+            val intent = Intent(this.context, MapsActivity::class.java)
+            intent.putExtra("address",address)
+            startActivity(intent)
+        }
     }
 
 
