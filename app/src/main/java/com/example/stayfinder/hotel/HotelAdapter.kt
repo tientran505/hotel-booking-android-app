@@ -1,25 +1,18 @@
 package com.example.stayfinder.hotel
 
-import android.annotation.SuppressLint
-import android.content.Context
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.graphics.Paint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewOutlineProvider
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.stayfinder.R
-import com.example.stayfinder.city.City
-import java.net.URL
 import java.text.NumberFormat
 import java.util.*
 
@@ -35,6 +28,7 @@ class HotelAdapter(
     var onImageViewClick: ((Int) -> Unit)? = null
     var onItemClick: ((Int) -> Unit)? = null
 
+
     override fun getItemCount(): Int = hotels.size
 
     inner class ViewHolder(listItemView: View): RecyclerView.ViewHolder(listItemView) {
@@ -45,6 +39,7 @@ class HotelAdapter(
         val hotelName: TextView = listItemView.findViewById(R.id.hotelNameTV)
         val hotelIV: ImageView = listItemView.findViewById(R.id.hotelIV)
         var card: ConstraintLayout = listItemView.findViewById(R.id.card)
+
 
         init {
             bookmarkIV.setOnClickListener {
@@ -67,6 +62,7 @@ class HotelAdapter(
         holder.bookmarkIV.setImageResource(if (hotel.isSaved) R.drawable.ic_bookmark_filled else
             R.drawable.ic_bookmark_border)
 
+
         Glide.with(holder.itemView.context)
             .load("https://media-cdn.tripadvisor.com/media/photo-s/22/25/ce/ea/kingsford-hotel-manila.jpg")
             .centerCrop()
@@ -81,6 +77,7 @@ class HotelAdapter(
         holder.originalPrice.text = numberFormat.format(hotel.originalPrice)
         holder.originalPrice.paintFlags = holder.originalPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
         holder.discountPrice.text = numberFormat.format(hotel.discountPrice)
+
     }
 
     fun setBookmark(position: Int) {

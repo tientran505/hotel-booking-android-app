@@ -21,8 +21,13 @@ import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.divider.MaterialDivider
 import com.google.android.material.divider.MaterialDividerItemDecoration
+import com.google.firebase.Timestamp
 import java.util.*
 import kotlin.math.log
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -34,7 +39,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [HomeFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), RoomSelectionBottomSheetDialog.BottomSheetListener {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -47,6 +52,11 @@ class HomeFragment : Fragment() {
 
     private lateinit var rvHotel: RecyclerView
     private lateinit var hotelAdapter: HotelAdapter
+
+    private lateinit var listener: RoomSelectionBottomSheetDialog.BottomSheetListener
+    private lateinit var modalBottomSheet: RoomSelectionBottomSheetDialog
+
+    private var currentRoomInformation: RoomInformation? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,6 +83,7 @@ class HomeFragment : Fragment() {
 
 
     private fun initRoomSelection(view: View) {
+        listener = this
         dateET = view.findViewById(R.id.dateET)
         dateET?.setOnClickListener {
             val today = MaterialDatePicker.todayInUtcMilliseconds()
@@ -114,9 +125,13 @@ class HomeFragment : Fragment() {
         }
         roomET = view.findViewById(R.id.roomInfoET)
         roomET?.setOnClickListener {
-            val modalBottomSheet = RoomSelectionBottomSheetDialog("")
+            var content = ""
 
+            if (currentRoomInformation != null) {
+                content = Json.encodeToString(currentRoomInformation)
+            }
 
+            modalBottomSheet = RoomSelectionBottomSheetDialog(content, listener)
             modalBottomSheet.show(requireActivity().supportFragmentManager
                 , RoomSelectionBottomSheetDialog.TAG)
         }
@@ -208,4 +223,21 @@ class HomeFragment : Fragment() {
                 }
             }
     }
+
+    override fun onValueSelected(value: String) {
+        currentRoomInformation = Json.decodeFromString(value)
+
+        val roomStr: String = "${currentRoomInformation!!.room} room" + if (currentRoomInformation!!.room > 1) "s" else ""
+        val adultStr: String = "${currentRoomInformation!!.adult} adult" + if (currentRoomInformation!!.adult > 1) "s" else ""
+        val childStr: String = when (currentRoomInformation!!.children) {
+            0 -> "No child"
+            1 -> "1 child"
+            else -> "${currentRoomInformation!!.children} children"
+        }
+
+
+        roomET?.setText("$roomStr - $adultStr - $childStr")
+        modalBottomSheet.dismiss()
+    }
+
 }

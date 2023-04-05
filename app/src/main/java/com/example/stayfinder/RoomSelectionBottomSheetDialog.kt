@@ -1,9 +1,6 @@
 package com.example.stayfinder
 
 import android.content.Context
-import android.content.DialogInterface
-import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,11 +8,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
+@Serializable
+data class RoomInformation(val room: Int, val adult: Int, val children: Int)
 
-class RoomSelectionBottomSheetDialog(text: String) : BottomSheetDialogFragment() {
+class RoomSelectionBottomSheetDialog(val content: String, listener: BottomSheetListener) : BottomSheetDialogFragment() {
     var roomLabel: TextView? = null
     var roomAdd: Button? = null
     var roomRemove: Button? = null
@@ -35,6 +37,15 @@ class RoomSelectionBottomSheetDialog(text: String) : BottomSheetDialogFragment()
     val MIN_CHILD = 0
     val MAX_CHILD = 10
 
+    private var mListener: BottomSheetListener? = null
+    init {
+        this.mListener = listener
+    }
+
+    interface BottomSheetListener {
+        fun onValueSelected(value: String)
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -53,6 +64,13 @@ class RoomSelectionBottomSheetDialog(text: String) : BottomSheetDialogFragment()
         childLabel = view.findViewById(R.id.childLabel)
         childAdd = view.findViewById(R.id.child_add_btn)
         childRemove = view.findViewById(R.id.child_minus_btn)
+
+        if (this.content != "") {
+            val room: RoomInformation = Json.decodeFromString(content)
+            roomLabel?.text = room.room.toString()
+            adultLabel?.text = room.adult.toString()
+            childLabel?.text = room.children.toString()
+        }
 
         var currentRoom = roomLabel?.text.toString().toInt()
         roomAdd?.isEnabled = currentRoom <= MAX_ROOM
@@ -116,7 +134,10 @@ class RoomSelectionBottomSheetDialog(text: String) : BottomSheetDialogFragment()
         }
 
         view.findViewById<Button>(R.id.applyBtn).setOnClickListener {
-            dismiss()
+            val value = Json.encodeToString(RoomInformation(roomLabel?.text.toString().toInt(),
+            adultLabel?.text.toString().toInt(), childLabel?.text.toString().toInt()))
+
+            mListener?.onValueSelected(value)
         }
 
         return view
