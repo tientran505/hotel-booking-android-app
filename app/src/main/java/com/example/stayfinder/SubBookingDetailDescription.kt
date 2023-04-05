@@ -37,24 +37,24 @@ class SubBookingDetailDescription : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val bookingDetail :bookingDetail? = this.getArguments()?.getSerializable("BookingDetail") as bookingDetail?
+        val bookingDetail :Hotel ? = this.getArguments()?.getSerializable("BookingDetail") as Hotel ?
         val view: View? = inflater.inflate(R.layout.fragment_sub_booking_detail_description, container, false)
         val expendTv = view!!.findViewById<ExpandableTextView>(R.id.expand_text_view)
         expendTv.setText(bookingDetail!!.descript )
         val ratingTv = view!!.findViewById<TextView>(R.id.ratingTv)
         ratingTv.setText(bookingDetail.rating.toString())
         val EvaluateTv= view!!.findViewById<TextView>(R.id.EvaluateTv)
-        if(bookingDetail.rating!! < 2.0){
+        if(bookingDetail.rating!! < 1.0){
             EvaluateTv.setText("Very Poor")
         }
-        else if(bookingDetail.rating!! <4.0){
+        else if(bookingDetail.rating!! <2.0){
             EvaluateTv.setText("Very Poor")
         }
-        else if (bookingDetail.rating!! <6.0){
+        else if (bookingDetail.rating!! <3.0){
             EvaluateTv.setText("Average")
 
         }
-        else if (bookingDetail.rating!! <8.0){
+        else if (bookingDetail.rating!! <4.0){
             EvaluateTv.setText("Good")
         }
         else{

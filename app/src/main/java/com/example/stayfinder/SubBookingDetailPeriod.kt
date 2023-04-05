@@ -42,7 +42,6 @@ class SubBookingDetailPeriod : Fragment() {
     lateinit var dateEnd: TextView
     lateinit var periodTv: TextView
     lateinit var costTv: TextView
-    lateinit var taxTv: TextView
     var daysDiff: Long = 0
     var price: Double =0.0
     var tax: String? =""
@@ -51,20 +50,19 @@ class SubBookingDetailPeriod : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val bookingDetail :bookingDetail? = this.getArguments()?.getSerializable("BookingDetail") as bookingDetail?
-        tax = "   "
-        print(tax)
-        price = bookingDetail!!.pricebernight!!
         val view: View? = inflater.inflate(R.layout.fragment_sub_booking_detail_period_cost, container, false)
+        val bookingDetail :Hotel ? = this.getArguments()?.getSerializable("BookingDetail") as Hotel?
+        val dateStartString : String? = this.getArguments()?.getString("dateStart")
+        val dateEndString: String? =this.getArguments()?.getString("dateEnd")
+        price = bookingDetail!!.pricebernight!!
         dateStart = view!!.findViewById(R.id.datestartTv)
         dateEnd = view.findViewById(R.id.dateendTv)
         periodTv = view.findViewById(R.id.periodTv)
         costTv = view.findViewById(R.id.costTv)
-        taxTv = view.findViewById(R.id.taxTv)
         dateStart.inputType = InputType.TYPE_NULL
         dateEnd.inputType = InputType.TYPE_NULL
-        dateStart.text = bookingDetail!!.dateStart
-        dateEnd.text = bookingDetail!!.dateEnd
+        dateStart.text = dateStartString
+        dateEnd.text = dateEndString
         setDay()
         dateStart?.setOnClickListener {
             val today = MaterialDatePicker.todayInUtcMilliseconds()
@@ -126,9 +124,6 @@ class SubBookingDetailPeriod : Fragment() {
         periodTv.setText("Price for $daysDiff night(s) (" + startdate+ " - "+enddate+")")
         val moneyexchange = DecimalFormat("###,###,###,###.##"+" US$");
         costTv.setText(moneyexchange.format(price*daysDiff))
-        if(tax != null || tax !=""){
-            taxTv.setText(tax)
-        }
     }
 
     companion object {

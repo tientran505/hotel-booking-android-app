@@ -147,13 +147,6 @@
                 android:textColor="#000000"
                 android:textSize="35sp"></TextView>
 
-            <TextView
-                android:id="@+id/taxTv"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Tax included"
-                android:layout_marginVertical="5sp"
-                android:textSize="16sp"></TextView>
 
         </LinearLayout>
     </LinearLayout>

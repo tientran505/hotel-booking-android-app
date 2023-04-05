@@ -10,7 +10,10 @@ class BookingDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_booking_detail)
         val fm: FragmentManager = supportFragmentManager
-        val a =bookingDetail("1233","The Sóng Vũng Tàu Homestay - Vũng Tàu Land","30-3-2023", "31-3-2023",8.2,"28 Thi Sách, Phường Thắng Tam, Vũng Tàu Việt Nam",
+        val booking_id = ""
+        val dateStart ="30-3-2023"
+        val dateEnd = "1-4-2023"
+        val a =Hotel("1233","The Sóng Vũng Tàu Homestay - Vũng Tàu Land",8.2,"28 Thi Sách, Phường Thắng Tam, Vũng Tàu Việt Nam",
             arrayListOf(URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg")),false,4.8,
             "Khách sạn Signature Boutique Hotel hiện đại, trang nhã này có các phòng kiểu boutique với Wi-Fi miễn phí và nhà hàng riêng. Khách sạn tọa lạc tại một con hẻm yên tĩnh, cách Đường Nguyễn Trãi ở Thành phố Hồ Chí Minh chỉ vài bước chân.\n" +
                     "\n" +
@@ -25,6 +28,8 @@ class BookingDetailActivity : AppCompatActivity() {
                     "Các cặp đôi đặc biệt thích địa điểm này — họ cho điểm 8,4 cho kỳ nghỉ dành cho 2 người.")
         val bundle = Bundle()
         bundle.putSerializable("BookingDetail", a)
+        bundle.putString("dateStart", dateStart)
+        bundle.putString("dateEnd", dateEnd)
         val fragInfo1 = SubBookingDetailImage()
         fragInfo1.setArguments(bundle);
         val fragInfo2 = SubBookingDetailPeriod()

@@ -8,9 +8,12 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import java.net.URL
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -40,9 +43,11 @@ class SubBookingDetailImage : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val bookingDetail :bookingDetail? = this.getArguments()?.getSerializable("BookingDetail") as bookingDetail?
-        val view: View? = inflater.inflate(R.layout.fragment_booking_detail_image_title, container, false)
+        val a = arrayListOf<Service>(Service("wifi", URL("https://cdn-icons-png.flaticon.com/512/93/93158.png")),Service("wifi", URL("https://cdn-icons-png.flaticon.com/512/93/93158.png")),Service("wifi", URL("https://cdn-icons-png.flaticon.com/512/93/93158.png")))
+        val bookingDetail :Hotel ? = this.getArguments()?.getSerializable("BookingDetail") as Hotel ?
+        val view: View? = inflater.inflate(R.layout.fragment_booking_detail_image_service_title, container, false)
         var textview = view!!.findViewById<TextView>(R.id.titleTv)
+        var recyclerView = view!!.findViewById(R.id.recyclerViewService) as RecyclerView
         textview.setText(bookingDetail?.titlename)
         var img1 = view!!.findViewById<ImageView>(R.id.imageView1)
         var img2 = view!!.findViewById<ImageView>(R.id.imageView2)
@@ -51,6 +56,9 @@ class SubBookingDetailImage : Fragment() {
         var img5 = view!!.findViewById<ImageView>(R.id.imageView5)
         var noImageET = view!!.findViewById<TextView>(R.id.noImageET)
         print((bookingDetail?.img?.size?.minus(5)).toString())
+        val horizontalLayoutManagaer = LinearLayoutManager(this.requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        recyclerView.layoutManager = horizontalLayoutManagaer
+        recyclerView.adapter = ServiceAdapter(a)
         when (bookingDetail?.img?.size!!) {
             0 -> {
                 noImageET.setText("")

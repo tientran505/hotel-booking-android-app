@@ -1,7 +1,5 @@
 package com.example.stayfinder
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -19,10 +17,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [SubBookingDetailImageDirect.newInstance] factory method to
+ * Use the [BookingDetailImageDirect.newInstance] factory method to
  * create an instance of this fragment.
  */
-class SubBookingDetailImageDirect : Fragment() {
+class BookingDetailImageDirect : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -44,7 +42,6 @@ class SubBookingDetailImageDirect : Fragment() {
         var imageView: ImageView?= null
         imageView = view!!.findViewById(R.id.imageView)
         val path :String? = this.arguments?.getString("url_path") as String
-        println("pathhhhh" + path)
         Glide.with(this)
             .load(URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"))
             .apply(RequestOptions().centerCrop())
@@ -64,7 +61,7 @@ class SubBookingDetailImageDirect : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            SubBookingDetailImageDirect().apply {
+            BookingDetailImageDirect().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

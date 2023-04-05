@@ -8,7 +8,6 @@ import android.location.LocationManager
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
-import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.FragmentActivity
 import com.example.stayfinder.databinding.ActivityMapsBinding
@@ -56,7 +55,6 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
                 location ->
             if(location!=null){
                 currentLocation = location
-                Toast.makeText(applicationContext,currentLocation.latitude.toString()+" "+currentLocation.longitude.toString(),Toast.LENGTH_LONG).show()
                 val mapFragment = supportFragmentManager
                     .findFragmentById(R.id.map) as SupportMapFragment
                 mapFragment.getMapAsync(this)
@@ -99,7 +97,6 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
             addressfind+= addressestemp!![0].postalCode
             addressfind+= addressestemp!![0].featureName
 
-            Toast.makeText(applicationContext,addressfind,Toast.LENGTH_LONG).show()
             val mapFragment = supportFragmentManager
                 .findFragmentById(R.id.map) as SupportMapFragment
             mapFragment.getMapAsync(this)

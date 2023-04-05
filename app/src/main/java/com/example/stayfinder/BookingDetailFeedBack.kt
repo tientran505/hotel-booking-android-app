@@ -5,10 +5,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.RatingBar
+import android.widget.ProgressBar
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import java.net.URL
@@ -20,10 +18,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [SubBookingDetailFeedBack.newInstance] factory method to
+ * Use the [BookingDetailFeedBack.newInstance] factory method to
  * create an instance of this fragment.
  */
-class SubBookingDetailFeedBack : Fragment() {
+class BookingDetailFeedBack : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -40,7 +38,6 @@ class SubBookingDetailFeedBack : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        println("1111111111111111111111111")
         val view: View? =inflater.inflate(R.layout.fragment_sub_booking_detail_feed_back, container, false)
         val feedBacks :ArrayList<FeedBack>? = arrayListOf(
             FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
@@ -52,9 +49,25 @@ class SubBookingDetailFeedBack : Fragment() {
             FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
             FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
         )
+
+        val cleanliness = 4.5
+        val service = 4.2
+        val location = 4.0
+        val comfort = 3.2
+
 //        val bookingDetail :bookingDetail? = this.getArguments()?.getSerializable("BookingDetail") as bookingDetail?
 //        val bookingid = this.getArguments()?.getString("booking_id")
         val textView = view!!.findViewById<TextView>(R.id.textView)
+        val cleanBar = view!!.findViewById<ProgressBar>(R.id.cleanBar)
+        val comfortBar = view!!.findViewById<ProgressBar>(R.id.comfortBar)
+        val locationBar = view!!.findViewById<ProgressBar>(R.id.locationBar)
+        val serviceBar = view!!.findViewById<ProgressBar>(R.id.servicesBar)
+
+        cleanBar.setProgress((cleanliness*20).toInt())
+        comfortBar.setProgress((comfort*20).toInt())
+        locationBar.setProgress((location*20).toInt())
+        serviceBar.setProgress((service*20).toInt())
+
 //        if (bookingid != null) {
             textView.setText("Customer reviews about the place ")
 //        }
@@ -69,7 +82,7 @@ class SubBookingDetailFeedBack : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            SubBookingDetailFeedBack().apply {
+            BookingDetailFeedBack().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

@@ -2,8 +2,6 @@ package com.example.stayfinder
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -14,7 +12,6 @@ import android.widget.GridView
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import java.io.File
 import java.net.URL
 
 // TODO: Rename parameter arguments, choose names that match
