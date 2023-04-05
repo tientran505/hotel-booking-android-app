@@ -17,10 +17,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [BookingDetailImageDirect.newInstance] factory method to
+ * Use the [HotelDetailImageDirect.newInstance] factory method to
  * create an instance of this fragment.
  */
-class BookingDetailImageDirect : Fragment() {
+class HotelDetailImageDirect : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -38,7 +38,7 @@ class BookingDetailImageDirect : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view: View = inflater.inflate(R.layout.fragment_sub_booking_detail_image_direct, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_sub_hotel_detail_image_direct, container, false)
         var imageView: ImageView?= null
         imageView = view!!.findViewById(R.id.imageView)
         val path :String? = this.arguments?.getString("url_path") as String
@@ -61,7 +61,7 @@ class BookingDetailImageDirect : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            BookingDetailImageDirect().apply {
+            HotelDetailImageDirect().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

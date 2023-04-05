@@ -38,7 +38,7 @@ ArrayList<URL>) : BaseAdapter(){
         val viewHolder: ViewHolder
         if (convertView == null) {
             val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)
-            view = (inflater as LayoutInflater).inflate(R.layout.activity_booking_detail_2_custom_gridview, null)
+            view = (inflater as LayoutInflater).inflate(R.layout.activity_hotel_detail_2_custom_gridview, null)
             viewHolder = ViewHolder(view)
             view.tag = viewHolder
         } else {
@@ -84,7 +84,7 @@ class SubBookingDetailImageList : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view: View = inflater.inflate(R.layout.fragment_sub_booking_detail_image_list, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_sub_hotel_detail_image_list, container, false)
         val grid = view!!.findViewById<GridView>(R.id.gridview)
         val listURL =arrayListOf(
             URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),
@@ -96,7 +96,7 @@ class SubBookingDetailImageList : Fragment() {
         val adapter  =  MyGridAdapter(this.requireContext(), listURL )
         grid.adapter = adapter
         grid.setOnItemClickListener { adapterView, view, i, l ->
-            val intent = Intent(this.requireContext(),BookingDetailActivity2::class.java)
+            val intent = Intent(this.requireContext(),HotelDetailActivity2::class.java)
             intent.putExtra("fragment_type","image");
             intent.putExtra("type","url");
             intent.putExtra("URL_path",(listURL[i].toString()))

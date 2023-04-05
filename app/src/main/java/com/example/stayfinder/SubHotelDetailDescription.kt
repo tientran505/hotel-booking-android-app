@@ -17,10 +17,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [SubBookingDetailDescription.newInstance] factory method to
+ * Use the [SubHotelDetailDescription.newInstance] factory method to
  * create an instance of this fragment.
  */
-class SubBookingDetailDescription : Fragment() {
+class SubHotelDetailDescription : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -37,24 +37,24 @@ class SubBookingDetailDescription : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val bookingDetail :Hotel ? = this.getArguments()?.getSerializable("BookingDetail") as Hotel ?
-        val view: View? = inflater.inflate(R.layout.fragment_sub_booking_detail_description, container, false)
+        val bookingDetail :hotels ? = this.getArguments()?.getSerializable("BookingDetail") as hotels ?
+        val view: View? = inflater.inflate(R.layout.fragment_sub_hotel_detail_description, container, false)
         val expendTv = view!!.findViewById<ExpandableTextView>(R.id.expand_text_view)
-        expendTv.setText(bookingDetail!!.descript )
+        expendTv.setText(bookingDetail!!.description )
         val ratingTv = view!!.findViewById<TextView>(R.id.ratingTv)
-        ratingTv.setText(bookingDetail.rating.toString())
+        ratingTv.setText(bookingDetail.rating_overall.toString())
         val EvaluateTv= view!!.findViewById<TextView>(R.id.EvaluateTv)
-        if(bookingDetail.rating!! < 1.0){
+        if(bookingDetail.rating_overall!! < 1.0){
             EvaluateTv.setText("Very Poor")
         }
-        else if(bookingDetail.rating!! <2.0){
+        else if(bookingDetail.rating_overall!! <2.0){
             EvaluateTv.setText("Very Poor")
         }
-        else if (bookingDetail.rating!! <3.0){
+        else if (bookingDetail.rating_overall!! <3.0){
             EvaluateTv.setText("Average")
 
         }
-        else if (bookingDetail.rating!! <4.0){
+        else if (bookingDetail.rating_overall!! <4.0){
             EvaluateTv.setText("Good")
         }
         else{
@@ -67,7 +67,7 @@ class SubBookingDetailDescription : Fragment() {
 
         val FeedbackBtn = view!!.findViewById<RelativeLayout>(R.id.FeedbackBtn)
         FeedbackBtn.setOnClickListener{
-            val intent = Intent(this.context, BookingDetailActivity2::class.java)
+            val intent = Intent(this.context, HotelDetailActivity2::class.java)
             intent.putExtra("fragment_type","feebback");
             intent.putExtra("booking_id",bookingDetail.id);
             startActivity(intent)
@@ -88,7 +88,7 @@ class SubBookingDetailDescription : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            SubBookingDetailDescription().apply {
+            SubHotelDetailDescription().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

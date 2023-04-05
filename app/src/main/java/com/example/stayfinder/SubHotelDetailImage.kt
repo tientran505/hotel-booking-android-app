@@ -22,11 +22,11 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [SubBookingDetailImage.newInstance] factory method to
+ * Use the [SubHotelDetailImage.newInstance] factory method to
  * create an instance of this fragment.
  */
 
-class SubBookingDetailImage : Fragment() {
+class SubHotelDetailImage : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -44,11 +44,11 @@ class SubBookingDetailImage : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val a = arrayListOf<Service>(Service("wifi", URL("https://cdn-icons-png.flaticon.com/512/93/93158.png")),Service("wifi", URL("https://cdn-icons-png.flaticon.com/512/93/93158.png")),Service("wifi", URL("https://cdn-icons-png.flaticon.com/512/93/93158.png")))
-        val bookingDetail :Hotel ? = this.getArguments()?.getSerializable("BookingDetail") as Hotel ?
-        val view: View? = inflater.inflate(R.layout.fragment_booking_detail_image_service_title, container, false)
+        val bookingDetail :hotels ? = this.getArguments()?.getSerializable("BookingDetail") as hotels ?
+        val view: View? = inflater.inflate(R.layout.fragment_hotel_detail_image_service_title, container, false)
         var textview = view!!.findViewById<TextView>(R.id.titleTv)
         var recyclerView = view!!.findViewById(R.id.recyclerViewService) as RecyclerView
-        textview.setText(bookingDetail?.titlename)
+        textview.setText(bookingDetail?.hotel_name)
         var img1 = view!!.findViewById<ImageView>(R.id.imageView1)
         var img2 = view!!.findViewById<ImageView>(R.id.imageView2)
         var img3 = view!!.findViewById<ImageView>(R.id.imageView3)
@@ -204,7 +204,7 @@ class SubBookingDetailImage : Fragment() {
             }
         }
         img1.setOnClickListener{
-            val intent = Intent(this.context, BookingDetailActivity2::class.java)
+            val intent = Intent(this.context, HotelDetailActivity2::class.java)
             intent.putExtra("fragment_type","image");
             intent.putExtra("booking_id",bookingDetail.id);
             intent.putExtra("type","grid")
@@ -226,7 +226,7 @@ class SubBookingDetailImage : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            SubBookingDetailImage().apply {
+            SubHotelDetailImage().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

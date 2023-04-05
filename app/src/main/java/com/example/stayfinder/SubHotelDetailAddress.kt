@@ -7,7 +7,6 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,10 +31,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [SubBookingDetailAddress.newInstance] factory method to
+ * Use the [SubHotelDetailAddress.newInstance] factory method to
  * create an instance of this fragment.
  */
-class SubBookingDetailAddress : Fragment(), OnMapReadyCallback{
+class SubHotelDetailAddress : Fragment(), OnMapReadyCallback{
     private lateinit var mMap: GoogleMap
     private lateinit var fusedClient: FusedLocationProviderClient;
     private lateinit var currentLocation : Location
@@ -47,8 +46,8 @@ class SubBookingDetailAddress : Fragment(), OnMapReadyCallback{
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view =  inflater.inflate(R.layout.fragment_sub_booking_detail_address, container, false)
-        val bookingDetail :Hotel? = this.getArguments()?.getSerializable("BookingDetail") as Hotel?
+        val view =  inflater.inflate(R.layout.fragment_sub_hotel_detail_address, container, false)
+        val bookingDetail :hotels? = this.getArguments()?.getSerializable("BookingDetail") as hotels?
         address = bookingDetail!!.address.toString()
         val addressTv = view!!.findViewById<TextView>(R.id.addressTv)
         addressTv.setText(address)

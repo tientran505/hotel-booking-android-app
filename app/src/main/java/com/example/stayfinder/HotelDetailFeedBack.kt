@@ -18,10 +18,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [BookingDetailFeedBack.newInstance] factory method to
+ * Use the [HotelDetailFeedBack.newInstance] factory method to
  * create an instance of this fragment.
  */
-class BookingDetailFeedBack : Fragment() {
+class HotelDetailFeedBack : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -38,7 +38,7 @@ class BookingDetailFeedBack : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View? =inflater.inflate(R.layout.fragment_sub_booking_detail_feed_back, container, false)
+        val view: View? =inflater.inflate(R.layout.fragment_sub_hotel_detail_feed_back, container, false)
         val feedBacks :ArrayList<FeedBack>? = arrayListOf(
             FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
             FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
@@ -82,7 +82,7 @@ class BookingDetailFeedBack : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            BookingDetailFeedBack().apply {
+            HotelDetailFeedBack().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

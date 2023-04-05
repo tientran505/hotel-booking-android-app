@@ -19,7 +19,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".BookingDetailActivity2"
+            android:name=".HotelDetailActivity2"
             android:exported="false" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
@@ -44,7 +44,7 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".BookingDetailActivity"
+            android:name=".HotelDetailActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

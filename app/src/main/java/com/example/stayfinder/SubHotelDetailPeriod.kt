@@ -23,10 +23,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [SubBookingDetailPeriod.newInstance] factory method to
+ * Use the [SubHotelDetailPeriod.newInstance] factory method to
  * create an instance of this fragment.
  */
-class SubBookingDetailPeriod : Fragment() {
+class SubHotelDetailPeriod : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -50,8 +50,8 @@ class SubBookingDetailPeriod : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view: View? = inflater.inflate(R.layout.fragment_sub_booking_detail_period_cost, container, false)
-        val bookingDetail :Hotel ? = this.getArguments()?.getSerializable("BookingDetail") as Hotel?
+        val view: View? = inflater.inflate(R.layout.fragment_sub_hotel_detail_period_cost, container, false)
+        val bookingDetail :hotels ? = this.getArguments()?.getSerializable("BookingDetail") as hotels?
         val dateStartString : String? = this.getArguments()?.getString("dateStart")
         val dateEndString: String? =this.getArguments()?.getString("dateEnd")
         price = bookingDetail!!.pricebernight!!
@@ -138,7 +138,7 @@ class SubBookingDetailPeriod : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            SubBookingDetailPeriod().apply {
+            SubHotelDetailPeriod().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

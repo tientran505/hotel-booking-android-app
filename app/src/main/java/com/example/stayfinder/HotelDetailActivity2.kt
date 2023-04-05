@@ -4,17 +4,17 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 
-class BookingDetailActivity2 : AppCompatActivity() {
+class HotelDetailActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_booking_detail2)
+        setContentView(R.layout.activity_hotel_detail2)
         val bundle = intent.extras
         val fragment_type = bundle!!.getString("fragment_type")
         val booking_id = bundle!!.getString("booking_id")
         when(fragment_type){
             "feebback" ->{
                 val fm: FragmentManager = supportFragmentManager
-                val fragInfo1 = BookingDetailFeedBack()
+                val fragInfo1 = HotelDetailFeedBack()
                 val bundle2 = Bundle()
                 bundle2.putString("booking_id",booking_id)
                 fragInfo1.setArguments(bundle2);
@@ -26,7 +26,7 @@ class BookingDetailActivity2 : AppCompatActivity() {
                     "url"->{
                         val url_path = bundle!!.getString("URL_path")
                         val fm: FragmentManager = supportFragmentManager
-                        val fragInfo1 = BookingDetailImageDirect()
+                        val fragInfo1 = HotelDetailImageDirect()
                         val bundle2 = Bundle()
                         bundle2.putString("url_path",url_path.toString())
                         fragInfo1.setArguments(bundle2);
