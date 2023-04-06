@@ -1,10 +1,22 @@
 package com.example.stayfinder
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.FrameLayout
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
+import com.example.stayfinder.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import kotlin.math.log
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -21,6 +33,8 @@ class ProfileFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private var signOutBtn: Button? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -34,7 +48,41 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile, container, false)
+        val view = inflater.inflate(R.layout.fragment_profile, container, false)
+
+        signOutBtn = view.findViewById(R.id.signOutBtn)
+        signOutBtn?.setOnClickListener {
+            Firebase.auth.signOut()
+
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.frameLayout, ProfileFragment())
+                .commit()
+        }
+
+        return view
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser;
+
+
+        signOutBtn?.isVisible = (user != null)
+
+        val childFragment = if (user == null)
+        { AnonymousUser() }
+        else
+        {
+            LoginUser(user)
+
+        }
+
+        val transaction = childFragmentManager.beginTransaction()
+
+        transaction.replace(R.id.profile_fragment, childFragment).commit()
+
     }
 
     companion object {
