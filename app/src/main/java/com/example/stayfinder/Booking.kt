@@ -1,50 +1,29 @@
 package com.example.stayfinder
 
-import android.os.Parcel
-import android.os.Parcelable
+import java.net.URL
 
-class Booking(titlename: String?, period: String?, price: Double,status: String?, img: Int?):Parcelable {
-    public var titlename: String? = ""
-    public var period: String? = ""
-    public var price: Double? = 0.0
-    public var status: String? = ""
-    public var img: Int? = null
-    constructor(parcel: Parcel) : this(
-        parcel.readString(),
-        parcel.readString(),
-        parcel.readDouble(),
-        parcel.readString(),
-        parcel.readInt()
-    ) {
-        titlename = parcel.readString()
-        period = parcel.readString()
-        price = parcel.readDouble()
-        status = parcel.readString()
-        img = parcel.readInt()
-    }
-    init {
+class Booking() {
+    var titlename: String? = ""
+    var dateStart: String? = ""
+    var dateEnd: String? = ""
+    var price: Double? = 0.0
+    var status: String? = ""
+    lateinit var img : URL
+
+    constructor(
+        titlename: String, dateStart: String,
+        dateEnd: String, price: Double,
+        status: String, img: URL
+    ) : this()
+    {
         this.titlename = titlename
-        this.period = period
-        this.price = price
-        this.status = status
-        this.img = img
+        this.dateStart = dateStart
+        this.dateEnd= dateEnd
+        this.price= price
+        this.status= status
+        this.img=img
     }
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-
+    constructor(titlename: String):this(){
+        this.titlename = titlename
     }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<Booking> {
-        override fun createFromParcel(parcel: Parcel): Booking {
-            return Booking(parcel)
-        }
-
-        override fun newArray(size: Int): Array<Booking?> {
-            return arrayOfNulls(size)
-        }
-    }
-
 }
