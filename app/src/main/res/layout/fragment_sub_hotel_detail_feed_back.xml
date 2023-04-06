@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HotelDetailFeedBack"
+    android:padding="10dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingVertical="5dp">
+        <TextView
+            android:id="@+id/cleaness"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cleanliness"
+            android:textStyle="bold" />
+
+        <ProgressBar
+            android:id="@+id/cleanBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@android:color/white"
+            android:progressDrawable="@drawable/progress_bg"
+            android:max="100"
+
+            />
+
+        <TextView
+            android:id="@+id/comfort"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Comfort"
+            android:textStyle="bold" />
+        <ProgressBar
+            android:id="@+id/comfortBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@android:color/white"
+            android:progressDrawable="@drawable/progress_bg"
+            android:max="100"
+
+            />
+        <TextView
+            android:id="@+id/services"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Services"
+            android:textStyle="bold" />
+        <ProgressBar
+            android:id="@+id/servicesBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@android:color/white"
+            android:progressDrawable="@drawable/progress_bg"
+            android:max="100"
+
+            />
+        <TextView
+            android:id="@+id/location"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Location"
+            android:textStyle="bold" />
+        <ProgressBar
+            android:id="@+id/locationBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:indeterminateTint="@android:color/white"
+            android:progressDrawable="@drawable/progress_bg"
+            android:max="100"
+            />
+
+    </LinearLayout>
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="customer reviews about"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            />
+    </LinearLayout>
+
+
+</FrameLayout>
