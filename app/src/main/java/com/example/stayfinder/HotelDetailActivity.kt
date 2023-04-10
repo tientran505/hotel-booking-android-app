@@ -14,7 +14,8 @@ class HotelDetailActivity : AppCompatActivity() {
         val dateStart ="30-3-2023"
         val dateEnd = "1-4-2023"
         val a =hotels("1233","The Sóng Vũng Tàu Homestay - Vũng Tàu Land",8.2,address(28,"Thi Sách","Thắng Tam", "","Vũng Tàu"),
-            arrayListOf(URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg")),false,4.8,
+            arrayListOf(URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"))
+            ,4.8,
             "Khách sạn Signature Boutique Hotel hiện đại, trang nhã này có các phòng kiểu boutique với Wi-Fi miễn phí và nhà hàng riêng. Khách sạn tọa lạc tại một con hẻm yên tĩnh, cách Đường Nguyễn Trãi ở Thành phố Hồ Chí Minh chỉ vài bước chân.\n" +
                     "\n" +
                     "Signature Boutique Hotel cách chợ Bến Thành 2 km. Các điểm tham quan địa phương bao gồm Bảo tàng Chiến tranh, Nhà thờ Đức Bà và Dinh Thống Nhất cách đó 15 phút lái xe. Từ nơi nghỉ này đến Sân bay Quốc tế Tân Sơn Nhất mất 30 phút đi xe hơi.\n" +
