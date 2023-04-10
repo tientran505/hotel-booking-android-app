@@ -210,6 +210,34 @@ class SubHotelDetailImage : Fragment() {
             intent.putExtra("type","grid")
             startActivity(intent)
         }
+        img2.setOnClickListener{
+            val intent = Intent(this.context, HotelDetailActivity2::class.java)
+            intent.putExtra("fragment_type","image");
+            intent.putExtra("booking_id",bookingDetail.id);
+            intent.putExtra("type","grid")
+            startActivity(intent)
+        }
+        img3.setOnClickListener{
+            val intent = Intent(this.context, HotelDetailActivity2::class.java)
+            intent.putExtra("fragment_type","image");
+            intent.putExtra("booking_id",bookingDetail.id);
+            intent.putExtra("type","grid")
+            startActivity(intent)
+        }
+        img4.setOnClickListener{
+            val intent = Intent(this.context, HotelDetailActivity2::class.java)
+            intent.putExtra("fragment_type","image");
+            intent.putExtra("booking_id",bookingDetail.id);
+            intent.putExtra("type","grid")
+            startActivity(intent)
+        }
+        img5.setOnClickListener{
+            val intent = Intent(this.context, HotelDetailActivity2::class.java)
+            intent.putExtra("fragment_type","image");
+            intent.putExtra("booking_id",bookingDetail.id);
+            intent.putExtra("type","grid")
+            startActivity(intent)
+        }
 
         return view
     }

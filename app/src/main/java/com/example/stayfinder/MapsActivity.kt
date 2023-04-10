@@ -39,6 +39,7 @@ class MapsActivity : FragmentActivity(), OnMapReadyCallback {
         setContentView(binding.root)
         val bundle = intent.extras
         address = bundle!!.getString("address").toString()
+        println(address)
 //        fusedClient = LocationServices.getFusedLocationProviderClient(this)
         searchMap()
     }
