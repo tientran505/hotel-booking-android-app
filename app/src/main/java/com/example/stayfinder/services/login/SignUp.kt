@@ -1,18 +1,18 @@
-package com.example.stayfinder
+package com.example.stayfinder.services.login
 
 import android.app.ProgressDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.MenuItem
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
+import com.example.stayfinder.MainActivity
+import com.example.stayfinder.R
 import com.example.stayfinder.user.User
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.UserInfo
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -38,6 +38,7 @@ class SignUp : AppCompatActivity() {
         menu?.setDisplayHomeAsUpEnabled(true)
         menu?.setHomeButtonEnabled(true)
 
+
         signUpBtn?.setOnClickListener {
             val auth: FirebaseAuth = Firebase.auth
 
@@ -62,6 +63,23 @@ class SignUp : AppCompatActivity() {
                                 .addOnSuccessListener {
                                     Toast.makeText(this, "User data added successfully",
                                     Toast.LENGTH_SHORT).show()
+
+
+                                    authUser!!.sendEmailVerification().addOnCompleteListener{
+                                        if (task.isSuccessful) {
+                                            Toast.makeText(this
+                                                , "Please check your email for verification"
+                                                , Toast.LENGTH_SHORT)
+                                                .show()
+                                        }
+                                        else{
+                                            Toast.makeText(this
+                                                , "Cannot send email verify. Try again in minutes"
+                                                , Toast.LENGTH_SHORT)
+                                                .show()
+                                        }
+
+                                    }
                                 }
                                 .addOnFailureListener {
                                     Toast.makeText(this, "Error adding user data with" +
