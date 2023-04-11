@@ -31,6 +31,7 @@ class Login : AppCompatActivity() {
     private var emailET: EditText? = null
     private var pwET: EditText? = null
     private var signInBtn: AppCompatButton? = null
+    private var signUpBtn: AppCompatButton? = null
     private var ggLoginBtn: MaterialButton? = null
 
     private var progressDialog: ProgressDialog? = null
@@ -40,6 +41,7 @@ class Login : AppCompatActivity() {
     private lateinit var mGoogleSignInOptions: GoogleSignInOptions;
 
     private lateinit var auth: FirebaseAuth
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,9 +87,15 @@ class Login : AppCompatActivity() {
                 }
         }
 
-        ggLoginBtn = findViewById(R.id.logInWithGGBtn)
+
         ggLoginBtn?.setOnClickListener {
             goToSignIn()
+        }
+
+        signUpBtn?.setOnClickListener {
+            val intent = Intent(this, SignUp::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 
@@ -105,6 +113,8 @@ class Login : AppCompatActivity() {
         emailET = findViewById(R.id.inputUsernameEt)
         pwET = findViewById(R.id.inputPasswordEt)
         signInBtn = findViewById(R.id.signInBtn)
+        signUpBtn = findViewById(R.id.goSignUpPageBtn)
+        ggLoginBtn = findViewById(R.id.logInWithGGBtn)
     }
 
     private fun createRequest(){

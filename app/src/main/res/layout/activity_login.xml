@@ -68,19 +68,21 @@
         app:layout_constraintStart_toStartOf="@+id/inputUsernameEt"
         app:layout_constraintTop_toBottomOf="@+id/inputUsernameEt" />
 
-    <Button
-        android:id="@+id/goSignUpPageBtn"
-        android:layout_width="100dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="25dp"
-        android:backgroundTint="#FFFFFF"
-        android:text="Sign Up"
-        android:textAllCaps="false"
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/goSignUpPageBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginTop="56dp"
+        android:background="@drawable/btn_primary_color_bg"
+
+
+        android:backgroundTint="#bad1f7"
+        android:text="Sign In"
+        android:textAllCaps="false"
         android:textColor="#000000"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fgPwTV" />
+        app:layout_constraintEnd_toEndOf="@+id/signInBtn"
+        app:layout_constraintTop_toBottomOf="@+id/signInBtn" />
 
     <TextView
         android:id="@+id/fgPwTV"
