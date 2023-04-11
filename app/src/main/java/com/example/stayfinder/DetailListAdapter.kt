@@ -59,9 +59,9 @@ class DetailListAdapter(private val lists: List<HotelDetail>):
 
         priceView.setText(this.lists[position].getSalePrice().toString())
         typeView.setText((this.lists[position].type))
-        titleView.setText(this.lists[position].title)
+        titleView.setText(this.lists[position].name)
         imgView.setImageResource(this.lists[position].img!!)
-        placeView.setText(this.lists[position].place)
+        placeView.setText(this.lists[position].address)
         pointView.setText(this.lists[position].point.toString())
     }
 
