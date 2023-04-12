@@ -24,26 +24,25 @@
         app:layout_constraintStart_toStartOf="@+id/inputUsernameEt"
         app:layout_constraintTop_toBottomOf="@+id/inputPasswordEt" />
 
+
     <TextView
         android:id="@+id/titleFragmentTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="40dp"
         android:text="Sign Up"
+
         android:textColor="@android:color/background_dark"
         android:textSize="25dp"
-
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <EditText
         android:id="@+id/inputUsernameEt"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:paddingVertical="10dp"
         android:layout_marginStart="45dp"
         android:layout_marginTop="40dp"
         android:layout_marginEnd="45dp"
@@ -52,6 +51,7 @@
         android:hint="Email"
         android:inputType="textEmailAddress"
         android:paddingHorizontal="20dp"
+        android:paddingVertical="10dp"
         android:text=""
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,11 +62,11 @@
         android:id="@+id/signUpBtn"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/btn_primary_color_bg"
+
+
         android:text="Sign Up"
-
-
         android:textAllCaps="false"
         android:textColor="#ffffff"
         app:layout_constraintEnd_toEndOf="@+id/inputConfirmPw"
@@ -90,41 +90,5 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/inputUsernameEt"
         app:layout_constraintTop_toBottomOf="@+id/inputUsernameEt" />
-
-    <Button
-        android:id="@+id/goSignInPageBtn"
-        android:layout_width="100dp"
-        android:layout_height="55dp"
-        android:layout_marginTop="25dp"
-        android:backgroundTint="#FFFFFF"
-        android:text="Sign In"
-        android:textAllCaps="false"
-
-        android:textColor="#000000"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signUpBtn" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/logInWithGGBtn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="25dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="25dp"
-        android:backgroundTint="#FFFFFF"
-        android:gravity="center"
-        android:text="Continue With Google"
-        android:textAllCaps="false"
-        android:textColor="#000000"
-        app:cornerRadius="5dp"
-        app:icon="@drawable/ic_google"
-        app:iconGravity="textStart"
-        app:iconPadding="10dp"
-        app:iconTint="@android:color/transparent"
-        app:iconTintMode="add"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/goSignInPageBtn" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
