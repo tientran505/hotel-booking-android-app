@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/hotelSearch"
+    android:background="@drawable/bg_rounded_corners"
+    android:layout_marginBottom="10dp"
+    >
+
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager2"
+        android:layout_width="match_parent"
+        android:layout_height="220dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <me.relex.circleindicator.CircleIndicator3
+        android:id="@+id/circle_indicator"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toBottomOf="@+id/viewPager2"
+        app:layout_constraintEnd_toEndOf="@+id/viewPager2"
+        app:layout_constraintStart_toStartOf="@+id/viewPager2" />
+
+    <TextView
+        android:id="@+id/hotelNameSearchTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:text="The Song Apartment Vung Tau Homestay (Can Ho Bien)"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewPager2" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.7" />
+
+    <ImageButton
+        android:id="@+id/heartBtn"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="30dp"
+        android:background="@drawable/ic_heart_red"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toTopOf="@+id/hotelNameSearchTV" />
+
+    <TextView
+        android:id="@+id/ratingSearchTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="4.7"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        app:layout_constraintStart_toStartOf="@+id/hotelNameSearchTV"
+        app:layout_constraintTop_toBottomOf="@+id/hotelNameSearchTV" />
+
+    <RatingBar
+        android:id="@+id/HotelSearchRB"
+        style="@style/Widget.AppCompat.RatingBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:rating="4.7"
+        android:layout_marginStart="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/ratingSearchTV"
+        app:layout_constraintStart_toEndOf="@+id/ratingSearchTV"
+        app:layout_constraintTop_toTopOf="@+id/ratingSearchTV" />
+
+    <TextView
+        android:id="@+id/reviewSearchCountTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:text="(1327213 ratings)"
+        app:layout_constraintBottom_toBottomOf="@+id/HotelSearchRB"
+        app:layout_constraintStart_toEndOf="@+id/HotelSearchRB"
+        app:layout_constraintTop_toTopOf="@+id/HotelSearchRB" />
+
+    <TextView
+        android:id="@+id/locationSearchTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Vung Tau"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:drawablePadding="2dp"
+        android:textStyle="bold"
+        android:drawableLeft="@drawable/ic_pin_location"
+        app:layout_constraintStart_toStartOf="@+id/ratingSearchTV"
+        app:layout_constraintTop_toBottomOf="@+id/HotelSearchRB" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="10dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/locationSearchTV" />
+
+    <TextView
+        android:id="@+id/originalPriceSearchTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="15dp"
+        android:text="1.808.370 VND"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+    <TextView
+        android:id="@+id/discountPriceSearchTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:textColor="#FF5722"
+        android:text="1.252.863 VND"
+        app:layout_constraintEnd_toEndOf="@+id/originalPriceSearchTV"
+        app:layout_constraintTop_toBottomOf="@+id/originalPriceSearchTV" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

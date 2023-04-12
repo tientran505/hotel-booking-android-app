@@ -1,11 +1,13 @@
 package com.example.stayfinder
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -45,6 +47,7 @@ class HomeFragment : Fragment(), RoomSelectionBottomSheetDialog.BottomSheetListe
     private var param2: String? = null
     private var dateET: EditText? = null
     private var roomET: EditText? = null
+    private var searchBtn: Button? = null
 
 
     private lateinit var rvCity: RecyclerView
@@ -79,8 +82,6 @@ class HomeFragment : Fragment(), RoomSelectionBottomSheetDialog.BottomSheetListe
 
         return view
     }
-
-
 
     private fun initRoomSelection(view: View) {
         listener = this
@@ -134,6 +135,12 @@ class HomeFragment : Fragment(), RoomSelectionBottomSheetDialog.BottomSheetListe
             modalBottomSheet = RoomSelectionBottomSheetDialog(content, listener)
             modalBottomSheet.show(requireActivity().supportFragmentManager
                 , RoomSelectionBottomSheetDialog.TAG)
+        }
+
+        searchBtn = view.findViewById(R.id.searchBtn)
+        searchBtn?.setOnClickListener {
+            val intent = Intent(requireContext(), HotelSearch::class.java)
+            startActivity(intent)
         }
     }
 
