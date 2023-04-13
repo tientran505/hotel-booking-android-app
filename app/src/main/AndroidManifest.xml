@@ -21,8 +21,8 @@
         android:theme="@style/Theme.StayFinder"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
-        <activity
 
+        <activity
             android:name=".HotelSearch"
             android:exported="false">
             <meta-data
@@ -31,7 +31,6 @@
         </activity>
         <activity
             android:name=".services.login.SignUp"
-
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -72,8 +71,13 @@
         <activity
             android:name=".HotelDetailActivity"
             android:exported="false" />
+
         <activity
             android:name=".MainActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".AddHotelActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
