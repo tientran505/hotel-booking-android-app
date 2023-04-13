@@ -1,6 +1,7 @@
 package com.example.stayfinder
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
@@ -8,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.stayfinder.booking.PersonalConfirmation
 import com.example.stayfinder.hotel.Hotel
 import com.example.stayfinder.hotel.HotelAdapter
 import com.example.stayfinder.search.HotelSearchAdapter
@@ -40,6 +42,8 @@ class HotelSearch : AppCompatActivity() {
             }
             false
         }
+
+
 
         initRV()
     }
@@ -80,6 +84,11 @@ class HotelSearch : AppCompatActivity() {
 
         hotelSearchAdapter.onButtonClick = {position ->
             hotelSearchAdapter.setHeart(position)
+        }
+
+        hotelSearchAdapter.onItemClick = {position ->
+            val intent = Intent(this, PersonalConfirmation::class.java)
+            startActivity(intent)
         }
 
         hotelSearchRV.adapter = hotelSearchAdapter
