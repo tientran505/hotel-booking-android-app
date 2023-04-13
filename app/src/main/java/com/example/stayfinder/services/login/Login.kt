@@ -1,4 +1,4 @@
-package com.example.stayfinder
+package com.example.stayfinder.services.login
 
 import android.app.ProgressDialog
 import android.content.Intent
@@ -7,12 +7,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.MenuItem
-import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
+import com.example.stayfinder.MainActivity
+import com.example.stayfinder.R
 import com.example.stayfinder.user.User
-import com.google.android.gms.auth.api.identity.BeginSignInRequest
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -26,12 +26,12 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.delay
 
 class Login : AppCompatActivity() {
     private var emailET: EditText? = null
     private var pwET: EditText? = null
     private var signInBtn: AppCompatButton? = null
+    private var signUpBtn: AppCompatButton? = null
     private var ggLoginBtn: MaterialButton? = null
 
     private var progressDialog: ProgressDialog? = null
@@ -41,6 +41,7 @@ class Login : AppCompatActivity() {
     private lateinit var mGoogleSignInOptions: GoogleSignInOptions;
 
     private lateinit var auth: FirebaseAuth
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,13 +70,14 @@ class Login : AppCompatActivity() {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
-                        // Sign in success, update UI with the signed-in user's information
-                        Handler().postDelayed(Runnable {
-                            val intent = Intent(this, MainActivity::class.java)
-                            intent.putExtra("fragment", "profile")
-                            startActivity(intent)
-                            finishAffinity()
-                        }, 2000)
+                            // Sign in success, update UI with the signed-in user's information
+                            Handler().postDelayed(Runnable {
+                                val intent = Intent(this, MainActivity::class.java)
+                                intent.putExtra("fragment", "profile")
+                                startActivity(intent)
+                                finishAffinity()
+                            }, 2000)
+
                     } else {
                         // If sign in fails, display a message to the user.
                         Toast.makeText(this, "Authentication failed.",
@@ -85,9 +87,15 @@ class Login : AppCompatActivity() {
                 }
         }
 
-        ggLoginBtn = findViewById(R.id.logInWithGGBtn)
+
         ggLoginBtn?.setOnClickListener {
             goToSignIn()
+        }
+
+        signUpBtn?.setOnClickListener {
+            val intent = Intent(this, SignUp::class.java)
+            startActivity(intent)
+            finish()
         }
     }
 
@@ -105,6 +113,8 @@ class Login : AppCompatActivity() {
         emailET = findViewById(R.id.inputUsernameEt)
         pwET = findViewById(R.id.inputPasswordEt)
         signInBtn = findViewById(R.id.signInBtn)
+        signUpBtn = findViewById(R.id.goSignUpPageBtn)
+        ggLoginBtn = findViewById(R.id.logInWithGGBtn)
     }
 
     private fun createRequest(){
