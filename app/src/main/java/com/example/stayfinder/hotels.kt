@@ -4,7 +4,7 @@ import java.io.Serializable
 import java.net.URL
 
 data class hotels(
-    var id: String,
+    var hotel_id: String,
     var hotel_name: String,
     var description: String,
     var address: address,
@@ -18,5 +18,5 @@ data class hotels(
 
 }
 data class address ( val number: Int, val street: String, val district: String, val ward: String,val city: String): Serializable
-data class facilities(val name: String, val icon: URL)
+data class facilities(val id: Int,val name: String, val icon: URL)
 data class rating(val cleanliness: Double, val comfort: Double, val services: Double, val locaiton: Double)

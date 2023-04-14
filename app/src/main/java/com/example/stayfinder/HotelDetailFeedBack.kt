@@ -49,6 +49,8 @@ class HotelDetailFeedBack : Fragment() {
             FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
             FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
         )
+//        val reviews: ArrayList<reviews> = arrayListOf()
+//            Reviews()
 
         val cleanliness = 4.5
         val service = 4.2
