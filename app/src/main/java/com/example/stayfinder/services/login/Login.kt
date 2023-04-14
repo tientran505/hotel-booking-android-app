@@ -119,7 +119,7 @@ class Login : AppCompatActivity() {
 
     private fun createRequest(){
         mGoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
+            .requestIdToken(getString(R.string.client_id))
             .requestEmail()
             .build()
 
