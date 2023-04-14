@@ -82,17 +82,8 @@ class HotelDetailImageDirect : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_sub_hotel_detail_image_direct, container, false)
-//        var imageView: ImageView?= null
-//        imageView = view!!.findViewById(R.id.imageView)
-//        val path :String? = this.arguments?.getString("url_path") as String
-//        Glide.with(this)
-//            .load(URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"))
-//            .apply(RequestOptions().centerCrop())
-//            .into(imageView)
-
-        var images = arrayListOf<URL>(URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://i.pinimg.com/564x/d7/63/ac/d763ac7553412d6518022b13bc1c315d.jpg"),URL("https://i.pinimg.com/564x/ae/c7/4e/aec74e5d0c601fc617174f44f9fab236.jpg"))
+        var images = this.getArguments()?.getSerializable("list") as ArrayList<URL>
         viewpager = view!!.findViewById(R.id.viewPager)
         val position =this.arguments?.getInt("position") as Int
         pageAdapter = ViewPagerAdapter(images,this.requireContext())

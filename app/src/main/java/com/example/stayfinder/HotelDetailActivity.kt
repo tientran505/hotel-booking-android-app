@@ -3,8 +3,23 @@ package com.example.stayfinder
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
+import java.io.Serializable
 import java.net.URL
-
+data class HotelDetails(
+    var id: String,
+    var hotel_name: String,
+    var priceless: Double,
+    var img: ArrayList<URL>,
+    var rating_overall: Double,
+    var address: address,
+    var description: String,
+    var noFeedback: Int,
+    val booking_count: Int,
+    var facilities: ArrayList<facilities>,
+    val comment_count: Int):Serializable{
+    constructor(id: String,hotel_name: String,pricebernight: Double, address: address,img: ArrayList<URL>,rating_overall: Double,description: String):
+            this(id,hotel_name,pricebernight,img,rating_overall,address,description,0,0,ArrayList<facilities>(),0)
+}
 class HotelDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -13,7 +28,7 @@ class HotelDetailActivity : AppCompatActivity() {
         val booking_id = ""
         val dateStart ="30-3-2023"
         val dateEnd = "1-4-2023"
-        val a =hotels("1233","The Sóng Vũng Tàu Homestay - Vũng Tàu Land",8.2,address(28,"Thi Sách","Thắng Tam", "","Vũng Tàu"),
+        val a =HotelDetails("1233","The Sóng Vũng Tàu Homestay - Vũng Tàu Land",8.2,address(28,"Thi Sách","Thắng Tam", "","Vũng Tàu"),
             arrayListOf(URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"))
             ,4.8,
             "Khách sạn Signature Boutique Hotel hiện đại, trang nhã này có các phòng kiểu boutique với Wi-Fi miễn phí và nhà hàng riêng. Khách sạn tọa lạc tại một con hẻm yên tĩnh, cách Đường Nguyễn Trãi ở Thành phố Hồ Chí Minh chỉ vài bước chân.\n" +

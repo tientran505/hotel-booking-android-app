@@ -37,7 +37,7 @@ class SubHotelDetailDescription : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val bookingDetail :hotels ? = this.getArguments()?.getSerializable("BookingDetail") as hotels ?
+        val bookingDetail :HotelDetails ? = this.getArguments()?.getSerializable("BookingDetail") as HotelDetails ?
         val view: View? = inflater.inflate(R.layout.fragment_sub_hotel_detail_description, container, false)
         val expendTv = view!!.findViewById<ExpandableTextView>(R.id.expand_text_view)
         expendTv.setText(bookingDetail!!.description )

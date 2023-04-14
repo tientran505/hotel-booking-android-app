@@ -1,6 +1,7 @@
 package com.example.stayfinder
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
@@ -75,7 +76,8 @@ class HotelSearch : AppCompatActivity() {
 
         hotelSearchAdapter = HotelSearchAdapter(hotels, this)
         hotelSearchAdapter.onItemClick = {position ->
-
+            val intent = Intent(this, HotelDetailActivity::class.java)
+            startActivity(intent)
         }
 
         hotelSearchAdapter.onButtonClick = {position ->
