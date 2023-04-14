@@ -156,6 +156,54 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/numberStreetEt" />
 
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/flexboxLayout"
+            android:layout_width="389dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:alignContent="stretch"
+            app:alignItems="stretch"
+            app:flexWrap="wrap"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chooseImageBtn">
+
+
+            <ImageView
+                android:id="@+id/img1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                tools:layout_editor_absoluteX="43dp"
+                tools:layout_editor_absoluteY="534dp"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageView
+                android:id="@+id/img2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:layout_editor_absoluteX="43dp"
+                tools:layout_editor_absoluteY="534dp"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageView
+                android:id="@+id/img3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:layout_editor_absoluteX="43dp"
+                tools:layout_editor_absoluteY="534dp"
+                tools:srcCompat="@tools:sample/avatars" />
+
+            <ImageView
+                android:id="@+id/img4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:layout_editor_absoluteX="43dp"
+                tools:layout_editor_absoluteY="534dp"
+                tools:srcCompat="@tools:sample/avatars" />
+        </com.google.android.flexbox.FlexboxLayout>
+
         <Button
             android:id="@+id/submitBtn"
             android:layout_width="wrap_content"
@@ -170,10 +218,10 @@
             android:id="@+id/freeWifiCheckbox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:text="Free Wifi"
             app:layout_constraintStart_toStartOf="@+id/numberStreetEt"
-            app:layout_constraintTop_toBottomOf="@+id/chooseImageBtn" />
+            app:layout_constraintTop_toBottomOf="@+id/flexboxLayout" />
 
         <CheckBox
             android:id="@+id/swimmingPool"
@@ -192,7 +240,6 @@
             android:text="Fitness center"
             app:layout_constraintStart_toStartOf="@+id/numberStreetEt"
             app:layout_constraintTop_toBottomOf="@+id/swimmingPool" />
-
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
