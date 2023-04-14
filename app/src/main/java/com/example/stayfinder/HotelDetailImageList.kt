@@ -99,7 +99,8 @@ class SubBookingDetailImageList : Fragment() {
             val intent = Intent(this.requireContext(),HotelDetailActivity2::class.java)
             intent.putExtra("fragment_type","image");
             intent.putExtra("type","url");
-            intent.putExtra("URL_path",(listURL[i].toString()))
+            println("list position"+ i.toString())
+            intent.putExtra("position",i)
             startActivity(intent)
         }
         return view

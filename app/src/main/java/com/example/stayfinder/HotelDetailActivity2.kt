@@ -24,11 +24,13 @@ class HotelDetailActivity2 : AppCompatActivity() {
                 val type = bundle!!.getString("type")
                 when(type){
                     "url"->{
-                        val url_path = bundle!!.getString("URL_path")
+
+                        val position = bundle!!.getInt("position")
+                        println("list position"+ position.toString())
                         val fm: FragmentManager = supportFragmentManager
                         val fragInfo1 = HotelDetailImageDirect()
                         val bundle2 = Bundle()
-                        bundle2.putString("url_path",url_path.toString())
+                        bundle2.putInt("position",position)
                         fragInfo1.setArguments(bundle2);
                         fm.beginTransaction().replace(R.id.frameLayout, fragInfo1).commit();
                     }
