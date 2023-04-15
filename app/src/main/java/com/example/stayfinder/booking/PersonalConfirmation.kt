@@ -1,9 +1,11 @@
 package com.example.stayfinder.booking
 
+import android.content.Intent
 import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Button
 import android.widget.EditText
 import android.widget.RadioButton
 import android.widget.RadioGroup
@@ -20,12 +22,19 @@ class PersonalConfirmation : AppCompatActivity() {
     private lateinit var originalPriceTV: TextView
     private lateinit var discountPriceTV: TextView
 
+    private lateinit var nextBtn: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_personal_confirmation)
 
         initActionBar()
         initComponent()
+
+        nextBtn.setOnClickListener {
+            val intent = Intent(this, BookingConfirmation::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun initActionBar() {
@@ -47,6 +56,8 @@ class PersonalConfirmation : AppCompatActivity() {
 
         originalPriceTV.paintFlags = originalPriceTV.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
         tripTypeRB.check(workRB.id)
+
+        nextBtn = findViewById(R.id.nextBtn)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

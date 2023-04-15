@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/hotelName"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".booking.BookingConfirmation">
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="408dp"
+        android:layout_height="0dp"
+        android:background="@android:color/transparent"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="15dp"
+            android:background="@drawable/custom_fixed_bottom" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout4"
+            android:layout_width="409dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginHorizontal="15dp"
+                android:gravity="center"
+                android:orientation="vertical"
+
+                >
+
+                <TextView
+                    android:id="@+id/oPriceTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="đ1.195.000"
+                    android:textColor="#F00"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/dcPriceTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="đ1.000.000"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/nextBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginVertical="10dp"
+                android:layout_weight="1"
+                android:text="Book now"
+                android:textAllCaps="false" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="409dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="10dp"
+            android:id="@+id/mainLinearLayout"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="10">
+
+                <ImageView
+                    android:id="@+id/hotelImgConfirm"
+                    android:layout_width="0dp"
+                    android:layout_height="150dp"
+                    android:layout_gravity="top"
+                    android:layout_marginHorizontal="5dp"
+                    android:layout_weight="4"
+                    android:paddingHorizontal="20dp"
+                    android:scaleType="centerCrop"
+                    app:srcCompat="@drawable/img_1" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="6"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/hotelType"
+                        android:layout_width="wrap_content"
+                        android:paddingHorizontal="5dp"
+
+                        android:layout_height="wrap_content"
+                        android:background="#484848"
+                        android:textColor="@color/white"
+                        android:text="Apartment" />
+
+                    <TextView
+                        android:id="@+id/hotelNameBC"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="The Sóng Vũng Tàu Homestay - Vũng Tàu Land"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/addressBC"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:ellipsize="end"
+                        android:maxLines="2"
+                        android:text="28 Thi Sách, Phường Thắng Tam, Vung Tau"
+                        android:textSize="12sp" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider4"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginVertical="15dp"
+                android:background="?android:attr/listDivider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="9"
+                android:paddingHorizontal="10dp"
+                >
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="3"
+                    >
+
+                    <TextView
+                        android:id="@+id/textView20"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Check-in"/>
+
+                    <TextView
+                        android:id="@+id/checkinDateTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Wed, 19 Apr"
+                        android:textStyle="bold"
+                        />
+
+                    <TextView
+                        android:id="@+id/checkinTimeTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="14:00" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="3"
+                    >
+
+                    <ImageView
+                        android:id="@+id/imageView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/ic_moon" />
+
+                    <TextView
+                        android:id="@+id/nightDays"
+                        android:gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="2 night(s)" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="3"
+                    >
+
+                    <TextView
+                        android:id="@+id/checkoutTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Check-out"
+                        android:gravity="end"
+                        />
+
+                    <TextView
+                        android:id="@+id/checkoutDateTV"
+                        android:gravity="end"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Fri, 21 Apr" />
+
+                    <TextView
+                        android:id="@+id/checkoutTimeTV"
+                        android:gravity="end"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="12:00" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider5"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginVertical="15dp"
+                android:background="?android:attr/listDivider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="10dp"
+                >
+
+                <TextView
+                    android:id="@+id/textView26"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:text="Guest Detail" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="10"
+                    >
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="5"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView27"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textStyle="bold"
+                            android:text="Name" />
+
+                        <TextView
+                            android:id="@+id/guestNameTV"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Trần Thiện Tiến" />
+
+                        <TextView
+                            android:layout_marginTop="5dp"
+                            android:id="@+id/textView31"
+                            android:textStyle="bold"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Phone Number" />
+
+                        <TextView
+                            android:id="@+id/guestPhoneTV"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="0902890454" />
+
+                        <TextView
+                            android:id="@+id/textView29"
+                            android:textStyle="bold"
+                            android:layout_marginTop="5dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Email" />
+
+                        <TextView
+                            android:id="@+id/guestMailTV"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="thien.tien1551@gmail.com" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_weight="5"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView33"
+                            android:gravity="end"
+                            android:textStyle="bold"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Number of people" />
+
+                        <TextView
+                            android:id="@+id/pplInformation"
+                            android:layout_gravity="end"
+                            android:drawablePadding="5dp"
+                            android:layout_width="wrap_content"
+                            android:drawableStart="@drawable/ic_profile_home"
+                            android:layout_height="wrap_content"
+                            android:text="2 adults - 0 child" />
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider8"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginVertical="15dp"
+                android:background="?android:attr/listDivider" />
+
+            <ListView
+                android:id="@+id/roomLV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <View
+                android:id="@+id/divider10"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginVertical="15dp"
+                android:background="?android:attr/listDivider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingHorizontal="10dp"
+                >
+
+                <TextView
+                    android:id="@+id/textView24"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textStyle="bold"
+                    android:textSize="18sp"
+                    android:text="Do you have any special request?" />
+
+                <EditText
+                    android:layout_marginTop="5dp"
+                    android:hint="Let the property know your room, bed preferences, etc."
+                    android:id="@+id/noteET"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ems="10"
+                    android:padding="5dp"
+                    android:textSize="15sp"
+                    android:lines="5"
+                    android:maxLines="5"
+                    android:background="@drawable/custom_border_edit_text"
+                    android:gravity="start|top"
+                    android:inputType="textMultiLine" />
+
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider7"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginVertical="15dp"
+                android:background="?android:attr/listDivider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginBottom="15dp"
+
+                >
+
+                <TextView
+                    android:id="@+id/textView34"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:text="Price Detail" />
+
+                <ListView
+                    android:id="@+id/priceDetailLV"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:id="@+id/textView36"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:text="Original"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/originalConfirmPriceTV"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:gravity="end"
+                        android:text="đ1.195.000" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:id="@+id/textView38"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:text="Discount"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/discountConfirmPriceTV"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:gravity="end"
+                        android:text="-đ195.000" />
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/divider11"
+                    android:layout_width="match_parent"
+                    android:layout_marginVertical="5dp"
+                    android:layout_height="2dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="10">
+
+                    <TextView
+                        android:id="@+id/total"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="6"
+                        android:text="Total"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/totalPriceConfirm"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="4"
+                        android:gravity="end"
+                        android:text="đ1.000.000" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
