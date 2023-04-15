@@ -51,10 +51,10 @@ class SubHotelDetailPeriod : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view: View? = inflater.inflate(R.layout.fragment_sub_hotel_detail_period_cost, container, false)
-        val bookingDetail :hotels ? = this.getArguments()?.getSerializable("BookingDetail") as hotels?
+        val bookingDetail :HotelDetails ? = this.getArguments()?.getSerializable("BookingDetail") as HotelDetails?
         val dateStartString : String? = this.getArguments()?.getString("dateStart")
         val dateEndString: String? =this.getArguments()?.getString("dateEnd")
-        price = bookingDetail!!.pricebernight!!
+        price = bookingDetail!!.priceless!!
         dateStart = view!!.findViewById(R.id.datestartTv)
         dateEnd = view.findViewById(R.id.dateendTv)
         periodTv = view.findViewById(R.id.periodTv)
