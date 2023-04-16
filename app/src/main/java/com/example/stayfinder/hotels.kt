@@ -10,11 +10,15 @@ data class hotels(
     var address: address,
     var photoUrl: String,
     var facilities: ArrayList<facilities>,
+    var rating: rating,
+    var rating_overall: Double,
+    val booking_count: Int,
+    val comment_count: Int,
 ) :Serializable{
-    var rating: rating = rating(0.0,0.0,0.0,0.0)
-    var rating_overall: Double = 0.0
-    val booking_count: Int = 0
-    val comment_count: Int =0
+    constructor(hotel_id:String, hotel_name:String, description:String, address:address, photoUrl: String,
+                facilities: ArrayList<facilities>) : this(hotel_id, hotel_name, description, address,
+        photoUrl, facilities, rating(0.0,0.0,0.0,0.0,), 0.0,
+        0, 0)
 
 }
 data class address ( val number: Int, val street: String, val district: String, val ward: String,val city: String): Serializable
