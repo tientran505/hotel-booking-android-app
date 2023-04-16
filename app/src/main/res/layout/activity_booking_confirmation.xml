@@ -73,6 +73,7 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="409dp"
         android:layout_height="0dp"
+        android:fillViewport="true"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -352,20 +353,15 @@
                 android:id="@+id/divider8"
                 android:layout_width="match_parent"
                 android:layout_height="10dp"
-                android:layout_marginVertical="15dp"
+                android:layout_marginTop="15dp"
                 android:background="?android:attr/listDivider" />
 
             <ListView
                 android:id="@+id/roomLV"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
-            <View
-                android:id="@+id/divider10"
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_marginVertical="15dp"
-                android:background="?android:attr/listDivider" />
+                android:dividerHeight="10dp"
+                android:listSelector="@android:color/transparent"
+                android:layout_height="match_parent" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -396,8 +392,6 @@
                     android:background="@drawable/custom_border_edit_text"
                     android:gravity="start|top"
                     android:inputType="textMultiLine" />
-
-
             </LinearLayout>
 
             <View
@@ -427,12 +421,14 @@
                 <ListView
                     android:id="@+id/priceDetailLV"
                     android:layout_width="match_parent"
+                    android:listSelector="@android:color/transparent"
                     android:layout_height="match_parent" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal"
+                    android:layout_marginVertical="5dp"
                     android:weightSum="10">
 
                     <TextView

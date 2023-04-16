@@ -2,15 +2,16 @@ package com.example.stayfinder.booking
 
 import android.content.Intent
 import android.graphics.Paint
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Button
-import android.widget.EditText
-import android.widget.RadioButton
-import android.widget.RadioGroup
-import android.widget.TextView
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import com.example.stayfinder.R
+import com.example.stayfinder.booking.model.GuestForm
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 
 class PersonalConfirmation : AppCompatActivity() {
     private lateinit var nameET: EditText
@@ -32,8 +33,17 @@ class PersonalConfirmation : AppCompatActivity() {
         initComponent()
 
         nextBtn.setOnClickListener {
-            val intent = Intent(this, BookingConfirmation::class.java)
-            startActivity(intent)
+
+            if (validateForm()) {
+                val intent = Intent(this, BookingConfirmation::class.java)
+
+
+                val parseString = Json.encodeToString(GuestForm(nameET.text.toString(),
+                phoneET.text.toString(), emailET.text.toString()))
+                intent.putExtra("data", parseString)
+                startActivity(intent)
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            }
         }
     }
 
@@ -43,6 +53,43 @@ class PersonalConfirmation : AppCompatActivity() {
         menu?.setHomeButtonEnabled(true)
         menu?.title = "Your Personal Information"
     }
+
+    private fun validateForm(): Boolean {
+        if (nameET.text.isEmpty()) {
+            nameET.requestFocus()
+            nameET.error = "This field can't be blank"
+            return false
+        }
+
+        if (emailET.text.isEmpty()) {
+            emailET.requestFocus()
+            emailET.error = "This field can't be blank"
+            return false
+        }
+
+        if (!isEmailValid(emailET.text.toString())) {
+            emailET.requestFocus()
+            emailET.error = "The format email is wrong"
+            return false
+        }
+
+        if (phoneET.text.isEmpty()) {
+            phoneET.requestFocus()
+            phoneET.error = "This field can't be blank"
+            return false
+        }
+
+        return true
+    }
+
+    private fun isEmailValid(email: String?): Boolean {
+        val expression = "^[\\w\\.-]+@([\\w\\-]+\\.)+[A-Z]{2,4}$"
+        val pattern: Pattern = Pattern.compile(expression, Pattern.CASE_INSENSITIVE)
+        val matcher: Matcher = pattern.matcher(email)
+        return matcher.matches()
+    }
+
+
 
     private fun initComponent() {
         nameET = findViewById(R.id.nameET)

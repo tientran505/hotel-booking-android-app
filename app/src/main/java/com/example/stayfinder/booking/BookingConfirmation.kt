@@ -4,17 +4,22 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.get
 import com.example.stayfinder.R
 import com.example.stayfinder.booking.adapter.HotelPriceList
 import com.example.stayfinder.booking.adapter.PriceDetailConfirmListAdapter
 import com.example.stayfinder.booking.adapter.Room
 import com.example.stayfinder.booking.adapter.RoomConfirmListAdapter
+import com.example.stayfinder.booking.model.GuestForm
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
 
 class BookingConfirmation : AppCompatActivity() {
     // hotel view
@@ -75,7 +80,7 @@ class BookingConfirmation : AppCompatActivity() {
         val menu = supportActionBar
         menu?.setDisplayHomeAsUpEnabled(true)
         menu?.setHomeButtonEnabled(true)
-        menu?.title = "Final step: Booking confirmation"
+        menu?.title = "Booking confirmation"
     }
 
 
@@ -99,10 +104,18 @@ class BookingConfirmation : AppCompatActivity() {
         guestPhone = findViewById(R.id.guestPhoneTV)
         guestEmail = findViewById(R.id.guestMailTV)
         numberOfPeople = findViewById(R.id.pplInformation)
+
+        val data: String? = intent.getStringExtra("data")
+        val dataForm: GuestForm? = data?.let { Json.decodeFromString(it) }
+
+        guestName.text = dataForm?.name
+        guestPhone.text = dataForm?.phone
+        guestEmail.text = dataForm?.email
+
     }
 
     private fun initRoomConfirmListView() {
-        val mList = arrayListOf<Room>(
+        val mList = arrayListOf(
             Room("One-Bedroom Apartment", "", 4),
             Room("Apartment with Balcony", "", 5),
             Room("Apartment with Balcony", "", 5)
@@ -112,13 +125,24 @@ class BookingConfirmation : AppCompatActivity() {
 
         val roomConfirmListAdapter = RoomConfirmListAdapter(this, mList)
         roomLV.adapter = roomConfirmListAdapter
-        roomConfirmListAdapter.notifyDataSetChanged()
-        roomLV.visibility = View.GONE
-        roomLV.visibility = View.VISIBLE
+        setListViewHeightBasedOnChildren(roomLV)
+    }
+
+    private fun setListViewHeightBasedOnChildren(listView: ListView) {
+        val adapter = listView.adapter
+        var totalHeight = 0
+        for (i in 0 until adapter.count) {
+            val listItem = adapter.getView(i, null, listView)
+            listItem.measure(0, 0)
+            totalHeight += listItem.measuredHeight
+        }
+        val params = listView.layoutParams
+        params.height = totalHeight + (listView.dividerHeight * (adapter.count - 1))
+        listView.layoutParams = params
     }
 
     private fun initPriceConfirmListView() {
-        val mList = arrayListOf<HotelPriceList>(
+        val mList = arrayListOf(
             HotelPriceList("One-Bedroom Apartment", 4500000.0.toFloat(),
                 3200000.0.toFloat()),
             HotelPriceList("Apartment with Balcony", 4500000.0.toFloat(),
@@ -131,6 +155,7 @@ class BookingConfirmation : AppCompatActivity() {
         val priceDetailAdapter = PriceDetailConfirmListAdapter(this, mList)
 
         priceHotelDetailLV.adapter = priceDetailAdapter
+        setListViewHeightBasedOnChildren(priceHotelDetailLV)
     }
 
     private fun initNoteView() {
@@ -142,6 +167,7 @@ class BookingConfirmation : AppCompatActivity() {
         originalPrice = findViewById(R.id.originalConfirmPriceTV)
         discountPrice = findViewById(R.id.discountConfirmPriceTV)
         totalPrice = findViewById(R.id.totalPriceConfirm)
+
     }
 
     private fun initBottomComponent() {
@@ -158,5 +184,10 @@ class BookingConfirmation : AppCompatActivity() {
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

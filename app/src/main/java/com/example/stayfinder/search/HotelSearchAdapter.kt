@@ -76,6 +76,13 @@ class HotelSearchAdapter(private val hotels: List<Hotel>,
         holder.discountPrice.text = numberFormat.format(hotel.discountPrice)
         holder.cityName.text = hotel.cityName
         holder.hotelName.text = hotel.hotelName
+
+        holder.heartBtn.setOnClickListener {
+            holder.heartBtn.setImageResource(if (!hotel.isSaved) R.drawable.ic_heart
+            else R.drawable.ic_heart_red)
+
+            hotel.isSaved = !hotel.isSaved
+        }
     }
 
     private fun getListPhoto(): List<Photo> {
@@ -87,10 +94,4 @@ class HotelSearchAdapter(private val hotels: List<Hotel>,
             Photo(R.drawable.img_5),
         )
     }
-
-    fun setHeart(position: Int) {
-        hotels[position].isSaved = !hotels[position].isSaved
-        notifyItemChanged(position)
-    }
-
 }
