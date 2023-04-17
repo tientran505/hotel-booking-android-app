@@ -1,6 +1,8 @@
 package com.example.stayfinder
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 
@@ -11,6 +13,12 @@ class HotelDetailActivity2 : AppCompatActivity() {
         val bundle = intent.extras
         val fragment_type = bundle!!.getString("fragment_type")
         val booking_id = bundle!!.getString("booking_id")
+        val bookingBtn = findViewById<Button>(R.id.BookingBtn)
+        bookingBtn.setOnClickListener(){
+            val intent = Intent(this, RoomActivity::class.java)
+            intent.putExtra("hotel_id",booking_id);
+            startActivity(intent)
+        }
         when(fragment_type){
             "feebback" ->{
                 val fm: FragmentManager = supportFragmentManager

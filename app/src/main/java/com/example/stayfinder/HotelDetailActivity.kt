@@ -1,6 +1,8 @@
 package com.example.stayfinder
 
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import java.io.Serializable
@@ -58,6 +60,12 @@ class HotelDetailActivity : AppCompatActivity() {
         fm.beginTransaction().replace(R.id.fame2, fragInfo2).commit();
         fm.beginTransaction().replace(R.id.fame3, fragInfo3).commit();
         fm.beginTransaction().replace(R.id.fame4, fragInfo4).commit();
+        val bookingBtn = findViewById<Button>(R.id.BookingBtn)
+        bookingBtn.setOnClickListener(){
+            val intent = Intent(this, RoomActivity::class.java)
+            intent.putExtra("hotel_id",a.id);
+            startActivity(intent)
+        }
     }
 
 }
