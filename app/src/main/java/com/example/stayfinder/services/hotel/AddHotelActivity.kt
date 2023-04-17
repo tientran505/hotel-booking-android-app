@@ -86,7 +86,7 @@ class AddHotelActivity : AppCompatActivity() {
 
 
         var uuidHotel: String? = extras?.getString("uuidHotel")
-        //uuidHotel = "d5ed9f70-406a-4552-b6bc-9804bdd4d090"
+        //uuidHotel = "2eddd0ce-9a35-4612-a3a4-27953d7aebdf"
 
         if (uuidHotel == null || uuidHotel == "") {
             uuidHotel = UUID.randomUUID().toString()
@@ -113,7 +113,9 @@ class AddHotelActivity : AppCompatActivity() {
                         numberStreetHotel.setText(hotelObj.address["number"].toString())
                     }
 
-                } else {
+                }
+
+                else {
                     Toast.makeText(this, "No document to show", Toast.LENGTH_SHORT).show()
 
                 }
@@ -212,6 +214,7 @@ class AddHotelActivity : AppCompatActivity() {
                     imgView.setImageURI(imageUri)
                     imgView.setPadding(5, 5, 5, 5)
                     imgView.tag = imageUri.toString()
+                    imgView.scaleType = ImageView.ScaleType.CENTER_CROP
 
                     //imgView.maxHeight = 100
                     //imgView.requestLayout();
