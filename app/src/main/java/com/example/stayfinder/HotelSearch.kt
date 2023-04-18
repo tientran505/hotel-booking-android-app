@@ -5,18 +5,27 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MotionEvent
+import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.stayfinder.booking.PersonalConfirmation
 import com.example.stayfinder.hotel.Hotel
 import com.example.stayfinder.hotel.HotelAdapter
 import com.example.stayfinder.search.HotelSearchAdapter
+import com.example.stayfinder.search.sort.SortListFragment
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 
 class HotelSearch : AppCompatActivity() {
     lateinit var searchBar: TextView
     lateinit var hotelSearchRV: RecyclerView
     lateinit var hotelSearchAdapter: HotelSearchAdapter
+
+    lateinit var sortBtn: Button
+    lateinit var filterBtn: Button
+    lateinit var mapBtn: Button
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,10 +51,21 @@ class HotelSearch : AppCompatActivity() {
             false
         }
 
+        sortBtnHandle()
         initRV()
     }
 
-    fun initRV() {
+    private fun sortBtnHandle() {
+        sortBtn = findViewById(R.id.sortBtn)
+        sortBtn.setOnClickListener {
+            val searchBottomSheet = SortListFragment()
+            searchBottomSheet.show(this.supportFragmentManager
+                , SortListFragment.TAG)
+        }
+    }
+
+
+    private fun initRV() {
         val hotels = listOf(
             Hotel("Vung Tau", "Sherwood Residence", 4.5.toFloat(), 4500000.0.toFloat(),
                 3200000.0.toFloat(), false),
@@ -81,7 +101,11 @@ class HotelSearch : AppCompatActivity() {
         }
 
         hotelSearchAdapter.onButtonClick = {position ->
-            hotelSearchAdapter.setHeart(position)
+        }
+
+        hotelSearchAdapter.onItemClick = {position ->
+            val intent = Intent(this, HotelDetailActivity::class.java)
+            startActivity(intent)
         }
 
         hotelSearchRV.adapter = hotelSearchAdapter
