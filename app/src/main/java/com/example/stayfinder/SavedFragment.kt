@@ -15,6 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.tasks.Tasks
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
@@ -42,6 +44,7 @@ class SavedFragment : Fragment(), CoroutineScope by MainScope() {
     var itemList = arrayListOf<SavedListItem>()
     var savedList = arrayListOf<SavedList>()
     val db = Firebase.firestore
+    val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,13 +61,13 @@ class SavedFragment : Fragment(), CoroutineScope by MainScope() {
 
     private suspend fun loadSavedLists() {
         val documents = Firebase.firestore.collection("saved_lists")
-            .whereEqualTo("user_id", "1")
+            .whereEqualTo("user_id", user!!.uid)
             .get()
             .await()
         for (document in documents) {
             val l = document.toObject(saved_lists::class.java)
             savedList.add(SavedList(l.name_list,l.number_of_item.toString() + " items saved", l.id))
-            listadapter.notifyDataSetChanged()
+            listadapter.notifyItemInserted(savedList.size - 1)
         }
     }
 
@@ -82,7 +85,7 @@ class SavedFragment : Fragment(), CoroutineScope by MainScope() {
 
     private suspend fun addList(name:String){
         val id = db.collection("saved_lists").document().id
-        val list: saved_lists = saved_lists(id, "1", name)
+        val list: saved_lists = saved_lists(id, user!!.uid, name)
         db.collection("saved_lists").document(id).set(list)
         savedList.add(SavedList(name,list.number_of_item.toString() + " items saved",id))
         listadapter.notifyItemInserted(savedList.size-1)
