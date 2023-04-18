@@ -65,7 +65,6 @@ class SavedFragment : Fragment(), CoroutineScope by MainScope() {
             val l = document.toObject(saved_lists::class.java)
             savedList.add(SavedList(l.name_list,l.number_of_item.toString() + " items saved", l.id))
             listadapter.notifyDataSetChanged()
-
         }
     }
 
