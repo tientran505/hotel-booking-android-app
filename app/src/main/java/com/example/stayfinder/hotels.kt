@@ -1,22 +1,33 @@
 package com.example.stayfinder
 
+import com.google.firebase.firestore.IgnoreExtraProperties
 import java.io.Serializable
 import java.net.URL
 
+@IgnoreExtraProperties
 data class hotels(
-    var hotel_id: String,
-    var hotel_name: String,
-    var description: String,
-    var address: address,
-    var photoUrl: String,
-    var facilities: ArrayList<facilities>,
+    var hotel_id: String = "",
+    var hotel_name: String = "",
+    var description: String = "",
+    var address: address = address(),
+    var photoUrl: ArrayList<URL> = arrayListOf(),
+    var facilities: ArrayList<facilities> = arrayListOf(),
+    var rating: rating = rating(),
+    var rating_overall: Double = 0.0,
+    val booking_count: Int = 0,
+    val comment_count: Int = 0,
 ) :Serializable{
-    var rating: rating = rating(0.0,0.0,0.0,0.0)
-    var rating_overall: Double = 0.0
-    val booking_count: Int = 0
-    val comment_count: Int =0
-
+    constructor(hotel_id:String, hotel_name:String, description:String, address:address, photoUrl: ArrayList<URL>,
+                facilities: ArrayList<facilities>) : this(hotel_id, hotel_name, description, address,
+        photoUrl, facilities, rating(0.0,0.0,0.0,0.0,), 0.0,
+        0, 0)
 }
-data class address ( val number: Int, val street: String, val district: String, val ward: String,val city: String): Serializable
-data class facilities(val id: Int,val name: String, val icon: URL)
-data class rating(val cleanliness: Double, val comfort: Double, val services: Double, val locaiton: Double)
+
+@IgnoreExtraProperties
+data class address ( val number: Int = 0, val street: String = "", val district: String = "",
+                     val ward: String = "",val city: String = ""): Serializable
+@IgnoreExtraProperties
+data class facilities(val id: Int = 0,val name: String = "", val icon: URL = URL(""))
+@IgnoreExtraProperties
+data class rating(val cleanliness: Double = 0.0, val comfort: Double = 0.0,
+                  val services: Double = 0.0, val location: Double = 0.0)
