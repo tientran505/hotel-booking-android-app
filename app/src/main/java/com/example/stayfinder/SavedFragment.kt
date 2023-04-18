@@ -50,6 +50,10 @@ class SavedFragment : Fragment(), CoroutineScope by MainScope() {
             param2 = it.getString(ARG_PARAM2)
 
         }
+
+        launch {
+            loadSavedLists()
+        }
     }
 
     private suspend fun loadSavedLists() {
@@ -60,19 +64,20 @@ class SavedFragment : Fragment(), CoroutineScope by MainScope() {
         for (document in documents) {
             val l = document.toObject(saved_lists::class.java)
             savedList.add(SavedList(l.name_list,l.number_of_item.toString() + " items saved", l.id))
+            listadapter.notifyDataSetChanged()
+
         }
-        listadapter.notifyDataSetChanged()
     }
 
     private suspend fun renameList(name: String, pos: Int, id: String){
         savedList[pos].titlename=name
-        listadapter.notifyDataSetChanged()
-        db.collection("saved_lists").document(id).update("name",name)
+        listadapter.notifyItemChanged(pos)
+        db.collection("saved_lists").document(id).update("name_list",name)
     }
 
     private suspend fun deleteList(pos: Int, id: String){
         savedList.removeAt(pos)
-        listadapter.notifyDataSetChanged()
+        listadapter.notifyItemRemoved(pos)
         db.collection("saved_lists").document(id).delete()
     }
 
@@ -81,7 +86,7 @@ class SavedFragment : Fragment(), CoroutineScope by MainScope() {
         val list: saved_lists = saved_lists(id, "1", name)
         db.collection("saved_lists").document(id).set(list)
         savedList.add(SavedList(name,list.number_of_item.toString() + " items saved",id))
-        listadapter.notifyDataSetChanged()
+        listadapter.notifyItemInserted(savedList.size-1)
     }
 
     override fun onCreateView(
@@ -92,10 +97,6 @@ class SavedFragment : Fragment(), CoroutineScope by MainScope() {
 
         var view: View? = null
         view = inflater.inflate(R.layout.fragment_saved, container, false)
-
-        launch {
-            loadSavedLists()
-        }
 
         itemList.add(SavedListItem("Căn nhà mơ ước", "Vũng Tàu", R.drawable.purpl))
         itemList.add(SavedListItem("Homestay trong mơ", "Vũng Tàu", R.drawable.purpl))

@@ -1,5 +1,6 @@
 package com.example.stayfinder
 
+import com.google.firebase.firestore.IgnoreExtraProperties
 import java.io.Serializable
 
 class SavedList:java.io.Serializable{
@@ -19,6 +20,7 @@ class SavedList:java.io.Serializable{
     }
 }
 
+@IgnoreExtraProperties
 data class saved_lists(
     var id: String,
     var user_id:String,
