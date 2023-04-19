@@ -13,21 +13,20 @@
         <View
             android:id="@+id/divider3"
             android:layout_width="150dp"
-            android:layout_gravity="center"
             android:layout_height="5dp"
+            android:layout_gravity="center"
             android:layout_marginTop="5dp"
-            android:background="@drawable/custom_divider"
-            />
+            android:background="@drawable/custom_divider" />
 
         <TextView
             android:id="@+id/textView11"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:gravity="center"
             android:layout_marginVertical="10dp"
-            android:text="Add this item to Collection?" />
+            android:gravity="center"
+            android:text="Add this item to Collection?"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <ProgressBar
             android:id="@+id/progressBarCollection"
@@ -38,6 +37,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/collectionRV"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="350dp"
+            />
     </LinearLayout>
 </FrameLayout>

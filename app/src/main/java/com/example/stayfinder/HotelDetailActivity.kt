@@ -2,6 +2,7 @@ package com.example.stayfinder
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
@@ -28,6 +29,10 @@ class HotelDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_hotel_detail)
         val fm: FragmentManager = supportFragmentManager
+
+        initActionBar()
+
+
         val booking_id = ""
         val dateStart ="30-3-2023"
         val dateEnd = "1-4-2023"
@@ -67,5 +72,25 @@ class HotelDetailActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
 
+    private fun initActionBar() {
+        val menu = supportActionBar
+        menu?.setDisplayHomeAsUpEnabled(true)
+        menu?.setHomeButtonEnabled(true)
+        menu?.title = "Hotel detail"
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
 }
