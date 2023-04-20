@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".search.sort.SortListFragment"
+    android:background="@drawable/rounded_bottom_sheet_dialog"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingBottom="10dp"
+        >
+
+        <View
+            android:id="@+id/divider3"
+            android:layout_width="150dp"
+            android:layout_gravity="center"
+            android:layout_height="5dp"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/custom_divider"
+            />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textSize="30sp"
+            android:layout_marginStart="20dp"
+            android:textColor="@color/black"
+            android:layout_marginTop="20dp"
+            android:text="Sort by" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="20dp"
+            >
+
+            <TextView
+                android:id="@+id/mostReviewTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:text="Most reviewed" />
+
+            <RadioButton
+                android:id="@+id/mostReviewRB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="20dp"
+            >
+
+            <TextView
+                android:id="@+id/highestRateTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:text="Highest Rated" />
+
+            <RadioButton
+                android:id="@+id/highestRateRB"
+                android:checked="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginStart="20dp"
+            >
+
+            <TextView
+                android:id="@+id/newestTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:text="Highest Rated" />
+
+            <RadioButton
+                android:id="@+id/newestRB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</FrameLayout>

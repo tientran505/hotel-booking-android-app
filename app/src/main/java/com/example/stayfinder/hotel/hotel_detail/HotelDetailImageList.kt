@@ -12,6 +12,7 @@ import android.widget.GridView
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.stayfinder.hotel.hotel_detail.HotelDetailActivity2
 import java.net.URL
 
 // TODO: Rename parameter arguments, choose names that match
@@ -96,10 +97,11 @@ class SubBookingDetailImageList : Fragment() {
         val adapter  =  MyGridAdapter(this.requireContext(), listURL )
         grid.adapter = adapter
         grid.setOnItemClickListener { adapterView, view, i, l ->
-            val intent = Intent(this.requireContext(),HotelDetailActivity2::class.java)
+            val intent = Intent(this.requireContext(), HotelDetailActivity2::class.java)
             intent.putExtra("fragment_type","image");
             intent.putExtra("type","url");
-            intent.putExtra("URL_path",(listURL[i].toString()))
+            intent.putExtra("list",listURL)
+            intent.putExtra("position",i)
             startActivity(intent)
         }
         return view

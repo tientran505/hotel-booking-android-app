@@ -10,7 +10,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.stayfinder.databinding.ActivityMainBinding
+import com.example.stayfinder.saved.SavedAnonymous
 import com.example.stayfinder.services.login.ProfileFragment
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -43,7 +46,13 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 R.id.saved -> {
-                    replaceFragment(SavedFragment())
+                    val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+                    if (user != null) {
+                        replaceFragment(SavedFragment())
+                    }
+                    else {
+                        replaceFragment(SavedAnonymous())
+                    }
                 }
 
                 R.id.bookings -> {
@@ -77,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Message", Toast.LENGTH_SHORT).show()
             }
 
-            R.id.ic_notice -> {
+            R.id.ic_save_hotel -> {
                 Toast.makeText(this, "Notification", Toast.LENGTH_SHORT).show()
             }
         }

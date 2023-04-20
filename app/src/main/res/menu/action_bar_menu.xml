@@ -10,7 +10,7 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/ic_notice"
+        android:id="@+id/ic_save_hotel"
         android:title="Notification"
         android:icon="@drawable/ic_baseline_notifications_24"
         android:orderInCategory="2"

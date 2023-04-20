@@ -1,4 +1,4 @@
-package com.example.stayfinder
+package com.example.stayfinder.hotel.hotel_detail
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
+import com.example.stayfinder.R
 import com.ms.square.android.expandabletextview.ExpandableTextView
 
 // TODO: Rename parameter arguments, choose names that match
@@ -37,7 +38,7 @@ class SubHotelDetailDescription : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val bookingDetail :hotels ? = this.getArguments()?.getSerializable("BookingDetail") as hotels ?
+        val bookingDetail :HotelDetails ? = this.getArguments()?.getSerializable("BookingDetail") as HotelDetails ?
         val view: View? = inflater.inflate(R.layout.fragment_sub_hotel_detail_description, container, false)
         val expendTv = view!!.findViewById<ExpandableTextView>(R.id.expand_text_view)
         expendTv.setText(bookingDetail!!.description )

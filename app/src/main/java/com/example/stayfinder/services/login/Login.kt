@@ -64,19 +64,21 @@ class Login : AppCompatActivity() {
             val email = emailET?.text.toString()
             val password = pwET?.text.toString()
 
+
             progressDialog?.setTitle("Please wait")
             progressDialog?.setMessage("Verifying...")
             progressDialog?.show()
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
+                        Toast.makeText(this, "Hello from this", Toast.LENGTH_SHORT).show()
                             // Sign in success, update UI with the signed-in user's information
                             Handler().postDelayed(Runnable {
                                 val intent = Intent(this, MainActivity::class.java)
                                 intent.putExtra("fragment", "profile")
                                 startActivity(intent)
                                 finishAffinity()
-                            }, 2000)
+                            }, 500)
 
                     } else {
                         // If sign in fails, display a message to the user.
@@ -152,7 +154,6 @@ class Login : AppCompatActivity() {
                             val authUser = auth.currentUser
 
                             if (authUser != null) {
-                                Log.i("chiplog", " Hello ")
                                 val db = Firebase.firestore
 
                                 val user = User(authUser)

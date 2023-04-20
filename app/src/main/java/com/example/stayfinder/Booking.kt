@@ -9,7 +9,6 @@ class Booking() {
     var price: Double? = 0.0
     var status: String? = ""
     lateinit var img : URL
-
     constructor(
         titlename: String, dateStart: String,
         dateEnd: String, price: Double,
