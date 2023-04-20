@@ -108,14 +108,43 @@
                     android:textSize="16sp"
                     android:textStyle="bold"></TextView>
 
-                <TextView
+                <LinearLayout
                     android:id="@+id/detailRoomTv"
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true"
+                    android:orientation="horizontal"
                     android:layout_marginVertical="10sp"
-                    android:text="1 phòng + 2 người lớn + không có trẻ em"
-                    android:textColor="@color/primary"
-                    android:textSize="20sp"></TextView>
+                    >
+                    <TextView
+                        android:id="@+id/noRoomTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:layout_marginRight="10px"
+                        android:textColor="@color/primary"
+                        android:textSize="20sp">
+                    </TextView>
+                    <TextView
+                        android:id="@+id/noPeopleTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:layout_marginHorizontal="10px"
+                        android:textColor="@color/primary"
+                        android:textSize="20sp">
+                    </TextView>
+                    <TextView
+                        android:id="@+id/nopKidTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:layout_marginLeft="10px"
+                        android:textColor="@color/primary"
+                        android:textSize="20sp">
+                    </TextView>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
