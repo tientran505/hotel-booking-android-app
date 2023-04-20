@@ -2,6 +2,7 @@ package com.example.stayfinder.search
 
 import android.content.Context
 import android.graphics.Paint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +23,6 @@ class HotelSearchAdapter(private val hotels: List<Hotel>,
                          private val mContext: Context): RecyclerView.Adapter<HotelSearchAdapter.ViewHolder>(){
     var onButtonClick: ((Int) -> Unit)? = null
     var onItemClick: ((Int) -> Unit)? = null
-
 
     inner class ViewHolder(listItemView: View): RecyclerView.ViewHolder(listItemView) {
         val heartBtn: ImageButton = listItemView.findViewById(R.id.heartBtn)
@@ -76,13 +76,6 @@ class HotelSearchAdapter(private val hotels: List<Hotel>,
         holder.discountPrice.text = numberFormat.format(hotel.discountPrice)
         holder.cityName.text = hotel.cityName
         holder.hotelName.text = hotel.hotelName
-
-        holder.heartBtn.setOnClickListener {
-            holder.heartBtn.setImageResource(if (!hotel.isSaved) R.drawable.ic_heart
-            else R.drawable.ic_heart_red)
-
-            hotel.isSaved = !hotel.isSaved
-        }
     }
 
     private fun getListPhoto(): List<Photo> {
