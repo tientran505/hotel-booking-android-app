@@ -1,20 +1,19 @@
-package com.example.stayfinder
+package com.example.stayfinder.hotel.hotel_detail
 
-import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
+import com.example.stayfinder.*
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import java.io.Serializable
-import com.example.stayfinder.booking.PersonalConfirmation
 import java.net.URL
 data class hotelss(
     var id: String = "",
@@ -58,6 +57,7 @@ fun convertStringtoURL(a: ArrayList<String>):ArrayList<URL>{
 }
 class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() {
     var hoteldetails:HotelDetails? = null
+    var isPress = false
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -115,12 +115,23 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
         menu?.setDisplayHomeAsUpEnabled(true)
         menu?.setHomeButtonEnabled(true)
         menu?.title = "Hotel detail"
+
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.action_bar_menu_save, menu)
+
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             android.R.id.home -> {
                 onBackPressed()
+            }
+            R.id.ic_save_hotel -> {
+                Toast.makeText(this, "Nhu Y code o day",
+                Toast.LENGTH_LONG).show()
             }
         }
 

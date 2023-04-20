@@ -1,4 +1,4 @@
-package com.example.stayfinder
+package com.example.stayfinder.hotel.hotel_detail
 
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -13,6 +13,8 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
+import com.example.stayfinder.R
+import com.example.stayfinder.address
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -48,7 +50,7 @@ class SubHotelDetailAddress : Fragment(), OnMapReadyCallback{
     ): View? {
         val view =  inflater.inflate(R.layout.fragment_sub_hotel_detail_address, container, false)
         val bookingDetail :HotelDetails? = this.getArguments()?.getSerializable("BookingDetail") as HotelDetails?
-        val addressTemp :address = bookingDetail!!.address
+        val addressTemp : address = bookingDetail!!.address
         address = addressTemp.number.toString()+" "+ addressTemp.street+", "+ addressTemp.district+", "+ addressTemp.ward+", "+addressTemp.city
         val addressTv = view!!.findViewById<TextView>(R.id.addressTv)
         addressTv.setText(address)

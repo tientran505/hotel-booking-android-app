@@ -1,4 +1,4 @@
-package com.example.stayfinder
+package com.example.stayfinder.hotel.hotel_detail
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,7 +12,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import java.io.Serializable
+import com.example.stayfinder.R
+import com.example.stayfinder.Service
+import com.example.stayfinder.ServiceAdapter
 import java.net.URL
 
 
@@ -45,7 +47,11 @@ class SubHotelDetailImage : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val a = arrayListOf<Service>(Service("wifi", URL("https://cdn-icons-png.flaticon.com/512/93/93158.png")),Service("wifi", URL("https://cdn-icons-png.flaticon.com/512/93/93158.png")),Service("wifi", URL("https://cdn-icons-png.flaticon.com/512/93/93158.png")))
+        val a = arrayListOf<Service>(
+            Service("wifi", URL("https://cdn-icons-png.flaticon.com/512/93/93158.png")),
+            Service("wifi", URL("https://cdn-icons-png.flaticon.com/512/93/93158.png")),
+            Service("wifi", URL("https://cdn-icons-png.flaticon.com/512/93/93158.png"))
+        )
         val bookingDetail :HotelDetails ? = this.getArguments()?.getSerializable("BookingDetail") as HotelDetails
         val view: View? = inflater.inflate(R.layout.fragment_hotel_detail_image_service_title, container, false)
         var textview = view!!.findViewById<TextView>(R.id.titleTv)

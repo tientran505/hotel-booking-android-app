@@ -1,13 +1,16 @@
 package com.example.stayfinder
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
+import com.example.stayfinder.booking.PersonalConfirmation
 import java.net.URL
 import java.text.DecimalFormat
 
@@ -27,7 +30,8 @@ data class Room(
 }
 class RoomAdapter (private var item: ArrayList<Room>) : RecyclerView.Adapter<RoomAdapter.ViewHolder>() {
     private var context: Context? = null
-    class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
+    var onButtonClick: ((Int) -> Unit)? = null
+    inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
         val viewpager = listItemView.findViewById(R.id.viewPager) as ViewPager
         var pageAdapter: ViewPagerAdapter? = null
         val roomtypeTv = listItemView.findViewById<TextView>(R.id.roomtitleTv)
@@ -37,6 +41,12 @@ class RoomAdapter (private var item: ArrayList<Room>) : RecyclerView.Adapter<Roo
         val originpriceTv = listItemView.findViewById<TextView>(R.id.originalPriceTV)
         val percentagediscountTv = listItemView.findViewById<TextView>(R.id.percentage_discountTv)
         val bookingBtn = listItemView.findViewById<Button>(R.id.bookingBtn)
+
+        init {
+            bookingBtn.setOnClickListener {
+                onButtonClick?.invoke(adapterPosition)
+            }
+        }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RoomAdapter.ViewHolder {
         context = parent.context
@@ -55,9 +65,7 @@ class RoomAdapter (private var item: ArrayList<Room>) : RecyclerView.Adapter<Roo
         holder.discountpriceTv.setText(moneyexchange.format(this.item[position].discount_price*this.item[position].numberofdate))
         holder.originpriceTv.setText(moneyexchange.format(this.item[position].origin_price*this.item[position].numberofdate))
         holder.percentagediscountTv.setText(" - "+ (this.item[position].percentage_discount*100).toString()+ "%")
-        holder.bookingBtn.setOnClickListener(){
-//            ...
-        }
+
     }
     override fun getItemCount(): Int {
         return item.size

@@ -1,10 +1,11 @@
-package com.example.stayfinder
+package com.example.stayfinder.hotel.hotel_detail
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
+import com.example.stayfinder.*
 
 class HotelDetailActivity2 : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
