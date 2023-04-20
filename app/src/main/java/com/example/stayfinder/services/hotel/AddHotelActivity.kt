@@ -78,6 +78,8 @@ class AddHotelActivity : AppCompatActivity() {
         val streetHotel = findViewById<EditText>(R.id.streetEt)
         val numberStreetHotel = findViewById<EditText>(R.id.numberStreetEt)
         var checkedbox: MutableList<String> = mutableListOf<String>()
+        var photoUrl = ArrayList<String>()
+
 
         nameCollection = getString(R.string.hotel_collection_name)
         submitBtn = findViewById(R.id.submitBtn)
@@ -97,7 +99,7 @@ class AddHotelActivity : AppCompatActivity() {
                 if (document != null) {
                     // fill out the form
                     val hotelObj = document.toObject(HotelDetailModel::class.java)
-
+                    photoUrl = hotelObj!!.photoUrl
                     //Check permission
                     if (Firebase.auth.currentUser?.uid.toString() != hotelObj?.owner_id) {
                         Toast.makeText(this, "You have not permitted to access", Toast.LENGTH_SHORT)
@@ -128,11 +130,11 @@ class AddHotelActivity : AppCompatActivity() {
 
             //Firstly Upload photo to firebase
             val flexboxLayout = findViewById<FlexboxLayout>(R.id.flexboxLayout)
-            var photoUrl = ArrayList<String>()
+
 
             for (i in 0 until flexboxLayout.childCount) {
                 val subView: View = flexboxLayout.getChildAt(i)
-                if (subView is ImageView) {
+                if (subView is ImageView) { // if choosed image, the iseditmode will be turn off in the first time running
                     val imageView = subView
                     var imgUri = Uri.parse(imageView.getTag().toString())
                     val fileName = "$uuidHotel-$i"
@@ -245,12 +247,12 @@ class AddHotelActivity : AppCompatActivity() {
                             if (document != null) {
                                 hotelObj = document.toObject(HotelDetailModel::class.java)
 
-                                if (isEditMode) {
-                                    hotelObj!!.photoUrl = ArrayList()
+                                if (isEditMode) { // Mode Editing
+                                    hotelObj!!.photoUrl = ArrayList() // delete all image
                                     isEditMode = false
 
                                 }
-                                hotelObj!!.photoUrl.add(imgUrl!!)
+                                hotelObj!!.photoUrl.add(imgUrl!!) // is mode uploading => add new image.
 
 
                                 //Update object
