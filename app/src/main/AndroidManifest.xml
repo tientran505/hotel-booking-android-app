@@ -25,6 +25,20 @@
             android:name=".RoomActivity"
             android:exported="false" />
         <activity
+            android:name=".booking.BookingConfirmation"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".booking.PersonalConfirmation"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".HotelSearch"
             android:exported="false">
             <meta-data
@@ -87,5 +101,4 @@
                 android:value="" />
         </activity>
     </application>
-
 </manifest>

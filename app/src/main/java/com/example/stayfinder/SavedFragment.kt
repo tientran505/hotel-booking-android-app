@@ -9,12 +9,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.LinearLayout
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.tasks.Tasks
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
@@ -42,6 +50,9 @@ class SavedFragment : Fragment(), CoroutineScope by MainScope() {
     var itemList = arrayListOf<SavedListItem>()
     var savedList = arrayListOf<SavedList>()
     val db = Firebase.firestore
+    val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+
+    lateinit var progressBar: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,14 +69,16 @@ class SavedFragment : Fragment(), CoroutineScope by MainScope() {
 
     private suspend fun loadSavedLists() {
         val documents = Firebase.firestore.collection("saved_lists")
-            .whereEqualTo("user_id", "1")
+            .whereEqualTo("user_id", user!!.uid)
+            .orderBy("create_date", Query.Direction.DESCENDING)
             .get()
             .await()
         for (document in documents) {
             val l = document.toObject(saved_lists::class.java)
             savedList.add(SavedList(l.name_list,l.number_of_item.toString() + " items saved", l.id))
-            listadapter.notifyDataSetChanged()
+            listadapter.notifyItemInserted(savedList.size - 1)
         }
+        progressBar.visibility = View.GONE
     }
 
     private suspend fun renameList(name: String, pos: Int, id: String){
@@ -82,8 +95,12 @@ class SavedFragment : Fragment(), CoroutineScope by MainScope() {
 
     private suspend fun addList(name:String){
         val id = db.collection("saved_lists").document().id
-        val list: saved_lists = saved_lists(id, "1", name)
-        db.collection("saved_lists").document(id).set(list)
+
+        val list: saved_lists = saved_lists(id, user!!.uid, name)
+        val docRef = db.collection("saved_lists").document(id)
+
+        docRef.set(list)
+
         savedList.add(SavedList(name,list.number_of_item.toString() + " items saved",id))
         listadapter.notifyItemInserted(savedList.size-1)
     }
@@ -101,6 +118,8 @@ class SavedFragment : Fragment(), CoroutineScope by MainScope() {
         itemList.add(SavedListItem("Homestay trong mơ", "Vũng Tàu", R.drawable.purpl))
         itemList.add(SavedListItem("Rất tuyệt vời", "Vũng Tàu", R.drawable.purpl))
 
+        progressBar = view.findViewById(R.id.savedListPB)
+
         val dialog = this.context?.let { BottomSheetDialog(it) }
         val viewdia = layoutInflater.inflate(R.layout.list_dialog_layout, null)
         dialog!!.setContentView(viewdia)
@@ -110,7 +129,7 @@ class SavedFragment : Fragment(), CoroutineScope by MainScope() {
 
         val myList = view.findViewById<RecyclerView>(R.id.horizontalScrollView) as RecyclerView
 
-        val addbutton = view.findViewById<Button>(R.id.button)
+        val addbutton = view.findViewById<MaterialButton>(R.id.addListBtn)
 
         var horadapter = HorizontalAdapter(itemList)
         myList.adapter = horadapter

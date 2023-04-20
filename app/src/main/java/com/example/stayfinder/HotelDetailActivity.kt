@@ -2,7 +2,9 @@ package com.example.stayfinder
 
 import android.app.ProgressDialog
 import android.content.Intent
+import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
@@ -13,6 +15,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.io.Serializable
+import com.example.stayfinder.booking.PersonalConfirmation
 import java.net.URL
 data class hotelss(
     var hotel_id: String = "",
@@ -57,7 +60,9 @@ fun convertStringtoURL(a: ArrayList<String>):ArrayList<URL>{
 class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() {
     var hoteldetails:HotelDetails? = null
     override fun onCreate(savedInstanceState: Bundle?) {
+    
         super.onCreate(savedInstanceState)
+                initActionBar()
         val documents = Firebase.firestore.collection("Hotels")
             .document("5l5PibkyeRaZRFCVPrlB")
         documents.get().addOnSuccessListener { document ->
@@ -99,7 +104,25 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
             }
             .addOnFailureListener { exception ->
             }
-
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 
+    private fun initActionBar() {
+        val menu = supportActionBar
+        menu?.setDisplayHomeAsUpEnabled(true)
+        menu?.setHomeButtonEnabled(true)
+        menu?.title = "Hotel detail"
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
 }
