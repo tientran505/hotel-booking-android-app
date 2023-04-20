@@ -86,7 +86,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "Message", Toast.LENGTH_SHORT).show()
             }
 
-            R.id.ic_notice -> {
+            R.id.ic_save_hotel -> {
                 Toast.makeText(this, "Notification", Toast.LENGTH_SHORT).show()
             }
         }

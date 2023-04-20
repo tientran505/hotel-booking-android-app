@@ -1,6 +1,5 @@
-package com.example.stayfinder
+package com.example.stayfinder.hotel.hotel_detail
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.InputType
 import android.view.LayoutInflater
@@ -9,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.stayfinder.R
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -150,7 +150,7 @@ class SubHotelDetailPeriod : Fragment() {
         val end = formatter.parse(enddate)
         daysDiff = TimeUnit.DAYS.convert(end.getTime() - start.getTime(), TimeUnit.MILLISECONDS)
         periodTv.setText("Price for $daysDiff night(s) (" + startdate+ " - "+enddate+")")
-        val moneyexchange = DecimalFormat("###,###,###,###.##"+" US$");
+        val moneyexchange = DecimalFormat("###,###,###,###.##"+" vnđ");
         costTv.setText(moneyexchange.format(price*daysDiff))
     }
 

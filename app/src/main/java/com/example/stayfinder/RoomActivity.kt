@@ -1,9 +1,11 @@
 package com.example.stayfinder
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.stayfinder.booking.PersonalConfirmation
 import java.net.URL
 
 class RoomActivity : AppCompatActivity() {
@@ -20,6 +22,11 @@ class RoomActivity : AppCompatActivity() {
         val recyclerview = findViewById<RecyclerView>(R.id.recyclerview)
         recyclerview.layoutManager = LinearLayoutManager(this)
         val adapter = RoomAdapter(Roomlist)
+
         recyclerview?.adapter = adapter
+
+        adapter.onButtonClick = { pos ->
+            startActivity(Intent(this, PersonalConfirmation::class.java))
+        }
     }
 }

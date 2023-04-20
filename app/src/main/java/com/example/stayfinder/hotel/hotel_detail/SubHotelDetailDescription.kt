@@ -1,4 +1,4 @@
-package com.example.stayfinder
+package com.example.stayfinder.hotel.hotel_detail
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
+import com.example.stayfinder.R
 import com.ms.square.android.expandabletextview.ExpandableTextView
 
 // TODO: Rename parameter arguments, choose names that match
