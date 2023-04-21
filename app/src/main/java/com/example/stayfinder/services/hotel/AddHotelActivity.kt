@@ -11,15 +11,26 @@ import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.stayfinder.R
+import com.example.stayfinder.facilities
+import com.example.stayfinder.model.FacilityModel
 import com.example.stayfinder.model.HotelDetailModel
 import com.google.android.flexbox.FlexboxLayout
+import com.google.android.gms.tasks.Task
+import com.google.android.material.chip.Chip
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
+import com.libaml.android.view.chip.ChipLayout
 import java.util.*
+import kotlin.collections.ArrayList
+
 
 class AddHotelActivity : AppCompatActivity() {
 
@@ -27,7 +38,11 @@ class AddHotelActivity : AppCompatActivity() {
     private var submitBtn: Button? = null
     private var extras: Bundle? = null
     private var nameCollection: String? = null
+    private var facilityNameCollection:String? = null
     private var uploadImgBtn: Button? = null
+    private var facilitiesDoc: Task<QuerySnapshot>? = null
+    private var facilityList: ArrayList<FacilityModel> = ArrayList()
+    private var chip: ChipLayout? = null
 
     private val REQUEST_CODE = 1752
     private var isEditMode = false
@@ -54,6 +69,8 @@ class AddHotelActivity : AppCompatActivity() {
                 pickImageFromGallery()
             }
         }
+
+
     }
 
     private fun pickImageFromGallery() {
@@ -68,6 +85,8 @@ class AddHotelActivity : AppCompatActivity() {
         setContentView(R.layout.activity_add_hotel)
 
         db = Firebase.firestore
+        nameCollection = getString(R.string.hotel_collection_name)
+        facilityNameCollection = getString(R.string.facilities_collection_name)
 
         //val uuidHotel = UUID.randomUUID().toString() // ID of hotel
         val nameHotel = findViewById<EditText>(R.id.nameHotelEt)
@@ -77,11 +96,18 @@ class AddHotelActivity : AppCompatActivity() {
         val wardHotel = findViewById<EditText>(R.id.wardEt)
         val streetHotel = findViewById<EditText>(R.id.streetEt)
         val numberStreetHotel = findViewById<EditText>(R.id.numberStreetEt)
+
+
+        chip = findViewById<View>(R.id.chipText) as ChipLayout
+
+
+        getListFacility()
+
+
         var checkedbox: MutableList<String> = mutableListOf<String>()
         var photoUrl = ArrayList<String>()
 
 
-        nameCollection = getString(R.string.hotel_collection_name)
         submitBtn = findViewById(R.id.submitBtn)
         extras = intent.extras
         uploadImgBtn = findViewById(R.id.chooseImageBtn)
@@ -92,7 +118,8 @@ class AddHotelActivity : AppCompatActivity() {
 
         if (uuidHotel == null || uuidHotel == "") {
             uuidHotel = UUID.randomUUID().toString()
-        } else { //Exist entry -> fill out the form
+        }
+        else { //Exist entry -> fill out the form
             isEditMode = true
             val docRef = db!!.collection(nameCollection!!).document(uuidHotel)
             docRef.get().addOnSuccessListener { document ->
@@ -127,6 +154,8 @@ class AddHotelActivity : AppCompatActivity() {
         }
 
         submitBtn!!.setOnClickListener {
+
+            println(chip!!.getText())
 
             //Firstly Upload photo to firebase
             val flexboxLayout = findViewById<FlexboxLayout>(R.id.flexboxLayout)
@@ -194,6 +223,7 @@ class AddHotelActivity : AppCompatActivity() {
             activityResultLauncher.launch(appPerms)
         }
 
+
     }
 
 
@@ -227,6 +257,26 @@ class AddHotelActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    private fun getListFacility(){
+
+        facilitiesDoc = db!!.collection(facilityNameCollection!!).get().addOnSuccessListener {
+            documents ->
+            for( document in documents){
+                var x = document.toObject(FacilityModel::class.java)
+
+                println(x)
+                facilityList.add(x)
+
+                val facilityName = facilityList.map { it -> it.name }
+                val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, facilityName)
+                chip!!.adapter = adapter
+            }
+        }.addOnFailureListener {
+            Toast.makeText(this, "Cannot get facitily", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     private fun uploadImg(imageUri: Uri, nameFile: String, uuid: String) {
@@ -266,5 +316,16 @@ class AddHotelActivity : AppCompatActivity() {
 
         }
 
+    }
+
+    private fun addNewChip(person: String, chipGroup: FlexboxLayout) {
+        val chip = Chip(baseContext)
+        chip.text = person
+        chip.chipIcon = ContextCompat.getDrawable(baseContext, R.mipmap.ic_launcher_round)
+        chip.isCloseIconEnabled = true
+        chip.isClickable = true
+        chip.isCheckable = false
+        chipGroup.addView(chip as View, chipGroup.childCount - 1)
+        chip.setOnCloseIconClickListener { chipGroup.removeView(chip as View) }
     }
 }

@@ -28,6 +28,4 @@ data class  HotelDetailModel (
     var booking_count: Int = 0,
     var facilities: ArrayList<Objects> = ArrayList<Objects>(),
     var comment_count: Int = 0,
-
-
     )

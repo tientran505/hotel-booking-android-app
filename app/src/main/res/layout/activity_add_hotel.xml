@@ -181,6 +181,37 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/fitnessCenterCheckbox" />
 
+
+        <com.google.android.flexbox.FlexboxLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:custom="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/utilities_flexbox"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginTop="20dp"
+            app:alignContent="space_around"
+            app:alignItems="stretch"
+            app:flexWrap="wrap"
+            app:layout_constraintEnd_toEndOf="@+id/numberStreetEt"
+            app:layout_constraintStart_toStartOf="@+id/numberStreetEt"
+            app:layout_constraintTop_toBottomOf="@+id/flexboxLayout"
+            app:showDivider="beginning|middle|end">
+
+            <com.libaml.android.view.chip.ChipLayout
+                android:id="@+id/chipText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                custom:chipPadding_="4dp"
+                custom:chipTextPadding_="2dp"
+                custom:textColor_="@android:color/black"
+                custom:deleteIcon_="@android:drawable/presence_offline"
+                custom:labelPosition_="left">
+            </com.libaml.android.view.chip.ChipLayout>
+
+        </com.google.android.flexbox.FlexboxLayout>
+
+
         <CheckBox
             android:id="@+id/freeWifiCheckbox"
             android:layout_width="wrap_content"
@@ -188,7 +219,7 @@
             android:layout_marginTop="20dp"
             android:text="Free Wifi"
             app:layout_constraintStart_toStartOf="@+id/numberStreetEt"
-            app:layout_constraintTop_toBottomOf="@+id/flexboxLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/utilities_flexbox" />
 
         <CheckBox
             android:id="@+id/swimmingPool"

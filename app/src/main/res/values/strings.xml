@@ -5,4 +5,5 @@
     <string name="client_id">823421392498-d1p3667ve1g5o9beu9hvaqs2gg8im0i2.apps.googleusercontent.com</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="hotel_collection_name">TestHotel</string>
+    <string name="facilities_collection_name">facilities</string>
 </resources>
