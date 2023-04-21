@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.widget.Button
 import android.widget.TextView
@@ -13,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.stayfinder.booking.PersonalConfirmation
 import com.example.stayfinder.hotel.Hotel
 import com.example.stayfinder.hotel.HotelAdapter
+import com.example.stayfinder.hotel.hotel_detail.HotelDetailActivity
+import com.example.stayfinder.saved.choose_item.SavedListChooseBottomSheetDialog
 import com.example.stayfinder.search.HotelSearchAdapter
 import com.example.stayfinder.search.sort.SortListFragment
 import kotlinx.serialization.encodeToString
@@ -101,6 +104,14 @@ class HotelSearch : AppCompatActivity() {
         }
 
         hotelSearchAdapter.onButtonClick = {position ->
+            val vh = hotelSearchRV.findViewHolderForAdapterPosition(position) as HotelSearchAdapter.ViewHolder
+            vh.heartBtn.setImageResource(if (!hotels[position].isSaved) R.drawable.ic_heart
+            else R.drawable.ic_heart_red)
+            hotels[position].isSaved = !hotels[position].isSaved
+
+            val collectionBottomSheet = SavedListChooseBottomSheetDialog()
+            collectionBottomSheet.show(this.supportFragmentManager
+                , SavedListChooseBottomSheetDialog.TAG)
         }
 
         hotelSearchAdapter.onItemClick = {position ->
