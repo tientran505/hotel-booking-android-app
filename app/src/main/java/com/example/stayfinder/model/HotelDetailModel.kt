@@ -26,6 +26,6 @@ data class  HotelDetailModel (
         ),
     var photoUrl: ArrayList<String> = ArrayList<String>(),
     var booking_count: Int = 0,
-    var facilities: ArrayList<Objects> = ArrayList<Objects>(),
+    var facilities: ArrayList<FacilityModel> = ArrayList<FacilityModel>(),
     var comment_count: Int = 0,
     )

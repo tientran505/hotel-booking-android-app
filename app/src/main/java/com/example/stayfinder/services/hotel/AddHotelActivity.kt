@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.view.View
 import android.widget.*
@@ -114,7 +115,7 @@ class AddHotelActivity : AppCompatActivity() {
 
 
         var uuidHotel: String? = extras?.getString("uuidHotel")
-        //uuidHotel = "2eddd0ce-9a35-4612-a3a4-27953d7aebdf"
+        //uuidHotel = "07a08363-f996-406d-afae-327d19a54ac7"
 
         if (uuidHotel == null || uuidHotel == "") {
             uuidHotel = UUID.randomUUID().toString()
@@ -140,13 +141,15 @@ class AddHotelActivity : AppCompatActivity() {
                         wardHotel.setText(hotelObj.address["ward"].toString())
                         streetHotel.setText(hotelObj.address["street"].toString())
                         numberStreetHotel.setText(hotelObj.address["number"].toString())
-                    }
 
+                        if(hotelObj.facilities.size>=1){
+                            chip!!.setText(hotelObj.facilities.map { it->it.name })
+                        }
+                    }
                 }
 
                 else {
                     Toast.makeText(this, "No document to show", Toast.LENGTH_SHORT).show()
-
                 }
             }.addOnFailureListener { ex ->
                 Toast.makeText(this, "Fail to get an entry. Ex: $ex", Toast.LENGTH_SHORT).show()
@@ -156,6 +159,9 @@ class AddHotelActivity : AppCompatActivity() {
         submitBtn!!.setOnClickListener {
 
             println(chip!!.getText())
+            val selectedFacilitiesName = chip!!.getText()
+            val selectedFacilities = facilityList.filter { it.name in selectedFacilitiesName }
+            println(selectedFacilities)
 
             //Firstly Upload photo to firebase
             val flexboxLayout = findViewById<FlexboxLayout>(R.id.flexboxLayout)
@@ -190,7 +196,7 @@ class AddHotelActivity : AppCompatActivity() {
                 ),
                 photoUrl = photoUrl,
                 booking_count = 0,
-                facilities = ArrayList<Objects>(),
+                facilities = ArrayList(selectedFacilities),
                 comment_count = 0
             )
 
@@ -205,18 +211,18 @@ class AddHotelActivity : AppCompatActivity() {
                     ).show()
                 }
 
-
-            if (findViewById<CheckBox>(R.id.freeWifiCheckbox).isChecked) { // free Wifi
-
-            }
-
-            if (findViewById<CheckBox>(R.id.swimmingPool).isChecked) { // swimming Pool
-
-            }
-
-            if (findViewById<CheckBox>(R.id.fitnessCenterCheckbox).isChecked) { //fitness Center
-
-            }
+//
+//            if (findViewById<CheckBox>(R.id.freeWifiCheckbox).isChecked) { // free Wifi
+//
+//            }
+//
+//            if (findViewById<CheckBox>(R.id.swimmingPool).isChecked) { // swimming Pool
+//
+//            }
+//
+//            if (findViewById<CheckBox>(R.id.fitnessCenterCheckbox).isChecked) { //fitness Center
+//
+//            }
         }
 
         uploadImgBtn!!.setOnClickListener {
@@ -286,36 +292,43 @@ class AddHotelActivity : AppCompatActivity() {
         var imgUrl: String? = null
 
         imageRef.putFile(imageUri).addOnSuccessListener {
-            Toast.makeText(baseContext, "Image uploaded successfully", Toast.LENGTH_SHORT).show()
+
 
             imageRef.downloadUrl.addOnCompleteListener {
                 if (it.isSuccessful) {
+
                     imgUrl = it.result.toString()
-                    var hotelObj: HotelDetailModel? = null
-                    db!!.collection(nameCollection!!).document(uuid).get()
-                        .addOnSuccessListener { document ->
-                            if (document != null) {
-                                hotelObj = document.toObject(HotelDetailModel::class.java)
 
-                                if (isEditMode) { // Mode Editing
-                                    hotelObj!!.photoUrl = ArrayList() // delete all image
-                                    isEditMode = false
+                    println(imgUrl)
 
+                    Handler().postDelayed({
+                        var hotelObj: HotelDetailModel? = null
+                        db!!.collection(nameCollection!!).document(uuid).get()
+                            .addOnSuccessListener { document ->
+                                if (document != null) {
+                                    hotelObj = document.toObject(HotelDetailModel::class.java)
+
+                                    if (isEditMode) { // Mode Editing
+                                        hotelObj!!.photoUrl = ArrayList() // delete all image
+                                        isEditMode = false
+
+                                    }
+                                    hotelObj!!.photoUrl.add(imgUrl!!) // is mode uploading => add new image.
+
+                                    println(hotelObj!!)
+                                    //Update object
+                                    db!!.collection(nameCollection!!).document(uuid).set(hotelObj!!)
+                                    Toast.makeText(baseContext, "Image uploaded successfully", Toast.LENGTH_SHORT).show()
                                 }
-                                hotelObj!!.photoUrl.add(imgUrl!!) // is mode uploading => add new image.
-
-
-                                //Update object
-                                db!!.collection(nameCollection!!).document(uuid).set(hotelObj!!)
                             }
-                        }
+                    }, 1000)
+
                 }
             }.addOnFailureListener {
                 Toast.makeText(baseContext, "Error uploading image", Toast.LENGTH_SHORT).show()
             }
 
         }
-
     }
 
     private fun addNewChip(person: String, chipGroup: FlexboxLayout) {
