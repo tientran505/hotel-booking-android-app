@@ -31,3 +31,14 @@ data class facilities(val id: Int = 0,val name: String = "", val icon: String = 
 @IgnoreExtraProperties
 data class rating(val cleanliness: Double = 0.0, val comfort: Double = 0.0,
                   val services: Double = 0.0, val location: Double = 0.0)
+
+@IgnoreExtraProperties
+data class Review(
+    var id: String = "",
+    var user: String = "",
+    var hotel_id:String = "",
+    var review_date:String = "",
+    var rating:rating = rating(),
+    var rating_overall:Double = 0.0,
+): Serializable {
+}
