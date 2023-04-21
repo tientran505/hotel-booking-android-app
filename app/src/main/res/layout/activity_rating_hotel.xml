@@ -6,12 +6,14 @@
     android:layout_height="match_parent">
 
     <ScrollView
-        android:layout_width="405dp"
-        android:layout_height="727dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.529"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.085">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -130,7 +132,58 @@
                 android:text="Submit"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/comment" />
+
+            <EditText
+                android:id="@+id/rvtitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="36dp"
+                android:layout_marginEnd="48dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:hint="Comment title"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/location" />
+
+            <TextView
+                android:id="@+id/subtitle5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Title"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/rvtitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/rvtitle" />
+
+            <EditText
+                android:id="@+id/comment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:padding="5dp"
+                android:background="@drawable/custom_border_edit_text"
+                android:ems="10"
+                android:gravity="start|top"
+                android:inputType="textMultiLine"
+                android:lines="5"
+                android:maxLines="5"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="@+id/rvtitle"
+                app:layout_constraintStart_toStartOf="@+id/rvtitle"
+                app:layout_constraintTop_toBottomOf="@+id/rvtitle" />
+
+            <TextView
+                android:id="@+id/subtitle6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="Comment"
+                android:textSize="20dp"
+                app:layout_constraintBottom_toBottomOf="@+id/comment"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/comment" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

@@ -1,5 +1,6 @@
 package com.example.stayfinder
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.stayfinder.hotel.RatingActivity
 import java.net.URL
 
 // TODO: Rename parameter arguments, choose names that match
@@ -54,7 +56,7 @@ class BookingFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 1","4 Feb","5 Feb",2000000.0,"Active",URL("https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F124%2F1246280%2F1246280_16061017110043391702.jpg%3Fca%3D6%26ce%3D1%26s%3D1024x768&tbnid=6v7Euel4ecy_8M&vet=12ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ..i&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fl-hotel%2Fhotel%2Fkhon-kaen-th.html&docid=mssDHIF707HKHM&w=1024&h=768&q=hotel%20image&ved=2ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ")))
+        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 1","4 Feb","5 Feb",2000000.0,"Completed",URL("https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F124%2F1246280%2F1246280_16061017110043391702.jpg%3Fca%3D6%26ce%3D1%26s%3D1024x768&tbnid=6v7Euel4ecy_8M&vet=12ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ..i&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fl-hotel%2Fhotel%2Fkhon-kaen-th.html&docid=mssDHIF707HKHM&w=1024&h=768&q=hotel%20image&ved=2ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ")))
         listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 2","4 Feb","5 Feb",2000000.0,"Active",URL("https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F124%2F1246280%2F1246280_16061017110043391702.jpg%3Fca%3D6%26ce%3D1%26s%3D1024x768&tbnid=6v7Euel4ecy_8M&vet=12ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ..i&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fl-hotel%2Fhotel%2Fkhon-kaen-th.html&docid=mssDHIF707HKHM&w=1024&h=768&q=hotel%20image&ved=2ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ")))
         listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 3","4 Feb","5 Feb",2000000.0,"Active",URL("https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F124%2F1246280%2F1246280_16061017110043391702.jpg%3Fca%3D6%26ce%3D1%26s%3D1024x768&tbnid=6v7Euel4ecy_8M&vet=12ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ..i&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fl-hotel%2Fhotel%2Fkhon-kaen-th.html&docid=mssDHIF707HKHM&w=1024&h=768&q=hotel%20image&ved=2ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ")))
         listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 4","4 Feb","5 Feb",2000000.0,"Cancel",URL("https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F124%2F1246280%2F1246280_16061017110043391702.jpg%3Fca%3D6%26ce%3D1%26s%3D1024x768&tbnid=6v7Euel4ecy_8M&vet=12ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ..i&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fl-hotel%2Fhotel%2Fkhon-kaen-th.html&docid=mssDHIF707HKHM&w=1024&h=768&q=hotel%20image&ved=2ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ")))
@@ -114,6 +116,10 @@ class BookingFragment : Fragment() {
                 rv?.setVisibility(View.INVISIBLE)
             }
 
+            adapter.onItemClick={position->
+
+            }
+
         }
         doneBtn!!.setOnClickListener(){
 
@@ -137,6 +143,11 @@ class BookingFragment : Fragment() {
                 messageLayoutShow("Login or Register to Start","",false, layout)
                 rv?.setVisibility(View.INVISIBLE)
             }
+
+            adapter.onItemClick={position->
+                val intent = Intent(activity, RatingActivity::class.java)
+                startActivity(intent)
+            }
         }
         cancelBtn!!.setOnClickListener(){
             cancelBtn!!.setBackgroundResource(R.drawable.custom_button_booking_select)
@@ -158,6 +169,10 @@ class BookingFragment : Fragment() {
                 layout.setVisibility(View.VISIBLE)
                 messageLayoutShow("Login or Register to Start","",false, layout)
                 rv?.setVisibility(View.INVISIBLE)
+            }
+
+            adapter.onItemClick={position->
+
             }
         }
 
