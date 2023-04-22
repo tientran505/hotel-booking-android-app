@@ -64,8 +64,7 @@ class HotelSearchAdapter(private val hotels: List<Hotel>,
 
         holder.card.clipToOutline = true
         holder.card.outlineProvider = ViewOutlineProvider.BACKGROUND
-        holder.heartBtn.setImageResource(if (hotel.isSaved) R.drawable.ic_heart
-        else R.drawable.ic_heart_red)
+        holder.heartBtn.setImageResource(R.drawable.add_circle_outline)
         holder.rating.rating = hotel.rating
 
         val numberFormat = NumberFormat.getCurrencyInstance(Locale("vn", "VN"))
