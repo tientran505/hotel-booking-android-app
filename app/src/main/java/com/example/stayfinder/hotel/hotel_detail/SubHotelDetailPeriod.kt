@@ -1,4 +1,4 @@
-package com.example.stayfinder
+package com.example.stayfinder.hotel.hotel_detail
 
 import android.os.Bundle
 import android.text.InputType
@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.stayfinder.R
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
@@ -15,6 +16,7 @@ import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
+import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -42,9 +44,14 @@ class SubHotelDetailPeriod : Fragment() {
     lateinit var dateEnd: TextView
     lateinit var periodTv: TextView
     lateinit var costTv: TextView
+    lateinit var noPeople:TextView
+    lateinit var noRoom:TextView
+    lateinit var noKid: TextView
     var daysDiff: Long = 0
     var price: Double =0.0
-    var tax: String? =""
+    fun openDialog(){
+
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,11 +61,34 @@ class SubHotelDetailPeriod : Fragment() {
         val bookingDetail :HotelDetails ? = this.getArguments()?.getSerializable("BookingDetail") as HotelDetails?
         val dateStartString : String? = this.getArguments()?.getString("dateStart")
         val dateEndString: String? =this.getArguments()?.getString("dateEnd")
+        val detailRoom: ArrayList<Int>? =this.getArguments()?.getIntegerArrayList("detailRoom")
         price = bookingDetail!!.priceless!!
         dateStart = view!!.findViewById(R.id.datestartTv)
         dateEnd = view.findViewById(R.id.dateendTv)
         periodTv = view.findViewById(R.id.periodTv)
         costTv = view.findViewById(R.id.costTv)
+        noRoom = view.findViewById(R.id.noRoomTv)
+        noPeople = view.findViewById(R.id.noPeopleTv)
+        noKid = view.findViewById(R.id.nopKidTv)
+        if(detailRoom != null){
+            noRoom.setText(detailRoom?.get(0).toString()+" Room(s)")
+            noPeople.setText(detailRoom?.get(1).toString()+" People(s)")
+            noKid.setText(detailRoom?.get(2).toString()+" Kid(s)")
+            if(detailRoom?.get(2)==0)
+                noKid.setText("No Kid Include")
+        }
+        else{
+            noRoom.setText("click here to choose room")
+        }
+        noRoom.setOnClickListener(){
+            openDialog()
+        }
+        noPeople.setOnClickListener(){
+            openDialog()
+        }
+        noKid.setOnClickListener(){
+            openDialog()
+        }
         dateStart.inputType = InputType.TYPE_NULL
         dateEnd.inputType = InputType.TYPE_NULL
         dateStart.text = dateStartString
@@ -81,8 +111,6 @@ class SubHotelDetailPeriod : Fragment() {
                         .build()
                 )
                 .build()
-
-
             dateRangePicker.addOnPositiveButtonClickListener {it->
                 Toast.makeText(requireContext(), "${dateRangePicker.headerText} is selected"
                     , Toast.LENGTH_LONG).show()
@@ -122,7 +150,7 @@ class SubHotelDetailPeriod : Fragment() {
         val end = formatter.parse(enddate)
         daysDiff = TimeUnit.DAYS.convert(end.getTime() - start.getTime(), TimeUnit.MILLISECONDS)
         periodTv.setText("Price for $daysDiff night(s) (" + startdate+ " - "+enddate+")")
-        val moneyexchange = DecimalFormat("###,###,###,###.##"+" US$");
+        val moneyexchange = DecimalFormat("###,###,###,###.##"+" vnđ");
         costTv.setText(moneyexchange.format(price*daysDiff))
     }
 

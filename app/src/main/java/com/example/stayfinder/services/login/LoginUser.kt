@@ -115,7 +115,6 @@ class LoginUser() : Fragment() {
         { this.user?.displayName }
         else {this.user?.email}
 
-
         return view
     }
 

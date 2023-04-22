@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.stayfinder.booking.PersonalConfirmation
 import com.example.stayfinder.hotel.Hotel
 import com.example.stayfinder.hotel.HotelAdapter
+import com.example.stayfinder.hotel.hotel_detail.HotelDetailActivity
 import com.example.stayfinder.saved.choose_item.SavedListChooseBottomSheetDialog
 import com.example.stayfinder.search.HotelSearchAdapter
 import com.example.stayfinder.search.sort.SortListFragment

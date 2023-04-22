@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".services.hotel.AddHotelActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <EditText
+            android:id="@+id/nameHotelEt"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="45dp"
+            android:background="@drawable/edit_text_bg"
+            android:ems="10"
+            android:hint="Name Hotel"
+            android:inputType="text"
+            android:paddingHorizontal="20dp"
+            android:text=""
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <EditText
+            android:id="@+id/descriptionEt"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="45dp"
+            android:background="@drawable/edit_text_bg"
+            android:ems="10"
+            android:scrollHorizontally="false"
+            android:hint="Description"
+            android:inputType="text|textMultiLine"
+            android:paddingHorizontal="20dp"
+            android:text=""
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nameHotelEt" />
+
+        <EditText
+            android:id="@+id/cityEt"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="45dp"
+            android:background="@drawable/edit_text_bg"
+            android:ems="10"
+            android:hint="City. Ex: Ho Chi Minh"
+            android:inputType="text"
+            android:paddingHorizontal="20dp"
+            android:text=""
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionEt" />
+
+        <EditText
+            android:id="@+id/districtEt"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="45dp"
+            android:background="@drawable/edit_text_bg"
+            android:ems="10"
+            android:hint="District. Ex: 1"
+            android:inputType="text"
+            android:paddingHorizontal="20dp"
+            android:text=""
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/cityEt" />
+
+        <EditText
+            android:id="@+id/wardEt"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="45dp"
+            android:background="@drawable/edit_text_bg"
+            android:ems="10"
+            android:hint="Ward: Ex: Da Kao"
+            android:inputType="text"
+            android:paddingHorizontal="20dp"
+            android:text=""
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/districtEt" />
+
+        <EditText
+            android:id="@+id/streetEt"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="45dp"
+            android:background="@drawable/edit_text_bg"
+            android:ems="10"
+            android:hint="Street: Ex: Nguyen Thi Minh Khai"
+            android:inputType="text"
+            android:paddingHorizontal="20dp"
+            android:text=""
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/wardEt" />
+
+        <EditText
+            android:id="@+id/numberStreetEt"
+            android:layout_width="0dp"
+            android:layout_height="54dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="45dp"
+            android:background="@drawable/edit_text_bg"
+            android:ems="10"
+            android:hint="Number Street: Ex: 241"
+            android:inputType="text"
+            android:paddingHorizontal="20dp"
+            android:text=""
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/streetEt" />
+
+        <Button
+            android:id="@+id/chooseImageBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Choose Image"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.498"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/numberStreetEt" />
+
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/flexboxLayout"
+            android:layout_width="389dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:alignContent="stretch"
+            app:alignItems="stretch"
+            app:flexWrap="wrap"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chooseImageBtn">
+
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <Button
+            android:id="@+id/submitBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Submit"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/fitnessCenterCheckbox" />
+
+        <CheckBox
+            android:id="@+id/freeWifiCheckbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="Free Wifi"
+            app:layout_constraintStart_toStartOf="@+id/numberStreetEt"
+            app:layout_constraintTop_toBottomOf="@+id/flexboxLayout" />
+
+        <CheckBox
+            android:id="@+id/swimmingPool"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Swimming Pool"
+            app:layout_constraintStart_toStartOf="@+id/numberStreetEt"
+            app:layout_constraintTop_toBottomOf="@+id/freeWifiCheckbox" />
+
+        <CheckBox
+            android:id="@+id/fitnessCenterCheckbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Fitness center"
+            app:layout_constraintStart_toStartOf="@+id/numberStreetEt"
+            app:layout_constraintTop_toBottomOf="@+id/swimmingPool" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>
