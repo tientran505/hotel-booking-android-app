@@ -6,9 +6,76 @@
     tools:context=".partner.PartnerMoreFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="See More Fragment" />
+        android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/textView16"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="More"
+            android:layout_marginTop="5dp"
+            android:textSize="30sp"
+            android:layout_marginStart="10dp"
+            android:textStyle="bold"
+            />
+
+        <Button
+            android:id="@+id/guestReviewBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Guest Reviews"
+            android:textAllCaps="false"
+            android:layout_marginVertical="5dp"
+            android:background="@android:color/transparent"
+            android:drawableLeft="@drawable/ic_rating_star"
+            android:drawableRight="@drawable/ic_right_arrow"
+            android:textColor="@color/black"
+            android:gravity="start|center_vertical"
+            />
+
+        <View
+            android:id="@+id/divider6"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider" />
+
+        <Button
+            android:id="@+id/promotionBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Promotion"
+            android:textAllCaps="false"
+            android:gravity="start|center_vertical"
+            android:background="@android:color/transparent"
+            android:textColor="@color/black"
+            android:layout_marginVertical="5dp"
+            android:drawableLeft="@drawable/ic_promotion"
+            android:drawableRight="@drawable/ic_right_arrow"
+            />
+
+        <View
+            android:id="@+id/divider9"
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="?android:attr/listDivider" />
+
+        <Button
+            android:id="@+id/partnerLogOutBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Log out"
+            android:background="@android:color/transparent"
+            android:textColor="@color/black"
+            android:gravity="start|center_vertical"
+            android:textAllCaps="false"
+            android:drawableLeft="@drawable/ic_log_out"
+            android:drawableRight="@drawable/ic_right_arrow"
+            />
+
+
+    </LinearLayout>
 </FrameLayout>

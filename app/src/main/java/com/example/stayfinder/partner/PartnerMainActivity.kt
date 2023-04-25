@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.stayfinder.R
+import com.example.stayfinder.partner.property.PartnerPropertiesFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class PartnerMainActivity : AppCompatActivity() {

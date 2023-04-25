@@ -1,11 +1,17 @@
 package com.example.stayfinder.partner
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import com.example.stayfinder.MainActivity
 import com.example.stayfinder.R
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -22,6 +28,8 @@ class PartnerMoreFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private lateinit var logOutBtn: Button
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -35,7 +43,11 @@ class PartnerMoreFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.partner_fragment_more, container, false)
+        val view = inflater.inflate(R.layout.partner_fragment_more, container, false)
+
+        initComponent(view)
+
+        return view
     }
 
     companion object {
@@ -56,5 +68,15 @@ class PartnerMoreFragment : Fragment() {
                     putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    private fun initComponent(view: View) {
+        logOutBtn = view.findViewById(R.id.partnerLogOutBtn)
+
+        logOutBtn.setOnClickListener {
+            Firebase.auth.signOut()
+            startActivity(Intent(requireActivity(), MainActivity::class.java))
+            requireActivity().finishAffinity()
+        }
     }
 }
