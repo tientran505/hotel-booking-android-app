@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".partner.property.DetailProperty">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/imgPropertyDetail"
+                android:layout_width="match_parent"
+                android:scaleType="centerCrop"
+                android:layout_height="150dp"
+                app:srcCompat="@drawable/img_2" />
+
+            <TextView
+                android:id="@+id/propertyNameDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Hồ Trị An"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                />
+
+            <TextView
+                android:id="@+id/propertyAddressDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="23132 Nguyen Van Cu, ..."
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="10dp"
+                android:textSize="15sp"
+                />
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="match_parent"
+                android:layout_marginTop="25dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:textStyle="bold"
+                android:textSize="20sp"
+                android:text="Property settings" />
+
+            <Button
+                android:id="@+id/nameBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:text="Property name"
+                android:textColor="@color/black"
+                android:gravity="start|center_vertical"
+                android:textAllCaps="false"
+                android:drawableLeft="@drawable/ic_edit_property"
+                android:drawableRight="@drawable/ic_right_arrow"
+                android:background="@android:color/transparent"
+                />
+
+            <View
+                android:id="@+id/divider10"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="15dp"
+                android:background="?android:attr/listDivider" />
+
+            <Button
+                android:id="@+id/locationBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Property Location"
+                android:textColor="@color/black"
+                android:layout_marginVertical="10dp"
+                android:gravity="start|center_vertical"
+                android:textAllCaps="false"
+                android:drawableLeft="@drawable/ic_pin_location"
+                android:drawableRight="@drawable/ic_right_arrow"
+                android:background="@android:color/transparent"
+                />
+
+            <View
+                android:id="@+id/divider11"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="15dp"
+                android:background="?android:attr/listDivider" />
+
+            <Button
+                android:id="@+id/photoBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:text="Photos"
+                android:textColor="@color/black"
+                android:gravity="start|center_vertical"
+                android:textAllCaps="false"
+                android:drawableLeft="@drawable/ic_photo_library"
+                android:drawableRight="@drawable/ic_right_arrow"
+                android:background="@android:color/transparent"
+                />
+
+            <View
+                android:id="@+id/divider12"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="15dp"
+                android:background="?android:attr/listDivider" />
+
+            <Button
+                android:id="@+id/descriptionBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:layout_marginVertical="10dp"
+                android:textColor="@color/black"
+                android:gravity="start|center_vertical"
+                android:textAllCaps="false"
+                android:drawableLeft="@drawable/ic_description"
+                android:drawableRight="@drawable/ic_right_arrow"
+                android:background="@android:color/transparent"
+                />
+
+            <View
+                android:id="@+id/divider13"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="15dp"
+                android:background="?android:attr/listDivider" />
+
+            <Button
+                android:id="@+id/facilitiesBtn"
+                android:layout_width="match_parent"
+                android:layout_marginVertical="10dp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/services_svgrepo_com"
+                android:drawableRight="@drawable/ic_right_arrow"
+                android:gravity="start|center_vertical"
+                android:text="Facilities"
+                android:textAllCaps="false"
+                android:textColor="@color/black" />
+
+            <View
+                android:id="@+id/divider14"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginHorizontal="15dp"
+                android:background="?android:attr/listDivider" />
+
+            <Button
+                android:id="@+id/roomBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/room_svgrepo_com"
+                android:drawableRight="@drawable/ic_right_arrow"
+                android:gravity="start|center_vertical"
+                android:text="Room amenities"
+                android:textAllCaps="false"
+                android:textColor="@color/black" />
+        </LinearLayout>
+    </ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
