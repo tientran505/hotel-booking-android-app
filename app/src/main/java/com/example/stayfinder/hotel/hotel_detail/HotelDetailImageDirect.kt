@@ -1,5 +1,4 @@
-package com.example.stayfinder
-
+package com.example.stayfinder.hotel.hotel_detail
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -12,6 +11,7 @@ import androidx.viewpager.widget.PagerAdapter
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.example.stayfinder.R
 import java.net.URL
 
 // TODO: Rename parameter arguments, choose names that match

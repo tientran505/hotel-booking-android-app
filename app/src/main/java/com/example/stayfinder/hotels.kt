@@ -6,18 +6,18 @@ import java.net.URL
 
 @IgnoreExtraProperties
 data class hotels(
-    var hotel_id: String = "",
+    var id: String = "",
     var hotel_name: String = "",
     var description: String = "",
     var address: address = address(),
-    var photoUrl: ArrayList<URL> = arrayListOf(),
+    var photoUrl: ArrayList<String> = arrayListOf(),
     var facilities: ArrayList<facilities> = arrayListOf(),
     var rating: rating = rating(),
     var rating_overall: Double = 0.0,
     val booking_count: Int = 0,
     val comment_count: Int = 0,
 ) :Serializable{
-    constructor(hotel_id:String, hotel_name:String, description:String, address:address, photoUrl: ArrayList<URL>,
+    constructor(hotel_id:String, hotel_name:String, description:String, address:address, photoUrl: ArrayList<String>,
                 facilities: ArrayList<facilities>) : this(hotel_id, hotel_name, description, address,
         photoUrl, facilities, rating(0.0,0.0,0.0,0.0,), 0.0,
         0, 0)

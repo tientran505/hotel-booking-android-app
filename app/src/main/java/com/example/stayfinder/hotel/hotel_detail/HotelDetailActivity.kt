@@ -1,5 +1,4 @@
 package com.example.stayfinder.hotel.hotel_detail
-
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -35,17 +34,17 @@ data class HotelDetails(
     var id: String = "",
     var hotel_name: String ="",
     var priceless: Double =0.0,
-    var img: ArrayList<URL> =ArrayList<URL>(),
+    var img: ArrayList<String> =ArrayList<String>(),
     var rating_overall: Double =0.0,
     var address: address = address(),
     var description: String="",
     var noFeedback: Int =0,
     val booking_count: Int =0,
     ):Serializable{
-    constructor(id: String,hotel_name: String,pricebernight: Double, address: address,img: ArrayList<URL>,rating_overall: Double,description: String):
+    constructor(id: String,hotel_name: String,pricebernight: Double, address: address,img: ArrayList<String>,rating_overall: Double,description: String):
             this(id,hotel_name,pricebernight,img,rating_overall,address,description,0,0)
-    constructor(a: hotelss):this(a.id,a.hotel_name,0.0, convertStringtoURL(a.photoUrl),a.rating_overall,a.address,a.description,a.comment_count,a.booking_count)
-    constructor(a: hotelss, priceless: Double):this(a.id,a.hotel_name,priceless, convertStringtoURL(a.photoUrl),a.rating_overall,a.address,a.description,a.comment_count,a.booking_count)
+    constructor(a: hotelss):this(a.id,a.hotel_name,0.0, (a.photoUrl),a.rating_overall,a.address,a.description,a.comment_count,a.booking_count)
+    constructor(a: hotelss, priceless: Double):this(a.id,a.hotel_name,priceless, (a.photoUrl),a.rating_overall,a.address,a.description,a.comment_count,a.booking_count)
 
 }
 fun convertStringtoURL(a: ArrayList<String>):ArrayList<URL>{
@@ -59,7 +58,6 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
     var hoteldetails:HotelDetails? = null
     var isPress = false
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         initActionBar()
         val documents = Firebase.firestore.collection("Hotels")
@@ -67,10 +65,8 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
         documents.get().addOnSuccessListener { document ->
             if (document != null) {
                 val l = document.toObject(hotelss::class.java)
-                println(l)
                 hoteldetails = l?.let { HotelDetails(it) }
                 setContentView(R.layout.activity_hotel_detail)
-                println(hoteldetails)
                 val fm: FragmentManager = supportFragmentManager
                 val dateStart = "30-3-2023"
                 val dateEnd = "1-4-2023"
@@ -99,10 +95,13 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
                     startActivity(intent)
                 }
             } else {
-
+                Toast.makeText(this," database is Empty for result", Toast.LENGTH_SHORT).show()
+                finish();
             }
         }
             .addOnFailureListener { exception ->
+                Toast.makeText(this,"Cannot load Image, please try again later", Toast.LENGTH_SHORT).show()
+                finish()
             }
     }
     override fun onBackPressed() {
@@ -115,9 +114,7 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
         menu?.setDisplayHomeAsUpEnabled(true)
         menu?.setHomeButtonEnabled(true)
         menu?.title = "Hotel detail"
-
     }
-
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.action_bar_menu_save, menu)
 
