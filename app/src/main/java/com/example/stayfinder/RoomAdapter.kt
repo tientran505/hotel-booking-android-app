@@ -17,7 +17,7 @@ data class Room(
     var hoteli_id:Int,
     val roomType: room_type,
     val description: String,
-    val img: ArrayList<URL>,
+    val img: ArrayList<String>,
     var available_start_date: String,
     var origin_price: Double,
     var discount_price: Double,

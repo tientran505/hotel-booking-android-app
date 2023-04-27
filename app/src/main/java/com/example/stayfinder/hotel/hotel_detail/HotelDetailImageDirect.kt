@@ -26,10 +26,10 @@ private const val ARG_PARAM2 = "param2"
  */
 class ViewPagerAdapter() : PagerAdapter() {
     var context: Context? = null
-    var images = ArrayList<URL>()
+    var images = ArrayList<String>()
     var layoutInflater: LayoutInflater? = null
 
-    constructor(images: ArrayList<URL>, context: Context) : this() {
+    constructor(images: ArrayList<String>, context: Context) : this() {
         this.images = images
         this.context = context
         layoutInflater =
@@ -50,7 +50,7 @@ class ViewPagerAdapter() : PagerAdapter() {
         context?.let {
             if (imageView != null) {
                 Glide.with(it)
-                    .load(images[position])
+                    .load(URL(images[position]))
                     .apply(RequestOptions().centerCrop())
                     .into(imageView)
             }
@@ -83,10 +83,11 @@ class HotelDetailImageDirect : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view: View = inflater.inflate(R.layout.fragment_sub_hotel_detail_image_direct, container, false)
-        var images = this.getArguments()?.getSerializable("list") as ArrayList<URL>
+        val images  = (activity as HotelDetailActivity2?)?.getImages() ?: ArrayList<String>()
+        println(images)
         viewpager = view!!.findViewById(R.id.viewPager)
-        val position =this.arguments?.getInt("position") as Int
-        pageAdapter = ViewPagerAdapter(images,this.requireContext())
+        val position =getArguments()?.getInt("position") as Int
+        pageAdapter = images?.let { ViewPagerAdapter(it,this.requireContext()) }
         viewpager?.adapter = pageAdapter
         println(position.toString())
         viewpager?.setCurrentItem(position);

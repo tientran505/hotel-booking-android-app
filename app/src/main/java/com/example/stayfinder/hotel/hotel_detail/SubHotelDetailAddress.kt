@@ -1,5 +1,4 @@
 package com.example.stayfinder.hotel.hotel_detail
-
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Address

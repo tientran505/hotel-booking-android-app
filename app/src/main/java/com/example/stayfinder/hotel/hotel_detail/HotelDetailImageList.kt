@@ -1,17 +1,16 @@
-package com.example.stayfinder.hotel.hotel_detailimport
+package com.example.stayfinder.hotel.hotel_detail
 import android.content.Context
-import com.example.stayfinder.R
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.GridView
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.stayfinder.hotel.hotel_detail.HotelDetailImageDirect
+import com.example.stayfinder.R
 import java.net.URL
 
 // TODO: Rename parameter arguments, choose names that match
@@ -84,20 +83,19 @@ class SubBookingDetailImageList : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        println("aaaaaaaaaaaaaaaaaaaa")
         val view: View = inflater.inflate(R.layout.fragment_sub_hotel_detail_image_list, container, false)
         val grid = view!!.findViewById<GridView>(R.id.gridview)
-        val listImage = this.getArguments()?.getSerializable("listImage") as ArrayList<String>
+//        val listImage = this.getArguments()?.getSerializable("listImage") as ArrayList<String>
+        val listImage  = (activity as HotelDetailActivity2?)?.getImages() ?: ArrayList<String>()
         val adapter  =  MyGridAdapter(this.requireContext(), listImage )
         grid.adapter = adapter
         grid.setOnItemClickListener { adapterView, view, i, l ->
             val directImageFragment = HotelDetailImageDirect()
-            val bundle2 = Bundle()
-            bundle2.putInt("position",i)
-            bundle2.putSerializable("listImage", listImage)
-            directImageFragment.setArguments(bundle2);
+            val bundle = Bundle()
+            bundle.putInt("position",i)
+            directImageFragment.setArguments(bundle);
             requireActivity().supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, HotelDetailImageDirect())
+                .replace(R.id.frameLayout, directImageFragment)
                 .addToBackStack(null)
                 .commit()
         }

@@ -1,18 +1,21 @@
 package com.example.stayfinder.hotel.hotel_detail
-
-import android.app.PendingIntent.getActivity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
-import com.example.stayfinder.*
-import com.example.stayfinder.hotel.hotel_detailimport.SubBookingDetailImageList
+import com.example.stayfinder.R
+import com.example.stayfinder.RoomActivity
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class HotelDetailActivity2 : AppCompatActivity() {
+    private val imageUrls = ArrayList<String>()
+
+    fun getImages(): ArrayList<String> {
+        return imageUrls
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -39,7 +42,6 @@ class HotelDetailActivity2 : AppCompatActivity() {
                 fm.beginTransaction().replace(R.id.frameLayout, fragFeedback).commit();
             }
             "image"->{
-                val imageUrls = ArrayList<String>()
                 db.collection("Hotels").whereEqualTo("id", hotel_id)
                     .get()
                     .addOnSuccessListener { hotelDocuments ->
@@ -60,11 +62,11 @@ class HotelDetailActivity2 : AppCompatActivity() {
                                     }
                                 }
                                 val listImageFragment = SubBookingDetailImageList()
-                                val bundle2 = Bundle()
-                                bundle2.putSerializable("listImage", imageUrls)
-                                listImageFragment.setArguments(bundle2);
+//                                val bundle2 = Bundle()
+//                                bundle2.putSerializable("listImage", imageUrls)
+//                                listImageFragment.setArguments(bundle2);
                                 supportFragmentManager.beginTransaction()
-                                    .replace(R.id.fragment_container, listImageFragment)
+                                    .replace(R.id.frameLayout, listImageFragment)
                                     .commit()
 
                             }
