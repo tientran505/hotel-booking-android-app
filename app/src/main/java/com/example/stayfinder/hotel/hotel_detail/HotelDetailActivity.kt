@@ -21,6 +21,7 @@ data class hotelss(
     var address: address = address(),
     var photoUrl: ArrayList<String> = ArrayList<String>(),
     var rating: rating = rating(),
+    val facilities: ArrayList<facilities> = ArrayList<facilities>(),
     var rating_overall: Double = 0.0,
     val booking_count: Int = 0,
     val comment_count: Int = 0,
@@ -37,13 +38,11 @@ data class HotelDetails(
     var address: address = address(),
     var description: String="",
     var noFeedback: Int =0,
+    var rating: rating = rating(),
     val booking_count: Int =0,
+    val facilities: ArrayList<facilities> = ArrayList<facilities>(),
     ):Serializable{
-    constructor(id: String,hotel_name: String,pricebernight: Double, address: address,img: ArrayList<String>,rating_overall: Double,description: String):
-            this(id,hotel_name,pricebernight,img,rating_overall,address,description,0,0)
-    constructor(a: hotelss):this(a.id,a.hotel_name,0.0, (a.photoUrl),a.rating_overall,a.address,a.description,a.comment_count,a.booking_count)
-    constructor(a: hotelss, priceless: Double):this(a.id,a.hotel_name,priceless, (a.photoUrl),a.rating_overall,a.address,a.description,a.comment_count,a.booking_count)
-
+    constructor(a: hotelss):this(a.id,a.hotel_name,0.0, (a.photoUrl),a.rating_overall,a.address,a.description,a.comment_count,a.rating,a.booking_count,a.facilities)
 }
 fun convertStringtoURL(a: ArrayList<String>):ArrayList<URL>{
     var url = ArrayList<URL>()
@@ -65,7 +64,6 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
                 val l = document.toObject(hotelss::class.java)
                 hoteldetails = l?.let { HotelDetails(it) }
                 println(hoteldetails)
-                val hotel_rating = l?.rating
                 setContentView(R.layout.activity_hotel_detail)
                 val fm: FragmentManager = supportFragmentManager
                 val dateStart = "30-3-2023"
@@ -76,6 +74,17 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
                 bundle.putString("dateStart", dateStart)
                 bundle.putString("dateEnd", dateEnd)
                 bundle.putIntegerArrayList("detailRoom", detailRoom)
+                val roomref = Firebase.firestore.collection("rooms").orderBy("discount_price").limit(1).get()
+                    .addOnSuccessListener { documents ->
+                        if (!documents.isEmpty) {
+                            val smallestPrice = documents.documents[0].getDouble("discount_price")
+                            if (smallestPrice != null) {
+                                hoteldetails!!.priceless=smallestPrice
+                            }
+                        } else {
+                                hoteldetails!!.priceless = 0.0
+                        }
+                    }
                 val fragImage = SubHotelDetailImage()
                 fragImage.setArguments(bundle);
                 val fragPeriod = SubHotelDetailPeriod()
@@ -83,7 +92,7 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
                 val fragAddress = SubHotelDetailAddress()
                 fragAddress.setArguments(bundle);
                 val fragDescription = SubHotelDetailDescription()
-                bundle.putSerializable("rating", hotel_rating)
+                bundle.putSerializable("rating", hoteldetails?.rating)
                 fragDescription.setArguments(bundle);
                 fm.beginTransaction().replace(R.id.fame1, fragImage).commit();
                 fm.beginTransaction().replace(R.id.fame2, fragPeriod).commit();

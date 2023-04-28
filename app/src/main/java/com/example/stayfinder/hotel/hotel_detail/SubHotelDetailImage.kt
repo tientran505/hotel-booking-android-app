@@ -49,12 +49,12 @@ class SubHotelDetailImage : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val a = arrayListOf<Service>(
-            Service("wifi", URL("https://cdn-icons-png.flaticon.com/512/93/93158.png")),
-            Service("wifi", URL("https://cdn-icons-png.flaticon.com/512/93/93158.png")),
-            Service("wifi", URL("https://cdn-icons-png.flaticon.com/512/93/93158.png"))
-        )
-        val bookingDetail :HotelDetails ? = this.getArguments()?.getSerializable("BookingDetail") as HotelDetails
+        val a = arrayListOf<Service>()
+        val bookingDetail :HotelDetails = this.getArguments()?.getSerializable("BookingDetail") as HotelDetails
+
+        for( i in bookingDetail.facilities){
+            a.add(Service(i))
+        }
         val view: View? = inflater.inflate(R.layout.fragment_hotel_detail_image_service_title, container, false)
         var textview = view!!.findViewById<TextView>(R.id.titleTv)
         val imageLayout = view!!.findViewById<ConstraintLayout>(R.id.imageLayout)
@@ -69,7 +69,6 @@ class SubHotelDetailImage : Fragment() {
         val horizontalLayoutManagaer = LinearLayoutManager(this.requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = horizontalLayoutManagaer
         recyclerView.adapter = ServiceAdapter(a)
-        println(bookingDetail?.img)
         when (bookingDetail?.img?.size!!) {
             0 -> {
                 noImageET.setText("")

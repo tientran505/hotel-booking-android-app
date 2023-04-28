@@ -8,21 +8,37 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import com.example.stayfinder.R
-import com.example.stayfinder.Review
 import com.example.stayfinder.RoomActivity
+import com.example.stayfinder.rating
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
+data class reviewss(
+    var id: String = "",
+    var user: user = user(),
+    var hotel_id:String = "",
+    var review_date:String = "",
+    var title: String="",
+    var content: String="",
+    var rating: rating = rating(),
+    var rating_overall:Double = 0.0,
+)
+data class user(
+    var user_id: String ="",
+    var display_name: String = "",
+    var photoUrl: String = "",
+)
 class HotelDetailActivity2 : AppCompatActivity() {
     private val imageUrls = ArrayList<String>()
-    private val reviewsData = ArrayList<Review>()
+    private val reviewsData = ArrayList<reviewss>()
     val db = Firebase.firestore
+    private val ratingData = rating()
     lateinit var progressBar: ProgressBar
 
     fun getImages(): ArrayList<String> {
         return imageUrls
     }
-    fun getReview(): ArrayList<Review> {
+    fun getReview(): ArrayList<reviewss> {
         return reviewsData
     }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -43,25 +59,24 @@ class HotelDetailActivity2 : AppCompatActivity() {
         }
         when(fragment_type){
             "feebback" ->{
-                val fm: FragmentManager = supportFragmentManager
-                val fragFeedback = HotelDetailFeedBack()
-                val bundle2 = Bundle()
-                bundle2.putString("booking_id",hotel_id)
-                fragFeedback.setArguments(bundle2);
-                fm.beginTransaction().replace(R.id.frameLayout, fragFeedback).commit();
+                println("hotel_id 1233"+hotel_id)
                 db.collection("reviews").whereEqualTo("hotel_id", hotel_id)
                     .get()
                     .addOnSuccessListener { reviews ->
-                        for (r in reviews) {
-                            val review = r.toObject(Review::class.java)
+                        for (review in reviews) {
+                            val review = review.toObject(reviewss::class.java)
+                            println("review +"+review)
                             reviewsData.add(review)
-
                         }
                         progressBar.visibility = View.GONE
-                        val listImageFragment = SubBookingDetailImageList()
-                        supportFragmentManager.beginTransaction()
-                            .replace(R.id.frameLayout, listImageFragment)
-                            .commit()
+
+                        val fm: FragmentManager = supportFragmentManager
+                        val fragFeedback = HotelDetailFeedBack()
+                        val bundle2 = Bundle()
+                        bundle2.putString("booking_id",hotel_id)
+                        bundle2.putSerializable("rating",bundle!!.getSerializable("rating"))
+                        fragFeedback.setArguments(bundle2);
+                        fm.beginTransaction().replace(R.id.frameLayout, fragFeedback).commit();
                     }
                     .addOnFailureListener { exception ->
                         Toast.makeText(this,"Cannot load Image, please try again later", Toast.LENGTH_SHORT).show()
