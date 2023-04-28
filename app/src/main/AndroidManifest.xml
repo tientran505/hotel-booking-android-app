@@ -99,7 +99,7 @@
             android:exported="false"
             android:label="@string/title_activity_maps" />
         <activity
-            android:name=".MainActivity"
+            android:name=".hotel.hotel_detail.HotelDetailActivity"
             android:exported="false" />
         <activity
             android:name=".hotel.RatingActivity"
@@ -108,7 +108,7 @@
             android:name=".services.hotel.AddHotelActivity"
             android:exported="false" />
         <activity
-            android:name=".hotel.hotel_detail.HotelDetailActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
