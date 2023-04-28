@@ -2,6 +2,8 @@ package com.example.stayfinder.hotel
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.RatingBar
@@ -12,8 +14,10 @@ import com.example.stayfinder.user.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.IgnoreExtraProperties
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.tasks.await
 import java.io.Serializable
 import java.sql.Timestamp
 import java.time.LocalDate
