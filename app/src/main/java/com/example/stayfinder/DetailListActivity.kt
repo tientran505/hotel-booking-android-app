@@ -16,6 +16,12 @@ class DetailListActivity : AppCompatActivity() {
         itemList.add(HotelDetail("bloblo","Căn nhà mơ ước", "Vũng Tàu"
             , "King Room", 1000000.0, 0.5,
             "Very good", 8.0, 500, R.drawable.purpl))
+        itemList.add(HotelDetail("bloblo","Căn nhà mơ ước", "Vũng Tàu"
+            , "King Room", 1000000.0, 0.5,
+            "Very good", 8.0, 500, R.drawable.purpl))
+        itemList.add(HotelDetail("bloblo","Căn nhà mơ ước", "Vũng Tàu"
+            , "King Room", 1000000.0, 0.5,
+            "Very good", 8.0, 500, R.drawable.purpl))
 
         val lists = findViewById<RecyclerView>(R.id.recyclerDetail) as RecyclerView
         var adapter = DetailListAdapter(itemList)
