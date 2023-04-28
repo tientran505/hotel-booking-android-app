@@ -104,9 +104,6 @@ class HotelSearch : AppCompatActivity() {
         }
 
         hotelSearchAdapter.onButtonClick = {position ->
-            val vh = hotelSearchRV.findViewHolderForAdapterPosition(position) as HotelSearchAdapter.ViewHolder
-            vh.heartBtn.setImageResource(if (!hotels[position].isSaved) R.drawable.ic_heart
-            else R.drawable.ic_heart_red)
             hotels[position].isSaved = !hotels[position].isSaved
 
             val collectionBottomSheet = SavedListChooseBottomSheetDialog()
