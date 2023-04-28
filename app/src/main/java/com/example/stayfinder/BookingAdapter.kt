@@ -13,11 +13,18 @@ import java.text.DecimalFormat
 
 class BookingAdapter (private var item: ArrayList<Booking>) : RecyclerView.Adapter<BookingAdapter.ViewHolder>() {
 
-    class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
+    var onItemClick: ((Int) -> Unit)? = null
+    inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
         val nameTv = listItemView.findViewById<TextView>(R.id.nameTv)
         val infoTv = listItemView.findViewById<TextView>(R.id.infoTv)
         val statusTv = listItemView.findViewById<TextView>(R.id.statusTv)
         val img = listItemView.findViewById<ImageView>(R.id.itemImgv)
+
+        init {
+            listItemView.setOnClickListener{
+                onItemClick?.invoke(adapterPosition)
+            }
+        }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int):
             BookingAdapter.ViewHolder {

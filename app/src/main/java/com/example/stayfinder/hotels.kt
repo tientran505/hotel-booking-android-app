@@ -37,9 +37,21 @@ data class rating(val cleanliness: Double = 0.0, val comfort: Double = 0.0,
 @IgnoreExtraProperties
 data class Review(
     var id: String = "",
-    var user: String = "",
+    var user: User_cmt = User_cmt(),
     var hotel_id:String = "",
     var review_date:String = "",
     var rating:rating = rating(),
     var rating_overall:Double = 0.0,
-): Serializable {}
+    var title:String="",
+    var comment:String = "",
+): Serializable {
+}
+
+@IgnoreExtraProperties
+data class User_cmt(
+    var user_id: String = "",
+    var display_name: String = "",
+    var photoUrl: String = "",
+):Serializable{
+
+}
