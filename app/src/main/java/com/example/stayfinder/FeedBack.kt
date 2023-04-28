@@ -1,5 +1,8 @@
 package com.example.stayfinder
 
+import com.example.stayfinder.hotel.hotel_detail.hotelss
+import com.example.stayfinder.user.User
+import java.io.Serializable
 import java.net.URL
 
 data class FeedBack(
@@ -13,4 +16,5 @@ data class FeedBack(
     var checkin: String,
     var period: Int ,
     var nopeople: String
-)
+):java.io.Serializable{
+}

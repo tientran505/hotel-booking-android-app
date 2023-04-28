@@ -69,6 +69,7 @@ class SubHotelDetailImage : Fragment() {
         val horizontalLayoutManagaer = LinearLayoutManager(this.requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = horizontalLayoutManagaer
         recyclerView.adapter = ServiceAdapter(a)
+        println(bookingDetail?.img)
         when (bookingDetail?.img?.size!!) {
             0 -> {
                 noImageET.setText("")

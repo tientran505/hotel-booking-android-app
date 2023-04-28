@@ -1,5 +1,6 @@
 package com.example.stayfinder
 
+import com.example.stayfinder.user.User
 import com.google.firebase.firestore.IgnoreExtraProperties
 import java.io.Serializable
 import java.net.URL
@@ -30,7 +31,9 @@ data class address ( val number: String = "", val street: String = "", val distr
 data class facilities(val id: Int = 0,val name: String = "", val icon: String = "")
 @IgnoreExtraProperties
 data class rating(val cleanliness: Double = 0.0, val comfort: Double = 0.0,
-                  val services: Double = 0.0, val location: Double = 0.0)
+                  val services: Double = 0.0, val location: Double = 0.0):Serializable{
+
+                  }
 
 @IgnoreExtraProperties
 data class Review(
@@ -42,3 +45,16 @@ data class Review(
     var rating_overall:Double = 0.0,
 ): Serializable {
 }
+@IgnoreExtraProperties
+data class reviews(
+    var id: String = "",
+    var user: User? = null,
+    var hotel_id:String = "",
+    var review_date:String = "",
+    var content: String="",
+    var title: String="",
+    var rating:rating = rating(),
+    var rating_overall:Double = 0.0,
+): Serializable {
+}
+

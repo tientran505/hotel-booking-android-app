@@ -1,26 +1,35 @@
 package com.example.stayfinder.hotel.hotel_detail
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import com.example.stayfinder.R
+import com.example.stayfinder.Review
 import com.example.stayfinder.RoomActivity
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class HotelDetailActivity2 : AppCompatActivity() {
     private val imageUrls = ArrayList<String>()
+    private val reviewsData = ArrayList<Review>()
+    val db = Firebase.firestore
+    lateinit var progressBar: ProgressBar
 
     fun getImages(): ArrayList<String> {
         return imageUrls
+    }
+    fun getReview(): ArrayList<Review> {
+        return reviewsData
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_hotel_detail2)
-
+        progressBar = findViewById(R.id.savedListPB)
         val bundle = intent.extras
         val fragment_type = bundle!!.getString("fragment_type")
         val hotel_id = bundle!!.getString("booking_id")
@@ -40,6 +49,24 @@ class HotelDetailActivity2 : AppCompatActivity() {
                 bundle2.putString("booking_id",hotel_id)
                 fragFeedback.setArguments(bundle2);
                 fm.beginTransaction().replace(R.id.frameLayout, fragFeedback).commit();
+                db.collection("reviews").whereEqualTo("hotel_id", hotel_id)
+                    .get()
+                    .addOnSuccessListener { reviews ->
+                        for (r in reviews) {
+                            val review = r.toObject(Review::class.java)
+                            reviewsData.add(review)
+
+                        }
+                        progressBar.visibility = View.GONE
+                        val listImageFragment = SubBookingDetailImageList()
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.frameLayout, listImageFragment)
+                            .commit()
+                    }
+                    .addOnFailureListener { exception ->
+                        Toast.makeText(this,"Cannot load Image, please try again later", Toast.LENGTH_SHORT).show()
+                        finish();
+                    }
             }
             "image"->{
                 db.collection("Hotels").whereEqualTo("id", hotel_id)
@@ -61,10 +88,8 @@ class HotelDetailActivity2 : AppCompatActivity() {
                                         imageUrls.addAll(roomImageUrlList)
                                     }
                                 }
+                                progressBar.visibility = View.GONE
                                 val listImageFragment = SubBookingDetailImageList()
-//                                val bundle2 = Bundle()
-//                                bundle2.putSerializable("listImage", imageUrls)
-//                                listImageFragment.setArguments(bundle2);
                                 supportFragmentManager.beginTransaction()
                                     .replace(R.id.frameLayout, listImageFragment)
                                     .commit()

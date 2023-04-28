@@ -25,11 +25,9 @@ data class hotelss(
     val booking_count: Int = 0,
     val comment_count: Int = 0,
 ) :Serializable{
-//    constructor(hotel_id:String, hotel_name:String, description:String, address:address, photoUrl: String,
-//                facilities: ArrayList<facilities>) : this(hotel_id, hotel_name, description, address,
-//        photoUrl, facilities, rating(0.0,0.0,0.0,0.0,), 0.0,
-//        0, 0)
+
 }
+
 data class HotelDetails(
     var id: String = "",
     var hotel_name: String ="",
@@ -66,6 +64,8 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
             if (document != null) {
                 val l = document.toObject(hotelss::class.java)
                 hoteldetails = l?.let { HotelDetails(it) }
+                println(hoteldetails)
+                val hotel_rating = l?.rating
                 setContentView(R.layout.activity_hotel_detail)
                 val fm: FragmentManager = supportFragmentManager
                 val dateStart = "30-3-2023"
@@ -83,6 +83,7 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
                 val fragAddress = SubHotelDetailAddress()
                 fragAddress.setArguments(bundle);
                 val fragDescription = SubHotelDetailDescription()
+                bundle.putSerializable("rating", hotel_rating)
                 fragDescription.setArguments(bundle);
                 fm.beginTransaction().replace(R.id.fame1, fragImage).commit();
                 fm.beginTransaction().replace(R.id.fame2, fragPeriod).commit();
