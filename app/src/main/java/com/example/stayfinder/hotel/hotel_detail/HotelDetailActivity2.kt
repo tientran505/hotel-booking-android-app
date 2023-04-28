@@ -1,6 +1,7 @@
 package com.example.stayfinder.hotel.hotel_detail
 import android.content.Intent
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ProgressBar
@@ -34,13 +35,14 @@ class HotelDetailActivity2 : AppCompatActivity() {
     val db = Firebase.firestore
     private val ratingData = rating()
     lateinit var progressBar: ProgressBar
-
+    var title: String =""
     fun getImages(): ArrayList<String> {
         return imageUrls
     }
     fun getReview(): ArrayList<reviewss> {
         return reviewsData
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -57,8 +59,12 @@ class HotelDetailActivity2 : AppCompatActivity() {
             intent.putExtra("hotel_id",hotel_id);
             startActivity(intent)
         }
+        if (fragment_type != null) {
+            this.title = fragment_type
+        }
+        initActionBar()
         when(fragment_type){
-            "feebback" ->{
+            "feedback" ->{
                 println("hotel_id 1233"+hotel_id)
                 db.collection("reviews").whereEqualTo("hotel_id", hotel_id)
                     .get()
@@ -125,5 +131,29 @@ class HotelDetailActivity2 : AppCompatActivity() {
             }
         }
 
+    }
+    private fun initActionBar() {
+        val menu = supportActionBar
+        menu?.setDisplayHomeAsUpEnabled(true)
+        menu?.setHomeButtonEnabled(true)
+//        menu?.title = "Booking confirmation" // title of activity
+        if(this.title =="feedback") menu?.title = "Hotel Reviews"
+        if(this.title =="image") menu?.title = "Hotel Images"
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }
