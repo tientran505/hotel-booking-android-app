@@ -14,20 +14,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
 import java.io.Serializable
 import java.net.URL
-data class hotelss(
-    var id: String = "",
-    var hotel_name: String = "",
-    var description: String = "",
-    var address: address = address(),
-    var photoUrl: ArrayList<String> = ArrayList<String>(),
-    var rating: rating = rating(),
-    val facilities: ArrayList<facilities> = ArrayList<facilities>(),
-    var rating_overall: Double = 0.0,
-    val booking_count: Int = 0,
-    val comment_count: Int = 0,
-) :Serializable{
 
-}
 
 data class HotelDetails(
     var id: String = "",
@@ -42,7 +29,10 @@ data class HotelDetails(
     val booking_count: Int =0,
     val facilities: ArrayList<facilities> = ArrayList<facilities>(),
     ):Serializable{
-    constructor(a: hotelss):this(a.id,a.hotel_name,0.0, (a.photoUrl),a.rating_overall,a.address,a.description,a.comment_count,a.rating,a.booking_count,a.facilities)
+    constructor(a: hotels):this(a.id,a.hotel_name,0.0, (a.photoUrl),a.rating_overall,a.address,a.description,a.comment_count,a.rating,a.booking_count,a.facilities)
+    fun updatePriceless(priceless: Double){
+        this.priceless = priceless
+    }
 }
 fun convertStringtoURL(a: ArrayList<String>):ArrayList<URL>{
     var url = ArrayList<URL>()
@@ -61,7 +51,7 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
             .document("5l5PibkyeRaZRFCVPrlB")
         documents.get().addOnSuccessListener { document ->
             if (document != null) {
-                val l = document.toObject(hotelss::class.java)
+                val l = document.toObject(hotels::class.java)
                 hoteldetails = l?.let { HotelDetails(it) }
                 println(hoteldetails)
                 setContentView(R.layout.activity_hotel_detail)
@@ -69,35 +59,35 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
                 val dateStart = "30-3-2023"
                 val dateEnd = "1-4-2023"
                 val detailRoom = arrayListOf<Int>(1, 2, 0)
-                val bundle = Bundle()
-                bundle.putSerializable("BookingDetail", hoteldetails)
-                bundle.putString("dateStart", dateStart)
-                bundle.putString("dateEnd", dateEnd)
-                bundle.putIntegerArrayList("detailRoom", detailRoom)
+
                 val roomref = Firebase.firestore.collection("rooms").orderBy("discount_price").limit(1).get()
                     .addOnSuccessListener { documents ->
                         if (!documents.isEmpty) {
                             val smallestPrice = documents.documents[0].getDouble("discount_price")
                             if (smallestPrice != null) {
-                                hoteldetails!!.priceless=smallestPrice
+                                println(smallestPrice.toDouble())
+                                hoteldetails!!.updatePriceless(smallestPrice.toDouble())
+                                val bundle = Bundle()
+                                bundle.putSerializable("BookingDetail", hoteldetails)
+                                bundle.putString("dateStart", dateStart)
+                                bundle.putString("dateEnd", dateEnd)
+                                bundle.putIntegerArrayList("detailRoom", detailRoom)
+                                val fragImage = SubHotelDetailImage()
+                                fragImage.setArguments(bundle);
+                                val fragPeriod = SubHotelDetailPeriod()
+                                fragPeriod.setArguments(bundle);
+                                val fragAddress = SubHotelDetailAddress()
+                                fragAddress.setArguments(bundle);
+                                val fragDescription = SubHotelDetailDescription()
+                                bundle.putSerializable("rating", hoteldetails?.rating)
+                                fragDescription.setArguments(bundle);
+                                fm.beginTransaction().replace(R.id.fame1, fragImage).commit();
+                                fm.beginTransaction().replace(R.id.fame2, fragPeriod).commit();
+                                fm.beginTransaction().replace(R.id.fame3, fragAddress).commit();
+                                fm.beginTransaction().replace(R.id.fame4, fragDescription).commit();
                             }
-                        } else {
-                                hoteldetails!!.priceless = 0.0
                         }
                     }
-                val fragImage = SubHotelDetailImage()
-                fragImage.setArguments(bundle);
-                val fragPeriod = SubHotelDetailPeriod()
-                fragPeriod.setArguments(bundle);
-                val fragAddress = SubHotelDetailAddress()
-                fragAddress.setArguments(bundle);
-                val fragDescription = SubHotelDetailDescription()
-                bundle.putSerializable("rating", hoteldetails?.rating)
-                fragDescription.setArguments(bundle);
-                fm.beginTransaction().replace(R.id.fame1, fragImage).commit();
-                fm.beginTransaction().replace(R.id.fame2, fragPeriod).commit();
-                fm.beginTransaction().replace(R.id.fame3, fragAddress).commit();
-                fm.beginTransaction().replace(R.id.fame4, fragDescription).commit();
                 val bookingBtn = findViewById<Button>(R.id.BookingBtn)
                 bookingBtn.setOnClickListener() {
                     val intent = Intent(this, RoomActivity::class.java)

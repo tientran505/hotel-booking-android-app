@@ -9,29 +9,17 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import com.example.stayfinder.R
+import com.example.stayfinder.Review
 import com.example.stayfinder.RoomActivity
 import com.example.stayfinder.rating
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
-data class reviewss(
-    var id: String = "",
-    var user: user = user(),
-    var hotel_id:String = "",
-    var review_date:String = "",
-    var title: String="",
-    var content: String="",
-    var rating: rating = rating(),
-    var rating_overall:Double = 0.0,
-)
-data class user(
-    var user_id: String ="",
-    var display_name: String = "",
-    var photoUrl: String = "",
-)
+
+
 class HotelDetailActivity2 : AppCompatActivity() {
     private val imageUrls = ArrayList<String>()
-    private val reviewsData = ArrayList<reviewss>()
+    private val reviewsData = ArrayList<Review>()
     val db = Firebase.firestore
     private val ratingData = rating()
     lateinit var progressBar: ProgressBar
@@ -39,7 +27,7 @@ class HotelDetailActivity2 : AppCompatActivity() {
     fun getImages(): ArrayList<String> {
         return imageUrls
     }
-    fun getReview(): ArrayList<reviewss> {
+    fun getReview(): ArrayList<Review> {
         return reviewsData
     }
 
@@ -70,7 +58,7 @@ class HotelDetailActivity2 : AppCompatActivity() {
                     .get()
                     .addOnSuccessListener { reviews ->
                         for (review in reviews) {
-                            val review = review.toObject(reviewss::class.java)
+                            val review = review.toObject(Review::class.java)
                             println("review +"+review)
                             reviewsData.add(review)
                         }

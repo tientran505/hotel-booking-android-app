@@ -12,7 +12,7 @@ data class hotels(
     var description: String = "",
     var address: address = address(),
     var photoUrl: ArrayList<String> = arrayListOf(),
-    var facilities: ArrayList<facilities> = arrayListOf(),
+    var facilities: ArrayList<facilities> = arrayListOf<facilities>(),
     var rating: rating = rating(),
     var rating_overall: Double = 0.0,
     val booking_count: Int = 0,
