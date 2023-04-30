@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".services.hotel.RoomAddHotelDetailActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/textView21"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:text="Where can people sleep?"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <com.mcdev.quantitizerlibrary.HorizontalQuantitizer
+            android:id="@+id/guestStay_HQ"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="@+id/textView18"
+            app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+        <TextView
+            android:id="@+id/textView18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="How many guest can stay?"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/roomSelected_MultiGroup"
+            app:layout_constraintTop_toBottomOf="@+id/roomSelected_MultiGroup" />
+
+        <TextView
+            android:id="@+id/textView22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:text="How many bathrooms are there?"
+            app:layout_constraintStart_toStartOf="@+id/guestStay_HQ"
+            app:layout_constraintTop_toBottomOf="@+id/guestStay_HQ" />
+
+        <com.mcdev.quantitizerlibrary.HorizontalQuantitizer
+            android:id="@+id/bathroom_HQ"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="@+id/textView22"
+            app:layout_constraintTop_toBottomOf="@+id/textView22" />
+
+        <TextView
+            android:id="@+id/textView24"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:textSize="20dp"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:text="How many bedrooms are there?"
+            app:layout_constraintStart_toStartOf="@+id/bathroom_HQ"
+            app:layout_constraintTop_toBottomOf="@+id/bathroom_HQ" />
+
+        <com.mcdev.quantitizerlibrary.HorizontalQuantitizer
+            android:id="@+id/bedroom_HQ"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="@+id/textView24"
+            app:layout_constraintTop_toBottomOf="@+id/textView24" />
+
+        <TextView
+            android:id="@+id/textView23"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="How big is this apartment?"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="@+id/bedroom_HQ"
+            app:layout_constraintTop_toBottomOf="@+id/bedroom_HQ" />
+
+        <EditText
+            android:id="@+id/editTextNumber"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:ems="10"
+            android:inputType="number"
+            app:layout_constraintStart_toStartOf="@+id/textView23"
+            app:layout_constraintTop_toBottomOf="@+id/textView23" />
+
+        <TextView
+            android:id="@+id/textView25"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="7dp"
+            android:text="square meters"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextNumber"
+            app:layout_constraintStart_toEndOf="@+id/editTextNumber" />
+
+
+        <com.nex3z.togglebuttongroup.MultiSelectToggleGroup
+            android:id="@+id/roomSelected_MultiGroup"
+            android:layout_width="0dp"
+            android:layout_height="31dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/textView21"
+            app:layout_constraintTop_toBottomOf="@+id/textView21"
+            app:tbgChildSpacing="auto">
+
+            <com.nex3z.togglebuttongroup.button.LabelToggle
+                android:id="@+id/bedRoomSelected_Btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bed Room" />
+
+            <com.nex3z.togglebuttongroup.button.LabelToggle
+                android:id="@+id/livingRoomSelected_Btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Living Room" />
+
+            <com.nex3z.togglebuttongroup.button.LabelToggle
+                android:id="@+id/kitchenRoomSelected_Btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Kitchen Room" />
+
+            <!--...-->
+
+        </com.nex3z.togglebuttongroup.MultiSelectToggleGroup>
+
+        <Button
+            android:id="@+id/nextBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Next"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextNumber" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

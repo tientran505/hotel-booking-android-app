@@ -6,11 +6,14 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ListView
 import android.widget.Toast
 import com.example.stayfinder.R
 import com.example.stayfinder.partner.property.adapter.Property
 import com.example.stayfinder.partner.property.adapter.PropertyAdapter
+import com.example.stayfinder.services.hotel.AddHotelActivity
+import com.google.firebase.internal.InternalTokenProvider
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -74,6 +77,12 @@ class PartnerPropertiesFragment : Fragment() {
         propertyLV.setOnItemClickListener { adapterView, view, i, l ->
             startActivity(Intent(requireContext(), DetailProperty::class.java))
             requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        }
+
+        var addBtn = view.findViewById<Button>(R.id.addPropertyBtn)
+        addBtn.setOnClickListener {
+            startActivity(Intent(requireContext(), AddHotelActivity::class.java))
+
         }
     }
 

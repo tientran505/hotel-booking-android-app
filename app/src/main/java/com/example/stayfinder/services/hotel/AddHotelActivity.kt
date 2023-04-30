@@ -128,66 +128,69 @@ class AddHotelActivity : AppCompatActivity() {
 
         submitBtn!!.setOnClickListener {
 
-            //Firstly Upload photo to firebase
-            val flexboxLayout = findViewById<FlexboxLayout>(R.id.flexboxLayout)
+//            //Firstly Upload photo to firebase
+//            val flexboxLayout = findViewById<FlexboxLayout>(R.id.flexboxLayout)
+//
+//
+//            for (i in 0 until flexboxLayout.childCount) {
+//                val subView: View = flexboxLayout.getChildAt(i)
+//                if (subView is ImageView) { // if choosed image, the iseditmode will be turn off in the first time running
+//                    val imageView = subView
+//                    var imgUri = Uri.parse(imageView.getTag().toString())
+//                    val fileName = "$uuidHotel-$i"
+//                    uploadImg(imgUri, fileName, uuidHotel!!)
+//                }
+//            }
+//
+//            //Create the object of hotelDetail
+//            val hotel = HotelDetailModel(
+//                owner_id = Firebase.auth.currentUser?.uid.toString(),
+//                id = uuidHotel,
+//                hotel_name = nameHotel.text.toString(),
+//                description = descriptionHotel.text.toString(),
+//                rating = hashMapOf(
+//                    "cleanliness" to 0, "comfort" to 0, "services" to 0, "location" to 0
+//                ),
+//                rating_overall = null,
+//                address = hashMapOf(
+//                    "city" to cityHotel.text.toString(),
+//                    "number" to numberStreetHotel.text.toString(),
+//                    "street" to streetHotel.text.toString(),
+//                    "district" to districtHotel.text.toString(),
+//                    "ward" to wardHotel.text.toString()
+//                ),
+//                photoUrl = photoUrl,
+//                booking_count = 0,
+//                facilities = ArrayList<Objects>(),
+//                comment_count = 0
+//            )
+//
+//            db!!.collection(nameCollection!!).document(uuidHotel!!).set(hotel)
+//                .addOnSuccessListener {
+//                    Toast.makeText(
+//                        this, "Hotel data added successfully", Toast.LENGTH_SHORT
+//                    ).show()
+//                }.addOnFailureListener {
+//                    Toast.makeText(
+//                        this, "Error adding hotel data with" + " exception: $it", Toast.LENGTH_SHORT
+//                    ).show()
+//                }
+//
+//
+//            if (findViewById<CheckBox>(R.id.freeWifiCheckbox).isChecked) { // free Wifi
+//
+//            }
+//
+//            if (findViewById<CheckBox>(R.id.swimmingPool).isChecked) { // swimming Pool
+//
+//            }
+//
+//            if (findViewById<CheckBox>(R.id.fitnessCenterCheckbox).isChecked) { //fitness Center
+//
+//            }
 
-
-            for (i in 0 until flexboxLayout.childCount) {
-                val subView: View = flexboxLayout.getChildAt(i)
-                if (subView is ImageView) { // if choosed image, the iseditmode will be turn off in the first time running
-                    val imageView = subView
-                    var imgUri = Uri.parse(imageView.getTag().toString())
-                    val fileName = "$uuidHotel-$i"
-                    uploadImg(imgUri, fileName, uuidHotel!!)
-                }
-            }
-
-            //Create the object of hotelDetail
-            val hotel = HotelDetailModel(
-                owner_id = Firebase.auth.currentUser?.uid.toString(),
-                id = uuidHotel,
-                hotel_name = nameHotel.text.toString(),
-                description = descriptionHotel.text.toString(),
-                rating = hashMapOf(
-                    "cleanliness" to 0, "comfort" to 0, "services" to 0, "location" to 0
-                ),
-                rating_overall = null,
-                address = hashMapOf(
-                    "city" to cityHotel.text.toString(),
-                    "number" to numberStreetHotel.text.toString(),
-                    "street" to streetHotel.text.toString(),
-                    "district" to districtHotel.text.toString(),
-                    "ward" to wardHotel.text.toString()
-                ),
-                photoUrl = photoUrl,
-                booking_count = 0,
-                facilities = ArrayList<Objects>(),
-                comment_count = 0
-            )
-
-            db!!.collection(nameCollection!!).document(uuidHotel!!).set(hotel)
-                .addOnSuccessListener {
-                    Toast.makeText(
-                        this, "Hotel data added successfully", Toast.LENGTH_SHORT
-                    ).show()
-                }.addOnFailureListener {
-                    Toast.makeText(
-                        this, "Error adding hotel data with" + " exception: $it", Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-
-            if (findViewById<CheckBox>(R.id.freeWifiCheckbox).isChecked) { // free Wifi
-
-            }
-
-            if (findViewById<CheckBox>(R.id.swimmingPool).isChecked) { // swimming Pool
-
-            }
-
-            if (findViewById<CheckBox>(R.id.fitnessCenterCheckbox).isChecked) { //fitness Center
-
-            }
+            var intent = Intent(this, RoomAddHotelDetailActivity::class.java)
+            startActivity(intent)
         }
 
         uploadImgBtn!!.setOnClickListener {
