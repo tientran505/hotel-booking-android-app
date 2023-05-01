@@ -14,6 +14,7 @@ import android.view.View
 import android.widget.*
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -28,6 +29,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.FirebaseException
+import com.google.firebase.FirebaseTooManyRequestsException
 import com.google.firebase.auth.*
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -40,14 +42,12 @@ import java.util.concurrent.TimeUnit
 class ProfileActivity : AppCompatActivity() {
     lateinit var displaynameET: EditText
     private var progressDialog: ProgressDialog? = null
-    lateinit var phoneTv: TextView
-    lateinit var emailTv: TextView
+    lateinit var phoneET: EditText
+    lateinit var emailET: EditText
     private val RC_SIGN_IN = 9723;
     lateinit var displaynameLayout: View
     lateinit var verifyImg: ImageView
     lateinit var avarImg: ImageView
-    lateinit var emailBtn: Button
-    lateinit var phoneBtn:Button
     lateinit var progressBar: ProgressBar
     lateinit var editBtn: Button
     lateinit var saveBtn: Button
@@ -109,8 +109,8 @@ class ProfileActivity : AppCompatActivity() {
         println(user)
         displaynameLayout = findViewById(R.id.displaynameLayout)
         displaynameET = findViewById(R.id.displaynameET)
-        phoneTv = findViewById(R.id.phoneET)
-        emailTv = findViewById(R.id.emailET)
+        phoneET = findViewById(R.id.phoneET)
+        emailET = findViewById(R.id.emailET)
         verifyImg = findViewById(R.id.emailVerified)
         avarImg = findViewById(R.id.avarImg)
         editBtn = findViewById(R.id.EditBtn)
@@ -119,19 +119,19 @@ class ProfileActivity : AppCompatActivity() {
         cancelBtn = findViewById(R.id.cancelBtn)
         displaynameTv = findViewById(R.id.displayname)
         progressBar = findViewById(R.id.savedListPB)
-        emailBtn = findViewById(R.id.emailBtn)
-        phoneBtn = findViewById(R.id.phoneBtn)
+//        phoneBtn = findViewById(R.id.phoneBtn)
         displaynameET.setEnabled(false);
+        phoneET.setEnabled(false);
+
         progressBar.visibility = View.GONE
         editImg.visibility = View.GONE
         saveBtn.visibility = View.GONE
         displaynameTv.setText(user!!.displayName)
         cancelBtn.visibility = View.GONE
         displaynameET.setText(user.displayName)
-        emailTv.setText(user.email)
-        phoneTv.setText(user.phoneNumber)
-        emailBtn.visibility=View.GONE
-        phoneBtn.visibility=View.GONE
+        emailET.setText(user.email)
+        phoneET.setText(user.phoneNumber)
+//        phoneBtn.visibility=View.GONE
         progressDialog = ProgressDialog(this)
         createRequest()
         if(user.isEmailVerified == false){
@@ -141,13 +141,12 @@ class ProfileActivity : AppCompatActivity() {
             .load(URL(user.photoUrl.toString()))
             .apply(RequestOptions().centerCrop())
             .into(avarImg)
-        emailBtn.setOnClickListener {
-            goToSignIn()
-        }
+
         editBtn.setOnClickListener{
-            emailBtn.visibility=View.VISIBLE
-            phoneBtn.visibility=View.VISIBLE
+//            phoneBtn.visibility=View.VISIBLE
             displaynameET.setEnabled(true);
+            phoneET.setEnabled(true);
+
             editImg.visibility = View.VISIBLE
             saveBtn.visibility = View.VISIBLE
             cancelBtn.visibility = View.VISIBLE
@@ -161,11 +160,10 @@ class ProfileActivity : AppCompatActivity() {
             }
         }
         saveBtn.setOnClickListener{
-            emailBtn.visibility=View.GONE
-            phoneBtn.visibility=View.GONE
+//            phoneBtn.visibility=View.GONE
             progressBar.visibility = View.VISIBLE
             displaynameET.setEnabled(false);
-            displaynameET.setEnabled(false);
+            phoneET.setEnabled(false);
             editImg.visibility = View.GONE
             saveBtn.visibility = View.GONE
             editBtn.visibility = View.GONE
@@ -197,44 +195,58 @@ class ProfileActivity : AppCompatActivity() {
                     }
                 }
             }
-            val profileUpdates = UserProfileChangeRequest.Builder()
-                .setDisplayName(displaynameET.text.toString())
-                .build()
-            user!!.updateProfile(profileUpdates)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d(TAG, "User profile photo updated.")
-                    } else {
-                        Log.w(TAG, "User profile photo not updated.", task.exception)
+            else if(user.displayName != displaynameET.text.toString()) {
+                val profileUpdates = UserProfileChangeRequest.Builder()
+                    .setDisplayName(displaynameET.text.toString())
+                    .build()
+                user!!.updateProfile(profileUpdates)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.d(TAG, "User profile profile updated.")
+                        } else {
+                            Log.w(TAG, "User profile photo not updated.", task.exception)
+                        }
                     }
-                }
-            user!!.updateEmail(emailTv.text.toString())
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d(TAG, "User email address updated.")
-                    } else {
-                        Log.w(TAG, "User email address not updated.", task.exception)
+            }
+            else if(user.email != emailET.text.toString()){
+                user!!.updateEmail(emailET.text.toString())
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.d(TAG, "User email address updated: {${user.email}")
+                        } else {
+                            Log.w(TAG, "User email address not updated.", task.exception)
+                        }
                     }
-                }
-
-            db.collection("users").document(user.uid)
-                .set(User(user))
-                .addOnSuccessListener {
-                    Log.d(
-                        TAG,
-                        "DocumentSnapshot successfully written!"
-                    )
-                }
-                .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
-            displaynameTv.setText(user.displayName)
+            }
+            else if(user.phoneNumber != phoneET.text.toString()){
+                val credential = PhoneAuthProvider.getCredential(phoneET.text.toString(), "12342456") // Replace with the verification code received by the user
+                user.updatePhoneNumber(credential)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.d(TAG, "Phone number updated successfully")
+                        } else {
+                            Log.w(TAG, "Phone number update failed", task.exception)
+                        }
+                    }
+                db.collection("users").document(user.uid)
+                    .set(User(user))
+                    .addOnSuccessListener {
+                        Log.d(
+                            TAG,
+                            "DocumentSnapshot successfully written!"
+                        )
+                    }
+                    .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+            }
             editBtn.visibility=View.VISIBLE
             progressBar.visibility = View.GONE
+            phoneET.setText(user.phoneNumber)
+            displaynameTv.setText(user.displayName)
         }
         cancelBtn.setOnClickListener{
-            emailBtn.visibility=View.GONE
-            phoneBtn.visibility=View.GONE
+//            phoneBtn.visibility=View.GONE
             displaynameET.setEnabled(false);
-            displaynameET.setEnabled(false);
+            phoneET.setEnabled(false);
             editImg.visibility = View.GONE
             saveBtn.visibility = View.GONE
             editBtn.visibility = View.GONE
@@ -242,8 +254,8 @@ class ProfileActivity : AppCompatActivity() {
             displaynameTv.visibility = View.VISIBLE
             displaynameTv.setText(user.displayName)
             displaynameET.setText(user.displayName)
-            emailTv.setText(user.email)
-            phoneTv.setText(user.phoneNumber)
+            emailET.setText(user.email)
+//            phoneTv.setText(user.phoneNumber)
             if(user.isEmailVerified == false){
                 verifyImg.visibility= View.GONE
             }
@@ -256,6 +268,44 @@ class ProfileActivity : AppCompatActivity() {
                 .into(avarImg)
         }
         editBtn.visibility=View.VISIBLE
+    }
+    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
+        auth.signInWithCredential(credential)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    // Sign in success, update UI with the signed-in user's information
+                    Log.d(TAG, "signInWithCredential:success")
+
+                    val user = task.result?.user
+                } else {
+                    // Sign in failed, display a message and update the UI
+                    Log.w(TAG, "signInWithCredential:failure", task.exception)
+                    if (task.exception is FirebaseAuthInvalidCredentialsException) {
+                        // The verification code entered was invalid
+                    }
+                    // Update UI
+                }
+            }
+    }
+    fun enableUserManuallyInputCode(verificationId: String) {
+        // Show a dialog or view that allows the user to manually input the verification code.
+        // This could be a simple EditText field or a custom UI component.
+        val verificationCodeEditText = EditText(this)
+        val dialog = AlertDialog.Builder(this)
+            .setTitle("Enter Verification Code")
+            .setMessage("Please enter the verification code sent to your phone.")
+            .setView(verificationCodeEditText)
+            .setPositiveButton("Submit") { _, _ ->
+                val verificationCode = verificationCodeEditText.text.toString()
+                // Call the PhoneAuthProvider.verifyPhoneNumber() method again with the entered code.
+                val credential = PhoneAuthProvider.getCredential(verificationId, verificationCode)
+                signInWithPhoneAuthCredential(credential)
+            }
+            .setNegativeButton("Cancel") { _, _ ->
+                // Handle cancellation
+            }
+            .create()
+        dialog.show()
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -344,3 +394,5 @@ class ProfileActivity : AppCompatActivity() {
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }
+
+
