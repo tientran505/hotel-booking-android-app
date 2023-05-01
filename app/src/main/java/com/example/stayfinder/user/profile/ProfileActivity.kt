@@ -40,11 +40,10 @@ import java.util.concurrent.TimeUnit
 
 
 class ProfileActivity : AppCompatActivity() {
+    private var verificationId: String?= null
     lateinit var displaynameET: EditText
-    private var progressDialog: ProgressDialog? = null
     lateinit var phoneET: EditText
     lateinit var emailET: EditText
-    private val RC_SIGN_IN = 9723;
     lateinit var displaynameLayout: View
     lateinit var verifyImg: ImageView
     lateinit var avarImg: ImageView
@@ -88,19 +87,8 @@ class ProfileActivity : AppCompatActivity() {
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
     )
-    private fun goToSignIn() {
-        val signInIntent = mGoogleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
-    }
 
-    private fun createRequest(){
-        mGoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.client_id))
-            .requestEmail()
-            .build()
 
-        mGoogleSignInClient = GoogleSignIn.getClient(this, mGoogleSignInOptions)
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -119,7 +107,6 @@ class ProfileActivity : AppCompatActivity() {
         cancelBtn = findViewById(R.id.cancelBtn)
         displaynameTv = findViewById(R.id.displayname)
         progressBar = findViewById(R.id.savedListPB)
-//        phoneBtn = findViewById(R.id.phoneBtn)
         displaynameET.setEnabled(false);
         phoneET.setEnabled(false);
 
@@ -132,8 +119,6 @@ class ProfileActivity : AppCompatActivity() {
         emailET.setText(user.email)
         phoneET.setText(user.phoneNumber)
 //        phoneBtn.visibility=View.GONE
-        progressDialog = ProgressDialog(this)
-        createRequest()
         if(user.isEmailVerified == false){
             verifyImg.visibility= View.GONE
         }
@@ -159,7 +144,7 @@ class ProfileActivity : AppCompatActivity() {
                 activityResultLauncher.launch(appPerms)
             }
         }
-        saveBtn.setOnClickListener{
+        saveBtn.setOnClickListener {
 //            phoneBtn.visibility=View.GONE
             progressBar.visibility = View.VISIBLE
             displaynameET.setEnabled(false);
@@ -169,7 +154,7 @@ class ProfileActivity : AppCompatActivity() {
             editBtn.visibility = View.GONE
             cancelBtn.visibility = View.GONE
             displaynameTv.visibility = View.VISIBLE
-            if(imageUri != null) {
+            if (imageUri != null) {
                 val riversRef = storageRef.child("user_avatar/${user.uid}" + "avatar.jpg")
                 var uploadTask = riversRef.putFile(imageUri!!)
                 uploadTask.continueWithTask { task ->
@@ -194,8 +179,7 @@ class ProfileActivity : AppCompatActivity() {
                     } else {
                     }
                 }
-            }
-            else if(user.displayName != displaynameET.text.toString()) {
+            } else if (user.displayName != displaynameET.text.toString()) {
                 val profileUpdates = UserProfileChangeRequest.Builder()
                     .setDisplayName(displaynameET.text.toString())
                     .build()
@@ -207,8 +191,7 @@ class ProfileActivity : AppCompatActivity() {
                             Log.w(TAG, "User profile photo not updated.", task.exception)
                         }
                     }
-            }
-            else if(user.email != emailET.text.toString()){
+            } else if (user.email != emailET.text.toString()) {
                 user!!.updateEmail(emailET.text.toString())
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
@@ -217,31 +200,55 @@ class ProfileActivity : AppCompatActivity() {
                             Log.w(TAG, "User email address not updated.", task.exception)
                         }
                     }
-            }
-            else if(user.phoneNumber != phoneET.text.toString()){
-                val credential = PhoneAuthProvider.getCredential(phoneET.text.toString(), "12342456") // Replace with the verification code received by the user
-                user.updatePhoneNumber(credential)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Log.d(TAG, "Phone number updated successfully")
-                        } else {
-                            Log.w(TAG, "Phone number update failed", task.exception)
+            } else if (user.phoneNumber != phoneET.text.toString()) {
+                val newPhoneNumber = phoneET.text.toString()
+                val options = PhoneAuthOptions.newBuilder(FirebaseAuth.getInstance())
+                    .setPhoneNumber(newPhoneNumber)       // Phone number to verify
+                    .setTimeout(60L, TimeUnit.SECONDS)    // Timeout after 60 seconds
+                    .setActivity(this)                     // Activity to launch the verification flow
+                    .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+                        override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+                            // Auto-retrieval of verification code completed successfully
+                            // Update the user's phone number with the new phone number and verification credential
+                            user?.updatePhoneNumber(credential)?.addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    // Phone number updated successfully
+                                    Log.d(TAG, "User phone number updated.")
+                                } else {
+                                    // Phone number update failed
+                                    Log.w(TAG, "User phone number update failed.", task.exception)
+                                    Toast.makeText(this@ProfileActivity, "Verification for phone number failed.", Toast.LENGTH_LONG)
+
+                                }
+                            }
                         }
-                    }
-                db.collection("users").document(user.uid)
-                    .set(User(user))
-                    .addOnSuccessListener {
-                        Log.d(
-                            TAG,
-                            "DocumentSnapshot successfully written!"
-                        )
-                    }
-                    .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+
+                        override fun onVerificationFailed(exception: FirebaseException) {
+                            // Verification failed
+                            Log.w(TAG, "Verification failed.", exception)
+                            Toast.makeText(this@ProfileActivity, "Verification for phone number failed.", Toast.LENGTH_LONG)
+                        }
+
+                        override fun onCodeSent(
+                            verificationId: String,
+                            token: PhoneAuthProvider.ForceResendingToken
+                        ) {
+                            // Code sent successfully
+                            // Store the verification ID somewhere to retrieve later
+                            // You can also use token to resend verification code later if needed
+                            // For simplicity, we store the verification ID in a class variable here
+                            this@ProfileActivity.verificationId = verificationId
+                        }
+                    })
+                    .build()
+
+                PhoneAuthProvider.verifyPhoneNumber(options)
+                editBtn.visibility = View.VISIBLE
+                progressBar.visibility = View.GONE
+                phoneET.setText(user.phoneNumber)
+                displaynameTv.setText(user.displayName)
+                println(user)
             }
-            editBtn.visibility=View.VISIBLE
-            progressBar.visibility = View.GONE
-            phoneET.setText(user.phoneNumber)
-            displaynameTv.setText(user.displayName)
         }
         cancelBtn.setOnClickListener{
 //            phoneBtn.visibility=View.GONE
@@ -269,44 +276,8 @@ class ProfileActivity : AppCompatActivity() {
         }
         editBtn.visibility=View.VISIBLE
     }
-    private fun signInWithPhoneAuthCredential(credential: PhoneAuthCredential) {
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information
-                    Log.d(TAG, "signInWithCredential:success")
 
-                    val user = task.result?.user
-                } else {
-                    // Sign in failed, display a message and update the UI
-                    Log.w(TAG, "signInWithCredential:failure", task.exception)
-                    if (task.exception is FirebaseAuthInvalidCredentialsException) {
-                        // The verification code entered was invalid
-                    }
-                    // Update UI
-                }
-            }
-    }
-    fun enableUserManuallyInputCode(verificationId: String) {
-        // Show a dialog or view that allows the user to manually input the verification code.
-        // This could be a simple EditText field or a custom UI component.
-        val verificationCodeEditText = EditText(this)
-        val dialog = AlertDialog.Builder(this)
-            .setTitle("Enter Verification Code")
-            .setMessage("Please enter the verification code sent to your phone.")
-            .setView(verificationCodeEditText)
-            .setPositiveButton("Submit") { _, _ ->
-                val verificationCode = verificationCodeEditText.text.toString()
-                // Call the PhoneAuthProvider.verifyPhoneNumber() method again with the entered code.
-                val credential = PhoneAuthProvider.getCredential(verificationId, verificationCode)
-                signInWithPhoneAuthCredential(credential)
-            }
-            .setNegativeButton("Cancel") { _, _ ->
-                // Handle cancellation
-            }
-            .create()
-        dialog.show()
-    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == PICK_IMAGE && resultCode == RESULT_OK && data != null) {
@@ -315,61 +286,6 @@ class ProfileActivity : AppCompatActivity() {
                 .load(imageUri!!)
                 .into(avarImg);
             return
-        }
-        if (requestCode == RC_SIGN_IN) {
-            val task: Task<GoogleSignInAccount> = GoogleSignIn
-                .getSignedInAccountFromIntent(data)
-
-            try {
-                val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
-                val credential: AuthCredential = GoogleAuthProvider.getCredential(account.idToken, null)
-
-                progressDialog?.setTitle("Change gmail")
-                progressDialog?.setMessage("Verifying...")
-                progressDialog?.show()
-
-                auth.signInWithCredential(credential)
-                    .addOnCompleteListener(this) { it ->
-                        if (it.isSuccessful) {
-                            // Sign in success, update UI with the signed-in user's information
-                            val authUser = auth.currentUser
-
-                            if (authUser != null) {
-                                val db = Firebase.firestore
-
-                                val user = User(authUser)
-                                db.collection("users").document(user.uid).set(user)
-                                    .addOnSuccessListener {
-                                        Toast.makeText(this, "User data added successfully",
-                                            Toast.LENGTH_SHORT).show()
-                                    }
-                                    .addOnFailureListener {
-                                        Toast.makeText(this, "Error adding user data with" +
-                                                " exception: $it",
-                                            Toast.LENGTH_SHORT).show()
-                                    }
-                            }
-
-                            Handler().postDelayed(Runnable {
-                                val intent = Intent(this, MainActivity::class.java)
-                                intent.putExtra("fragment", "profile")
-                                startActivity(intent)
-                                finishAffinity()
-                            }, 1000)
-                        }
-                        else {
-                            // If sign in fails, display a message to the user.
-                            Toast.makeText(this, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show()
-                        }
-                        progressDialog?.dismiss()
-                    }
-
-            } catch (e: ApiException) {
-                Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
-                Log.e("BUG===========", e.message!!)
-            }
-
         }
     }
 
