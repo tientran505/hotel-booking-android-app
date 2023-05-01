@@ -38,6 +38,6 @@ data class  HotelDetailModel (
         "num_bedroom" to 0,
         "area" to 0
     ),
-    var map:ArrayList<Int> = ArrayList<Int>()
+    var map:ArrayList<Double> = ArrayList<Double>()
 
     ) : Serializable

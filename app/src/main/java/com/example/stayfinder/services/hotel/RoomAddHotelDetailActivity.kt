@@ -1,5 +1,6 @@
 package com.example.stayfinder.services.hotel
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
@@ -54,6 +55,9 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
             println(hotel?.toString())
             //TODO: Send next intent
 
+            var intent = Intent(this, MapAddHotelActivity::class.java)
+            intent.putExtra("hotelInfo", hotel)
+            startActivity(intent)
         }
 
 

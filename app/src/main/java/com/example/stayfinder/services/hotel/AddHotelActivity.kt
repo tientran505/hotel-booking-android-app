@@ -169,7 +169,7 @@ class AddHotelActivity : AppCompatActivity() {
                     "num_bedroom" to 0,
                     "area" to 0
                 ),
-                map = ArrayList<Int>()
+                map = ArrayList<Double>()
             )
 
 //            db!!.collection(nameCollection!!).document(uuidHotel!!).set(hotel)
