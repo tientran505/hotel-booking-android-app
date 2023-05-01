@@ -22,7 +22,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".user.profile.ProfileActivity"
             android:exported="false" />
         <activity
             android:name=".partner.property.DetailProperty"
@@ -111,7 +111,7 @@
             android:name=".services.hotel.AddHotelActivity"
             android:exported="false" />
         <activity
-            android:name=".user.profile.ProfileActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,195 +1,308 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".user.profile.ProfileActivity">
-    <LinearLayout
+    <ProgressBar
+        android:id="@+id/savedListPB"
+        style="?android:attr/progressBarStyle"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:orientation="horizontal"
-        android:gravity="bottom"
-        android:padding="20dp">
-        <androidx.cardview.widget.CardView
-            android:layout_width="105dp"
-            android:layout_height="105dp"
-            app:cardCornerRadius="250dp"
-            app:cardBackgroundColor="@color/white">
+        android:layout_gravity="center"
+        android:layout_height="match_parent"
+        android:layout_marginVertical="15dp" />
+    <LinearLayout
+        android:id="@+id/linearLayout7"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:paddingVertical="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                app:cardCornerRadius="250dp"
-                android:layout_gravity="center">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/linearLayout6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="105dp"
+                    android:layout_height="105dp"
+                    app:cardBackgroundColor="@color/white"
+                    app:cardCornerRadius="250dp">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_gravity="center"
+                        app:cardCornerRadius="250dp">
+
+                        <ImageView
+                            android:id="@+id/avarImg"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_profile" />
+                    </androidx.cardview.widget.CardView>
+                </androidx.cardview.widget.CardView>
+
+                <TextView
+                    android:id="@+id/displayname"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:inputType="textPersonName"
+                    android:paddingLeft="5dp"
+                    android:text="Anh thư"
+                    android:textColor="@color/black"
+                    android:textSize="30sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/editImg"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginBottom="2dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_edit_property"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/linearLayout6" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:id="@+id/Label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:gravity="center_vertical"
+                android:text="Your profile"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                android:textStyle="normal" />
+
+            <LinearLayout
+                android:id="@+id/displaynameLayout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingVertical="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:text="Display name:"
+                    android:textColor="@color/primary"
+                    android:textSize="20sp"
+                    android:textStyle="normal" />
+
+                <EditText
+                    android:id="@+id/displaynameET"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:inputType="textPersonName"
+                    android:paddingLeft="5dp"
+                    android:text="121212"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="normal" />
+            </LinearLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingVertical="5dp">
+
+                <TextView
+                    android:id="@+id/textView22"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:text="Email:"
+                    android:textColor="@color/primary"
+                    android:textSize="20sp"
+                    android:textStyle="normal"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/emailET"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="50dp"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:inputType="textMultiLine"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="10dp"
+                    android:text="121aaaaaaaaasssssssasssssssaaaaaaaaaaaaaaa212"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="normal"
+                    app:layout_constraintEnd_toStartOf="@+id/emailVerified"
+                    app:layout_constraintStart_toEndOf="@+id/textView22"
+                    app:layout_constraintTop_toTopOf="@+id/textView22" />
+
                 <ImageView
-                    android:id="@+id/avarImg"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
-                    android:src="@drawable/ic_home"
-                    android:scaleType="centerCrop"/>
+                    android:id="@+id/emailVerified"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/baseline_check_circle_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/textView22"
+                    app:tint="@color/primary" />
 
-            </androidx.cardview.widget.CardView>
-        </androidx.cardview.widget.CardView>
+                <android.widget.Button
+                    android:id="@+id/emailBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/custom_button_booking"
+                    android:gravity="right|center_vertical"
+                    android:includeFontPadding="false"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:shadowColor="@color/white"
+                    android:text="Change"
+                    android:textColor="@color/primary"
+                    android:textSize="14sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toEndOf="@+id/emailET"
+                    app:layout_constraintTop_toBottomOf="@+id/emailVerified"
+                    app:rippleColor="@color/white"
+                    app:strokeColor="@color/white" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <EditText
-            android:id="@+id/displaynameET"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:background="@null"
-            android:gravity="center_vertical"
-            android:inputType="textPersonName"
-            android:paddingLeft="5dp"
-            android:text="Anh thư"
-            android:textColor="@color/black"
-            android:textSize="25sp"
-            android:textStyle="bold" />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="20dp">
-        <TextView
-            android:id="@+id/Label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:gravity="center_vertical"
-            android:paddingLeft="5dp"
-            android:textSize="20sp"
-            android:text="Your profile"
-            android:textColor="@color/black"
-            android:textStyle="normal" />
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="5dp"
-            android:gravity="center_vertical">
-            <TextView
-                android:id="@+id/nameLb"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:gravity="center_vertical"
-                android:paddingLeft="5dp"
-                android:text="Your name"
-                android:textColor="@color/primary"
-                android:textStyle="normal" />
-            <EditText
-                android:id="@+id/nameET"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:gravity="center_vertical"
-                android:textSize="15sp"
-                android:paddingLeft="5dp"
-                android:text="121212"
-                android:inputType="textPersonName"
-                android:textColor="@color/black"
-                android:background="@null"
-                android:textStyle="normal" />
+                android:orientation="horizontal"
+                android:paddingVertical="5dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="5dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="5dp"
+                    android:text="Phone:"
+                    android:textColor="@color/primary"
+                    android:textSize="20sp"
+                    android:textStyle="normal" />
+
+                <TextView
+                    android:id="@+id/phoneET"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true"
+                    android:background="@null"
+                    android:gravity="center_vertical"
+                    android:inputType="phone"
+                    android:paddingLeft="5dp"
+                    android:text="121212"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    android:textStyle="normal" />
+
+                <android.widget.Button
+                    android:id="@+id/phoneBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/custom_button_booking"
+                    android:gravity="right|center_vertical"
+                    android:includeFontPadding="false"
+                    android:minWidth="0dp"
+                    android:minHeight="0dp"
+                    android:shadowColor="@color/white"
+                    android:text="Change"
+                    android:textColor="@color/primary"
+                    android:textSize="14sp"
+                    app:rippleColor="@color/white"
+                    app:strokeColor="@color/white" />
+            </LinearLayout>
         </LinearLayout>
-        <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="5dp"
-        android:gravity="center_vertical">
-        <TextView
-            android:id="@+id/emailLb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:gravity="center_vertical"
-            android:paddingLeft="5dp"
-            android:text="Email"
-            android:textColor="@color/primary"
-            android:textStyle="normal" />
-        <EditText
-            android:id="@+id/emailET"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:gravity="center_vertical"
-            android:textSize="15sp"
-            android:paddingLeft="5dp"
-            android:background="@null"
-            android:textColor="@color/black"
-            android:text="121212"
-            android:paddingRight="10dp"
-            android:inputType="textEmailAddress"
-            android:textStyle="normal" />
-        <ImageView
-            android:id="@+id/emailVerified"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/baseline_check_circle_24"
-            android:scaleType="centerCrop"
-            app:tint="@color/primary" />
-    </LinearLayout>
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:padding="5dp"
-            android:gravity="center_vertical">
-            <TextView
-                android:id="@+id/phoneLB"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:gravity="center_vertical"
-                android:paddingLeft="5dp"
-                android:text="Phone"
-                android:textColor="@color/primary"
-                android:textStyle="normal" />
-            <EditText
-                android:id="@+id/phoneET"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentTop="true"
-                android:gravity="center_vertical"
-                android:textSize="15sp"
-                android:paddingLeft="5dp"
-                android:text="121212"
-                android:textColor="@color/black"
-                android:background="@null"
-                android:inputType="phone"
-                android:textStyle="normal" />
-        </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="10dp"
-        android:gravity="center_vertical">
 
-        <Button
-            android:id="@+id/SaveBtn"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Save Profile" />
-        <Button
-            android:id="@+id/EditBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:backgroundTint="@color/grey"
-            android:text="Edit Profile" />
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <Button
+                android:id="@+id/SaveBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Save Profile" />
+
+            <Button
+                android:id="@+id/EditBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/grey"
+                android:text="Edit Profile" />
+
+            <Button
+                android:id="@+id/cancelBtn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:backgroundTint="@color/red"
+                android:text="Cancel Profile" />
+        </LinearLayout>
+
     </LinearLayout>
 
-</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

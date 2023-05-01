@@ -65,7 +65,8 @@ dependencies {
     implementation 'com.google.android.gms:play-services-location:21.0.1'
     implementation 'com.ms-square:expandableTextView:0.1.4'
     implementation 'com.google.android.flexbox:flexbox:3.0.0' // wrap image fit to content
-
+    implementation platform('com.google.firebase:firebase-bom:31.5.0')
+    implementation 'com.google.firebase:firebase-storage-ktx'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation 'me.relex:circleindicator:2.1.6'
 }

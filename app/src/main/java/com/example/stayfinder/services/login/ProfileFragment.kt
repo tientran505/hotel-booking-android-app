@@ -10,6 +10,7 @@ import android.widget.Button
 import androidx.core.view.isVisible
 import com.example.stayfinder.AnonymousUser
 import com.example.stayfinder.R
+import com.example.stayfinder.user.profile.ProfileActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -31,6 +32,7 @@ class ProfileFragment : Fragment() {
     private var param2: String? = null
 
     private var signOutBtn: Button? = null
+    private var viewProfileBtn: Button? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +50,7 @@ class ProfileFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
         signOutBtn = view.findViewById(R.id.signOutBtn)
+        viewProfileBtn = view.findViewById(R.id.viewProfileBtn)
         signOutBtn?.setOnClickListener {
             Firebase.auth.signOut()
 
@@ -55,7 +58,11 @@ class ProfileFragment : Fragment() {
                 .replace(R.id.frameLayout, ProfileFragment())
                 .commit()
         }
-
+        viewProfileBtn?.setOnClickListener{
+            val intent = Intent(requireContext(), ProfileActivity::class.java)
+            startActivity(intent)
+            requireActivity().finish()
+        }
         return view
     }
 

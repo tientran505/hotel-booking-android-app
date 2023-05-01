@@ -8,7 +8,7 @@ data class User(
     var displayName: String? = null,
     var email: String? = null,
     var photoUrl: String? = null,
-    val phone: String? = null,
+    var phone: String? = null,
     val isEmailVerified: Boolean? = false,
     val providerData: List<UserInfo>? = null
 ) {
