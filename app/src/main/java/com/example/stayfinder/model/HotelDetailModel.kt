@@ -1,5 +1,6 @@
 package com.example.stayfinder.model
 
+import java.io.Serializable
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashMap
@@ -30,4 +31,13 @@ data class  HotelDetailModel (
     var comment_count: Int = 0,
 
 
-    )
+    var room: HashMap<String, Any> = hashMapOf(
+        "type_room" to  ArrayList<String>(),
+        "num_guest" to 0,
+        "num_bathroom" to 0,
+        "num_bedroom" to 0,
+        "area" to 0
+    ),
+    var map:ArrayList<Int> = ArrayList<Int>()
+
+    ) : Serializable

@@ -2,6 +2,7 @@ package com.example.stayfinder.services.hotel
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ListView
 import com.example.stayfinder.R
 
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -13,6 +14,9 @@ import com.google.android.gms.maps.model.MarkerOptions
 
 
 class MapAddHotelActivity : AppCompatActivity(), OnMapReadyCallback {
+
+    private var TAG = "MapAddHotelActivity"
+    private lateinit var lstPlaces: ListView
 
     private lateinit var mMap: GoogleMap
 
