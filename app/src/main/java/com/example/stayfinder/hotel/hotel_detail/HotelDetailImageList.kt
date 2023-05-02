@@ -1,18 +1,16 @@
-package com.example.stayfinder
-
+package com.example.stayfinder.hotel.hotel_detail
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.GridView
 import android.widget.ImageView
+import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.stayfinder.hotel.hotel_detail.HotelDetailActivity2
+import com.example.stayfinder.R
 import java.net.URL
 
 // TODO: Rename parameter arguments, choose names that match
@@ -26,7 +24,7 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class MyGridAdapter (private var context: Context, private var items:
-ArrayList<URL>) : BaseAdapter(){
+ArrayList<String>) : BaseAdapter(){
     private class ViewHolder(row: View?) {
 
         var logo: ImageView? = null
@@ -49,7 +47,7 @@ ArrayList<URL>) : BaseAdapter(){
 
         viewHolder.logo?.let {
             Glide.with(context)
-                .load(items[position])
+                .load(URL(items[position]))
                 .apply(RequestOptions().centerCrop())
                 .into(it)
         }
@@ -57,7 +55,7 @@ ArrayList<URL>) : BaseAdapter(){
 
         return view as View
     }
-    override fun getItem(i: Int): URL {
+    override fun getItem(i: Int): String {
         return items[i]
     }
     override fun getItemId(p0: Int): Long {
@@ -87,22 +85,19 @@ class SubBookingDetailImageList : Fragment() {
         // Inflate the layout for this fragment
         val view: View = inflater.inflate(R.layout.fragment_sub_hotel_detail_image_list, container, false)
         val grid = view!!.findViewById<GridView>(R.id.gridview)
-        val listURL =arrayListOf(
-            URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),
-            URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),
-            URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),
-            URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg"),
-            URL("https://majestichotelgroup.com/web/majestic/homepage/slider_principal/00-hotel-majestic-barcelona.jpg")
-        )
-        val adapter  =  MyGridAdapter(this.requireContext(), listURL )
+//        val listImage = this.getArguments()?.getSerializable("listImage") as ArrayList<String>
+        val listImage  = (activity as HotelDetailActivity2?)?.getImages() ?: ArrayList<String>()
+        val adapter  =  MyGridAdapter(this.requireContext(), listImage )
         grid.adapter = adapter
         grid.setOnItemClickListener { adapterView, view, i, l ->
-            val intent = Intent(this.requireContext(), HotelDetailActivity2::class.java)
-            intent.putExtra("fragment_type","image");
-            intent.putExtra("type","url");
-            intent.putExtra("list",listURL)
-            intent.putExtra("position",i)
-            startActivity(intent)
+            val directImageFragment = HotelDetailImageDirect()
+            val bundle = Bundle()
+            bundle.putInt("position",i)
+            directImageFragment.setArguments(bundle);
+            requireActivity().supportFragmentManager.beginTransaction()
+                .replace(R.id.frameLayout, directImageFragment)
+                .addToBackStack(null)
+                .commit()
         }
         return view
     }

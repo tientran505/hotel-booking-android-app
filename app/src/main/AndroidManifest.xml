@@ -21,6 +21,40 @@
         android:theme="@style/Theme.StayFinder"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
+        <!--
+             TODO: Before you run your application, you need a Google Maps API key.
+
+             To get one, follow the directions here:
+
+                https://developers.google.com/maps/documentation/android-sdk/get-api-key
+
+             Once you have your API key (it starts with "AIza"), define a new property in your
+             project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
+             "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
+        -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyD2iPE1hYByh63Ok_gGW8Dj1neT3aigGqM" />
+
+        <activity
+            android:name=".search.map.SearchByMapActivity"
+            android:exported="false"
+            android:label="Search by Map" />
+        <activity
+            android:name=".partner.property.DetailProperty"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".partner.PartnerMainActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".RoomActivity"
             android:exported="false" />
@@ -39,7 +73,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".HotelSearch"
+            android:name=".search.HotelSearch"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -65,21 +99,6 @@
         <activity
             android:name=".hotel.hotel_detail.HotelDetailActivity2"
             android:exported="false" />
-        <!--
-             TODO: Before you run your application, you need a Google Maps API key.
-
-             To get one, follow the directions here:
-
-                https://developers.google.com/maps/documentation/android-sdk/get-api-key
-
-             Once you have your API key (it starts with "AIza"), define a new property in your
-             project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
-             "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
-        -->
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD2iPE1hYByh63Ok_gGW8Dj1neT3aigGqM" />
-
         <activity
             android:name=".hotel.hotel_detail.MapsActivity"
             android:exported="false"
@@ -88,10 +107,13 @@
             android:name=".hotel.hotel_detail.HotelDetailActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".hotel.RatingActivity"
             android:exported="false" />
         <activity
             android:name=".services.hotel.AddHotelActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -104,4 +126,5 @@
                 android:value="" />
         </activity>
     </application>
+
 </manifest>
