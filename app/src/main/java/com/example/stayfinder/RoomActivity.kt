@@ -7,7 +7,19 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stayfinder.booking.PersonalConfirmation
 import java.net.URL
-
+data class room(
+    val id: String = "",
+    val hotel_id: String = "",
+    val roomtype: String="",
+    val description: String ="",
+    val photoUrl: ArrayList<String>,
+    var available_start_date: String ="",
+    var origin_price: Double =0.0,
+    var discount_price: Double =0.0,
+    var percentage_discount: Double = 0.0,
+    var applied_coupon: Int = 0,
+    ):java.io.Serializable{
+}
 class RoomActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

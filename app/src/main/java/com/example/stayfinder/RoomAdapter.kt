@@ -13,19 +13,21 @@ import java.net.URL
 import java.text.DecimalFormat
 
 data class Room(
-    var id: Int,
-    var hoteli_id:Int,
-    val roomType: room_type,
-    val description: String,
+    var id: String ="",
+    var hoteli_id: String ="",
+    val roomType: String ="",
+    val description: String ="",
     val img: ArrayList<String>,
-    var available_start_date: String,
-    var origin_price: Double,
-    var discount_price: Double,
-    var percentage_discount: Double,
-    var daterange: String,
-    var numberofdate: Int,
-    ){
-}
+    var available_start_date: String ="",
+    var origin_price: Double =0.0,
+    var discount_price: Double =0.0,
+    var percentage_discount: Double = 0.0,
+    var daterange: String = "",
+    var numberofdate: Int = 0,
+    ):java.io.Serializable{
+        constructor(r: room): this(r.id,r.hotel_id,r.roomtype,r.description,r.photoUrl,r.available_start_date
+        ,r.origin_price,r.discount_price,r.percentage_discount,"",0)
+    }
 class RoomAdapter (private var item: ArrayList<Room>) : RecyclerView.Adapter<RoomAdapter.ViewHolder>() {
     private var context: Context? = null
     var onButtonClick: ((Int) -> Unit)? = null
