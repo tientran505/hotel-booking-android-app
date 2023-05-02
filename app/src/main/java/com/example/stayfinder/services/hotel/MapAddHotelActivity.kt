@@ -2,20 +2,19 @@ package com.example.stayfinder.services.hotel
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
+import android.net.Uri
 import android.os.Bundle
-import android.widget.ListView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.stayfinder.R
-import com.example.stayfinder.hotels
 import com.example.stayfinder.model.HotelDetailModel
-
-import com.google.android.gms.maps.CameraUpdateFactory
+import com.example.stayfinder.partner.PartnerMainActivity
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
-import com.google.android.gms.maps.model.LatLng
-import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import com.sucho.placepicker.AddressData
 import com.sucho.placepicker.Constants
 import com.sucho.placepicker.MapType
@@ -24,21 +23,28 @@ import com.sucho.placepicker.PlacePicker
 
 class MapAddHotelActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private var TAG = "MapAddHotelActivity"
-    private lateinit var lstPlaces: ListView
-
-    private lateinit var mMap: GoogleMap
+    private var db: FirebaseFirestore? = null
+    lateinit var nameCollection: String
+    var uuidHotel: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
+        nameCollection = getString(R.string.hotel_collection_name)
+
+        db = Firebase.firestore
+
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
 //        val mapFragment = supportFragmentManager
 //            .findFragmentById(R.id.map) as SupportMapFragment
 //        mapFragment.getMapAsync(this)
 
         val intent = PlacePicker.IntentBuilder()
-            .setLatLong(10.768622999591253, 106.69537279754877)  // Initial Latitude and Longitude the Map will load into
+            .setLatLong(
+                10.768622999591253,
+                106.69537279754877
+            )  // Initial Latitude and Longitude the Map will load into
             .showLatLong(true)  // Show Coordinates in the Activity
             .setMapZoom(12.0f)  // Map Zoom Level. Default: 14.0
             .setAddressRequired(true) // Set If return only Coordinates if cannot fetch Address for the coordinates. Default: True
@@ -51,7 +57,10 @@ class MapAddHotelActivity : AppCompatActivity(), OnMapReadyCallback {
             //.setBottomViewColor(R.color.bottomViewColor) // Change Address View Background Color (Default: White)
             //.setMapRawResourceStyle(R.raw.map_style)  //Set Map Style (https://mapstyle.withgoogle.com/)
             .setMapType(MapType.NORMAL)
-            .setPlaceSearchBar(true, getString(R.string.MAP_API_KEY)) //Activate GooglePlace Search Bar. Default is false/not activated. SearchBar is a chargeable feature by Google
+            .setPlaceSearchBar(
+                true,
+                getString(R.string.MAP_API_KEY)
+            ) //Activate GooglePlace Search Bar. Default is false/not activated. SearchBar is a chargeable feature by Google
             .onlyCoordinates(true)  //Get only Coordinates from Place Picker
             .hideLocationButton(true)   //Hide Location Button (Default: false)
             .disableMarkerAnimation(true)   //Disable Marker Animation (Default: false)
@@ -59,18 +68,44 @@ class MapAddHotelActivity : AppCompatActivity(), OnMapReadyCallback {
         startActivityForResult(intent, Constants.PLACE_PICKER_REQUEST)
     }
 
-    override fun onActivityResult(requestCode: Int,resultCode: Int,data: Intent?) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == Constants.PLACE_PICKER_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
                 val addressData = data?.getParcelableExtra<AddressData>(Constants.ADDRESS_INTENT)
                 var hotel = intent.getSerializableExtra("hotelInfo") as HotelDetailModel?
+                var tempUriImage = intent.getStringArrayListExtra("uriImage")
+                uuidHotel = hotel!!.id
+
+
+                if (tempUriImage != null) {
+                    for (i in 0 until tempUriImage.size) {
+                        var imgUri = Uri.parse(tempUriImage[i])
+                        val fileName = "$uuidHotel-$i"
+                        uploadImg(imgUri, fileName, uuidHotel!!)
+                    }
+                }
 
                 if (addressData != null) {
-                    hotel?.map = arrayListOf<Double>( addressData.latitude, addressData.longitude)
+                    hotel?.map = arrayListOf<Double>(addressData.latitude, addressData.longitude)
                 }
 
                 println(hotel.toString())
 
+                db!!.collection(nameCollection!!).document(uuidHotel!!).set(hotel)
+                    .addOnSuccessListener {
+                        Toast.makeText(
+                            this, "Hotel data added successfully", Toast.LENGTH_SHORT
+                        ).show()
+                    }.addOnFailureListener {
+                        Toast.makeText(
+                            this,
+                            "Error adding hotel data with" + " exception: $it",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                var intent = Intent(this, PartnerMainActivity::class.java)
+                startActivity(intent)
+                finish()
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data)
@@ -79,15 +114,38 @@ class MapAddHotelActivity : AppCompatActivity(), OnMapReadyCallback {
 
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
+
+    private fun uploadImg(imageUri: Uri, nameFile: String, uuid: String) {
+        val storageRef = Firebase.storage.reference
+        val imgRef = storageRef.child("imgsTest")
+        val imageRef = imgRef.child(nameFile)
+        var imgUrl: String? = null
+
+        imageRef.putFile(imageUri).addOnSuccessListener {
+            Toast.makeText(baseContext, "Image uploaded successfully", Toast.LENGTH_SHORT).show()
+
+            imageRef.downloadUrl.addOnCompleteListener {
+                if (it.isSuccessful) {
+                    imgUrl = it.result.toString()
+                    var hotelObj: HotelDetailModel? = null
+                    db!!.collection(nameCollection!!).document(uuid).get()
+                        .addOnSuccessListener { document ->
+                            if (document != null) {
+                                hotelObj = document.toObject(HotelDetailModel::class.java)
+                                hotelObj!!.photoUrl.add(imgUrl!!) //=> add new image.
+
+                                //Update object
+                                db!!.collection(nameCollection!!).document(uuid).set(hotelObj!!)
+                            }
+                        }
+                }
+            }.addOnFailureListener {
+                Toast.makeText(baseContext, "Error uploading image", Toast.LENGTH_SHORT).show()
+            }
+
+        }
+    }
+
     override fun onMapReady(googleMap: GoogleMap) {
 //        mMap = googleMap
 //
