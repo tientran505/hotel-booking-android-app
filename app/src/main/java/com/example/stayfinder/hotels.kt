@@ -70,7 +70,7 @@ data class rooms(
     var hotel_id: String="",
     var room_type: String ="",
     var description: String="",
-    var photoUrl: ArrayList<URL>,
+    var photoUrl: ArrayList<String> = arrayListOf<String>(),
     var available_start_date: String="",
     var origin_price: Double = 0.0,
     var discount_price: Double=0.0,

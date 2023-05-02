@@ -23,10 +23,12 @@ data class Room(
     var discount_price: Double =0.0,
     var percentage_discount: Double = 0.0,
     var daterange: String = "",
-    var numberofdate: Int = 0,
+    var numberofdate: Long = 0,
     ):java.io.Serializable{
-        constructor(r: room): this(r.id,r.hotel_id,r.roomtype,r.description,r.photoUrl,r.available_start_date
+        constructor(r: rooms): this(r.id,r.hotel_id,r.room_type,r.description,r.photoUrl,r.available_start_date
         ,r.origin_price,r.discount_price,r.percentage_discount,"",0)
+    constructor(r: rooms, daterange: String, numberofdate: Long): this(r.id,r.hotel_id,r.room_type,r.description,r.photoUrl,r.available_start_date
+        ,r.origin_price,r.discount_price,r.percentage_discount,daterange,numberofdate)
     }
 class RoomAdapter (private var item: ArrayList<Room>) : RecyclerView.Adapter<RoomAdapter.ViewHolder>() {
     private var context: Context? = null
