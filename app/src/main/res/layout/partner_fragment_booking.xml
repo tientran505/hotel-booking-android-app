@@ -3,27 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".partner.booking.PartnerBookingFragment">
+    tools:context=".partner.PartnerBookingFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textView18"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Bookings"
-            android:textSize="25sp"
-            android:layout_marginStart="10dp"
-            android:textStyle="bold"
-            />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/bookingRV"
-            android:layout_marginTop="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
-    </LinearLayout>
+        android:orientation="vertical"></LinearLayout>
 </FrameLayout>
