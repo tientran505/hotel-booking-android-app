@@ -101,7 +101,7 @@
 
 
         android:backgroundTint="#bad1f7"
-        android:text="Sign Up"
+        android:text="Sign In"
         android:textAllCaps="false"
         android:textColor="#000000"
         app:layout_constraintEnd_toEndOf="@+id/signUpBtn"

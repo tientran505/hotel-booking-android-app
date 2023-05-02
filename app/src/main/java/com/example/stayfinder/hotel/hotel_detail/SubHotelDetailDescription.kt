@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.example.stayfinder.R
-import com.example.stayfinder.rating
 import com.ms.square.android.expandabletextview.ExpandableTextView
 
 // TODO: Rename parameter arguments, choose names that match
@@ -70,11 +69,8 @@ class SubHotelDetailDescription : Fragment() {
         val FeedbackBtn = view!!.findViewById<RelativeLayout>(R.id.FeedbackBtn)
         FeedbackBtn.setOnClickListener{
             val intent = Intent(this.context, HotelDetailActivity2::class.java)
-            val rating = this.getArguments()?.getSerializable("rating") as rating
-            intent.putExtra("fragment_type","feedback");
+            intent.putExtra("fragment_type","feebback");
             intent.putExtra("booking_id",bookingDetail.id);
-            intent.putExtra("hotel_detail",bookingDetail);
-            intent.putExtra("rating",rating);
             startActivity(intent)
         }
 

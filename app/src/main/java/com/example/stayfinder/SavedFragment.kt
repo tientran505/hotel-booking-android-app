@@ -81,7 +81,6 @@ class SavedFragment : Fragment(), CoroutineScope by MainScope() {
         progressBar.visibility = View.GONE
     }
 
-
     private suspend fun renameList(name: String, pos: Int, id: String){
         savedList[pos].titlename=name
         listadapter.notifyItemChanged(pos)

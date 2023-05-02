@@ -7,8 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet.Layout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -49,15 +47,14 @@ class SubHotelDetailImage : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val a = arrayListOf<Service>()
-        val bookingDetail :HotelDetails = this.getArguments()?.getSerializable("BookingDetail") as HotelDetails
-
-        for( i in bookingDetail.facilities){
-            a.add(Service(i))
-        }
+        val a = arrayListOf<Service>(
+            Service("wifi", URL("https://cdn-icons-png.flaticon.com/512/93/93158.png")),
+            Service("wifi", URL("https://cdn-icons-png.flaticon.com/512/93/93158.png")),
+            Service("wifi", URL("https://cdn-icons-png.flaticon.com/512/93/93158.png"))
+        )
+        val bookingDetail :HotelDetails ? = this.getArguments()?.getSerializable("BookingDetail") as HotelDetails
         val view: View? = inflater.inflate(R.layout.fragment_hotel_detail_image_service_title, container, false)
         var textview = view!!.findViewById<TextView>(R.id.titleTv)
-        val imageLayout = view!!.findViewById<ConstraintLayout>(R.id.imageLayout)
         var recyclerView = view!!.findViewById(R.id.recyclerViewService) as RecyclerView
         textview.setText(bookingDetail?.hotel_name)
         var img1 = view!!.findViewById<ImageView>(R.id.imageView1)
@@ -66,6 +63,7 @@ class SubHotelDetailImage : Fragment() {
         var img4 = view!!.findViewById<ImageView>(R.id.imageView4)
         var img5 = view!!.findViewById<ImageView>(R.id.imageView5)
         var noImageET = view!!.findViewById<TextView>(R.id.noImageET)
+        print((bookingDetail?.img?.size?.minus(5)).toString())
         val horizontalLayoutManagaer = LinearLayoutManager(this.requireContext(), LinearLayoutManager.HORIZONTAL, false)
         recyclerView.layoutManager = horizontalLayoutManagaer
         recyclerView.adapter = ServiceAdapter(a)
@@ -76,7 +74,7 @@ class SubHotelDetailImage : Fragment() {
             1 -> {
                 if(bookingDetail.img[0] != null){
                     Glide.with(this)
-                        .load(URL(bookingDetail.img[0]))
+                        .load(bookingDetail.img[0])
                         .apply(RequestOptions().centerCrop())
                         .into(img1)
                 }
@@ -85,13 +83,13 @@ class SubHotelDetailImage : Fragment() {
             2 -> {
                 if(bookingDetail.img[0] != null){
                     Glide.with(this)
-                        .load(URL(bookingDetail.img[0]))
+                        .load(bookingDetail.img[0])
                         .apply(RequestOptions().centerCrop())
                         .into(img1)
                 }
                 if(bookingDetail.img[1] != null){
                     Glide.with(this)
-                        .load(URL(bookingDetail.img[1]))
+                        .load(bookingDetail.img[0])
                         .apply(RequestOptions().centerCrop())
                         .into(img2)
                 }
@@ -100,81 +98,79 @@ class SubHotelDetailImage : Fragment() {
             3 -> {
                 if(bookingDetail.img[0] != null){
                     Glide.with(this)
-                        .load(URL(bookingDetail.img[0]))
+                        .load(bookingDetail.img[0])
                         .apply(RequestOptions().centerCrop())
                         .into(img1)
                 }
                 if(bookingDetail.img[1] != null){
                     Glide.with(this)
-                        .load(URL(bookingDetail.img[1]))
+                        .load(bookingDetail.img[0])
                         .apply(RequestOptions().centerCrop())
                         .into(img2)
                 }
                 if(bookingDetail.img[2] != null){
                     Glide.with(this)
-                        .load(URL(bookingDetail.img[2]))
+                        .load(bookingDetail.img[0])
                         .apply(RequestOptions().centerCrop())
                         .into(img3)
                 }
-
                 noImageET.setText("")
             }
             4 -> {
                 if(bookingDetail.img[0] != null){
                     Glide.with(this)
-                        .load(URL(bookingDetail.img[0]))
+                        .load(bookingDetail.img[0])
                         .apply(RequestOptions().centerCrop())
                         .into(img1)
                 }
                 if(bookingDetail.img[1] != null){
                     Glide.with(this)
-                        .load(URL(bookingDetail.img[1]))
+                        .load(bookingDetail.img[0])
                         .apply(RequestOptions().centerCrop())
                         .into(img2)
                 }
                 if(bookingDetail.img[2] != null){
                     Glide.with(this)
-                        .load(URL(bookingDetail.img[2]))
+                        .load(bookingDetail.img[0])
                         .apply(RequestOptions().centerCrop())
                         .into(img3)
                 }
                 if(bookingDetail.img[3] != null){
                     Glide.with(this)
-                        .load(URL(bookingDetail.img[3]))
+                        .load(bookingDetail.img[0])
                         .apply(RequestOptions().centerCrop())
                         .into(img4)
                 }
-
                 noImageET.setText("")
             }
             5 -> {
                 if(bookingDetail.img[0] != null){
                     Glide.with(this)
-                        .load(URL(bookingDetail.img[0]))
+                        .load(bookingDetail.img[0])
                         .apply(RequestOptions().centerCrop())
                         .into(img1)
                 }
                 if(bookingDetail.img[1] != null){
                     Glide.with(this)
-                        .load(URL(bookingDetail.img[1]))
+                        .load(bookingDetail.img[0])
                         .apply(RequestOptions().centerCrop())
                         .into(img2)
                 }
                 if(bookingDetail.img[2] != null){
                     Glide.with(this)
-                        .load(URL(bookingDetail.img[3]))
+                        .load(bookingDetail.img[0])
                         .apply(RequestOptions().centerCrop())
                         .into(img3)
                 }
                 if(bookingDetail.img[3] != null){
                     Glide.with(this)
-                        .load(URL(bookingDetail.img[4]))
+                        .load(bookingDetail.img[0])
                         .apply(RequestOptions().centerCrop())
                         .into(img4)
                 }
                 if(bookingDetail.img[4] != null){
                     Glide.with(this)
-                        .load(URL(bookingDetail.img[4]))
+                        .load(bookingDetail.img[0])
                         .apply(RequestOptions().centerCrop())
                         .into(img5)
                 }
@@ -183,43 +179,74 @@ class SubHotelDetailImage : Fragment() {
             else -> {
                 if(bookingDetail.img[0] != null){
                     Glide.with(this)
-                        .load(URL(bookingDetail.img[0]))
+                        .load(bookingDetail.img[0])
                         .apply(RequestOptions().centerCrop())
                         .into(img1)
                 }
                 if(bookingDetail.img[1] != null){
                     Glide.with(this)
-                        .load(URL(bookingDetail.img[1]))
+                        .load(bookingDetail.img[0])
                         .apply(RequestOptions().centerCrop())
                         .into(img2)
                 }
                 if(bookingDetail.img[2] != null){
                     Glide.with(this)
-                        .load(URL(bookingDetail.img[3]))
+                        .load(bookingDetail.img[0])
                         .apply(RequestOptions().centerCrop())
                         .into(img3)
                 }
                 if(bookingDetail.img[3] != null){
                     Glide.with(this)
-                        .load(URL(bookingDetail.img[4]))
+                        .load(bookingDetail.img[0])
                         .apply(RequestOptions().centerCrop())
                         .into(img4)
                 }
                 if(bookingDetail.img[4] != null){
                     Glide.with(this)
-                        .load(URL(bookingDetail.img[4]))
+                        .load(bookingDetail.img[0])
                         .apply(RequestOptions().centerCrop())
                         .into(img5)
                 }
+
                 noImageET.setText("+"+(bookingDetail.img.size - 5).toString())
             }
         }
-        imageLayout.setOnClickListener{
+        img1.setOnClickListener{
             val intent = Intent(this.context, HotelDetailActivity2::class.java)
             intent.putExtra("fragment_type","image");
             intent.putExtra("booking_id",bookingDetail.id);
+            intent.putExtra("type","grid")
             startActivity(intent)
         }
+        img2.setOnClickListener{
+            val intent = Intent(this.context, HotelDetailActivity2::class.java)
+            intent.putExtra("fragment_type","image");
+            intent.putExtra("booking_id",bookingDetail.id);
+            intent.putExtra("type","grid")
+            startActivity(intent)
+        }
+        img3.setOnClickListener{
+            val intent = Intent(this.context, HotelDetailActivity2::class.java)
+            intent.putExtra("fragment_type","image");
+            intent.putExtra("booking_id",bookingDetail.id);
+            intent.putExtra("type","grid")
+            startActivity(intent)
+        }
+        img4.setOnClickListener{
+            val intent = Intent(this.context, HotelDetailActivity2::class.java)
+            intent.putExtra("fragment_type","image");
+            intent.putExtra("booking_id",bookingDetail.id);
+            intent.putExtra("type","grid")
+            startActivity(intent)
+        }
+        img5.setOnClickListener{
+            val intent = Intent(this.context, HotelDetailActivity2::class.java)
+            intent.putExtra("fragment_type","image");
+            intent.putExtra("booking_id",bookingDetail.id);
+            intent.putExtra("type","grid")
+            startActivity(intent)
+        }
+
         return view
     }
 

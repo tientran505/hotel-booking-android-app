@@ -9,7 +9,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import java.net.URL
 
 class FeedbackAdapter (private var item: ArrayList<FeedBack>) : RecyclerView.Adapter<FeedbackAdapter.ViewHolder>() {
     class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
@@ -19,9 +18,9 @@ class FeedbackAdapter (private var item: ArrayList<FeedBack>) : RecyclerView.Ada
         val contentTv = listItemView.findViewById<TextView>(R.id.contentTv)
         val avarImg = listItemView.findViewById<ImageView>(R.id.avarImg)
         val usernameTv=listItemView.findViewById<TextView>(R.id.usernameTv)
-//        val roomtypeTv = listItemView.findViewById<TextView>(R.id.roomtypeTv)
-//        val daterangeTv = listItemView.findViewById<TextView>(R.id.daterangeTv)
-//        val nopeopleTv = listItemView.findViewById<TextView>(R.id.nopeopleTv)
+        val roomtypeTv = listItemView.findViewById<TextView>(R.id.roomtypeTv)
+        val daterangeTv = listItemView.findViewById<TextView>(R.id.daterangeTv)
+        val nopeopleTv = listItemView.findViewById<TextView>(R.id.nopeopleTv)
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedbackAdapter.ViewHolder {
         val context = parent.context
@@ -37,12 +36,12 @@ class FeedbackAdapter (private var item: ArrayList<FeedBack>) : RecyclerView.Ada
         holder.contentTv.setText(this.item[position].content)
         holder.dateTv.setText(this.item[position].reviewDate)
         Glide.with(holder.itemView)
-            .load(URL(this.item[position].avarta))
+            .load(this.item[position].avarta)
             .apply(RequestOptions().centerCrop())
             .into(holder.avarImg)
-//        holder.roomtypeTv.setText(this.item[position].room_type)
-//        holder.daterangeTv.setText(this.item[position].period.toString() + " day(s) - from " +this.item[position].checkin )
-//        holder.nopeopleTv.setText(this.item[position].nopeople)
+        holder.roomtypeTv.setText(this.item[position].room_type)
+        holder.daterangeTv.setText(this.item[position].period.toString() + " day(s) - from " +this.item[position].checkin )
+        holder.nopeopleTv.setText(this.item[position].nopeople)
     }
     override fun getItemCount(): Int {
         return item.size
