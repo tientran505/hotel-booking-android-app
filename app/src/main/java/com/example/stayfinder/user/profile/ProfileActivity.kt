@@ -243,12 +243,12 @@ class ProfileActivity : AppCompatActivity() {
                     .build()
 
                 PhoneAuthProvider.verifyPhoneNumber(options)
-                editBtn.visibility = View.VISIBLE
-                progressBar.visibility = View.GONE
-                phoneET.setText(user.phoneNumber)
-                displaynameTv.setText(user.displayName)
-                println(user)
+
             }
+            editBtn.visibility = View.VISIBLE
+            progressBar.visibility = View.GONE
+            phoneET.setText(user.phoneNumber)
+            displaynameTv.setText(user.displayName)
         }
         cancelBtn.setOnClickListener{
 //            phoneBtn.visibility=View.GONE
