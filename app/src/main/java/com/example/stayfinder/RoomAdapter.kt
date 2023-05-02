@@ -13,9 +13,9 @@ import java.net.URL
 import java.text.DecimalFormat
 
 data class Room(
-    var id: Int,
-    var hoteli_id:Int,
-    val roomType: room_type,
+    var id: String,
+    var hoteli_id:String,
+    val roomType: String ="",
     val description: String,
     val img: ArrayList<String>,
     var available_start_date: String,
@@ -55,7 +55,7 @@ class RoomAdapter (private var item: ArrayList<Room>) : RecyclerView.Adapter<Roo
 
     override fun onBindViewHolder(holder: RoomAdapter.ViewHolder, position: Int) {
         val moneyexchange = DecimalFormat("###,###,###,###.##"+"$");
-        holder.roomtypeTv.setText(this.item[position].roomType.toString())
+        holder.roomtypeTv.setText(this.item[position].roomType)
         holder.pageAdapter = this.context?.let { ViewPagerAdapter(this.item[position].img, it) }
         holder.viewpager?.adapter = holder.pageAdapter
         holder.descriptionTv.setText(this.item[position].description)
