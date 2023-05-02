@@ -12,9 +12,7 @@ import com.bumptech.glide.request.RequestOptions
 import java.net.URL
 import java.text.DecimalFormat
 
-data class Service(val name: String, val img: String){
-    constructor(f: facilities): this(f.name,f.icon)
-}
+data class Service(val name: String, val img: URL)
 
 class ServiceAdapter (private var item: ArrayList<Service>) : RecyclerView.Adapter<ServiceAdapter.ViewHolder>() {
     class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
@@ -34,7 +32,7 @@ class ServiceAdapter (private var item: ArrayList<Service>) : RecyclerView.Adapt
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.serviceTv.setText(this.item[position].name)
         Glide.with(holder.itemView)
-            .load(URL(this.item[position].img))
+            .load(this.item[position].img)
             .apply(RequestOptions().centerCrop())
             .into(holder.img)
     }

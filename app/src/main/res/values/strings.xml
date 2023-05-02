@@ -2,10 +2,7 @@
     <string name="app_name">StayFinder</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-<!--    <string name="client_id">823421392498-d1p3667ve1g5o9beu9hvaqs2gg8im0i2.apps.googleusercontent.com</string>-->
-    <string name="client_id">823421392498-hb77v5fahvl9nsljuleg7m4q221jhdlm.apps.googleusercontent.com</string>
+    <string name="client_id">823421392498-d1p3667ve1g5o9beu9hvaqs2gg8im0i2.apps.googleusercontent.com</string>
     <string name="title_activity_maps">MapsActivity</string>
-<!--    <string name="client_id">823421392498-hb77v5fahvl9nsljuleg7m4q221jhdlm.apps.googleusercontent.com</string>-->
     <string name="hotel_collection_name">TestHotel</string>
-    <string name="title_activity_search_by_map">SearchByMapActivity</string>
 </resources>

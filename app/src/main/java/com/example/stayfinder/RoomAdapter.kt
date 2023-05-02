@@ -1,23 +1,25 @@
 package com.example.stayfinder
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
-import com.example.stayfinder.hotel.hotel_detail.ViewPagerAdapter
+import com.example.stayfinder.booking.PersonalConfirmation
 import java.net.URL
 import java.text.DecimalFormat
 
 data class Room(
-    var id: String,
-    var hoteli_id:String,
-    val roomType: String ="",
+    var id: Int,
+    var hoteli_id:Int,
+    val roomType: room_type,
     val description: String,
-    val img: ArrayList<String>,
+    val img: ArrayList<URL>,
     var available_start_date: String,
     var origin_price: Double,
     var discount_price: Double,
@@ -55,7 +57,7 @@ class RoomAdapter (private var item: ArrayList<Room>) : RecyclerView.Adapter<Roo
 
     override fun onBindViewHolder(holder: RoomAdapter.ViewHolder, position: Int) {
         val moneyexchange = DecimalFormat("###,###,###,###.##"+"$");
-        holder.roomtypeTv.setText(this.item[position].roomType)
+        holder.roomtypeTv.setText(this.item[position].roomType.toString())
         holder.pageAdapter = this.context?.let { ViewPagerAdapter(this.item[position].img, it) }
         holder.viewpager?.adapter = holder.pageAdapter
         holder.descriptionTv.setText(this.item[position].description)
