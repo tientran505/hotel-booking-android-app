@@ -44,7 +44,6 @@ import java.util.concurrent.TimeUnit
 
 
 class ProfileActivity : AppCompatActivity() {
-    private var verificationId: String?= null
     lateinit var displaynameET: EditText
     lateinit var phoneET: EditText
     lateinit var emailET: EditText
@@ -57,10 +56,12 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var cancelBtn: Button
     lateinit var displaynameTv: TextView
     lateinit var editImg: ImageView
+    lateinit var emaillayout: View
+    lateinit var channgeEmailBtn:Button
     val db = Firebase.firestore
     val storageRef = Firebase.storage.reference
     private var activityResultLauncher: ActivityResultLauncher<Array<String>>
-    private val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+    private val user: FirebaseUser = FirebaseAuth.getInstance().currentUser!!
     private val auth = Firebase.auth
     var imageUri: Uri? = null
     lateinit var editTextTextPassword: EditText
@@ -79,21 +80,65 @@ class ProfileActivity : AppCompatActivity() {
         }
     }
     val PICK_IMAGE = 1
-    private fun pickImageFromGallery() {
-        val intent = Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        intent.type = "image/*"
-        startActivityForResult(intent, PICK_IMAGE)
-    }
-    val appPerms = arrayOf(
-        Manifest.permission.READ_EXTERNAL_STORAGE,
-        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-    )
 
+    fun renderView(){
+        displaynameET.setEnabled(false);
+        phoneET.setEnabled(false);
+        emailET.setEnabled(false);
+        editTextTextPassword.setEnabled(false);
+        editImg.visibility = View.GONE
+        saveBtn.visibility = View.GONE
+        editBtn.visibility = View.VISIBLE
+        cancelBtn.visibility = View.GONE
+        channgeEmailBtn.visibility = View.GONE
+        displaynameTv.setText(user.displayName)
+        displaynameET.setText(user.displayName)
+        phoneET.setText(user.phoneNumber)
+        if(user.email == null){
+            emaillayout.visibility = View.GONE
+        }
+        else{
+            emailET.setText(user?.email)
+        }
+        if(user.isEmailVerified == false){
+            verifyImg.visibility= View.GONE
+        }
+        Glide.with(this)
+            .load(URL(user.photoUrl.toString()))
+            .apply(RequestOptions().centerCrop())
+            .into(avarImg)
+        progressBar.visibility = View.GONE
+    }
+    fun renderEditView(){
+        displaynameET.setEnabled(true);
+        phoneET.setEnabled(true)
+        emailET.setEnabled(true);
+        editTextTextPassword.setEnabled(true)
+        editImg.visibility = View.VISIBLE
+        saveBtn.visibility = View.VISIBLE
+        cancelBtn.visibility = View.VISIBLE
+        displaynameTv.visibility = View.GONE
+        editBtn.visibility = View.GONE
+        editImg.setOnClickListener{
+            activityResultLauncher.launch(appPerms)
+        }
+        avarImg.setOnClickListener{
+            activityResultLauncher.launch(appPerms)
+        }
+        channgeEmailBtn.visibility = View.VISIBLE
+        val providerData = user.providerData
+        val passwordProvider = providerData.find { it.providerId == "password" }
+        if (passwordProvider == null) {
+            // If the user doesn't have a password set, show an error message
+            emaillayout.visibility = View.GONE
+            Toast.makeText(this, "The user does not have a password set.", Toast.LENGTH_LONG).show()
+        }
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
         initActionBar()
-        println(user)
+        println(user?.let { User(it) })
         displaynameLayout = findViewById(R.id.displaynameLayout)
         displaynameET = findViewById(R.id.displaynameET)
         phoneET = findViewById(R.id.phoneET)
@@ -103,60 +148,21 @@ class ProfileActivity : AppCompatActivity() {
         editBtn = findViewById(R.id.EditBtn)
         saveBtn = findViewById(R.id.SaveBtn)
         editImg = findViewById(R.id.editImg)
+        emaillayout = findViewById(R.id.emaillayout)
         editTextTextPassword = findViewById(R.id.editTextTextPassword)
         cancelBtn = findViewById(R.id.cancelBtn)
         displaynameTv = findViewById(R.id.displayname)
         progressBar = findViewById(R.id.savedListPB)
-        displaynameET.setEnabled(false);
-        phoneET.setEnabled(false);
-        editTextTextPassword.setEnabled(false);
-        progressBar.visibility = View.GONE
-        editImg.visibility = View.GONE
-        saveBtn.visibility = View.GONE
-        displaynameTv.setText(user!!.displayName)
-        cancelBtn.visibility = View.GONE
-        displaynameET.setText(user.displayName)
-        emailET.setText(user.email)
-        phoneET.setText(user.phoneNumber)
-//        phoneBtn.visibility=View.GONE
-        if(user.isEmailVerified == false){
-            verifyImg.visibility= View.GONE
-        }
-        Glide.with(this)
-            .load(URL(user.photoUrl.toString()))
-            .apply(RequestOptions().centerCrop())
-            .into(avarImg)
+        channgeEmailBtn = findViewById(R.id.channgeEmailBtn)
 
-        editBtn.setOnClickListener{
-//            phoneBtn.visibility=View.VISIBLE
-            displaynameET.setEnabled(true);
-            phoneET.setEnabled(true);
-            editTextTextPassword.setEnabled(true);
-            editImg.visibility = View.VISIBLE
-            saveBtn.visibility = View.VISIBLE
-            cancelBtn.visibility = View.VISIBLE
-            displaynameTv.visibility = View.GONE
-            editBtn.visibility = View.GONE
-            editImg.setOnClickListener{
-                activityResultLauncher.launch(appPerms)
-            }
-            avarImg.setOnClickListener{
-                activityResultLauncher.launch(appPerms)
-            }
-        }
+        renderView()
 
+        editBtn.setOnClickListener {
+            renderEditView()
+        }
         saveBtn.setOnClickListener {
-//            phoneBtn.visibility=View.GONE
-            progressBar.visibility = View.VISIBLE
-            displaynameET.setEnabled(false);
-            phoneET.setEnabled(false);
-            editTextTextPassword.setEnabled(false);
-            editImg.visibility = View.GONE
-            saveBtn.visibility = View.GONE
-            editBtn.visibility = View.GONE
-            cancelBtn.visibility = View.GONE
-            displaynameTv.visibility = View.VISIBLE
             if (imageUri != null) {
+                println("imageUri")
                 val riversRef = storageRef.child("user_avatar/${user.uid}" + "avatar.jpg")
                 var uploadTask = riversRef.putFile(imageUri!!)
                 uploadTask.continueWithTask { task ->
@@ -183,6 +189,7 @@ class ProfileActivity : AppCompatActivity() {
                 }
             }
             if (user.displayName != displaynameET.text.toString()) {
+                println("displayName")
                 val profileUpdates = UserProfileChangeRequest.Builder()
                     .setDisplayName(displaynameET.text.toString())
                     .build()
@@ -194,9 +201,11 @@ class ProfileActivity : AppCompatActivity() {
                             Log.w(TAG, "User profile photo not updated.", task.exception)
                         }
                     }
-                displaynameTv.setText(user.displayName)
+                displaynameTv.setText(user!!.displayName)
+                displaynameET.setText(user.displayName)
             }
             if (user.email != emailET.text.toString()) {
+                println("email")
                 user!!.updateEmail(emailET.text.toString())
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
@@ -206,100 +215,92 @@ class ProfileActivity : AppCompatActivity() {
                         }
                     }
                 emailET.setText(user.email)
-
             }
-            if (user.phoneNumber != phoneET.text.toString()) {
-                val newPhoneNumber = phoneET.text.toString()
-                val options = PhoneAuthOptions.newBuilder(FirebaseAuth.getInstance())
-                    .setPhoneNumber(newPhoneNumber)       // Phone number to verify
-                    .setTimeout(60L, TimeUnit.SECONDS)    // Timeout after 60 seconds
-                    .setActivity(this)                     // Activity to launch the verification flow
-                    .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                        override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-                            // Auto-retrieval of verification code completed successfully
-                            // Update the user's phone number with the new phone number and verification credential
-                            user?.updatePhoneNumber(credential)?.addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    // Phone number updated successfully
-                                    Log.d(TAG, "User phone number updated.")
-                                } else {
-                                    // Phone number update failed
-                                    Log.w(TAG, "User phone number update failed.", task.exception)
-                                    Toast.makeText(this@ProfileActivity, "Verification for phone number failed.", Toast.LENGTH_LONG)
+            if (user.phoneNumber != phoneET.text.toString() || phoneET.text.toString() != "" || !phoneET.text.isEmpty()) {
+                println("phone")
+            }
+//                val newPhoneNumber = phoneET.text.toString()
+//                val options = PhoneAuthOptions.newBuilder(FirebaseAuth.getInstance())
+//                    .setPhoneNumber(newPhoneNumber)       // Phone number to verify
+//                    .setTimeout(60L, TimeUnit.SECONDS)    // Timeout after 60 seconds
+//                    .setActivity(this)                     // Activity to launch the verification flow
+//                    .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+//                        override fun onVerificationCompleted(credential: PhoneAuthCredential) {
+//                            // Auto-retrieval of verification code completed successfully
+//                            // Update the user's phone number with the new phone number and verification credential
+//                            user?.updatePhoneNumber(credential)?.addOnCompleteListener { task ->
+//                                if (task.isSuccessful) {
+//                                    // Phone number updated successfully
+//                                    Log.d(TAG, "User phone number updated.")
+//                                } else {
+//                                    // Phone number update failed
+//                                    Log.w(TAG, "User phone number update failed.", task.exception)
+//                                    Toast.makeText(this@ProfileActivity, "Verification for phone number failed.", Toast.LENGTH_LONG)
+//
+//                                }
+//                            }
+//                        }
+//
+//                        override fun onVerificationFailed(exception: FirebaseException) {
+//                            // Verification failed
+//                            Log.w(TAG, "Verification failed.", exception)
+//                            Toast.makeText(this@ProfileActivity, "Verification for phone number failed.", Toast.LENGTH_LONG)
+//                        }
+//
+//                        override fun onCodeSent(
+//                            verificationId: String,
+//                            token: PhoneAuthProvider.ForceResendingToken
+//                        ) {
+//                            this@ProfileActivity.verificationId = verificationId
+//                        }
+//                    })
+//                    .build()
+//                PhoneAuthProvider.verifyPhoneNumber(options)
+//
+//                phoneET.setText(user.phoneNumber)
 
+            if (editTextTextPassword.text.toString() != "" && editTextTextPassword.text.toString() != null && user != null && user.email != null) {
+                val email = user.email
+                if (email != null) {
+                    FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email)
+                        .addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                val result = task.result
+                                if (result != null && result.signInMethods != null && result.signInMethods!!.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD)) {
+                                    // The user has a password set for their account
+                                    val newPassword = editTextTextPassword.text.toString()
+                                    user.updatePassword(newPassword)
+                                        .addOnCompleteListener { passwordTask ->
+                                            if (passwordTask.isSuccessful) {
+                                                Log.d(TAG, "User password updated.")
+                                                Toast.makeText(this, "User password updated.", Toast.LENGTH_LONG).show()
+                                            } else {
+                                                Log.d(TAG, "User password update failed.")
+                                                Toast.makeText(this, "User password update failed.", Toast.LENGTH_LONG).show()
+                                            }
+                                        }
+                                } else {
+                                    // The user does not have a password set for their account
+                                    Toast.makeText(this, "The user does not have a password set.", Toast.LENGTH_LONG).show()
                                 }
+                            } else {
+                                // Handle the error
+                                Log.e(TAG, "Error fetching sign-in methods for email.", task.exception)
+                                Toast.makeText(this, "Error fetching sign-in methods for email.", Toast.LENGTH_LONG).show()
                             }
                         }
 
-                        override fun onVerificationFailed(exception: FirebaseException) {
-                            // Verification failed
-                            Log.w(TAG, "Verification failed.", exception)
-                            Toast.makeText(this@ProfileActivity, "Verification for phone number failed.", Toast.LENGTH_LONG)
-                        }
-
-                        override fun onCodeSent(
-                            verificationId: String,
-                            token: PhoneAuthProvider.ForceResendingToken
-                        ) {
-                            this@ProfileActivity.verificationId = verificationId
-                        }
-                    })
-                    .build()
-
-                PhoneAuthProvider.verifyPhoneNumber(options)
-
-                phoneET.setText(user.phoneNumber)
-
+                }
             }
-            if(editTextTextPassword.text.toString() !="" ||editTextTextPassword.text.toString() !=null){
-                println(editTextTextPassword.text.toString())
-                user!!.updatePassword(editTextTextPassword.text.toString())
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Log.d(TAG, "User password updated.")
-                           Toast.makeText(this, "User password updated.", Toast.LENGTH_LONG)
-                        }
-                        else{
-                            Log.d(TAG, "User password updated failed.")
-                            Toast.makeText(this, "User password updated failed.", Toast.LENGTH_LONG)
-                        }
-                    }
-            }
-            editBtn.visibility = View.VISIBLE
             progressBar.visibility = View.GONE
+            renderView()
         }
-        cancelBtn.setOnClickListener{
-//            phoneBtn.visibility=View.GONE
-            displaynameET.setEnabled(false);
-            phoneET.setEnabled(false);
-            editTextTextPassword.setEnabled(false);
-            editImg.visibility = View.GONE
-            saveBtn.visibility = View.GONE
-            editBtn.visibility = View.GONE
-            cancelBtn.visibility = View.GONE
-            displaynameTv.visibility = View.VISIBLE
-            displaynameTv.setText(user.displayName)
-            displaynameET.setText(user.displayName)
-            emailET.setText(user.email)
-//            phoneTv.setText(user.phoneNumber)
-            if(user.isEmailVerified == false){
-                verifyImg.visibility= View.GONE
-            }
-            else{
-                verifyImg.visibility= View.VISIBLE
-            }
-            Glide.with(this)
-                .load(URL(user.photoUrl.toString()))
-                .apply(RequestOptions().centerCrop())
-                .into(avarImg)
+
+
+        cancelBtn.setOnClickListener {
+            renderView()
         }
-        editBtn.visibility=View.VISIBLE
     }
-
-    private fun showchangepasswordialog() {
-        TODO("Not yet implemented")
-    }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -318,7 +319,6 @@ class ProfileActivity : AppCompatActivity() {
         menu?.setHomeButtonEnabled(true)
         menu?.title = "Profile" // title of activity
     }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             android.R.id.home -> {
@@ -327,11 +327,19 @@ class ProfileActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-
     override fun onBackPressed() {
         super.onBackPressed()
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
+    private fun pickImageFromGallery() {
+        val intent = Intent(Intent.ACTION_GET_CONTENT, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        intent.type = "image/*"
+        startActivityForResult(intent, PICK_IMAGE)
+    }
+    val appPerms = arrayOf(
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE,
+    )
 }
 
 
