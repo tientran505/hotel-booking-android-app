@@ -1,25 +1,21 @@
-package com.example.stayfinder
+package com.example.stayfinder.search
 
 import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.stayfinder.booking.PersonalConfirmation
+import com.example.stayfinder.R
 import com.example.stayfinder.hotel.Hotel
-import com.example.stayfinder.hotel.HotelAdapter
 import com.example.stayfinder.hotel.hotel_detail.HotelDetailActivity
 import com.example.stayfinder.saved.choose_item.SavedListChooseBottomSheetDialog
-import com.example.stayfinder.search.HotelSearchAdapter
+import com.example.stayfinder.search.map.SearchByMapActivity
 import com.example.stayfinder.search.sort.SortListFragment
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
 
 class HotelSearch : AppCompatActivity() {
     lateinit var searchBar: TextView
@@ -55,6 +51,7 @@ class HotelSearch : AppCompatActivity() {
         }
 
         sortBtnHandle()
+        mapBtnHandler()
         initRV()
     }
 
@@ -66,6 +63,16 @@ class HotelSearch : AppCompatActivity() {
                 , SortListFragment.TAG)
         }
     }
+
+    private fun mapBtnHandler() {
+        mapBtn = findViewById(R.id.mapBtn)
+        mapBtn.setOnClickListener {
+            startActivity(Intent(this, SearchByMapActivity::class.java))
+        }
+
+
+    }
+
 
 
     private fun initRV() {
