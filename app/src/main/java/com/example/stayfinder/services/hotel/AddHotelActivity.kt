@@ -130,14 +130,16 @@ class AddHotelActivity : AppCompatActivity() {
 
             //Firstly Upload photo to firebase
             val flexboxLayout = findViewById<FlexboxLayout>(R.id.flexboxLayout)
+            var tempUriImage: ArrayList<String> = ArrayList()
 
             for (i in 0 until flexboxLayout.childCount) {
                 val subView: View = flexboxLayout.getChildAt(i)
                 if (subView is ImageView) { // if choosed image, the iseditmode will be turn off in the first time running
                     val imageView = subView
-                    var imgUri = Uri.parse(imageView.getTag().toString())
-                    val fileName = "$uuidHotel-$i"
-                    uploadImg(imgUri, fileName, uuidHotel!!)
+//                    var imgUri = Uri.parse(imageView.getTag().toString())
+                    tempUriImage.add(imageView.getTag().toString())
+//                    val fileName = "$uuidHotel-$i"
+//                    uploadImg(imgUri, fileName, uuidHotel!!)
                 }
             }
 
@@ -198,6 +200,7 @@ class AddHotelActivity : AppCompatActivity() {
 
             var intent = Intent(this, RoomAddHotelDetailActivity::class.java)
             intent.putExtra("hotelInfo", hotel)
+            intent.putStringArrayListExtra("uriImage", tempUriImage)
             startActivity(intent)
 
         }

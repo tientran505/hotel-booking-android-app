@@ -34,6 +34,7 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
         nextBtn = findViewById(R.id.nextBtn)
 
         var hotel = intent.getSerializableExtra("hotelInfo") as HotelDetailModel?
+        var tempUriImage = intent.getStringArrayListExtra("uriImage")
         //Toast.makeText(this, txt.toString(),Toast.LENGTH_SHORT).show()
 
         val multi = findViewById<View>(R.id.roomSelected_MultiGroup) as MultiSelectToggleGroup
@@ -57,6 +58,7 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
 
             var intent = Intent(this, MapAddHotelActivity::class.java)
             intent.putExtra("hotelInfo", hotel)
+            intent.putStringArrayListExtra("uriImage", tempUriImage)
             startActivity(intent)
         }
 
