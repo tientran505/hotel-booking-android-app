@@ -130,15 +130,16 @@ class AddHotelActivity : AppCompatActivity() {
 
             //Firstly Upload photo to firebase
             val flexboxLayout = findViewById<FlexboxLayout>(R.id.flexboxLayout)
-
+            var tempUriImage: ArrayList<String> = ArrayList()
 
             for (i in 0 until flexboxLayout.childCount) {
                 val subView: View = flexboxLayout.getChildAt(i)
                 if (subView is ImageView) { // if choosed image, the iseditmode will be turn off in the first time running
                     val imageView = subView
-                    var imgUri = Uri.parse(imageView.getTag().toString())
-                    val fileName = "$uuidHotel-$i"
-                    uploadImg(imgUri, fileName, uuidHotel!!)
+//                    var imgUri = Uri.parse(imageView.getTag().toString())
+                    tempUriImage.add(imageView.getTag().toString())
+//                    val fileName = "$uuidHotel-$i"
+//                    uploadImg(imgUri, fileName, uuidHotel!!)
                 }
             }
 
@@ -162,32 +163,46 @@ class AddHotelActivity : AppCompatActivity() {
                 photoUrl = photoUrl,
                 booking_count = 0,
                 facilities = ArrayList<Objects>(),
-                comment_count = 0
+                comment_count = 0,
+                room =  hashMapOf(
+                    "type_room" to  ArrayList<String>(),
+                    "num_guest" to 0,
+                    "num_bathroom" to 0,
+                    "num_bedroom" to 0,
+                    "area" to 0
+                ),
+                map = ArrayList<Double>()
             )
 
-            db!!.collection(nameCollection!!).document(uuidHotel!!).set(hotel)
-                .addOnSuccessListener {
-                    Toast.makeText(
-                        this, "Hotel data added successfully", Toast.LENGTH_SHORT
-                    ).show()
-                }.addOnFailureListener {
-                    Toast.makeText(
-                        this, "Error adding hotel data with" + " exception: $it", Toast.LENGTH_SHORT
-                    ).show()
-                }
+//            db!!.collection(nameCollection!!).document(uuidHotel!!).set(hotel)
+//                .addOnSuccessListener {
+//                    Toast.makeText(
+//                        this, "Hotel data added successfully", Toast.LENGTH_SHORT
+//                    ).show()
+//                }.addOnFailureListener {
+//                    Toast.makeText(
+//                        this, "Error adding hotel data with" + " exception: $it", Toast.LENGTH_SHORT
+//                    ).show()
+//                }
+//
+//
+//            if (findViewById<CheckBox>(R.id.freeWifiCheckbox).isChecked) { // free Wifi
+//
+//            }
+//
+//            if (findViewById<CheckBox>(R.id.swimmingPool).isChecked) { // swimming Pool
+//
+//            }
+//
+//            if (findViewById<CheckBox>(R.id.fitnessCenterCheckbox).isChecked) { //fitness Center
+//
+//            }
 
+            var intent = Intent(this, RoomAddHotelDetailActivity::class.java)
+            intent.putExtra("hotelInfo", hotel)
+            intent.putStringArrayListExtra("uriImage", tempUriImage)
+            startActivity(intent)
 
-            if (findViewById<CheckBox>(R.id.freeWifiCheckbox).isChecked) { // free Wifi
-
-            }
-
-            if (findViewById<CheckBox>(R.id.swimmingPool).isChecked) { // swimming Pool
-
-            }
-
-            if (findViewById<CheckBox>(R.id.fitnessCenterCheckbox).isChecked) { //fitness Center
-
-            }
         }
 
         uploadImgBtn!!.setOnClickListener {
