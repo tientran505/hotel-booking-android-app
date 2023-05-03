@@ -35,12 +35,18 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyD2iPE1hYByh63Ok_gGW8Dj1neT3aigGqM" />
+            android:value="@string/MAP_API_KEY" />
 
         <activity
             android:name=".search.map.SearchByMapActivity"
             android:exported="false"
             android:label="Search by Map" />
+        <activity
+            android:name=".services.hotel.RoomAddHotelDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".services.hotel.MapAddHotelActivity"
+            android:exported="false" />
         <activity
             android:name=".partner.property.DetailProperty"
             android:exported="false">
@@ -99,6 +105,7 @@
         <activity
             android:name=".hotel.hotel_detail.HotelDetailActivity2"
             android:exported="false" />
+
         <activity
             android:name=".hotel.hotel_detail.MapsActivity"
             android:exported="false"
