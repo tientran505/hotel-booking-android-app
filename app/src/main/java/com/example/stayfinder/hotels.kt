@@ -55,3 +55,15 @@ data class User_cmt(
 ):Serializable{
 
 }
+
+@IgnoreExtraProperties
+data class coupon(
+    var id: String = "",
+    var title: String = "",
+    var discount: Double = 0.0,
+    var startDate: String = "",
+    var endDate: String = "",
+    var owner_id: String = "",
+):Serializable{
+
+}

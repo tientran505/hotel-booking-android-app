@@ -8,5 +8,48 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"></LinearLayout>
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <android.widget.Button
+                android:id="@+id/waitingBtn"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/custom_button_booking"
+                android:text="Waiting"
+                android:textAllCaps="false"
+                android:textColor="@color/black" />
+
+            <android.widget.Button
+                android:id="@+id/acceptBtn"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/custom_button_booking"
+                android:text="Accepted"
+                android:textAllCaps="false"
+                android:textColor="@color/black" />
+
+            <android.widget.Button
+                android:id="@+id/discardBtn"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="15dp"
+                android:background="@drawable/custom_button_booking"
+                android:text="Discard"
+                android:textAllCaps="false"
+                android:textColor="@color/black" />
+        </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 </FrameLayout>
