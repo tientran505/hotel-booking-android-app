@@ -66,6 +66,10 @@
             android:value="@string/MAP_API_KEY" />
 
         <activity
+            android:name=".partner.property.sub_property.EditLocationActivity"
+            android:exported="false"
+            android:label="@string/title_activity_edit_location" />
+        <activity
             android:name=".search.map.SearchByMapActivity"
             android:exported="false"
             android:label="Search by Map" />
