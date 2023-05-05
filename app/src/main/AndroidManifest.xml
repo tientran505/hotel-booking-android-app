@@ -64,7 +64,7 @@
             android:name=".partner.property.sub_property.EditImageListActivity"
             android:exported="false" />
             <activity
-            android:name=".PartnerBookingDetail"
+            android:name=".partner.booking.PartnerBookingDetail"
             android:exported="false" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
