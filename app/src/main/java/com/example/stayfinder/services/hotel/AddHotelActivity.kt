@@ -145,7 +145,7 @@ class AddHotelActivity : AppCompatActivity() {
             }
 
             //Create the object of hotelDetail
-            val hotel = HotelDetailModel(
+            var hotel = HotelDetailModel(
                 owner_id = Firebase.auth.currentUser?.uid.toString(),
                 id = uuidHotel,
                 hotel_name = nameHotel.text.toString(),

@@ -9,11 +9,15 @@ import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import com.example.stayfinder.R
 import com.example.stayfinder.model.HotelDetailModel
+import com.example.stayfinder.model.RoomDetailModel
 import com.example.stayfinder.services.hotel.MapAddHotelActivity
+import com.google.firebase.Timestamp
 import com.mcdev.quantitizerlibrary.HorizontalQuantitizer
 
 import com.nex3z.togglebuttongroup.MultiSelectToggleGroup
 import com.nex3z.togglebuttongroup.button.LabelToggle
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class RoomAddHotelDetailActivity : AppCompatActivity() {
@@ -36,6 +40,9 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
         areaSquareET = findViewById(R.id.areaET)
         nextBtn = findViewById(R.id.nextBtn)
 
+        //var uuidHotel: String? = intent.extras?.getString("uuidHotel")
+        var uuidHotel = "ddddddddd"
+        var uuidRoom:String = UUID.randomUUID().toString()
 //        var hotel = intent.getSerializableExtra("hotelInfo") as HotelDetailModel?
 //        var tempUriImage = intent.getStringArrayListExtra("uriImage")
         //Toast.makeText(this, txt.toString(),Toast.LENGTH_SHORT).show()
@@ -50,12 +57,29 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
         }
 
         nextBtn.setOnClickListener {
-//            hotel?.room?.set("type_room", typesRoom)
-//            hotel?.room?.set("num_guest", guestStayHQ.value)
-//            hotel?.room?.set("num_bathroom", bathroomHQ.value)
-//            hotel?.room?.set("num_bedroom", bedroomHQ.value)
-//            hotel?.room?.set("area", areaSquareET.text.toString())
 
+            var room = RoomDetailModel(
+                id = uuidRoom,
+                hotelId = uuidHotel!!,
+                description = "",
+                photoUrl = ArrayList<String>(),
+                //available_start_date = Timestamp.now(), //Please do not send timestamp in intent.
+                origin_price = 100000.0,
+                discount_price = 0.0,
+                percentage_discount = 0.0,
+                applied_coupon_id = null,
+
+                room_type = categoryRoomSpinner.selectedItem.toString(),
+                have_room = typesRoom,
+                num_guest = guestStayHQ.value,
+                num_bedroom = bedroomHQ.value,
+                num_bathroom = bathroomHQ.value,
+                areaSquare = if(areaSquareET.text.toString().isNotEmpty()) areaSquareET.text.toString().toDouble() else null as Double?
+            )
+
+            var intent = Intent(this, RoomAddHotelDetailStep3Activity::class.java)
+            intent.putExtra("roomInfo", room)
+            startActivity(intent)
 
         }
 
