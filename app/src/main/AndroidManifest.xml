@@ -38,7 +38,7 @@
             android:value="@string/MAP_API_KEY" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".partner.property.sub_property.EditLocationActivity"
             android:exported="false"
             android:label="@string/title_activity_edit_location" />
         <activity
@@ -117,7 +117,7 @@
             android:name=".services.hotel.AddHotelActivity"
             android:exported="false" />
         <activity
-            android:name=".partner.property.sub_property.EditLocationActivity"
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
