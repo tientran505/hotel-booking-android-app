@@ -22,10 +22,10 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
-            android:name=".PartnerAddCoupon"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".services.hotel.MapAddHotelActivity"
             android:exported="false" />
         <activity
             android:name=".partner.property.DetailProperty"
@@ -59,7 +59,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".HotelSearch"
+            android:name=".search.HotelSearch"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -114,7 +114,7 @@
             android:name=".services.hotel.AddHotelActivity"
             android:exported="false" />
         <activity
-            android:name=".partner.PartnerAddCoupon"
+            android:name=".partner.property.PartnerAddCoupon"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
