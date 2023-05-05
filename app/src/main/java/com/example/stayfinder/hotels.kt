@@ -1,5 +1,7 @@
 package com.example.stayfinder
 
+import android.location.Address
+import android.location.Location
 import com.example.stayfinder.user.User
 import com.google.firebase.firestore.IgnoreExtraProperties
 import java.io.Serializable
@@ -26,7 +28,12 @@ data class hotels(
 
 @IgnoreExtraProperties
 data class address ( val number: String = "", val street: String = "", val district: String = "",
-                     val ward: String = "",val city: String = ""): Serializable
+                     val ward: String = "",val city: String = "",
+                     val latitude: Double = 0.0, val longitude: Double = 0.0
+): Serializable
+{
+    constructor(addressTemp: Address):this (addressTemp.featureName,addressTemp.thoroughfare,"",addressTemp.subAdminArea,addressTemp.adminArea,addressTemp.latitude,addressTemp.longitude)
+}
 @IgnoreExtraProperties
 data class facilities(val id: String ="",val name: String = "", val icon: String = ""):Serializable
 @IgnoreExtraProperties

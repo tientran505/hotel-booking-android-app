@@ -60,7 +60,7 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
                 val dateEnd = "1-4-2023"
                 val detailRoom = arrayListOf<Int>(1, 2, 0)
 
-                val roomref = Firebase.firestore.collection("rooms").orderBy("discount_price").limit(1).get()
+                val roomref = Firebase.firestore.collection("rooms").orderBy("discount_price").get()
                     .addOnSuccessListener { documents ->
                         if (!documents.isEmpty) {
                             val smallestPrice = documents.documents[0].getDouble("discount_price")
