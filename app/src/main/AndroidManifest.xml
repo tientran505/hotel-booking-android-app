@@ -42,7 +42,7 @@
             android:exported="false"
             android:label="Search by Map" />
         <activity
-            android:name=".services.hotel.RoomAddHotelDetailActivity"
+            android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".services.hotel.MapAddHotelActivity"
@@ -120,7 +120,7 @@
             android:name=".services.hotel.AddHotelActivity"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".services.room.RoomAddHotelDetailActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

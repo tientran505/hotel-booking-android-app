@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.stayfinder.R
 import com.example.stayfinder.model.HotelDetailModel
+import com.example.stayfinder.services.room.RoomAddHotelDetailActivity
 import com.google.android.flexbox.FlexboxLayout
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -164,13 +165,6 @@ class AddHotelActivity : AppCompatActivity() {
                 booking_count = 0,
                 facilities = ArrayList<Objects>(),
                 comment_count = 0,
-                room =  hashMapOf(
-                    "type_room" to  ArrayList<String>(),
-                    "num_guest" to 0,
-                    "num_bathroom" to 0,
-                    "num_bedroom" to 0,
-                    "area" to 0
-                ),
                 map = ArrayList<Double>()
             )
 
@@ -198,7 +192,7 @@ class AddHotelActivity : AppCompatActivity() {
 //
 //            }
 
-            var intent = Intent(this, RoomAddHotelDetailActivity::class.java)
+            var intent = Intent(this, MapAddHotelActivity::class.java)
             intent.putExtra("hotelInfo", hotel)
             intent.putStringArrayListExtra("uriImage", tempUriImage)
             startActivity(intent)
