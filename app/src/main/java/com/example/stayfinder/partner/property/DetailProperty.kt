@@ -68,6 +68,7 @@ class DetailProperty : AppCompatActivity() {
         initActionBar()
         locationBtn = findViewById(R.id.locationBtn)
         photoBtn = findViewById(R.id.photoBtn)
+        initActionBar()
 
 //        findViewById<TextView>(R.id.propertyNameDetail).setText(hotel.name)
 //        findViewById<TextView>(R.id.propertyAddressDetail).setText(hotel.address)

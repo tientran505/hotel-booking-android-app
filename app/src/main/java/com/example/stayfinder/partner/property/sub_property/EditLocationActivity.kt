@@ -6,6 +6,8 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
@@ -58,10 +60,9 @@ class EditLocationActivity : AppCompatActivity(), OnMapReadyCallback {
         saveBtn = findViewById(R.id.saveBtn)
         progressBar = findViewById(R.id.savedListPB)
         progressBar.visibility = View.VISIBLE
-
+        initActionBar()
         val bundle = intent.extras
-//        val hotel_id = bundle!!.getString("hotel_id")!!
-        val hotel_id="5l5PibkyeRaZRFCVPrlB"
+        val hotel_id = bundle!!.getString("hotel_id")!!
         val db = Firebase.firestore;
         val documents = Firebase.firestore.collection("Hotels")
             .document(hotel_id)
@@ -227,5 +228,26 @@ class EditLocationActivity : AppCompatActivity(), OnMapReadyCallback {
 //                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA))
             )
         }
+    }
+    private fun initActionBar() {
+        val menu = supportActionBar
+        menu?.setDisplayHomeAsUpEnabled(true)
+        menu?.setHomeButtonEnabled(true)
+        menu?.title = "Edit Location"
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }
