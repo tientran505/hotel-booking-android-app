@@ -15,10 +15,11 @@
             android:id="@+id/tv1"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
+            android:text="Start Date"
             android:textColor="@color/black"
             android:textSize="20dp"
-            android:text="Start Date"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -27,6 +28,7 @@
             android:id="@+id/startDateTV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="@+id/tv1"
             app:layout_constraintTop_toBottomOf="@+id/tv1" />
@@ -35,10 +37,11 @@
             android:id="@+id/tv2"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
+            android:text="Price/day"
             android:textColor="@color/black"
             android:textSize="20dp"
-            android:text="Price/day"
             app:layout_constraintStart_toStartOf="@+id/startDateTV"
             app:layout_constraintTop_toBottomOf="@+id/startDateTV" />
 
@@ -46,6 +49,7 @@
             android:id="@+id/priceTV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="@+id/tv2"
             app:layout_constraintTop_toBottomOf="@+id/tv2" />
@@ -54,10 +58,11 @@
             android:id="@+id/tv3"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
+            android:text="Type Room"
             android:textColor="@color/black"
             android:textSize="20dp"
-            android:text="Type Room"
             app:layout_constraintStart_toStartOf="@+id/priceTV"
             app:layout_constraintTop_toBottomOf="@+id/priceTV" />
 
@@ -65,6 +70,7 @@
             android:id="@+id/typeRoomTV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="@+id/tv3"
             app:layout_constraintTop_toBottomOf="@+id/tv3" />
@@ -73,10 +79,11 @@
             android:id="@+id/tv4"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
+            android:text="Has Room"
             android:textColor="@color/black"
             android:textSize="20dp"
-            android:text="Has Room"
             app:layout_constraintStart_toStartOf="@+id/typeRoomTV"
             app:layout_constraintTop_toBottomOf="@+id/typeRoomTV" />
 
@@ -84,6 +91,7 @@
             android:id="@+id/hasRoomTV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="@+id/tv4"
             app:layout_constraintTop_toBottomOf="@+id/tv4" />
@@ -92,10 +100,11 @@
             android:id="@+id/tv5"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
+            android:text="Number of guest"
             android:textColor="@color/black"
             android:textSize="20dp"
-            android:text="Number of guest"
             app:layout_constraintStart_toStartOf="@+id/hasRoomTV"
             app:layout_constraintTop_toBottomOf="@+id/hasRoomTV" />
 
@@ -103,6 +112,7 @@
             android:id="@+id/numGuestTV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="@+id/tv5"
             app:layout_constraintTop_toBottomOf="@+id/tv5" />
@@ -111,10 +121,11 @@
             android:id="@+id/tv6"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
+            android:text="Number of bathroom"
             android:textColor="@color/black"
             android:textSize="20dp"
-            android:text="Number of bathroom"
             app:layout_constraintStart_toStartOf="@+id/numGuestTV"
             app:layout_constraintTop_toBottomOf="@+id/numGuestTV" />
 
@@ -122,6 +133,7 @@
             android:id="@+id/numBathroomTV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="@+id/tv6"
             app:layout_constraintTop_toBottomOf="@+id/tv6" />
@@ -130,10 +142,11 @@
             android:id="@+id/tv7"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
+            android:text="Number of bathroom"
             android:textColor="@color/black"
             android:textSize="20dp"
-            android:text="Number of bathroom"
             app:layout_constraintStart_toStartOf="@+id/numBathroomTV"
             app:layout_constraintTop_toBottomOf="@+id/numBathroomTV" />
 
@@ -141,6 +154,7 @@
             android:id="@+id/numBedroomTV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="@+id/tv7"
             app:layout_constraintTop_toBottomOf="@+id/tv7" />
@@ -150,10 +164,11 @@
             android:id="@+id/tv8"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
+            android:text="Image"
             android:textColor="@color/black"
             android:textSize="20dp"
-            android:text="Image"
             app:layout_constraintStart_toStartOf="@+id/numBedroomTV"
             app:layout_constraintTop_toBottomOf="@+id/numBedroomTV" />
 

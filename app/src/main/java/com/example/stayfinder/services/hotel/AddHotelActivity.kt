@@ -192,7 +192,7 @@ class AddHotelActivity : AppCompatActivity() {
 //
 //            }
 
-            var intent = Intent(this, MapAddHotelActivity::class.java)
+            var intent = Intent(this, AddHotelConfirmActivity::class.java)
             intent.putExtra("hotelInfo", hotel)
             intent.putStringArrayListExtra("uriImage", tempUriImage)
             startActivity(intent)
