@@ -109,10 +109,12 @@ class MapAddHotelActivity : AppCompatActivity(), OnMapReadyCallback {
 //                        ).show()
 //                    }
                 var hotel = intent.getSerializableExtra("hotelInfo") as HotelDetailModel?
+                val tempUriImage = intent.getStringArrayListExtra("uriImage")
                 var intent = Intent(this, AddHotelConfirmActivity::class.java)
                 intent.putExtra("latitude", addressData!!.latitude)
                 intent.putExtra("longitude", addressData.longitude)
                 intent.putExtra("hotelInfo", hotel)
+                intent.putStringArrayListExtra("uriImage", tempUriImage)
                 startActivity(intent)
             }
         } else {

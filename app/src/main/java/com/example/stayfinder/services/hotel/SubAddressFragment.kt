@@ -139,10 +139,12 @@ class SubAddressFragment : Fragment(), OnMapReadyCallback {
         googleMap?.addMarker(marketOptions)
 
         googleMap.setOnMapClickListener {
+            var tempUriImage = requireArguments().getStringArrayList("uriImage")
             val intent = Intent(this.context, MapAddHotelActivity::class.java)
             intent.putExtra("latitude",latitude)
             intent.putExtra("longitude", longitude)
             intent.putExtra("hotelInfo", bookingDetail)
+            intent.putStringArrayListExtra("uriImage", tempUriImage)
             startActivity(intent)
             requireActivity().finish()
         }

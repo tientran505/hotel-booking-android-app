@@ -89,7 +89,7 @@ class AddHotelActivity : AppCompatActivity() {
 
 
         var uuidHotel: String? = extras?.getString("uuidHotel")
-        //uuidHotel = "2eddd0ce-9a35-4612-a3a4-27953d7aebdf"
+        uuidHotel = "e4d58adc-171a-4509-89c0-36cb5d91e716"
 
         if (uuidHotel == null || uuidHotel == "") {
             uuidHotel = UUID.randomUUID().toString()
