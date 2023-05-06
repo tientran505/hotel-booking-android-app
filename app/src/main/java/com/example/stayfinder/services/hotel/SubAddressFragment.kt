@@ -41,13 +41,14 @@ class SubAddressFragment : Fragment(), OnMapReadyCallback {
 
     var latitudeTemp = 0.0
     var longitudeTemp = 0.0
+     lateinit var bookingDetail : HotelDetailModel
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view =  inflater.inflate(R.layout.fragment_sub_hotel_detail_address, container, false)
-        val bookingDetail  = this.getArguments()?.getSerializable("BookingDetail") as HotelDetailModel?
+        bookingDetail  = this.getArguments()?.getSerializable("BookingDetail") as HotelDetailModel
         latitudeTemp = requireArguments().getDouble("latitude")
         longitudeTemp = requireArguments().getDouble("longitude")
         val addressTemp  = bookingDetail!!.address
@@ -141,7 +142,9 @@ class SubAddressFragment : Fragment(), OnMapReadyCallback {
             val intent = Intent(this.context, MapAddHotelActivity::class.java)
             intent.putExtra("latitude",latitude)
             intent.putExtra("longitude", longitude)
+            intent.putExtra("hotelInfo", bookingDetail)
             startActivity(intent)
+            requireActivity().finish()
         }
     }
 }

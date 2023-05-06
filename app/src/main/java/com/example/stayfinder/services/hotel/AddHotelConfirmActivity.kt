@@ -28,7 +28,7 @@ class AddHotelConfirmActivity : AppCompatActivity() {
         val fm: FragmentManager = supportFragmentManager
 
         var hotel = intent.getSerializableExtra("hotelInfo") as HotelDetailModel?
-        var tempUriImage = intent.getStringArrayListExtra("uriImage")
+        //var tempUriImage = intent.getStringArrayListExtra("uriImage")
         var uuidHotel = hotel!!.id
 
 
@@ -38,14 +38,23 @@ class AddHotelConfirmActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.addressTv).text = address
 
         //save latitude longitude to hotel.map
-        var latitude = intent.getDoubleExtra("latitude", 0.0)
-        var longitude = intent.getDoubleExtra("longitude", 0.0)
+        var latitude = intent.getDoubleExtra("latitude", 10.768622999591253)
+        var longitude = intent.getDoubleExtra("longitude", 106.69537279754877)
 
-        if(latitude == 0.0 && longitude == 0.0){ // lấy địa chỉ tạm
-            var latlan = getLocationFromAddress(address)!!
-            hotel.map = arrayListOf(latlan.latitude, latlan.longitude)
-            latitude = latlan.latitude
-            longitude = latlan.longitude
+        if(latitude == 10.768622999591253 && longitude == 106.69537279754877){ // lấy địa chỉ tạm
+            if(!(addressTemp["number"].toString().isEmpty() ||
+                addressTemp["street"].toString().isEmpty() ||
+                addressTemp["district"].toString().isEmpty() ||
+                addressTemp["ward"].toString().isEmpty() ||
+                addressTemp["city"].toString().isEmpty() )   ){
+
+
+                var latlan = getLocationFromAddress(address)!!
+                hotel.map = arrayListOf(latlan.latitude, latlan.longitude)
+                latitude = latlan.latitude
+                longitude = latlan.longitude
+            }
+
         }
         else{
             hotel.map = arrayListOf(latitude, longitude)

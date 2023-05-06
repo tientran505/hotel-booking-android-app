@@ -108,9 +108,11 @@ class MapAddHotelActivity : AppCompatActivity(), OnMapReadyCallback {
 //                            Toast.LENGTH_SHORT
 //                        ).show()
 //                    }
+                var hotel = intent.getSerializableExtra("hotelInfo") as HotelDetailModel?
                 var intent = Intent(this, AddHotelConfirmActivity::class.java)
-                intent.putExtra("latitude", latitude)
-                intent.putExtra("longitude", longitude)
+                intent.putExtra("latitude", addressData!!.latitude)
+                intent.putExtra("longitude", addressData.longitude)
+                intent.putExtra("hotelInfo", hotel)
                 startActivity(intent)
             }
         } else {
