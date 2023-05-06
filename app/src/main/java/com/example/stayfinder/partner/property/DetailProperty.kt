@@ -18,6 +18,7 @@ import com.example.stayfinder.model.HotelDetailModel
 import com.example.stayfinder.partner.room.PartnerListRoomActivity
 import android.widget.ProgressBar
 import com.example.stayfinder.Property
+import com.example.stayfinder.partner.property.sub_property.EditImageListActivity
 import com.example.stayfinder.partner.property.sub_property.EditLocationActivity
 import com.example.stayfinder.hotels
 import com.example.stayfinder.services.room.RoomAddHotelDetailActivity
@@ -139,7 +140,9 @@ class DetailProperty : AppCompatActivity() {
             startActivity(intent)
         }
         photoBtn.setOnClickListener {
-
+            val intent = Intent(this, EditImageListActivity::class.java)
+            intent.putExtra("hotel_id",hotel_id);
+            startActivity(intent)
         }
     }
 
