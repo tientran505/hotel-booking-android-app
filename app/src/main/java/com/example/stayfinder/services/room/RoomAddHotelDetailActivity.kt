@@ -39,6 +39,7 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
         bedroomHQ = findViewById(R.id.bedroom_HQ)
         areaSquareET = findViewById(R.id.areaET)
         nextBtn = findViewById(R.id.nextBtn)
+        var descriptionEt = findViewById<EditText>(R.id.descriptionEt)
 
         //var uuidHotel: String? = intent.extras?.getString("uuidHotel")
         var uuidHotel = "ddddddddd"
@@ -61,7 +62,7 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
             var room = RoomDetailModel(
                 id = uuidRoom,
                 hotelId = uuidHotel!!,
-                description = "",
+                description = descriptionEt.text.toString(),
                 photoUrl = ArrayList<String>(),
                 //available_start_date = Timestamp.now(), //Please do not send timestamp in intent.
                 origin_price = 100000.0,
@@ -77,7 +78,7 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
                 areaSquare = if(areaSquareET.text.toString().isNotEmpty()) areaSquareET.text.toString().toDouble() else null as Double?
             )
 
-            var intent = Intent(this, RoomAddHotelDetailStep3Activity::class.java)
+            var intent = Intent(this, RoomAddHotelDetailStep2Activity::class.java)
             intent.putExtra("roomInfo", room)
             startActivity(intent)
 

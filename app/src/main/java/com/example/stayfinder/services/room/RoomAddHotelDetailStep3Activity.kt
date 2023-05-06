@@ -12,7 +12,9 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.stayfinder.R
+import com.example.stayfinder.model.RoomDetailModel
 import com.google.android.flexbox.FlexboxLayout
+import com.google.firebase.Timestamp
 
 class RoomAddHotelDetailStep3Activity : AppCompatActivity() {
 
@@ -53,7 +55,8 @@ class RoomAddHotelDetailStep3Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_room_add_hotel_detail_step3)
 
-        var photoUrl = ArrayList<String>()
+        var room = intent.getSerializableExtra("roomInfo") as RoomDetailModel?
+        var timestamp = intent.getStringExtra("timestamp")
 
         uploadImgBtn = findViewById(R.id.chooseImageBtn)
 
@@ -80,6 +83,12 @@ class RoomAddHotelDetailStep3Activity : AppCompatActivity() {
                     tempUriImage.add(imageView.getTag().toString())
                 }
             }
+
+            var intent = Intent(this, RoomAddHotelDetailConfirmActivity::class.java)
+            intent.putExtra("roomInfo", room)
+            intent.putExtra("timestamp", timestamp.toString())
+            intent.putStringArrayListExtra("img", tempUriImage)
+            startActivity(intent)
         }
     }
 

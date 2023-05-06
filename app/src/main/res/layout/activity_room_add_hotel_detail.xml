@@ -155,7 +155,7 @@
             android:text="Continue"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/areaET" />
+            app:layout_constraintTop_toBottomOf="@+id/descriptionEt" />
 
         <Spinner
             android:id="@+id/spinnerTypeRoom"
@@ -179,6 +179,26 @@
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/descriptionEt"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="45dp"
+            android:background="@drawable/edit_text_bg"
+            android:ems="10"
+            android:scrollHorizontally="false"
+            android:hint="Description"
+            android:inputType="text|textMultiLine"
+            android:paddingHorizontal="20dp"
+            android:text=""
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/areaET" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
