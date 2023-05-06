@@ -1,10 +1,13 @@
 package com.example.stayfinder.partner.property.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -20,6 +23,7 @@ data class EditImage(
 class EditImageAdapter (private var item: ArrayList<EditImage>) : RecyclerView.Adapter<EditImageAdapter.ViewHolder>() {
     var onAddClick: ((Int) -> Unit)? = null
     var onDelteClick: ((Int) -> Unit)? = null
+    lateinit var dropdown: ArrayList<Boolean>
     fun addImages(position: Int) {
         println("add")
     }
@@ -30,7 +34,7 @@ class EditImageAdapter (private var item: ArrayList<EditImage>) : RecyclerView.A
         val nameTv = listItemView.findViewById<TextView>(R.id.nameTv)
         val addBtn = listItemView.findViewById<Button>(R.id.addBtn)
         val deleteBtn = listItemView.findViewById<Button>(R.id.deleteBtn)
-        val grid = listItemView.findViewById<GridView>(R.id.gridview)
+        val RecyclerView = listItemView.findViewById<RecyclerView>(R.id.imageRV)
         init {
             addBtn.setOnClickListener {
                 onAddClick?.invoke(adapterPosition)
@@ -52,8 +56,13 @@ class EditImageAdapter (private var item: ArrayList<EditImage>) : RecyclerView.A
         println("length "+ item.size)
         println(position)
         holder.nameTv?.setText(this.item[position].name)
-        val adapter  =  MyGridAdapter(holder.itemView.context, this.item[position].photoURL )
-        holder.grid?.adapter = adapter
+        val adapter  =  ImageAdapter(this.item[position].photoURL )
+        holder.RecyclerView?.adapter = adapter
+        holder.RecyclerView.layoutManager = GridLayoutManager(holder.itemView.context,3)
+        adapter.onDeleteClick={ position ->
+            Log.i("ttlog", position.toString())
+            adapter.deleteImages(position)
+        }
     }
     override fun getItemCount(): Int {
         return item.size
@@ -65,29 +74,17 @@ class EditImageAdapter (private var item: ArrayList<EditImage>) : RecyclerView.A
     }
 }
 class ImageAdapter (private var item: ArrayList<String>) : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
-    var onAddClick: ((Int) -> Unit)? = null
-    var onDelteClick: ((Int) -> Unit)? = null
-    fun addImages(position: Int) {
-
-    }
+    var onDeleteClick: ((Int) -> Unit)? = null
     fun deleteImages(position: Int) {
-
+        println(position.toString()+" onclick")
     }
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
-//        val nameTv = listItemView.findViewById<ImageView>(R.id.nameTv)
-//        val addBtn = listItemView.findViewById<Button>(R.id.addBtn)
-//        val deleteBtn = listItemView.findViewById<Button>(R.id.deleteBtn)
-//        val grid = listItemView.findViewById<GridView>(R.id.gridview)
-//        init {
-//            addBtn.setOnClickListener {
-//                onAddClick?.invoke(adapterPosition)
-//            }
-//
-//            deleteBtn.setOnClickListener {
-//                onDelteClick?.invoke(adapterPosition)
-//            }
-//        }
         val logo = listItemView.findViewById<ImageView>(R.id.logo)
+        init {
+            logo.setOnClickListener {
+                onDeleteClick?.invoke(adapterPosition)
+            }
+        }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageAdapter.ViewHolder {
         val context = parent.context
@@ -99,7 +96,7 @@ class ImageAdapter (private var item: ArrayList<String>) : RecyclerView.Adapter<
         holder.logo?.let {
             Glide.with(holder.itemView.context)
                 .load(URL(item[position]))
-                .fitCenter()
+                .apply(RequestOptions().centerCrop())
                 .into(it)
         }
     }
