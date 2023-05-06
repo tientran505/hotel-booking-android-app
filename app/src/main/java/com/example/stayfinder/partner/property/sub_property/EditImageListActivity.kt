@@ -1,43 +1,34 @@
-package com.example.stayfinder.partner.property
+package com.example.stayfinder.partner.property.sub_property
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Button
 import com.example.stayfinder.R
-import com.example.stayfinder.partner.property.sub_property.EditLocationActivity
+import com.example.stayfinder.hotels
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
-class DetailProperty : AppCompatActivity() {
-    private val hotel_id="5l5PibkyeRaZRFCVPrlB"
-    lateinit var locationBtn: Button
-    lateinit var photoBtn: Button
-
+class EditImageListActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.partner_activity_detail_property)
+        setContentView(R.layout.activity_edit_image_list)
         initActionBar()
-        locationBtn = findViewById(R.id.locationBtn)
-        photoBtn = findViewById(R.id.photoBtn)
-        initActionBar()
-
-        locationBtn.setOnClickListener {
-            val intent = Intent(this, EditLocationActivity::class.java)
-            intent.putExtra("hotel_id",hotel_id);
-            startActivity(intent)
+        val documents = Firebase.firestore.collection("Hotels")
+            .document("5l5PibkyeRaZRFCVPrlB")
+        documents.get().addOnSuccessListener { document ->
+            if (document != null) {
+                val l = document.toObject(hotels::class.java)
+            }
         }
-        photoBtn.setOnClickListener {
 
-        }
     }
 
     private fun initActionBar() {
         val menu = supportActionBar
         menu?.setDisplayHomeAsUpEnabled(true)
         menu?.setHomeButtonEnabled(true)
-        menu?.title = "Property Detail"
+        menu?.title = "Edit Image"
     }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId) {
             android.R.id.home -> {
@@ -47,7 +38,6 @@ class DetailProperty : AppCompatActivity() {
 
         return super.onOptionsItemSelected(item)
     }
-
     override fun onBackPressed() {
         super.onBackPressed()
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
