@@ -70,7 +70,6 @@ class AddHotelActivity : AppCompatActivity() {
 
         db = Firebase.firestore
 
-        //val uuidHotel = UUID.randomUUID().toString() // ID of hotel
         val nameHotel = findViewById<EditText>(R.id.nameHotelEt)
         val descriptionHotel = findViewById<EditText>(R.id.descriptionEt)
         val cityHotel = findViewById<EditText>(R.id.cityEt)
@@ -89,7 +88,7 @@ class AddHotelActivity : AppCompatActivity() {
 
 
         var uuidHotel: String? = extras?.getString("uuidHotel")
-        uuidHotel = "e4d58adc-171a-4509-89c0-36cb5d91e716"
+        //uuidHotel = "e4d58adc-171a-4509-89c0-36cb5d91e716"
 
         if (uuidHotel == null || uuidHotel == "") {
             uuidHotel = UUID.randomUUID().toString()
