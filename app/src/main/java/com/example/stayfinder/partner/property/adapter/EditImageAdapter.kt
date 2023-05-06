@@ -13,51 +13,37 @@ import com.example.stayfinder.hotel.hotel_detail.MyGridAdapter
 import java.net.URL
 
 data class EditImage(
-    var id: String = "",
-    var name: String = "",
+    var id: String? = "",
+    var name: String? = "",
     var photoURL: ArrayList<String> = arrayListOf<String>(),
 )
-class EditImageAdapter (private var context: Context, private var items:
-ArrayList<EditImage>) : BaseAdapter(){
-    private class ViewHolder(row: View?) {
-
-        var nameTv: TextView? = null
-        var addBtn : Button? = null
-        var deleteBtn: Button? = null
-        var recyclerView: GridView? = null
-        init {
-            nameTv = row?.findViewById<TextView>(R.id.nameTv)
-            addBtn = row?. findViewById(R.id.addBtn)
-            deleteBtn = row?.findViewById(R.id.deleteBtn)
-            recyclerView = row?.findViewById(R.id.gridview)
-        }
+class EditImageAdapter (private var item: ArrayList<EditImage>) : RecyclerView.Adapter<EditImageAdapter.ViewHolder>() {
+    class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
+        val nameTv = listItemView.findViewById<TextView>(R.id.nameTv)
+        val addBtn = listItemView.findViewById<Button>(R.id.addBtn)
+        val deleteBtn = listItemView.findViewById<Button>(R.id.deleteBtn)
+        val grid = listItemView.findViewById<GridView>(R.id.gridview)
+    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EditImageAdapter.ViewHolder {
+        val context = parent.context
+        val inflater = LayoutInflater.from(context)
+        val contactView = inflater.inflate(R.layout.edit_image_adapter, parent, false)
+        return ViewHolder(contactView)
     }
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        val view: View
-        val viewHolder: ViewHolder
-        if (convertView == null) {
-            val inflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE)
-            view = (inflater as LayoutInflater).inflate(R.layout.edit_image_adapter, null)
-            viewHolder = ViewHolder(view)
-            view.tag = viewHolder
-        }else {
-            view = convertView
-            viewHolder = view.tag as ViewHolder
-        }
-        viewHolder.nameTv?.setText(items[position].name)
+    override fun onBindViewHolder(holder: EditImageAdapter.ViewHolder, position: Int) {
+        println("length "+ item.size)
+        println(position)
+        holder.nameTv?.setText(this.item[position].name)
+        val adapter  =  MyGridAdapter(holder.itemView.context, this.item[position].photoURL )
+        holder.grid?.adapter = adapter
+    }
+    override fun getItemCount(): Int {
+        return item.size
+    }
 
-        val adapter  =  MyGridAdapter(context, items[position].photoURL )
-        viewHolder.recyclerView?.adapter = adapter
-        return view as View
-    }
-    override fun getItem(i: Int): EditImage {
-        return items[i]
-    }
-    override fun getItemId(p0: Int): Long {
-        return p0.toLong()
-    }
-    override fun getCount(): Int {
-        return items.size
+    fun updateList( list: ArrayList<EditImage>){
+        this.item = list
+        this.notifyDataSetChanged()
     }
 }

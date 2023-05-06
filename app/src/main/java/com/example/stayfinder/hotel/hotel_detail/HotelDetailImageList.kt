@@ -48,7 +48,7 @@ ArrayList<String>) : BaseAdapter(){
         viewHolder.logo?.let {
             Glide.with(context)
                 .load(URL(items[position]))
-                .apply(RequestOptions().centerCrop())
+                .fitCenter()
                 .into(it)
         }
 

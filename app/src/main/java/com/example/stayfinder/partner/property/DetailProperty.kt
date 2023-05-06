@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Button
 import com.example.stayfinder.R
+import com.example.stayfinder.partner.property.sub_property.EditImageListActivity
 import com.example.stayfinder.partner.property.sub_property.EditLocationActivity
 
 class DetailProperty : AppCompatActivity() {
@@ -27,7 +28,9 @@ class DetailProperty : AppCompatActivity() {
             startActivity(intent)
         }
         photoBtn.setOnClickListener {
-
+            val intent = Intent(this, EditImageListActivity::class.java)
+            intent.putExtra("hotel_id",hotel_id);
+            startActivity(intent)
         }
     }
 
