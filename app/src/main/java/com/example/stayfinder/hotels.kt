@@ -9,17 +9,18 @@ import java.net.URL
 data class hotels(
     var id: String = "",
     var hotel_name: String = "",
+    var owner_id: String ="",
     var description: String = "",
     var address: address = address(),
     var photoUrl: ArrayList<String> = arrayListOf(),
     var facilities: ArrayList<facilities> = arrayListOf<facilities>(),
     var rating: rating = rating(),
     var rating_overall: Double = 0.0,
-    val booking_count: Int = 0,
-    val comment_count: Int = 0,
+    var booking_count: Int = 0,
+    var comment_count: Int = 0,
 ) :Serializable{
-    constructor(hotel_id:String, hotel_name:String, description:String, address:address, photoUrl: ArrayList<String>,
-                facilities: ArrayList<facilities>) : this(hotel_id, hotel_name, description, address,
+    constructor(hotel_id:String, hotel_name:String,owner_id: String, description:String, address:address, photoUrl: ArrayList<String>,
+                facilities: ArrayList<facilities>) : this(hotel_id, hotel_name, owner_id,description, address,
         photoUrl, facilities, rating(0.0,0.0,0.0,0.0,), 0.0,
         0, 0)
 }
@@ -53,17 +54,27 @@ data class User_cmt(
     var display_name: String = "",
     var photoUrl: String = "",
 ):Serializable{
-
 }
-
 @IgnoreExtraProperties
-data class coupon(
-    var id: String = "",
-    var title: String = "",
-    var discount: Double = 0.0,
-    var startDate: String = "",
-    var endDate: String = "",
-    var owner_id: String = "",
-):Serializable{
-
+data class coupons (
+    val coupons_id: String ="",
+    val title: String="",
+    val discount: Double=0.0,
+    val start_date: String="",
+    val end_date: String="",
+):java.io.Serializable{
+}
+@IgnoreExtraProperties
+data class rooms(
+    var id: String="",
+    var hotel_id: String="",
+    var room_type: String ="",
+    var description: String="",
+    var photoUrl: ArrayList<String> = arrayListOf<String>(),
+    var available_start_date: String="",
+    var origin_price: Double = 0.0,
+    var discount_price: Double=0.0,
+    var percentage_discount: Double=0.0,
+//    var applied_coupon: Int
+) {
 }
