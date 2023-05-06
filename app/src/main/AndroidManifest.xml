@@ -22,7 +22,7 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31" >
         <activity
-            android:name=".partner.property.sub_property.EditImageListActivity"
+            android:name=".MainActivity"
             android:exported="false" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
@@ -129,7 +129,7 @@
             android:name=".partner.property.PartnerAddCoupon"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".partner.property.sub_property.EditImageListActivity"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

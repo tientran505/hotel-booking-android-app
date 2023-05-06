@@ -9,7 +9,6 @@
         android:orientation="horizontal"
         android:padding="20dp"
         android:weightSum="1">
-
         <TextView
             android:id="@+id/nameTv"
             android:layout_width="match_parent"
@@ -36,9 +35,9 @@
             android:textColor="@color/black"
             android:text="-" />
     </LinearLayout>
-    <GridView
-        android:id="@+id/gridview"
-        android:numColumns="3"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/imageRV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
+
 </LinearLayout>
