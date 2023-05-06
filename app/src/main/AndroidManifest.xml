@@ -48,6 +48,12 @@
             android:exported="false"
             android:label="Search by Map" />
         <activity
+            android:name=".services.hotel.RoomAddHotelDetailActivity"
+            android:exported="false" />
+        <activity
+            android:name=".services.hotel.MapAddHotelActivity"
+            android:exported="false" />
+        <activity
             android:name=".partner.property.DetailProperty"
             android:exported="false" >
             <meta-data
@@ -105,6 +111,7 @@
         <activity
             android:name=".hotel.hotel_detail.HotelDetailActivity2"
             android:exported="false" />
+
         <activity
             android:name=".hotel.hotel_detail.MapsActivity"
             android:exported="false"
@@ -117,6 +124,9 @@
             android:exported="false" />
         <activity
             android:name=".services.hotel.AddHotelActivity"
+            android:exported="false" />
+        <activity
+            android:name=".partner.property.PartnerAddCoupon"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

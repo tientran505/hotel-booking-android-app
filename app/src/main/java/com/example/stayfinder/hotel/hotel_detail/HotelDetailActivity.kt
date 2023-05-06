@@ -56,8 +56,8 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
                 println(hoteldetails)
                 setContentView(R.layout.activity_hotel_detail)
                 val fm: FragmentManager = supportFragmentManager
-                val dateStart = "30-3-2023"
-                val dateEnd = "1-4-2023"
+                val dateStart: String = "30-3-2023"
+                val dateEnd: String = "1-4-2023"
                 val detailRoom = arrayListOf<Int>(1, 2, 0)
 
                 val roomref = Firebase.firestore.collection("rooms").whereEqualTo("hotel_id",hoteldetails?.id).orderBy("discount_price").limit(1).get()
@@ -91,7 +91,11 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
                 val bookingBtn = findViewById<Button>(R.id.BookingBtn)
                 bookingBtn.setOnClickListener() {
                     val intent = Intent(this, RoomActivity::class.java)
+                    println("hoteldetail hotel_id"+hoteldetails?.id)
                     intent.putExtra("hotel_id", hoteldetails?.id);
+                    intent.putExtra("dateStart", dateStart)
+                    intent.putExtra("dateEnd", dateEnd)
+                    intent.putIntegerArrayListExtra("detailRoom", detailRoom)
                     startActivity(intent)
                 }
             } else {
