@@ -7,6 +7,7 @@ import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
@@ -32,7 +33,7 @@ class EditImageListActivity : AppCompatActivity() {
     val hotel_id ="5l5PibkyeRaZRFCVPrlB"
     lateinit var recyclerView : RecyclerView
     private val REQUEST_CODE = 1752
-
+    var imageUri: Uri? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_image_list)
@@ -62,8 +63,17 @@ class EditImageListActivity : AppCompatActivity() {
                             }
                         }
                         recyclerView.layoutManager = LinearLayoutManager(this)
+
                         val adapter  =  EditImageAdapter(ImageList)
                         recyclerView.adapter= adapter
+                        adapter.onAddClick={ position ->
+                            Log.i("ttlog", position.toString())
+                            adapter.addImages(position)
+                        }
+                        adapter.onDelteClick={ position ->
+                            Log.i("ttlog", position.toString())
+                            adapter.deleteImages(position)
+                        }
 
                     }
             }
