@@ -1,9 +1,12 @@
 package com.example.stayfinder.partner.property
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Button
 import com.example.stayfinder.R
+import com.example.stayfinder.services.room.RoomAddHotelDetailActivity
 
 class DetailProperty : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -11,6 +14,11 @@ class DetailProperty : AppCompatActivity() {
         setContentView(R.layout.partner_activity_detail_property)
 
         initActionBar()
+
+        findViewById<Button>(R.id.roomBtn).setOnClickListener {
+            var intent = Intent(this, RoomAddHotelDetailActivity::class.java)
+            startActivity(intent)
+        }
 
     }
 
