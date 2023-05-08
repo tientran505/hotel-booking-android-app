@@ -54,7 +54,7 @@
             android:name=".services.hotel.MapAddHotelActivity"
             android:exported="false" />
         <activity
-            android:name=".partner.property.DetailProperty"
+            android:name=".partner.property.sub_property.EditImageListActivity"
             android:exported="false" >
             <meta-data
                 android:name="android.app.lib_name"
@@ -129,7 +129,7 @@
             android:name=".partner.property.PartnerAddCoupon"
             android:exported="false" />
         <activity
-            android:name=".partner.property.sub_property.EditImageListActivity"
+            android:name=".partner.property.DetailProperty"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -47,6 +47,7 @@ class EditLocationActivity : AppCompatActivity(), OnMapReadyCallback {
     lateinit var searchET: EditText
     lateinit var searchBtn: Button
     lateinit var saveBtn: Button
+    var marker: Marker? = null
     private lateinit var defaultLocation: Location
     var lastKnownLocation: Location? = null
     private var locationPermissionGranted: Boolean= true
@@ -199,8 +200,8 @@ class EditLocationActivity : AppCompatActivity(), OnMapReadyCallback {
         var latLng = LatLng(currentLocation.latitude,currentLocation.longitude)
         mMap?.animateCamera(CameraUpdateFactory.newLatLng(latLng))
         mMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,17f))
-        var marker: Marker? = null
         marker?.remove()
+        marker?.isDraggable = true
         marker = mMap?.addMarker(MarkerOptions().position(latLng).title(address))
         mMap.setOnMapClickListener { point -> //save current location
             latLng = point

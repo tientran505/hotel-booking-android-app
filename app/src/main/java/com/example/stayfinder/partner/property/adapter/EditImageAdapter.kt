@@ -21,9 +21,6 @@ data class EditImage(
     var photoURL: ArrayList<String> = arrayListOf<String>(),
 )
 class EditImageAdapter (private var item: ArrayList<EditImage>) : RecyclerView.Adapter<EditImageAdapter.ViewHolder>() {
-    var onAddClick: ((Int) -> Unit)? = null
-    var onDelteClick: ((Int) -> Unit)? = null
-    lateinit var dropdown: ArrayList<Boolean>
     fun addImages(position: Int) {
         println("add")
     }
@@ -35,15 +32,6 @@ class EditImageAdapter (private var item: ArrayList<EditImage>) : RecyclerView.A
         val addBtn = listItemView.findViewById<Button>(R.id.addBtn)
         val deleteBtn = listItemView.findViewById<Button>(R.id.deleteBtn)
         val RecyclerView = listItemView.findViewById<RecyclerView>(R.id.imageRV)
-        init {
-            addBtn.setOnClickListener {
-                onAddClick?.invoke(adapterPosition)
-            }
-
-            deleteBtn.setOnClickListener {
-                onDelteClick?.invoke(adapterPosition)
-            }
-        }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EditImageAdapter.ViewHolder {
         val context = parent.context

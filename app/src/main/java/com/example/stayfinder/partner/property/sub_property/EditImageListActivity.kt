@@ -66,14 +66,14 @@ class EditImageListActivity : AppCompatActivity() {
 
                         val adapter  =  EditImageAdapter(ImageList)
                         recyclerView.adapter= adapter
-                        adapter.onAddClick={ position ->
-                            Log.i("ttlog", position.toString())
-                            adapter.addImages(position)
-                        }
-                        adapter.onDelteClick={ position ->
-                            Log.i("ttlog", position.toString())
-                            adapter.deleteImages(position)
-                        }
+//                        adapter.onAddClick={ position ->
+//                            Log.i("ttlog", position.toString())
+//                            adapter.addImages(position)
+//                        }
+//                        adapter.onDelteClick={ position ->
+//                            Log.i("ttlog", position.toString())
+//                            adapter.deleteImages(position)
+//                        }
 
                     }
             }
