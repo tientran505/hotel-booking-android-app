@@ -4,25 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".services.hotel.RoomAddHotelDetailActivity">
+    tools:context=".services.room.RoomAddHotelDetailActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <TextView
             android:id="@+id/textView21"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:layout_marginTop="20dp"
             android:text="Where can people sleep?"
-            android:textSize="20dp"
             android:textColor="@color/black"
+            android:textSize="20dp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            app:layout_constraintStart_toStartOf="@+id/spinnerTypeRoom"
+            app:layout_constraintTop_toBottomOf="@+id/spinnerTypeRoom" />
 
         <com.mcdev.quantitizerlibrary.HorizontalQuantitizer
             android:id="@+id/guestStay_HQ"
@@ -38,10 +37,10 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
             android:text="How many guest can stay?"
-            android:textSize="20dp"
             android:textColor="@color/black"
+            android:textSize="20dp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/roomSelected_MultiGroup"
+            app:layout_constraintStart_toStartOf="@+id/textView21"
             app:layout_constraintTop_toBottomOf="@+id/roomSelected_MultiGroup" />
 
         <TextView
@@ -49,10 +48,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:textSize="20dp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
             android:text="How many bathrooms are there?"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/guestStay_HQ"
             app:layout_constraintTop_toBottomOf="@+id/guestStay_HQ" />
 
@@ -69,10 +68,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:textSize="20dp"
-            android:textColor="@color/black"
-            android:textStyle="bold"
             android:text="How many bedrooms are there?"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:textStyle="bold"
             app:layout_constraintStart_toStartOf="@+id/bathroom_HQ"
             app:layout_constraintTop_toBottomOf="@+id/bathroom_HQ" />
 
@@ -153,8 +152,51 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="Next"
+            android:text="Continue"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/descriptionEt" />
+
+        <Spinner
+            android:id="@+id/spinnerTypeRoom"
+            style="@android:style/Widget.Material.Spinner.Underlined"
+            android:layout_width="301dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="10dp"
+            android:entries="@array/spinner_type_room"
+            app:layout_constraintStart_toStartOf="@+id/textView28"
+            app:layout_constraintTop_toBottomOf="@+id/textView28" />
+
+        <TextView
+            android:id="@+id/textView28"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="10dp"
+            android:text="What type of room?"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <EditText
+            android:id="@+id/descriptionEt"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="45dp"
+            android:background="@drawable/edit_text_bg"
+            android:ems="10"
+            android:scrollHorizontally="false"
+            android:hint="Description"
+            android:inputType="text|textMultiLine"
+            android:paddingHorizontal="20dp"
+            android:text=""
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/areaET" />
 

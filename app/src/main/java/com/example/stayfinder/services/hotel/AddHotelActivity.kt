@@ -13,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.example.stayfinder.R
 import com.example.stayfinder.model.HotelDetailModel
+import com.example.stayfinder.services.room.RoomAddHotelDetailActivity
 import com.google.android.flexbox.FlexboxLayout
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -69,7 +70,6 @@ class AddHotelActivity : AppCompatActivity() {
 
         db = Firebase.firestore
 
-        //val uuidHotel = UUID.randomUUID().toString() // ID of hotel
         val nameHotel = findViewById<EditText>(R.id.nameHotelEt)
         val descriptionHotel = findViewById<EditText>(R.id.descriptionEt)
         val cityHotel = findViewById<EditText>(R.id.cityEt)
@@ -88,7 +88,7 @@ class AddHotelActivity : AppCompatActivity() {
 
 
         var uuidHotel: String? = extras?.getString("uuidHotel")
-        //uuidHotel = "2eddd0ce-9a35-4612-a3a4-27953d7aebdf"
+        //uuidHotel = "e4d58adc-171a-4509-89c0-36cb5d91e716"
 
         if (uuidHotel == null || uuidHotel == "") {
             uuidHotel = UUID.randomUUID().toString()
@@ -144,7 +144,7 @@ class AddHotelActivity : AppCompatActivity() {
             }
 
             //Create the object of hotelDetail
-            val hotel = HotelDetailModel(
+            var hotel = HotelDetailModel(
                 owner_id = Firebase.auth.currentUser?.uid.toString(),
                 id = uuidHotel,
                 hotel_name = nameHotel.text.toString(),
@@ -164,13 +164,6 @@ class AddHotelActivity : AppCompatActivity() {
                 booking_count = 0,
                 facilities = ArrayList<Objects>(),
                 comment_count = 0,
-                room =  hashMapOf(
-                    "type_room" to  ArrayList<String>(),
-                    "num_guest" to 0,
-                    "num_bathroom" to 0,
-                    "num_bedroom" to 0,
-                    "area" to 0
-                ),
                 map = ArrayList<Double>()
             )
 
@@ -198,7 +191,7 @@ class AddHotelActivity : AppCompatActivity() {
 //
 //            }
 
-            var intent = Intent(this, RoomAddHotelDetailActivity::class.java)
+            var intent = Intent(this, AddHotelConfirmActivity::class.java)
             intent.putExtra("hotelInfo", hotel)
             intent.putStringArrayListExtra("uriImage", tempUriImage)
             startActivity(intent)

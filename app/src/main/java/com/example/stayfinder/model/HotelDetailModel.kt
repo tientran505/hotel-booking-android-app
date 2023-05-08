@@ -30,14 +30,6 @@ data class  HotelDetailModel (
     var facilities: ArrayList<Objects> = ArrayList<Objects>(),
     var comment_count: Int = 0,
 
-
-    var room: HashMap<String, Any> = hashMapOf(
-        "type_room" to  ArrayList<String>(),
-        "num_guest" to 0,
-        "num_bathroom" to 0,
-        "num_bedroom" to 0,
-        "area" to 0
-    ),
     var map:ArrayList<Double> = ArrayList<Double>()
 
     ) : Serializable
