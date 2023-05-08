@@ -29,7 +29,7 @@ data class HotelDetails(
     val booking_count: Int =0,
     val facilities: ArrayList<facilities> = ArrayList<facilities>(),
     ):Serializable{
-    constructor(a: hotels):this(a.id,a.hotel_name,0.0, (a.photoUrl),a.rating_overall,a.address,a.description,a.comment_count,a.rating,a.booking_count,a.facilities)
+    constructor(a: hotels):this(a.id,a.name,0.0, (a.photoUrl),a.rating_overall,a.address,a.description,a.comment_count,a.rating,a.booking_count,a.facilities)
     fun updatePriceless(priceless: Double){
         this.priceless = priceless
     }
