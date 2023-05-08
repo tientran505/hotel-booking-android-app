@@ -15,33 +15,246 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
-            <FrameLayout
-                android:id="@+id/frame1"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></FrameLayout>
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:orientation="vertical">
 
-            <FrameLayout
-                android:id="@+id/frame2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"></FrameLayout>
+                <TextView
+                    android:id="@+id/guestName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="20dp"
+                    android:text="TextView"
+                    android:textColor="@color/black"
+                    android:textSize="30dp"
+                    android:textStyle="bold" />
 
-            <FrameLayout
-                android:id="@+id/frame3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"></FrameLayout>
+                <TextView
+                    android:id="@+id/guestPhoneNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:text="TextView"
+                    android:textSize="25dp" />
 
-            <FrameLayout
-                android:id="@+id/frame4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"></FrameLayout>
+                <TextView
+                    android:id="@+id/guestEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:text="TextView"
+                    android:textSize="25dp" />
 
-            <FrameLayout
-                android:id="@+id/frame5"
+                <TextView
+                    android:id="@+id/chatMessage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/rounded_chat_button_bg"
+                    android:drawablePadding="10dp"
+                    android:drawableTint="@color/primary"
+                    android:gravity="center_vertical"
+                    android:padding="7.5dp"
+                    android:text="Message"
+                    android:textColor="@color/primary"
+                    app:drawableStartCompat="@drawable/chat_bubble_svgrepo_com" />
+
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider16"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></FrameLayout>
+                android:layout_height="15dp"
+                android:layout_marginTop="10dp"
+                android:background="?android:attr/listDivider" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="3"
+                    >
+
+                    <TextView
+                        android:id="@+id/textView20"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Check-in"/>
+
+                    <TextView
+                        android:id="@+id/checkinDateTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Wed, 19 Apr"
+                        android:textStyle="bold"
+                        />
+
+                    <TextView
+                        android:id="@+id/checkinTimeTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="14:00" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="3"
+                    >
+
+                    <ImageView
+                        android:id="@+id/imageView7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        app:srcCompat="@drawable/ic_moon" />
+
+                    <TextView
+                        android:id="@+id/nightDays"
+                        android:gravity="center"
+                        android:layout_marginTop="5dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="2 night(s)" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:layout_weight="3"
+                    >
+
+                    <TextView
+                        android:id="@+id/checkoutTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Check-out"
+                        android:gravity="end"
+                        />
+
+                    <TextView
+                        android:id="@+id/checkoutDateTV"
+                        android:gravity="end"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Fri, 21 Apr" />
+
+                    <TextView
+                        android:id="@+id/checkoutTimeTV"
+                        android:gravity="end"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="12:00" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider17"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_marginTop="10dp"
+                android:background="?android:attr/listDivider" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+            <View
+                android:id="@+id/divider18"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_marginTop="10dp"
+                android:background="?android:attr/listDivider" />
+
+            <TextView
+                android:id="@+id/textView40"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Price overview"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textSize="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginVertical="10dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/textView41"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Total reservation price"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginVertical="10dp"/>
+
+                <TextView
+                    android:id="@+id/totalMoney"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3,000,000 VND"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:textSize="18dp"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginVertical="10dp"/>
+            </LinearLayout>
+
+            <View
+                android:id="@+id/divider19"
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_marginTop="10dp"
+                android:background="?android:attr/listDivider" />
+
+            <Button
+                android:id="@+id/acceptBtn"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Accept"
+                android:textColor="@color/white"
+                android:backgroundTint="#81C6DD"
+                android:textSize="20sp"/>
+
+            <Button
+                android:id="@+id/declineBtn"
+                style="@style/Widget.Material3.Button.ElevatedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="#9E3B33"
+                android:text="Decline"
+                android:textColor="@color/white"
+                android:textSize="20sp"/>
+
+
         </LinearLayout>
 
     </ScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
