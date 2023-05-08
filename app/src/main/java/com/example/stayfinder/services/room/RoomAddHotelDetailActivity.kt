@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.stayfinder.R
 import com.example.stayfinder.model.RoomDetailModel
 import com.example.stayfinder.partner.PartnerMainActivity
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -33,6 +34,8 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
     var editMode = false
     private var db: FirebaseFirestore? = null
     var nameCollection: String = "TestRoom"
+
+    var tempRoom:RoomDetailModel = RoomDetailModel()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +65,6 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
         } else if (uuidHotel != null && uuidRoom != null) { // entry exist - > fill form
             editMode = true
 
-
             val docRef = db!!.collection(nameCollection!!).document(uuidRoom)
             docRef.get().addOnSuccessListener { document ->
                 if (document != null) {
@@ -88,6 +90,8 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
                     bedroomHQ.value = room.num_bedroom!!
                     areaSquareET.setText(room.areaSquare!!.toString())
                     descriptionEt.setText(room.description.toString())
+
+                    tempRoom = room
 
                 } else {
                     Toast.makeText(this, "No document to show", Toast.LENGTH_SHORT).show()
@@ -120,8 +124,11 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
         }
 
         nextBtn.setOnClickListener {
+            var room: RoomDetailModel
+            var timestamp : Long? = null
 
-            var room = RoomDetailModel(
+
+            room = RoomDetailModel(
                 id = uuidRoom,
                 hotelId = uuidHotel!!,
                 description = descriptionEt.text.toString(),
@@ -142,8 +149,22 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
                 ) areaSquareET.text.toString().toDouble() else null as Double?
             )
 
+            if(editMode != false){
+                timestamp = tempRoom.available_start_date?.seconds // đã chia 1000
+                //tempRoom.available_start_date = null
+
+                room.photoUrl = tempRoom.photoUrl
+                room.origin_price = tempRoom.origin_price
+
+            }
+
             var intent = Intent(this, RoomAddHotelDetailStep2Activity::class.java)
             intent.putExtra("roomInfo", room)
+            intent.putExtra("editMode", editMode)
+            if(editMode == true){
+                intent.putExtra("timestamp", timestamp)
+            }
+
             startActivity(intent)
 
         }

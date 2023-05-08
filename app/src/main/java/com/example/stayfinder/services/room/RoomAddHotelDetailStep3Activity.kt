@@ -56,7 +56,7 @@ class RoomAddHotelDetailStep3Activity : AppCompatActivity() {
         setContentView(R.layout.activity_room_add_hotel_detail_step3)
 
         var room = intent.getSerializableExtra("roomInfo") as RoomDetailModel?
-        var timestamp = intent.getStringExtra("timestamp")
+        var timestamp = intent.getLongExtra("timestamp", 1683536679000)
 
         uploadImgBtn = findViewById(R.id.chooseImageBtn)
 
@@ -86,7 +86,7 @@ class RoomAddHotelDetailStep3Activity : AppCompatActivity() {
 
             var intent = Intent(this, RoomAddHotelDetailConfirmActivity::class.java)
             intent.putExtra("roomInfo", room)
-            intent.putExtra("timestamp", timestamp.toString())
+            intent.putExtra("timestamp", timestamp)
             intent.putStringArrayListExtra("img", tempUriImage)
             startActivity(intent)
         }
