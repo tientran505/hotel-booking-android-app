@@ -3,6 +3,7 @@ package com.example.stayfinder
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -44,6 +45,7 @@ class RoomActivity : AppCompatActivity() , CoroutineScope by MainScope() {
         setContentView(R.layout.activity_room)
         val bundle = intent.extras
         val hotel_id = bundle!!.getString("hotel_id")!!
+        Log.i("testlog", "${hotel_id}")
         val dateStart = bundle!!.getString("dateStart")!!
         val dateEnd = bundle!!.getString("dateEnd")!!
         println("dateStart"+ dateStart +"dateend"+dateEnd)
