@@ -56,13 +56,15 @@ data class User_cmt(
 ):Serializable{
 }
 @IgnoreExtraProperties
-data class coupons (
-    val coupons_id: String ="",
-    val title: String="",
-    val discount: Double=0.0,
-    val start_date: String="",
-    val end_date: String="",
-):java.io.Serializable{
+data class coupon(
+    var id: String = "",
+    var title: String = "",
+    var discount: Double = 0.0,
+    var startDate: String = "",
+    var endDate: String = "",
+    var owner_id: String = "",
+):Serializable{
+
 }
 @IgnoreExtraProperties
 data class rooms(
