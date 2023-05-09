@@ -42,10 +42,10 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".PartnerCouponList"
+            android:name=".partner.property.PartnerCouponList"
             android:exported="false" />
         <activity
-            android:name=".PartnerHotelList"
+            android:name=".partner.property.PartnerHotelList"
             android:exported="false" />
         <activity
             android:name=".services.hotel.AddHotelConfirmActivity"
