@@ -56,8 +56,8 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
         var uuidRoom: String? = intent.extras?.getString("uuidRoom")
         var uuidHotel: String? = intent.extras?.getString("uuidHotel")
 
-        uuidHotel = "ddddddddd"
-        uuidRoom = "6a02338a-f780-484b-891e-b0e3ccdb116e"
+        //uuidHotel = "ddddddddd"
+        //uuidRoom = "6a02338a-f780-484b-891e-b0e3ccdb116e"
 
         if (uuidHotel != null && uuidRoom == null) {
             uuidRoom = UUID.randomUUID().toString()

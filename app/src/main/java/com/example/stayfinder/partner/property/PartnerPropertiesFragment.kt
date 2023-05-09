@@ -10,10 +10,17 @@ import android.widget.Button
 import android.widget.ListView
 import android.widget.Toast
 import com.example.stayfinder.R
+import com.example.stayfinder.model.HotelDetailModel
+import com.example.stayfinder.model.RoomDetailModel
+import com.example.stayfinder.partner.PartnerMainActivity
 import com.example.stayfinder.partner.property.adapter.Property
 import com.example.stayfinder.partner.property.adapter.PropertyAdapter
+import com.example.stayfinder.partner.room.adapter.ListRoomModel
 import com.example.stayfinder.services.hotel.AddHotelActivity
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.internal.InternalTokenProvider
+import com.google.firebase.ktx.Firebase
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -30,7 +37,11 @@ class PartnerPropertiesFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private var db: FirebaseFirestore? = null
+    private var collectionName :String? = null
+
     private lateinit var propertyLV: ListView
+    var hotelList:ArrayList<Property> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,6 +49,10 @@ class PartnerPropertiesFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+        collectionName = getString(R.string.hotel_collection_name)
+
+        db = Firebase.firestore
     }
 
     override fun onCreateView(
@@ -47,42 +62,60 @@ class PartnerPropertiesFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.partner_fragment_properties, container, false)
 
-        initLV(view)
+        requestListHotel(view)
 
         return view
     }
 
-    private fun initLV(view: View) {
-        propertyLV = view.findViewById(R.id.propertyPartnerLV)
+    private fun requestListHotel(view: View){
 
         val urlStr = "https://images.unsplash.com/photo-1625244724120-1fd1d34d00f6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aG90ZWxzfGVufDB8fDB8fA%3D%3D&w=1000&q=80"
 
-        val propertyList = listOf<Property>(
-            Property(urlStr, "Property 1"),
-            Property(urlStr, "Property 2"),
-            Property(urlStr, "Property 3"),
-            Property(urlStr, "Property 4"),
-            Property(urlStr, "Property 5"),
-            Property(urlStr, "Property 6"),
-            Property(urlStr, "Property 7"),
-            Property(urlStr, "Property 8"),
-            Property(urlStr, "Property 9"),
-            Property(urlStr, "Property 10"),
-            Property(urlStr, "Property 11"),
+        db!!.collection(collectionName!!)
+            .get()
+            .addOnSuccessListener {
+                    documents ->
+                for(document in documents){
+                    val hotel = document.toObject(HotelDetailModel::class.java)
+                    var roomModel = Property(uuidHotel = hotel.id!!,
+                        propertyName = hotel.hotel_name,
+                        imgUrl = if(hotel.photoUrl.size > 0) hotel.photoUrl[0] else urlStr,
+                        address = hotel.address.get("number") + "," + hotel.address.get("street") + ","
+                                + hotel.address.get("district") + "," + hotel.address.get("ward") + ","
+                                + hotel.address.get("city")
+                    )
+                    hotelList.add(roomModel)
+                }
+                initLV(view, hotelList)
+            }
+            .addOnFailureListener{
+                Toast.makeText(requireContext(), "Have error, please try again", Toast.LENGTH_SHORT).show()
+                val intent = Intent(requireContext(), PartnerMainActivity::class.java)
+                startActivity(intent)
+            }
 
-            )
+
+    }
+
+    private fun initLV(view: View, hotelList:ArrayList<Property>) {
+        propertyLV = view.findViewById(R.id.propertyPartnerLV)
+
+        val propertyList = hotelList
 
         val propertyAdapter = PropertyAdapter(requireActivity(), propertyList)
         propertyLV.adapter = propertyAdapter
         propertyLV.setOnItemClickListener { adapterView, view, i, l ->
-            startActivity(Intent(requireContext(), DetailProperty::class.java))
+            var itemIdHotel = hotelList[i].uuidHotel
+            val intent = Intent(requireContext(), DetailProperty::class.java)
+            intent.putExtra("uuidHotel", itemIdHotel)
+            intent.putExtra("hotel", hotelList[i])
+            startActivity(intent)
             requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
 
         var addBtn = view.findViewById<Button>(R.id.addPropertyBtn)
         addBtn.setOnClickListener {
             startActivity(Intent(requireContext(), AddHotelActivity::class.java))
-
         }
     }
 

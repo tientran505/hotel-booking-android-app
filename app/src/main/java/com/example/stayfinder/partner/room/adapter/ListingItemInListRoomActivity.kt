@@ -1,27 +1,20 @@
-package com.example.stayfinder.partner.property.adapter
+package com.example.stayfinder.partner.room.adapter
 
 import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.stayfinder.R
-import java.io.Serializable
+import com.example.stayfinder.partner.property.adapter.Property
 
-data class Property(
-    var imgUrl: String?,
-    var propertyName: String?,
-    var uuidHotel :String?,
-    var address:String?
-) : Serializable
-
-class PropertyAdapter(
-    private val mActivity: Activity, private val myList: List<Property>
-) : ArrayAdapter<Property>(mActivity, R.layout.partner_property_list_item, myList) {
+class RoomAdapter(
+    private val mActivity: Activity, private val myList: List<ListRoomModel>
+) : ArrayAdapter<ListRoomModel>(mActivity, R.layout.partner_property_list_item, myList) {
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater = mActivity.layoutInflater
         val rowView: View = inflater.inflate(R.layout.partner_property_list_item, null, true)
@@ -33,11 +26,11 @@ class PropertyAdapter(
         img.setImageResource(R.drawable.img_1)
 
         Glide.with(mActivity)
-            .load(property.imgUrl)
+            .load(property.urlImage)
             .centerCrop()
             .into(img)
 
-        propertyTitle.text = property.propertyName
+        propertyTitle.text = property.typeRoom
 
         return rowView
     }
