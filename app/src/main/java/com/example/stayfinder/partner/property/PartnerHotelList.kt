@@ -36,7 +36,7 @@ class PartnerHotelList : AppCompatActivity() {
         val propertyAdapter = PropertyAdapter(this, propertyList)
         propertyLV.adapter = propertyAdapter
         propertyLV.setOnItemClickListener { adapterView, view, i, l ->
-            startActivity(Intent(this, DetailProperty::class.java))
+            startActivity(Intent(this, PartnerCouponList::class.java))
             this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
     }
