@@ -11,8 +11,12 @@ import android.widget.Button
 import android.widget.ListView
 import android.widget.Toast
 import com.example.stayfinder.R
+import com.example.stayfinder.model.HotelDetailModel
+import com.example.stayfinder.model.RoomDetailModel
+import com.example.stayfinder.partner.PartnerMainActivity
 import com.example.stayfinder.partner.property.adapter.Property
 import com.example.stayfinder.partner.property.adapter.PropertyAdapter
+import com.example.stayfinder.partner.room.adapter.ListRoomModel
 import com.example.stayfinder.services.hotel.AddHotelActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
@@ -34,6 +38,9 @@ class PartnerPropertiesFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private var db: FirebaseFirestore? = null
+    private var collectionName :String? = null
+
     private lateinit var propertyLV: ListView
     private val propertyList = ArrayList<Property>()
 
@@ -49,6 +56,10 @@ class PartnerPropertiesFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+        collectionName = getString(R.string.hotel_collection_name)
+
+        db = Firebase.firestore
     }
 
     override fun onCreateView(
@@ -58,10 +69,11 @@ class PartnerPropertiesFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.partner_fragment_properties, container, false)
 
-        initLV(view)
+        requestListHotel(view)
 
         return view
     }
+
 
     private fun fetchData() {
         val user = Firebase.auth.currentUser
@@ -113,16 +125,20 @@ class PartnerPropertiesFragment : Fragment() {
 //            )
 
         propertyAdapter = PropertyAdapter(requireActivity(), propertyList)
+
         propertyLV.adapter = propertyAdapter
         propertyLV.setOnItemClickListener { adapterView, view, i, l ->
-            startActivity(Intent(requireContext(), DetailProperty::class.java))
+            var itemIdHotel = hotelList[i].uuidHotel
+            val intent = Intent(requireContext(), DetailProperty::class.java)
+            intent.putExtra("uuidHotel", itemIdHotel)
+            intent.putExtra("hotel", hotelList[i])
+            startActivity(intent)
             requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
 
         var addBtn = view.findViewById<Button>(R.id.addPropertyBtn)
         addBtn.setOnClickListener {
             startActivity(Intent(requireContext(), AddHotelActivity::class.java))
-
         }
     }
 

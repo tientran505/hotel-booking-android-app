@@ -1,8 +1,10 @@
 package com.example.stayfinder.services.room
 
+import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -11,6 +13,7 @@ import android.widget.Toast
 import com.example.stayfinder.R
 import com.example.stayfinder.model.HotelDetailModel
 import com.example.stayfinder.model.RoomDetailModel
+import com.example.stayfinder.partner.PartnerMainActivity
 import com.google.android.flexbox.FlexboxLayout
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
@@ -32,8 +35,8 @@ class RoomAddHotelDetailConfirmActivity : AppCompatActivity() {
 
 
         var room = intent.getSerializableExtra("roomInfo") as RoomDetailModel?
-        var timestamp = intent.getStringExtra("timestamp")
-        room?.available_start_date = Timestamp(timestamp!!.toLong(), 0)
+        var timestamp = intent.getLongExtra("timestamp", 1683536679000)
+        room?.available_start_date = Timestamp(timestamp, 0)
         var imgs = intent.getStringArrayListExtra("img")
         var uuidHotel = room?.hotelId
 
@@ -95,6 +98,9 @@ class RoomAddHotelDetailConfirmActivity : AppCompatActivity() {
                 val fileName = "${room?.id}-$i"
                 uploadImg(imgUri, fileName, room?.id!!)
             }
+
+            val intent = Intent(this, PartnerMainActivity::class.java)
+            startActivity(intent)
         }
     }
 
