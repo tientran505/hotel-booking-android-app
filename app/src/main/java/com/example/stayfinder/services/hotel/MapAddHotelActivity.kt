@@ -51,7 +51,7 @@ class MapAddHotelActivity : AppCompatActivity(), OnMapReadyCallback {
                 longitude
             )  // Initial Latitude and Longitude the Map will load into
             .showLatLong(true)  // Show Coordinates in the Activity
-            .setMapZoom(12.0f)  // Map Zoom Level. Default: 14.0
+            .setMapZoom(17.0f)  // Map Zoom Level. Default: 14.0
             .setAddressRequired(true) // Set If return only Coordinates if cannot fetch Address for the coordinates. Default: True
             .hideMarkerShadow(true) // Hides the shadow under the map marker. Default: False
             //.setMarkerDrawable(R.drawable.marker) // Change the default Marker Image

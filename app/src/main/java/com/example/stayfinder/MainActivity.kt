@@ -35,7 +35,6 @@ class MainActivity : AppCompatActivity() {
         actionBarSetup()
         partnerAuth()
 
-//        DynamicColors.applyToActivitiesIfAvailable(this.application)
 
         val intent = intent
         val fragmentInfo = intent.getStringExtra("fragment")

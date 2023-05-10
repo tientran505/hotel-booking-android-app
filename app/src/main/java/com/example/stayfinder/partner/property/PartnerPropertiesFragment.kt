@@ -9,13 +9,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ListView
+import android.widget.ProgressBar
 import android.widget.Toast
 import com.example.stayfinder.R
-import com.example.stayfinder.partner.property.adapter.Property
+import com.example.stayfinder.hotels
 import com.example.stayfinder.partner.property.adapter.PropertyAdapter
 import com.example.stayfinder.services.hotel.AddHotelActivity
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.internal.InternalTokenProvider
 import com.google.firebase.ktx.Firebase
 
@@ -35,10 +37,9 @@ class PartnerPropertiesFragment : Fragment() {
     private var param2: String? = null
 
     private lateinit var propertyLV: ListView
-    private val propertyList = ArrayList<Property>()
+    private val propertyList = ArrayList<hotels>()
 
     val db = Firebase.firestore
-    val defaultUrl = "https://images.unsplash.com/photo-1625244724120-1fd1d34d00f6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aG90ZWxzfGVufDB8fDB8fA%3D%3D&w=1000&q=80"
 
     private lateinit var propertyAdapter: PropertyAdapter
 
@@ -69,22 +70,15 @@ class PartnerPropertiesFragment : Fragment() {
             val docRef = db.collection("TestHotel").whereEqualTo("owner_id", user.uid).whereNotEqualTo("hotel_name", "")
             docRef.get().addOnSuccessListener { documents ->
                 for (document in documents) {
-                    Log.d("hotellog", "${document.id} => ${document.data}")
-                    val imgList =  document.data["photoUrl"] as ArrayList<*>
-                    var url = ""
-                    if (imgList.size > 0) {
-                        url = imgList[0] as String
-                    }
-                    else url = defaultUrl
-                    val hotelName = document.data["hotel_name"] as String
-                    propertyList.add(Property(url, hotelName))
-//                    propertyList.add(Pro)
+                    val hotel = document.toObject<hotels>()
+                    Log.d("tien", hotel.toString())
+                    propertyList.add(hotel)
                 }
                 propertyAdapter.notifyDataSetChanged()
 
             }
                 .addOnFailureListener { exception ->
-                    Log.w("hotellog", "Error getting documents: ", exception)
+                    Log.w("log", "Error getting documents: ", exception)
                 }
 
         }
@@ -92,37 +86,21 @@ class PartnerPropertiesFragment : Fragment() {
 
     private fun initLV(view: View) {
         propertyLV = view.findViewById(R.id.propertyPartnerLV)
-
-        val urlStr = "https://images.unsplash.com/photo-1625244724120-1fd1d34d00f6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aG90ZWxzfGVufDB8fDB8fA%3D%3D&w=1000&q=80"
-
         fetchData()
-
-//        val propertyList = listOf<Property>(
-//            Property(urlStr, "Property 1"),
-//            Property(urlStr, "Property 2"),
-//            Property(urlStr, "Property 3"),
-//            Property(urlStr, "Property 4"),
-//            Property(urlStr, "Property 5"),
-//            Property(urlStr, "Property 6"),
-//            Property(urlStr, "Property 7"),
-//            Property(urlStr, "Property 8"),
-//            Property(urlStr, "Property 9"),
-//            Property(urlStr, "Property 10"),
-//            Property(urlStr, "Property 11"),
-//
-//            )
 
         propertyAdapter = PropertyAdapter(requireActivity(), propertyList)
         propertyLV.adapter = propertyAdapter
         propertyLV.setOnItemClickListener { adapterView, view, i, l ->
-            startActivity(Intent(requireContext(), DetailProperty::class.java))
+            val intent = Intent(requireContext(), DetailProperty::class.java)
+            intent.putExtra("vwProperty", propertyList[i].id)
+            startActivity(intent)
+
             requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
 
-        var addBtn = view.findViewById<Button>(R.id.addPropertyBtn)
+        val addBtn = view.findViewById<Button>(R.id.addPropertyBtn)
         addBtn.setOnClickListener {
             startActivity(Intent(requireContext(), AddHotelActivity::class.java))
-
         }
     }
 

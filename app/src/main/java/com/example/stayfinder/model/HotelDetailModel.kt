@@ -19,11 +19,8 @@ data class  HotelDetailModel (
         ),
     var rating_overall: Double? = null,
     var address: HashMap<String, String> = hashMapOf(
-            "city" to "",
-            "number" to "",
-            "street" to "",
-            "district" to "",
-            "ward" to ""
+            "address" to "",
+            "city" to ""
         ),
     var photoUrl: ArrayList<String> = ArrayList<String>(),
     var booking_count: Int = 0,
