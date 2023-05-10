@@ -38,7 +38,6 @@ class PartnerPropertiesFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
-    private var db: FirebaseFirestore? = null
     private var collectionName :String? = null
 
     private lateinit var propertyLV: ListView
@@ -59,7 +58,6 @@ class PartnerPropertiesFragment : Fragment() {
 
         collectionName = getString(R.string.hotel_collection_name)
 
-        db = Firebase.firestore
     }
 
     override fun onCreateView(
@@ -69,8 +67,7 @@ class PartnerPropertiesFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.partner_fragment_properties, container, false)
 
-        requestListHotel(view)
-
+        initLV(view)
         return view
     }
 
@@ -82,6 +79,7 @@ class PartnerPropertiesFragment : Fragment() {
             docRef.get().addOnSuccessListener { documents ->
                 for (document in documents) {
                     Log.d("hotellog", "${document.id} => ${document.data}")
+                    val hotel = document.toObject(HotelDetailModel::class.java)
                     val imgList =  document.data["photoUrl"] as ArrayList<*>
                     var url = ""
                     if (imgList.size > 0) {
@@ -89,7 +87,10 @@ class PartnerPropertiesFragment : Fragment() {
                     }
                     else url = defaultUrl
                     val hotelName = document.data["hotel_name"] as String
-                    propertyList.add(Property(url, hotelName))
+                    propertyList.add(Property(imgUrl = url, propertyName = hotelName, uuidHotel = hotel.id,
+                                                address = hotel.address.get("number") + "," + hotel.address.get("street") + ","
+                                                        + hotel.address.get("district") + "," + hotel.address.get("ward") + ","
+                                                        + hotel.address.get("city")))
 //                    propertyList.add(Pro)
                 }
                 propertyAdapter.notifyDataSetChanged()
@@ -128,10 +129,10 @@ class PartnerPropertiesFragment : Fragment() {
 
         propertyLV.adapter = propertyAdapter
         propertyLV.setOnItemClickListener { adapterView, view, i, l ->
-            var itemIdHotel = hotelList[i].uuidHotel
+            var itemIdHotel = propertyList[i].uuidHotel
             val intent = Intent(requireContext(), DetailProperty::class.java)
             intent.putExtra("uuidHotel", itemIdHotel)
-            intent.putExtra("hotel", hotelList[i])
+            intent.putExtra("hotel", propertyList[i])
             startActivity(intent)
             requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
