@@ -1,18 +1,16 @@
 package com.example.stayfinder.partner.property.adapter
 
-import android.content.Context
-import android.util.Log
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.stayfinder.R
-import com.example.stayfinder.hotel.hotel_detail.MyGridAdapter
 import java.net.URL
 
 data class EditImage(
@@ -20,57 +18,67 @@ data class EditImage(
     var name: String? = "",
     var photoURL: ArrayList<String> = arrayListOf<String>(),
 )
-class EditImageAdapter (private var item: ArrayList<EditImage>) : RecyclerView.Adapter<EditImageAdapter.ViewHolder>() {
-    fun addImages(position: Int) {
-        println("add")
-    }
-    fun deleteImages(position: Int) {
-        println("delete")
-    }
+class ShowListRoom(private var item: ArrayList<String?>) : RecyclerView.Adapter<ShowListRoom.ViewHolder>() {
+    var onItemClick: ((Int) -> Unit)? = null
+
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
-        val nameTv = listItemView.findViewById<TextView>(R.id.nameTv)
-        val addBtn = listItemView.findViewById<Button>(R.id.addBtn)
-        val deleteBtn = listItemView.findViewById<Button>(R.id.deleteBtn)
-        val RecyclerView = listItemView.findViewById<RecyclerView>(R.id.imageRV)
+        val button = listItemView.findViewById<Button>(R.id.id)
+        init {
+            button.setOnClickListener {
+                onItemClick?.invoke(adapterPosition)
+            }
+        }
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): EditImageAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShowListRoom.ViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
         val contactView = inflater.inflate(R.layout.edit_image_adapter, parent, false)
         return ViewHolder(contactView)
     }
 
-    override fun onBindViewHolder(holder: EditImageAdapter.ViewHolder, position: Int) {
-        println("length "+ item.size)
-        println(position)
-        holder.nameTv?.setText(this.item[position].name)
-        val adapter  =  ImageAdapter(this.item[position].photoURL )
-        holder.RecyclerView?.adapter = adapter
-        holder.RecyclerView.layoutManager = GridLayoutManager(holder.itemView.context,3)
-        adapter.onDeleteClick={ position ->
-            Log.i("ttlog", position.toString())
-            adapter.deleteImages(position)
-        }
+    override fun onBindViewHolder(holder: ShowListRoom.ViewHolder, position: Int) {
+//        println("length "+ item.size)
+        println(this.item[position])
+        holder.button?.setText(this.item[position])
+
     }
     override fun getItemCount(): Int {
         return item.size
     }
 
-    fun updateList( list: ArrayList<EditImage>){
+    fun updateList( list: ArrayList<String?>){
         this.item = list
         this.notifyDataSetChanged()
     }
 }
+
 class ImageAdapter (private var item: ArrayList<String>) : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
-    var onDeleteClick: ((Int) -> Unit)? = null
-    fun deleteImages(position: Int) {
-        println(position.toString()+" onclick")
+    var onClick: ((Int) -> Unit)? = null
+    var isDelete: ArrayList<Boolean> = arrayListOf<Boolean>()
+    fun deleteImages(): Int {
+        return isDelete.count { it }
     }
+    fun deletePosition(): ArrayList<Boolean>{
+        return isDelete
+    }
+    @SuppressLint("ResourceAsColor")
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
         val logo = listItemView.findViewById<ImageView>(R.id.logo)
         init {
+            for( i in item){
+                isDelete.add(false)
+            }
             logo.setOnClickListener {
-                onDeleteClick?.invoke(adapterPosition)
+                isDelete[adapterPosition] = !isDelete[adapterPosition]
+                if(isDelete[adapterPosition]){
+                    logo.setBackgroundColor(R.color.primary)
+                    logo.setPadding(10)
+                }
+                else{
+                    logo.setBackgroundColor(R.color.white)
+                    logo.setPadding(0)
+                }
+                onClick?.invoke(adapterPosition)
             }
         }
     }
