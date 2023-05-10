@@ -133,6 +133,9 @@
             android:name=".services.hotel.AddHotelActivity"
             android:exported="false" />
         <activity
+            android:name=".partner.property.PartnerAddCoupon"
+            android:exported="false" />
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>

@@ -2,6 +2,7 @@ package com.example.stayfinder.partner.property
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +18,7 @@ import com.example.stayfinder.partner.property.adapter.Property
 import com.example.stayfinder.partner.property.adapter.PropertyAdapter
 import com.example.stayfinder.partner.room.adapter.ListRoomModel
 import com.example.stayfinder.services.hotel.AddHotelActivity
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.internal.InternalTokenProvider
 import com.google.firebase.ktx.Firebase
@@ -41,7 +42,13 @@ class PartnerPropertiesFragment : Fragment() {
     private var collectionName :String? = null
 
     private lateinit var propertyLV: ListView
-    var hotelList:ArrayList<Property> = ArrayList()
+    private val propertyList = ArrayList<Property>()
+
+    val db = Firebase.firestore
+    val defaultUrl = "https://images.unsplash.com/photo-1625244724120-1fd1d34d00f6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aG90ZWxzfGVufDB8fDB8fA%3D%3D&w=1000&q=80"
+
+    private lateinit var propertyAdapter: PropertyAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,42 +74,58 @@ class PartnerPropertiesFragment : Fragment() {
         return view
     }
 
-    private fun requestListHotel(view: View){
+
+    private fun fetchData() {
+        val user = Firebase.auth.currentUser
+        if (user != null) {
+            val docRef = db.collection("TestHotel").whereEqualTo("owner_id", user.uid).whereNotEqualTo("hotel_name", "")
+            docRef.get().addOnSuccessListener { documents ->
+                for (document in documents) {
+                    Log.d("hotellog", "${document.id} => ${document.data}")
+                    val imgList =  document.data["photoUrl"] as ArrayList<*>
+                    var url = ""
+                    if (imgList.size > 0) {
+                        url = imgList[0] as String
+                    }
+                    else url = defaultUrl
+                    val hotelName = document.data["hotel_name"] as String
+                    propertyList.add(Property(url, hotelName))
+//                    propertyList.add(Pro)
+                }
+                propertyAdapter.notifyDataSetChanged()
+
+            }
+                .addOnFailureListener { exception ->
+                    Log.w("hotellog", "Error getting documents: ", exception)
+                }
+
+        }
+    }
+
+    private fun initLV(view: View) {
+        propertyLV = view.findViewById(R.id.propertyPartnerLV)
 
         val urlStr = "https://images.unsplash.com/photo-1625244724120-1fd1d34d00f6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aG90ZWxzfGVufDB8fDB8fA%3D%3D&w=1000&q=80"
 
-        db!!.collection(collectionName!!)
-            .get()
-            .addOnSuccessListener {
-                    documents ->
-                for(document in documents){
-                    val hotel = document.toObject(HotelDetailModel::class.java)
-                    var roomModel = Property(uuidHotel = hotel.id!!,
-                        propertyName = hotel.hotel_name,
-                        imgUrl = if(hotel.photoUrl.size > 0) hotel.photoUrl[0] else urlStr,
-                        address = hotel.address.get("number") + "," + hotel.address.get("street") + ","
-                                + hotel.address.get("district") + "," + hotel.address.get("ward") + ","
-                                + hotel.address.get("city")
-                    )
-                    hotelList.add(roomModel)
-                }
-                initLV(view, hotelList)
-            }
-            .addOnFailureListener{
-                Toast.makeText(requireContext(), "Have error, please try again", Toast.LENGTH_SHORT).show()
-                val intent = Intent(requireContext(), PartnerMainActivity::class.java)
-                startActivity(intent)
-            }
+        fetchData()
 
+//        val propertyList = listOf<Property>(
+//            Property(urlStr, "Property 1"),
+//            Property(urlStr, "Property 2"),
+//            Property(urlStr, "Property 3"),
+//            Property(urlStr, "Property 4"),
+//            Property(urlStr, "Property 5"),
+//            Property(urlStr, "Property 6"),
+//            Property(urlStr, "Property 7"),
+//            Property(urlStr, "Property 8"),
+//            Property(urlStr, "Property 9"),
+//            Property(urlStr, "Property 10"),
+//            Property(urlStr, "Property 11"),
+//
+//            )
 
-    }
+        propertyAdapter = PropertyAdapter(requireActivity(), propertyList)
 
-    private fun initLV(view: View, hotelList:ArrayList<Property>) {
-        propertyLV = view.findViewById(R.id.propertyPartnerLV)
-
-        val propertyList = hotelList
-
-        val propertyAdapter = PropertyAdapter(requireActivity(), propertyList)
         propertyLV.adapter = propertyAdapter
         propertyLV.setOnItemClickListener { adapterView, view, i, l ->
             var itemIdHotel = hotelList[i].uuidHotel
