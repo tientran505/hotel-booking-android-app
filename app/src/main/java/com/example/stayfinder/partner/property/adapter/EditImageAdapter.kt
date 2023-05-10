@@ -11,13 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.stayfinder.R
+import com.example.stayfinder.partner.property.sub_property.EditImage
 import java.net.URL
 
-data class EditImage(
-    var id: String? = "",
-    var name: String? = "",
-    var photoURL: ArrayList<String> = arrayListOf<String>(),
-)
+
 class ShowListRoom(private var item: ArrayList<String?>) : RecyclerView.Adapter<ShowListRoom.ViewHolder>() {
     var onItemClick: ((Int) -> Unit)? = null
 
@@ -52,25 +49,24 @@ class ShowListRoom(private var item: ArrayList<String?>) : RecyclerView.Adapter<
     }
 }
 
-class ImageAdapter (private var item: ArrayList<String>) : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
+class ImageAdapter (private var item: ArrayList<EditImage>) : RecyclerView.Adapter<ImageAdapter.ViewHolder>() {
     var onClick: ((Int) -> Unit)? = null
-    var isDelete: ArrayList<Boolean> = arrayListOf<Boolean>()
-    fun deleteImages(): Int {
-        return isDelete.count { it }
+    fun deleteImages(): Boolean {
+        for(i in item){
+            if(i.isDelete === true) return true
+        }
+        return false
     }
-    fun deletePosition(): ArrayList<Boolean>{
-        return isDelete
+    fun deletePosition(): ArrayList<EditImage>{
+        return item
     }
     @SuppressLint("ResourceAsColor")
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
         val logo = listItemView.findViewById<ImageView>(R.id.logo)
         init {
-            for( i in item){
-                isDelete.add(false)
-            }
             logo.setOnClickListener {
-                isDelete[adapterPosition] = !isDelete[adapterPosition]
-                if(isDelete[adapterPosition]){
+                item[adapterPosition].isDelete= !item[adapterPosition].isDelete
+                if(item[adapterPosition].isDelete){
                     logo.setBackgroundColor(R.color.primary)
                     logo.setPadding(10)
                 }
@@ -91,7 +87,7 @@ class ImageAdapter (private var item: ArrayList<String>) : RecyclerView.Adapter<
     override fun onBindViewHolder(holder: ImageAdapter.ViewHolder, position: Int) {
         holder.logo?.let {
             Glide.with(holder.itemView.context)
-                .load(URL(item[position]))
+                .load(URL(item[position].imageUrl))
                 .apply(RequestOptions().centerCrop())
                 .into(it)
         }
@@ -100,7 +96,7 @@ class ImageAdapter (private var item: ArrayList<String>) : RecyclerView.Adapter<
         return item.size
     }
 
-    fun updateList( list: ArrayList<String>){
+    fun updateList( list: ArrayList<EditImage>){
         this.item = list
         this.notifyDataSetChanged()
     }

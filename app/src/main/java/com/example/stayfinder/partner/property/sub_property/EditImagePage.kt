@@ -20,57 +20,76 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stayfinder.R
 import com.example.stayfinder.model.HotelDetailModel
-import com.example.stayfinder.partner.property.adapter.EditImage
 import com.example.stayfinder.partner.property.adapter.ImageAdapter
 import com.example.stayfinder.partner.property.adapter.ShowListRoom
 import com.google.android.flexbox.FlexboxLayout
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-
+data class EditImage(
+    var imageUrl: String,
+    var isDelete: Boolean
+)
 class EditImagePage : AppCompatActivity() {
     private val REQUEST_CODE = 1752
     var imageUri: Uri? = null
-    lateinit var editI: EditImage
+    var ImageList: ArrayList<EditImage> = arrayListOf()
     lateinit var nameTv: TextView
     lateinit var addBtn: Button
     lateinit var deleteBtn: Button
+    lateinit var saveBtn: Button
     lateinit var RecyclerView: RecyclerView
     lateinit var deletePosition: ArrayList<Boolean>
+    lateinit var adapter: ImageAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_image_page)
         nameTv = findViewById(R.id.nameTv)
         addBtn = findViewById(R.id.addBtn)
+        saveBtn = findViewById(R.id.saveBtn)
         deleteBtn = findViewById(R.id.deleteBtn)
         RecyclerView = findViewById(R.id.imageRV)
         val bundle = intent.extras
         val id = bundle?.getString("id")
         val collection = bundle?.getString("collection")!!
-
         val roomref = Firebase.firestore.collection(collection).whereEqualTo("id", id).get()
             .addOnSuccessListener { documents ->
+                var listImage: ArrayList<String> = arrayListOf()
+                var name: String = ""
                 if (!documents.isEmpty) {
                     for (i in documents) {
-                        editI = EditImage(
-                            i.getString("id"),
-                            i.getString("name"),
-                            i.get("photoUrl") as ArrayList<String>
-                        )
+                        name = i.getString("name").toString()
+                        listImage = i.get("photoUrl") as ArrayList<String>
                     }
                 }
                 deleteBtn.visibility= View.GONE
-                nameTv.setText(editI.name)
-                val adapter  =  ImageAdapter(editI.photoURL )
+                nameTv.setText(name)
+                for(i in listImage){
+                    ImageList.add(EditImage(i,false))
+                }
+                adapter  =  ImageAdapter(ImageList )
                 RecyclerView?.adapter = adapter
                 RecyclerView.layoutManager = GridLayoutManager(this,3)
                 adapter.onClick={ position ->
                     val selected = adapter.deleteImages()
-                    if(selected == 0) deleteBtn.visibility= View.GONE
+                    if(selected === false) deleteBtn.visibility= View.GONE
                     else deleteBtn.visibility= View.VISIBLE
+                    ImageList = adapter.deletePosition()
+                    println(ImageList)
                 }
             }
         deleteBtn.setOnClickListener {
+            ImageList.removeAll({
+                it.isDelete
+            })
+            println(ImageList.size)
+            println(ImageList)
+            adapter.updateList(ImageList)
+        }
+        addBtn.setOnClickListener {
+
+        }
+        saveBtn.setOnClickListener {
 
         }
     }
