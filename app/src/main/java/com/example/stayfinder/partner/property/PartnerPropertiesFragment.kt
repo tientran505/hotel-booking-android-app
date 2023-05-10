@@ -12,8 +12,15 @@ import android.widget.ListView
 import android.widget.ProgressBar
 import android.widget.Toast
 import com.example.stayfinder.R
+
+import com.example.stayfinder.model.HotelDetailModel
+import com.example.stayfinder.model.RoomDetailModel
+import com.example.stayfinder.partner.PartnerMainActivity
+import com.example.stayfinder.partner.property.adapter.Property
+
 import com.example.stayfinder.hotels
 import com.example.stayfinder.partner.property.adapter.PropertyAdapter
+import com.example.stayfinder.partner.room.adapter.ListRoomModel
 import com.example.stayfinder.services.hotel.AddHotelActivity
 import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.firebase.auth.ktx.auth
@@ -37,6 +44,8 @@ class PartnerPropertiesFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
 
+    private var collectionName :String? = null
+
     private lateinit var propertyLV: ListView
     private val propertyList = ArrayList<hotels>()
 
@@ -52,6 +61,9 @@ class PartnerPropertiesFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+
+        collectionName = getString(R.string.hotel_collection_name)
+
     }
 
     override fun onCreateView(
@@ -64,9 +76,9 @@ class PartnerPropertiesFragment : Fragment() {
         progressBar = view.findViewById(R.id.progressBar)
 
         initLV(view)
-
         return view
     }
+
 
     private fun fetchData() {
         val user = Firebase.auth.currentUser
@@ -94,10 +106,13 @@ class PartnerPropertiesFragment : Fragment() {
         fetchData()
 
         propertyAdapter = PropertyAdapter(requireActivity(), propertyList)
+
         propertyLV.adapter = propertyAdapter
         propertyLV.setOnItemClickListener { adapterView, view, i, l ->
+            var itemIdHotel = propertyList[i].uuidHotel
             val intent = Intent(requireContext(), DetailProperty::class.java)
-            intent.putExtra("vwProperty", propertyList[i].id)
+            intent.putExtra("uuidHotel", itemIdHotel)
+            intent.putExtra("hotel", propertyList[i])
             startActivity(intent)
 
             requireActivity().overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);

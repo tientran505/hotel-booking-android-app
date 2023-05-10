@@ -9,6 +9,13 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+
+import android.widget.TextView
+import com.bumptech.glide.Glide
+import com.example.stayfinder.R
+import com.example.stayfinder.model.HotelDetailModel
+import com.example.stayfinder.partner.property.adapter.Property
+import com.example.stayfinder.partner.room.PartnerListRoomActivity
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.RequiresApi
@@ -25,6 +32,10 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 class DetailProperty : AppCompatActivity() {
+
+
+    lateinit var uuidHotel:String
+    lateinit var hotel:Property
     private lateinit var imgProperty: ImageView
     private lateinit var propertyName: TextView
     private lateinit var propertyAddress: TextView
@@ -36,6 +47,9 @@ class DetailProperty : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.partner_activity_detail_property)
+
+        uuidHotel = intent.getStringExtra("uuidHotel")!!
+        hotel = intent.getSerializableExtra("hotel") as Property
 
         val intent = intent
 //        hotel = intent.getSerializableExtra("vwProperty", hotels::class.java) as hotels
@@ -51,8 +65,20 @@ class DetailProperty : AppCompatActivity() {
 
         initActionBar()
 
+        findViewById<TextView>(R.id.propertyNameDetail).setText(hotel.propertyName)
+        findViewById<TextView>(R.id.propertyAddressDetail).setText(hotel.address)
+
+        val img : ImageView = findViewById(R.id.imgPropertyDetail)
+        img.setImageResource(R.drawable.img_1)
+
+        Glide.with(this)
+            .load(hotel.imgUrl)
+            .centerCrop()
+            .into(img)
+
         findViewById<Button>(R.id.roomBtn).setOnClickListener {
-            val intent = Intent(this, RoomAddHotelDetailActivity::class.java)
+            var intent = Intent(this, PartnerListRoomActivity::class.java)
+            intent.putExtra("uuidHotel",uuidHotel)
             startActivity(intent)
         }
     }
