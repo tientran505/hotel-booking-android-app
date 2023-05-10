@@ -25,8 +25,7 @@ data class hotels(
 }
 
 @IgnoreExtraProperties
-data class address ( val number: String = "", val street: String = "", val district: String = "",
-                     val ward: String = "",val city: String = ""): Serializable
+data class address ( val address: String = "", val city: String = ""): Serializable
 @IgnoreExtraProperties
 data class facilities(val id: String ="",val name: String = "", val icon: String = ""):Serializable
 @IgnoreExtraProperties

@@ -62,7 +62,7 @@ class DetailProperty : AppCompatActivity() {
 
         return withContext(Dispatchers.IO) {
             try {
-                val docRef = db.collection("TestHotel").document(id)
+                val docRef = db.collection("hotels").document(id)
                 val document = docRef.get().await()
 
                 document.toObject(hotels::class.java)
@@ -96,7 +96,7 @@ class DetailProperty : AppCompatActivity() {
 
         propertyName.text = hotel.name
         val address = hotel.address
-        propertyAddress.text = "${address.number} ${address.street}, Ward ${address.ward}, District ${address.district}, ${address.city}"
+        propertyAddress.text = address.address
 
         progressBar.visibility = View.GONE
     }

@@ -44,8 +44,6 @@ class AddHotelConfirmActivity : AppCompatActivity() {
         var tempUriImage = intent.getStringArrayListExtra("uriImage")
         var uuidHotel = hotel!!.id
 
-
-
         findViewById<TextView>(R.id.addressTv).text = hotel.address["address"]
 
         //save latitude longitude to hotel.map

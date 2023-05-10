@@ -15,6 +15,7 @@ import com.example.stayfinder.R
 import com.example.stayfinder.hotels
 import com.example.stayfinder.partner.property.adapter.PropertyAdapter
 import com.example.stayfinder.services.hotel.AddHotelActivity
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
@@ -43,6 +44,7 @@ class PartnerPropertiesFragment : Fragment() {
 
     private lateinit var propertyAdapter: PropertyAdapter
 
+    private lateinit var progressBar: CircularProgressIndicator
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +61,8 @@ class PartnerPropertiesFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.partner_fragment_properties, container, false)
 
+        progressBar = view.findViewById(R.id.progressBar)
+
         initLV(view)
 
         return view
@@ -67,7 +71,7 @@ class PartnerPropertiesFragment : Fragment() {
     private fun fetchData() {
         val user = Firebase.auth.currentUser
         if (user != null) {
-            val docRef = db.collection("TestHotel").whereEqualTo("owner_id", user.uid).whereNotEqualTo("hotel_name", "")
+            val docRef = db.collection("hotels").whereEqualTo("owner_id", user.uid).whereNotEqualTo("hotel_name", "")
             docRef.get().addOnSuccessListener { documents ->
                 for (document in documents) {
                     val hotel = document.toObject<hotels>()
@@ -76,6 +80,7 @@ class PartnerPropertiesFragment : Fragment() {
                 }
                 propertyAdapter.notifyDataSetChanged()
 
+                progressBar.visibility = View.GONE
             }
                 .addOnFailureListener { exception ->
                     Log.w("log", "Error getting documents: ", exception)
