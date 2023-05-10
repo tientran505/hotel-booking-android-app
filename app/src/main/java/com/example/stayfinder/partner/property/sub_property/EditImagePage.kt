@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -41,6 +42,8 @@ class EditImagePage : AppCompatActivity() {
     lateinit var RecyclerView: RecyclerView
     lateinit var deletePosition: ArrayList<Boolean>
     lateinit var adapter: ImageAdapter
+    lateinit var id:String
+    val storageRef = Firebase.storage.reference
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_image_page)
@@ -49,19 +52,15 @@ class EditImagePage : AppCompatActivity() {
         saveBtn = findViewById(R.id.saveBtn)
         deleteBtn = findViewById(R.id.deleteBtn)
         RecyclerView = findViewById(R.id.imageRV)
+        initActionBar()
         val bundle = intent.extras
-        val id = bundle?.getString("id")
+        id = bundle?.getString("id")!!
         val collection = bundle?.getString("collection")!!
-        val roomref = Firebase.firestore.collection(collection).whereEqualTo("id", id).get()
+        val roomref = Firebase.firestore.collection(collection).document(id).get()
             .addOnSuccessListener { documents ->
-                var listImage: ArrayList<String> = arrayListOf()
-                var name: String = ""
-                if (!documents.isEmpty) {
-                    for (i in documents) {
-                        name = i.getString("name").toString()
-                        listImage = i.get("photoUrl") as ArrayList<String>
-                    }
-                }
+                val name: String =documents.getString("name").toString()
+                val listImage: ArrayList<String> = documents.get("photoUrl") as ArrayList<String>
+
                 deleteBtn.visibility= View.GONE
                 nameTv.setText(name)
                 for(i in listImage){
@@ -75,95 +74,62 @@ class EditImagePage : AppCompatActivity() {
                     if(selected === false) deleteBtn.visibility= View.GONE
                     else deleteBtn.visibility= View.VISIBLE
                     ImageList = adapter.deletePosition()
-                    println(ImageList)
                 }
             }
         deleteBtn.setOnClickListener {
             ImageList.removeAll({
                 it.isDelete
             })
-            println(ImageList.size)
-            println(ImageList)
             adapter.updateList(ImageList)
         }
         addBtn.setOnClickListener {
-
+            activityResultLauncher.launch(appPerms)
+            adapter.updateList(ImageList)
         }
         saveBtn.setOnClickListener {
-
+            println(ImageList)
+            var photoUrlUpdate: ArrayList<String> = arrayListOf()
+            for (i in ImageList){
+                photoUrlUpdate.add(i.imageUrl)
+            }
+            Firebase.firestore.collection(collection).document(id)
+                .update("photoUrl",photoUrlUpdate)
+                .addOnSuccessListener{
+                    println("success update")
+                }
+                .addOnFailureListener{
+                    println("failed")
+                }
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
-
-            var flex = findViewById<FlexboxLayout>(R.id.flexboxLayout)
-            flex.removeAllViews()
-
             if (data?.clipData != null) {
                 val count = data.clipData!!.itemCount
 
                 for (i in 0 until count) {
                     val imageUri = data.clipData!!.getItemAt(i).uri
-                    var imgView = ImageView(baseContext)
-                    imgView.visibility = View.VISIBLE
-                    imgView.setImageURI(null)
-                    imgView.setImageURI(imageUri)
-                    imgView.setPadding(5, 5, 5, 5)
-                    imgView.tag = imageUri.toString()
-                    imgView.scaleType = ImageView.ScaleType.CENTER_CROP
-
-                    //imgView.maxHeight = 100
-                    //imgView.requestLayout();
-                    val flexparams = FlexboxLayout.LayoutParams(300, 300)
-                    imgView.layoutParams = flexparams
-
-                    flex.addView(imgView)
+                    val riversRef = storageRef.child("hotels").child(id + imageUri.toString())
+                    var uploadTask = riversRef.putFile(imageUri!!)
+                    uploadTask.continueWithTask { task ->
+                        if (!task.isSuccessful) {
+                            task.exception?.let { throw it }
+                        }
+                        riversRef.downloadUrl
+                    }.addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val downloadUrl = task.result.toString()
+                            ImageList.add(EditImage(downloadUrl, false))
+                            adapter.updateList(ImageList)
+                        } else {
+                        }
+                    }
                 }
             }
         }
     }
-    private fun uploadImg(imageUri: Uri, nameFile: String, uuid: String) {
-        val storageRef = Firebase.storage.reference
-        val imgRef = storageRef.child("imgsTest")
-        val imageRef = imgRef.child(nameFile)
-        var imgUrl: String? = null
-
-        imageRef.putFile(imageUri).addOnSuccessListener {
-            Toast.makeText(baseContext, "Image uploaded successfully", Toast.LENGTH_SHORT).show()
-
-            imageRef.downloadUrl.addOnCompleteListener {
-                if (it.isSuccessful) {
-                    imgUrl = it.result.toString()
-                    var hotelObj: HotelDetailModel? = null
-//                    db!!.collection(nameCollection!!).document(uuid).get()
-//                        .addOnSuccessListener { document ->
-//                            if (document != null) {
-//                                hotelObj = document.toObject(HotelDetailModel::class.java)
-//
-//                                if (isEditMode) { // Mode Editing
-//                                    hotelObj!!.photoUrl = java.util.ArrayList() // delete all image
-//                                    isEditMode = false
-//
-//                                }
-//                                hotelObj!!.photoUrl.add(imgUrl!!) // is mode uploading => add new image.
-//
-//
-//                                //Update object
-//                                db!!.collection(nameCollection!!).document(uuid).set(hotelObj!!)
-//                            }
-//                        }
-                }
-            }.addOnFailureListener {
-                Toast.makeText(baseContext, "Error uploading image", Toast.LENGTH_SHORT).show()
-            }
-
-        }
-
-    }
-
     val appPerms = arrayOf(
         Manifest.permission.READ_EXTERNAL_STORAGE,
         Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -192,5 +158,23 @@ class EditImagePage : AppCompatActivity() {
         intent.type = "image/*"
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
         startActivityForResult(intent, REQUEST_CODE)
+    }
+    private fun initActionBar() {
+        val menu = supportActionBar
+        menu?.setDisplayHomeAsUpEnabled(true)
+        menu?.setHomeButtonEnabled(true)
+        menu?.title = "Edit Image"
+    }
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

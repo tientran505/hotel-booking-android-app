@@ -12,6 +12,7 @@
         android:layout_marginVertical="10dp"
         android:weightSum="1"
         android:text="Phòng"
+        android:background="@color/white"
         android:textAlignment="textStart"
         android:drawableEnd="@drawable/baseline_keyboard_arrow_right_24"
         >
