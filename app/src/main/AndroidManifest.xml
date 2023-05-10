@@ -24,6 +24,14 @@
         <activity
             android:name=".partner.room.PartnerListRoomActivity"
             android:exported="false" />
+
+      <activity
+            android:name=".partner.property.upload.PropertyTypeChooser"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".services.hotel.AddHotelConfirmActivity"
             android:exported="false" />

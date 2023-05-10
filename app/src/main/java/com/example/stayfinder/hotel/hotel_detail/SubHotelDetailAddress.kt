@@ -45,7 +45,7 @@ class SubHotelDetailAddress : Fragment(), OnMapReadyCallback{
         val view =  inflater.inflate(R.layout.fragment_sub_hotel_detail_address, container, false)
         val bookingDetail :HotelDetails? = this.getArguments()?.getSerializable("BookingDetail") as HotelDetails?
         val addressTemp : address = bookingDetail!!.address
-        address = addressTemp.number.toString()+" "+ addressTemp.street+", "+ addressTemp.district+", "+ addressTemp.ward+", "+addressTemp.city
+        address = addressTemp.address
         val addressTv = view!!.findViewById<TextView>(R.id.addressTv)
         addressTv.setText(address)
         searchMap()

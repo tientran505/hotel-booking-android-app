@@ -21,7 +21,7 @@ data class HotelDetails(
     var hotel_name: String ="",
     var priceless: Double =0.0,
     var img: ArrayList<String> =ArrayList<String>(),
-    var rating_overall: Double =0.0,
+    var rating_overall: Double? =0.0,
     var address: address = address(),
     var description: String="",
     var noFeedback: Int =0,

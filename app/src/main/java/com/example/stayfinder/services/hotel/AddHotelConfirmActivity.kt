@@ -6,6 +6,8 @@ import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -34,37 +36,19 @@ class AddHotelConfirmActivity : AppCompatActivity() {
         nameCollection = getString(R.string.hotel_collection_name)
         db = Firebase.firestore
 
+        initActionBar()
+
         val fm: FragmentManager = supportFragmentManager
 
         var hotel = intent.getSerializableExtra("hotelInfo") as HotelDetailModel?
         var tempUriImage = intent.getStringArrayListExtra("uriImage")
         var uuidHotel = hotel!!.id
 
-
-
-        var addressTemp = hotel.address
-        var address =  addressTemp["number"].toString()+" "+ addressTemp["street"]+", "+ addressTemp["district"]+", "+ addressTemp["ward"]+", "+addressTemp["city"]
-        findViewById<TextView>(R.id.addressTv).text = address
+        findViewById<TextView>(R.id.addressTv).text = hotel.address["address"]
 
         //save latitude longitude to hotel.map
-        var latitude = intent.getDoubleExtra("latitude", 10.768622999591253)
-        var longitude = intent.getDoubleExtra("longitude", 106.69537279754877)
-
-        if(latitude == 10.768622999591253 && longitude == 106.69537279754877){ // lấy địa chỉ tạm
-            if(!(addressTemp["number"].toString().isEmpty() ||
-                addressTemp["street"].toString().isEmpty() ||
-                addressTemp["district"].toString().isEmpty() ||
-                addressTemp["ward"].toString().isEmpty() ||
-                addressTemp["city"].toString().isEmpty() )   ){
-
-
-                var latlan = getLocationFromAddress(address)!!
-                hotel.map = arrayListOf(latlan.latitude, latlan.longitude)
-                latitude = latlan.latitude
-                longitude = latlan.longitude
-            }
-
-        }
+        val latitude = intent.getDoubleExtra("latitude", 10.768622999591253)
+        val longitude = intent.getDoubleExtra("longitude", 106.69537279754877)
 
         hotel.map = arrayListOf(latitude, longitude)
 
@@ -127,6 +111,28 @@ class AddHotelConfirmActivity : AppCompatActivity() {
                 finishAffinity()
             }, 10000)
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    private fun initActionBar() {
+        val menu = supportActionBar
+        menu?.setDisplayHomeAsUpEnabled(true)
+        menu?.setHomeButtonEnabled(true)
+        menu?.title = "Hotel Location"
     }
 
     fun getLocationFromAddress( strAddress: String?): LatLng? {

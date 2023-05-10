@@ -10,151 +10,101 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
+        <com.google.android.material.textfield.TextInputLayout
+            style="?attr/textInputOutlinedStyle"
             android:id="@+id/nameHotelEt"
-            android:layout_width="0dp"
-            android:layout_height="54dp"
-            android:layout_marginStart="45dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Hotel's name"
+            app:errorEnabled="true"
+            android:layout_marginHorizontal="45dp"
             android:layout_marginTop="20dp"
-            android:layout_marginEnd="45dp"
-            android:background="@drawable/edit_text_bg"
-            android:ems="10"
-            android:hint="Name Hotel"
-            android:inputType="text"
-            android:paddingHorizontal="20dp"
-            android:text=""
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
+            app:endIconMode="clear_text"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
 
-        <EditText
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/descriptionEt"
-            android:layout_width="0dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="45dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="45dp"
-            android:background="@drawable/edit_text_bg"
-            android:ems="10"
-            android:scrollHorizontally="false"
+            style="?attr/textInputOutlinedStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="45dp"
             android:hint="Description"
-            android:inputType="text|textMultiLine"
-            android:paddingHorizontal="20dp"
-            android:text=""
-            android:textSize="16sp"
+            app:counterEnabled="true"
+            app:counterMaxLength="100"
+            app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/nameHotelEt" />
 
-        <EditText
-            android:id="@+id/cityEt"
-            android:layout_width="0dp"
-            android:layout_height="54dp"
-            android:layout_marginStart="45dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="45dp"
-            android:background="@drawable/edit_text_bg"
-            android:ems="10"
-            android:hint="City. Ex: Ho Chi Minh"
-            android:inputType="text"
-            android:paddingHorizontal="20dp"
-            android:text=""
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/descriptionEt" />
+            app:layout_constraintTop_toBottomOf="@+id/nameHotelEt">
 
-        <EditText
-            android:id="@+id/districtEt"
-            android:layout_width="0dp"
-            android:layout_height="54dp"
-            android:layout_marginStart="45dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="45dp"
-            android:background="@drawable/edit_text_bg"
-            android:ems="10"
-            android:hint="District. Ex: 1"
-            android:inputType="text"
-            android:paddingHorizontal="20dp"
-            android:text=""
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cityEt" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:lines="5"
+                android:gravity="start|top"
+                android:inputType="textMultiLine"
+                android:maxLines="5" />
 
-        <EditText
-            android:id="@+id/wardEt"
-            android:layout_width="0dp"
-            android:layout_height="54dp"
-            android:layout_marginStart="45dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="45dp"
-            android:background="@drawable/edit_text_bg"
-            android:ems="10"
-            android:hint="Ward: Ex: Da Kao"
-            android:inputType="text"
-            android:paddingHorizontal="20dp"
-            android:text=""
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/districtEt" />
+        </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/streetEt"
-            android:layout_width="0dp"
-            android:layout_height="54dp"
-            android:layout_marginStart="45dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="45dp"
-            android:background="@drawable/edit_text_bg"
-            android:ems="10"
-            android:hint="Street: Ex: Nguyen Thi Minh Khai"
-            android:inputType="text"
-            android:paddingHorizontal="20dp"
-            android:text=""
-            android:textSize="16sp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/addressLayout"
+            style="?attr/textInputOutlinedStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="45dp"
+            android:hint="Address"
+            app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/wardEt" />
+            app:layout_constraintTop_toBottomOf="@+id/descriptionEt">
 
-        <EditText
-            android:id="@+id/numberStreetEt"
-            android:layout_width="0dp"
-            android:layout_height="54dp"
-            android:layout_marginStart="45dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="45dp"
-            android:background="@drawable/edit_text_bg"
-            android:ems="10"
-            android:hint="Number Street: Ex: 241"
-            android:inputType="text"
-            android:paddingHorizontal="20dp"
-            android:text=""
-            android:textSize="16sp"
+            <com.example.stayfinder.CustomTextInputEditText
+                android:id="@+id/addressET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/cityET"
+            style="?attr/textInputOutlinedStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="45dp"
+            android:hint="City"
+            app:errorEnabled="true"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/streetEt" />
+            app:layout_constraintTop_toBottomOf="@+id/addressLayout">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/chooseImageBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:text="Choose Image"
+            android:text="Upload Photos"
+            android:drawableLeft="@drawable/upload_photo_svgrepo_com"
+            android:backgroundTint="#3084FB"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            style="?attr/materialButtonOutlinedStyle"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.498"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/numberStreetEt" />
+            app:layout_constraintTop_toBottomOf="@+id/cityET" />
 
 
         <com.google.android.flexbox.FlexboxLayout
@@ -175,38 +125,13 @@
             android:id="@+id/submitBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="Submit"
+            android:text="Continue"
+            android:layout_marginTop="10dp"
+            android:textAllCaps="false"
+            android:backgroundTint="#3084FB"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/fitnessCenterCheckbox" />
-
-        <CheckBox
-            android:id="@+id/freeWifiCheckbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Free Wifi"
-            app:layout_constraintStart_toStartOf="@+id/numberStreetEt"
             app:layout_constraintTop_toBottomOf="@+id/flexboxLayout" />
-
-        <CheckBox
-            android:id="@+id/swimmingPool"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Swimming Pool"
-            app:layout_constraintStart_toStartOf="@+id/numberStreetEt"
-            app:layout_constraintTop_toBottomOf="@+id/freeWifiCheckbox" />
-
-        <CheckBox
-            android:id="@+id/fitnessCenterCheckbox"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:text="Fitness center"
-            app:layout_constraintStart_toStartOf="@+id/numberStreetEt"
-            app:layout_constraintTop_toBottomOf="@+id/swimmingPool" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
