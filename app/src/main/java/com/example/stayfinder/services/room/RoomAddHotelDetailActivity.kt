@@ -3,6 +3,7 @@ package com.example.stayfinder.services.room
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Spinner
@@ -11,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.stayfinder.R
 import com.example.stayfinder.model.RoomDetailModel
 import com.example.stayfinder.partner.PartnerMainActivity
+import com.google.android.material.textfield.MaterialAutoCompleteTextView
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -29,7 +32,7 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
     lateinit var bedroomHQ: HorizontalQuantitizer
     lateinit var areaSquareET: EditText
     lateinit var nextBtn: Button
-    lateinit var categoryRoomSpinner: Spinner
+    lateinit var categoryRoomSpinner: MaterialAutoCompleteTextView
 
     var editMode = false
     private var db: FirebaseFirestore? = null
@@ -44,17 +47,19 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
 
         db = Firebase.firestore
 
-        categoryRoomSpinner = findViewById(R.id.spinnerTypeRoom)
+        categoryRoomSpinner = (findViewById<TextInputLayout?>(R.id.spinnerTypeRoom).editText as? MaterialAutoCompleteTextView)!!
         guestStayHQ = findViewById(R.id.guestStay_HQ)
         bathroomHQ = findViewById(R.id.bathroom_HQ)
         bedroomHQ = findViewById(R.id.bedroom_HQ)
         areaSquareET = findViewById(R.id.areaET)
         nextBtn = findViewById(R.id.nextBtn)
         var descriptionEt = findViewById<EditText>(R.id.descriptionEt)
-        val multi = findViewById<View>(R.id.roomSelected_MultiGroup) as MultiSelectToggleGroup
+//        val multi = findViewById<View>(R.id.roomSelected_MultiGroup) as MultiSelectToggleGroup
 
         var uuidRoom: String? = intent.extras?.getString("uuidRoom")
         var uuidHotel: String? = intent.extras?.getString("uuidHotel")
+        val items = application.resources.getStringArray(R.array.spinner_type_room)
+//        val items = arrayOf("Item 1", "Item 2", "Item 3", "Item 4")
 
         //uuidHotel = "ddddddddd"
         //uuidRoom = "6a02338a-f780-484b-891e-b0e3ccdb116e"
@@ -72,18 +77,19 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
                     val room = document.toObject(RoomDetailModel::class.java)!!
 
                     // set spinner style room
-                    var typeRoom = applicationContext.resources.getStringArray(R.array.spinner_type_room)
-                    val indexTypeRoom = typeRoom.indexOf(room.room_type)
-                    categoryRoomSpinner.setSelection(indexTypeRoom)
+                    val typeRoom = applicationContext.resources.getStringArray(R.array.spinner_type_room)
+                    categoryRoomSpinner.setText(room.room_type)
+                    categoryRoomSpinner.setSimpleItems(typeRoom)
+//                    categoryRoomSpinner.setSelection(indexTypeRoom)
 
                     //set has room
                     val hasRoom = room.have_room
-                    for(i in 0 until multi.childCount){
-                        var toggle = multi.getChildAt(i) as LabelToggle
-                        if(hasRoom.contains(toggle.text)){
-                            toggle.isChecked = true
-                        }
-                    }
+//                    for(i in 0 until multi.childCount){
+//                        var toggle = multi.getChildAt(i) as LabelToggle
+//                        if(hasRoom.contains(toggle.text)){
+//                            toggle.isChecked = true
+//                        }
+//                    }
 
                     guestStayHQ.value = room.num_guest!!
                     bathroomHQ.value = room.num_bathroom!!
@@ -115,13 +121,13 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
         //Toast.makeText(this, txt.toString(),Toast.LENGTH_SHORT).show()
 
 
-        multi.setOnCheckedChangeListener { group, checkedId, isChecked ->
-            typesRoom = ArrayList<String>()
-            for (checkedId in group.checkedIds) {
-                var toggle = multi.findViewById<LabelToggle>(checkedId)
-                typesRoom.add(toggle.text as String)
-            }
-        }
+//        multi.setOnCheckedChangeListener { group, checkedId, isChecked ->
+//            typesRoom = ArrayList<String>()
+//            for (checkedId in group.checkedIds) {
+//                var toggle = multi.findViewById<LabelToggle>(checkedId)
+//                typesRoom.add(toggle.text as String)
+//            }
+//        }
 
         nextBtn.setOnClickListener {
             var room: RoomDetailModel
@@ -139,7 +145,7 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
                 percentage_discount = 0.0,
                 applied_coupon_id = null,
 
-                room_type = categoryRoomSpinner.selectedItem.toString(),
+                room_type = categoryRoomSpinner.text.toString(),
                 have_room = typesRoom,
                 num_guest = guestStayHQ.value,
                 num_bedroom = bedroomHQ.value,

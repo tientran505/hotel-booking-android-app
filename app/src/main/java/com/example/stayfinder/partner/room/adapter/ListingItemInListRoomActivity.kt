@@ -10,7 +10,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.stayfinder.R
-import com.example.stayfinder.partner.property.adapter.Property
 
 class RoomAdapter(
     private val mActivity: Activity, private val myList: List<ListRoomModel>
