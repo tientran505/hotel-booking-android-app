@@ -84,7 +84,8 @@ class RoomAddHotelDetailStep3Activity : AppCompatActivity() {
                 }
             }
 
-            var intent = Intent(this, RoomAddHotelDetailConfirmActivity::class.java)
+//            var intent = Intent(this, RoomAddHotelDetailConfirmActivity::class.java)
+            val intent = Intent(this, RoomAddHotelStep4Activity::class.java)
             intent.putExtra("roomInfo", room)
             intent.putExtra("timestamp", timestamp)
             intent.putStringArrayListExtra("img", tempUriImage)

@@ -22,10 +22,16 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".services.room.RoomAddHotelStep4Activity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".partner.room.PartnerListRoomActivity"
             android:exported="false" />
-
-      <activity
+        <activity
             android:name=".partner.property.upload.PropertyTypeChooser"
             android:exported="false">
             <meta-data
