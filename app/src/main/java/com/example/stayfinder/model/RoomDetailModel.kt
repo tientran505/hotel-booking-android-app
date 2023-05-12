@@ -30,7 +30,7 @@ data class RoomDetailModel(
     var room_type:String? = null,
     var area_square:Double? = null,
 
-    var facilities: ArrayList<String> = ArrayList()
+    var facilities: ArrayList<String> = ArrayList(),
 
     var created_date: Any? = null
 ) :Serializable

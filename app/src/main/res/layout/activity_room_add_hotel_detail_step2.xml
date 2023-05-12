@@ -104,7 +104,7 @@
                     android:orientation="vertical"
                     >
                     <TextView
-                        android:id="@+id/textView45"
+                        android:id="@+id/offerInfo"
                         android:layout_width="wrap_content"
                         android:layout_marginStart="25dp"
                         android:layout_height="wrap_content"
@@ -170,7 +170,8 @@
                                     android:layout_height="wrap_content"
                                     android:layout_marginStart="15dp"
                                     android:minEms="10"
-                                    app:errorEnabled="true">
+                                    app:errorEnabled="true"
+                                    >
 
                                     <com.google.android.material.textfield.TextInputEditText
                                         android:layout_width="wrap_content"

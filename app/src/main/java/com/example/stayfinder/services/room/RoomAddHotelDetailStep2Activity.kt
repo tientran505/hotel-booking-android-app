@@ -77,6 +77,7 @@ class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
         priceInfo = findViewById(R.id.priceInfo)
 
         priceInfo.text = "Price for ${room?.guest_available} guest(s)"
+        findViewById<TextView>(R.id.offerInfo).text = "Do you offer a lower rate when there are fewer than ${room?.guest_available} guests?"
 
         if (room?.guest_available == 1) {
             selectorCV.visibility = View.GONE
@@ -110,7 +111,8 @@ class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
                             if (text.isNotEmpty()) {
                                 val number = text.toIntOrNull()
                                 if (number == null || number < 1 || number > 99) {
-                                    discountET.error = "Value must be in range 1 - 99"
+                                    discountET.error = "Rate should be 1-99%"
+
                                 }
                                 else {
                                     discountET.error = null

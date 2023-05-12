@@ -111,7 +111,7 @@ class RoomAddHotelStep4Activity : AppCompatActivity() {
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 2
             ).apply {
-                setMargins(0, margin, 0, margin)
+                setMargins(margin , margin, 0, margin)
             }
         }
 

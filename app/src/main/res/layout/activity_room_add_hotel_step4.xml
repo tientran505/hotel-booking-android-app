@@ -8,35 +8,35 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.card.MaterialCardView
+            style="?attr/materialCardViewFilledStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardElevation="10dp"
             android:layout_marginHorizontal="20dp"
             android:layout_marginVertical="10dp"
             android:paddingVertical="20dp"
-            style="?attr/materialCardViewFilledStyle"
-            >
+            app:cardElevation="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/textView48"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Facilities that are popular with guests"
-                    android:textColor="@color/black"
-                    android:textSize="20sp"
                     android:paddingHorizontal="15dp"
                     android:paddingTop="15dp"
-                    />
+                    android:text="Facilities that are popular with guests"
+                    android:textColor="@color/black"
+                    android:textSize="20sp" />
 
                 <View
                     android:id="@+id/divider17"
@@ -45,22 +45,21 @@
                     android:layout_marginVertical="10dp"
                     android:background="?android:attr/listDivider" />
 
-            <LinearLayout
-                android:id="@+id/facilitiesLL"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                <LinearLayout
+                    android:id="@+id/facilitiesLL"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/continueBtn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Continue"
-                    android:textAllCaps="false"
                     android:layout_marginHorizontal="20dp"
-                    />
+                    android:text="Continue"
+                    android:textAllCaps="false" />
 
 
             </LinearLayout>
