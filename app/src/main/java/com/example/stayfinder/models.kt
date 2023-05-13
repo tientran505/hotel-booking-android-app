@@ -1,5 +1,4 @@
 package com.example.stayfinder
-
 import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.PropertyName
 import java.io.Serializable
@@ -26,6 +25,7 @@ data class hotels(
 
 @IgnoreExtraProperties
 data class address ( val address: String = "", val city: String = ""): Serializable
+
 @IgnoreExtraProperties
 data class facilities(val id: String ="",val name: String = "", val icon: String = ""):Serializable
 @IgnoreExtraProperties
@@ -62,7 +62,6 @@ data class coupon(
     var endDate: String = "",
     var owner_id: String = "",
 ):Serializable{
-
 
 }
 @IgnoreExtraProperties

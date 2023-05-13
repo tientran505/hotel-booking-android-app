@@ -1,7 +1,6 @@
 package com.example.stayfinder.partner.property
 
 import android.content.Intent
-import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -134,6 +133,7 @@ class DetailProperty : AppCompatActivity() {
         propertyAddress.text = address.address
 
         progressBar.visibility = View.GONE
+
         locationBtn.setOnClickListener {
             val intent = Intent(this, EditLocationActivity::class.java)
             intent.putExtra("hotel_id",hotel_id);
