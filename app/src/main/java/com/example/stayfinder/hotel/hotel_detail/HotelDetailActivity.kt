@@ -3,9 +3,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
 import android.widget.Button
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
@@ -20,7 +18,7 @@ import java.net.URL
 
 data class HotelDetails(
     var id: String = "",
-    var name: String ="",
+    var hotel_name: String ="",
     var priceless: Double =0.0,
     var img: ArrayList<String> =ArrayList<String>(),
     var rating_overall: Double? =0.0,
@@ -31,7 +29,7 @@ data class HotelDetails(
     val booking_count: Int =0,
     val facilities: ArrayList<facilities> = ArrayList<facilities>(),
     ):Serializable{
-    constructor(a: hotels, price: Double):this(a.id,a.name,price, (a.photoUrl),a.rating_overall,a.address,a.description,a.comment_count,a.rating,a.booking_count,a.facilities)
+    constructor(a: hotels):this(a.id,a.name,0.0, (a.photoUrl),a.rating_overall,a.address,a.description,a.comment_count,a.rating,a.booking_count,a.facilities)
     fun updatePriceless(priceless: Double){
         this.priceless = priceless
     }
@@ -46,44 +44,29 @@ fun convertStringtoURL(a: ArrayList<String>):ArrayList<URL>{
 class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() {
     var hoteldetails:HotelDetails? = null
     var isPress = false
-    lateinit var progressBar: ProgressBar
-    var hotel_id: String=""
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_hotel_detail)
         initActionBar()
-        progressBar = findViewById(R.id.savedListPB)
-        hotel_id="5l5PibkyeRaZRFCVPrlB"
-        val fm: FragmentManager = supportFragmentManager
-        val dateStart: String = "30-3-2023"
-        val dateEnd: String = "1-4-2023"
-        val detailRoom = arrayListOf<Int>(1, 2, 0)
-        val bookingBtn = findViewById<Button>(R.id.BookingBtn)
-        bookingBtn.setOnClickListener() {
-            val intent = Intent(this, RoomActivity::class.java)
-            intent.putExtra("hotel_id", hotel_id);
-            intent.putExtra("dateStart", dateStart)
-            intent.putExtra("dateEnd", dateEnd)
-            intent.putIntegerArrayListExtra("detailRoom", detailRoom)
-            startActivity(intent)
-        }
         val documents = Firebase.firestore.collection("Hotels")
-            .document(hotel_id)
+            .document("5l5PibkyeRaZRFCVPrlB")
         documents.get().addOnSuccessListener { document ->
             if (document != null) {
                 val l = document.toObject(hotels::class.java)
-                val name = document.get("name") as String
-                println("name" + name)
-                val roomref = Firebase.firestore.collection("rooms").whereEqualTo("hotel_id",hotel_id).orderBy("discount_price").limit(1).get()
+                hoteldetails = l?.let { HotelDetails(it) }
+                println(hoteldetails)
+                setContentView(R.layout.activity_hotel_detail)
+                val fm: FragmentManager = supportFragmentManager
+                val dateStart: String = "30-3-2023"
+                val dateEnd: String = "1-4-2023"
+                val detailRoom = arrayListOf<Int>(1, 2, 0)
+
+                val roomref = Firebase.firestore.collection("rooms").whereEqualTo("hotel_id",hoteldetails?.id).orderBy("discount_price").limit(1).get()
                     .addOnSuccessListener { documents ->
                         if (!documents.isEmpty) {
-                            println(document.get("name"))
                             val smallestPrice = documents.documents[0].getDouble("discount_price")
                             if (smallestPrice != null) {
-                                hoteldetails = l?.let { HotelDetails(it,smallestPrice.toDouble()) }
-                                hoteldetails?.name=name
-                                println(hoteldetails)
+                                println(smallestPrice.toDouble())
+                                hoteldetails!!.updatePriceless(smallestPrice.toDouble())
                                 val bundle = Bundle()
                                 bundle.putSerializable("BookingDetail", hoteldetails)
                                 bundle.putString("dateStart", dateStart)
@@ -102,10 +85,19 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
                                 fm.beginTransaction().replace(R.id.fame2, fragPeriod).commit();
                                 fm.beginTransaction().replace(R.id.fame3, fragAddress).commit();
                                 fm.beginTransaction().replace(R.id.fame4, fragDescription).commit();
-                                progressBar.visibility = View.GONE
                             }
                         }
                     }
+                val bookingBtn = findViewById<Button>(R.id.BookingBtn)
+                bookingBtn.setOnClickListener() {
+                    val intent = Intent(this, RoomActivity::class.java)
+                    println("hoteldetail hotel_id"+hoteldetails?.id)
+                    intent.putExtra("hotel_id", hoteldetails?.id);
+                    intent.putExtra("dateStart", dateStart)
+                    intent.putExtra("dateEnd", dateEnd)
+                    intent.putIntegerArrayListExtra("detailRoom", detailRoom)
+                    startActivity(intent)
+                }
             } else {
                 Toast.makeText(this," database is Empty for result", Toast.LENGTH_SHORT).show()
                 finish();

@@ -42,15 +42,9 @@ class HotelDetailActivity2 : AppCompatActivity() {
         val bookingBtn = findViewById<Button>(R.id.BookingBtn)
         val db = Firebase.firestore
 
-        val dateStart: String = "30-3-2023"
-        val dateEnd: String = "1-4-2023"
-        val detailRoom = arrayListOf<Int>(1, 2, 0)
-        bookingBtn.setOnClickListener() {
+        bookingBtn.setOnClickListener(){
             val intent = Intent(this, RoomActivity::class.java)
-            intent.putExtra("hotel_id", hotel_id);
-            intent.putExtra("dateStart", dateStart)
-            intent.putExtra("dateEnd", dateEnd)
-            intent.putIntegerArrayListExtra("detailRoom", detailRoom)
+            intent.putExtra("hotel_id",hotel_id);
             startActivity(intent)
         }
         if (fragment_type != null) {

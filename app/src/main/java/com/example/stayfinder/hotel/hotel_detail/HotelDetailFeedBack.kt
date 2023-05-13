@@ -47,10 +47,12 @@ class HotelDetailFeedBack : Fragment() {
     ): View? {
         val view: View? =inflater.inflate(R.layout.fragment_sub_hotel_detail_feed_back, container, false)
         val listReview  = (activity as HotelDetailActivity2?)?.getReview() as ArrayList<Review>
+        println("listReview"+listReview)
         val feedBacks :ArrayList<FeedBack> = ArrayList<FeedBack>()
         for( i in listReview){
             feedBacks.add(FeedBack(i))
         }
+        println("feedback" +feedBacks)
         val hotel_rating =getArguments()?.getSerializable("rating") as rating?
         val textView = view!!.findViewById<TextView>(R.id.textView)
         val cleanBar = view!!.findViewById<ProgressBar>(R.id.cleanBar)

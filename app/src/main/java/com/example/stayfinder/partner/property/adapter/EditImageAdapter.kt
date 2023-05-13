@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.core.content.ContextCompat
 import androidx.core.view.setPadding
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -91,14 +90,6 @@ class ImageAdapter (private var item: ArrayList<EditImage>) : RecyclerView.Adapt
                 .load(URL(item[position].imageUrl))
                 .apply(RequestOptions().centerCrop())
                 .into(it)
-        }
-        if(item[position].isDelete){
-            holder.logo.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.primary))
-            holder.logo.setPadding(10)
-        }
-        else{
-            holder.logo.setBackgroundColor(ContextCompat.getColor(holder.itemView.context, R.color.white))
-            holder.logo.setPadding(0)
         }
     }
     override fun getItemCount(): Int {
