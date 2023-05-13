@@ -19,8 +19,8 @@ class PartnerHotelList : AppCompatActivity() {
         val urlStr = "https://images.unsplash.com/photo-1625244724120-1fd1d34d00f6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aG90ZWxzfGVufDB8fDB8fA%3D%3D&w=1000&q=80"
 
         val propertyList = listOf<Property>(
-            Property(urlStr, "Property 1"),
-            Property(urlStr, "Property 2"),
+            Property(urlStr, "eb875113-c692-4219-b78e-59a016c625be"),
+            Property(urlStr, "I41FtWb5uunzcYIrkrmZ"),
             Property(urlStr, "Property 3"),
             Property(urlStr, "Property 4"),
             Property(urlStr, "Property 5"),
@@ -36,7 +36,9 @@ class PartnerHotelList : AppCompatActivity() {
         val propertyAdapter = PropertyAdapter(this, propertyList)
         propertyLV.adapter = propertyAdapter
         propertyLV.setOnItemClickListener { adapterView, view, i, l ->
-            startActivity(Intent(this, PartnerCouponList::class.java))
+            val intent = Intent(this, PartnerCouponList::class.java)
+            intent.putExtra("hotel_id",propertyList[i].propertyName)
+            startActivity(intent)
             this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
     }

@@ -1,16 +1,31 @@
 package com.example.stayfinder.partner.property.adapter
 
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stayfinder.R
 import com.example.stayfinder.coupon
+import java.io.Serializable
 
-class CouponInfoAdapter(private val lists: List<coupon>):
+data class coupon_adapter(
+    var id: String = "",
+    var title: String = "",
+    var discount: Double = 0.0,
+    var startDate: String = "",
+    var endDate: String = "",
+    var status: Boolean = false,
+): Serializable {
+
+}
+class CouponInfoAdapter(private val lists: List<coupon_adapter>):
     RecyclerView.Adapter<CouponInfoAdapter.ViewHolder>() {
+
+    var lastSelectedPostion = RecyclerView.NO_POSITION
 
     inner class ViewHolder(listItemView: View, mlistener: CouponInfoAdapter.onItemClickListener,
                            ilistener: CouponInfoAdapter.onIconClickListener) : RecyclerView.ViewHolder(listItemView) {
@@ -19,6 +34,7 @@ class CouponInfoAdapter(private val lists: List<coupon>):
         val startDateTv = listItemView.findViewById<TextView>(R.id.startDate)
         val endDateTv = listItemView.findViewById<TextView>(R.id.endDate)
         val iconTv = listItemView.findViewById<ImageButton>(R.id.imageButton)
+        val layout = listItemView.findViewById<LinearLayout>(R.id.layout)
 
         init{
             listItemView.setOnClickListener{
@@ -66,6 +82,15 @@ class CouponInfoAdapter(private val lists: List<coupon>):
         return lists.size
     }
 
+    public fun setSelectedPosition(position: Int){
+        if (lastSelectedPostion != position) {
+            val previousPosition = lastSelectedPostion
+            lastSelectedPostion = position
+            notifyItemChanged(previousPosition)
+            notifyItemChanged(lastSelectedPostion)
+        }
+    }
+
     override fun onBindViewHolder(holder: CouponInfoAdapter.ViewHolder, position: Int) {
 
         val nameView = holder.nameTv
@@ -74,6 +99,11 @@ class CouponInfoAdapter(private val lists: List<coupon>):
         val endDate = holder.endDateTv
 
         val discount = this.lists[position].discount.toDouble() * 100
+
+        if(this.lists[position].status){
+            lastSelectedPostion = holder.adapterPosition
+            holder.layout.setBackgroundColor(Color.parseColor("#E5EBF3"))
+        }
 
         nameView.setText(this.lists[position].title)
         discountValue.setText(discount.toString() + "%")

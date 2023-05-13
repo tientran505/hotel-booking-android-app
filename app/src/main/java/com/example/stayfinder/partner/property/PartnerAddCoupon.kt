@@ -1,10 +1,13 @@
 package com.example.stayfinder.partner.property
 
+import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.Spanned
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import com.example.stayfinder.R
@@ -24,6 +27,27 @@ class PartnerAddCoupon : AppCompatActivity() {
         db.collection("coupons").document(id).set(cp)
             .addOnFailureListener {  }
             .addOnSuccessListener {  }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    private fun initActionBar() {
+        val menu = supportActionBar
+        menu?.setDisplayHomeAsUpEnabled(true)
+        menu?.setHomeButtonEnabled(true)
     }
 
     // Custom class to define min and max for the edit text
@@ -58,6 +82,10 @@ class PartnerAddCoupon : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.partner_activity_add_coupon)
+
+        initActionBar()
+
+        var hotel_id = intent.getStringExtra("hotel_id")
 
         var startDate = findViewById<EditText>(R.id.startDate)
         startDate.isClickable = true
@@ -117,12 +145,18 @@ class PartnerAddCoupon : AppCompatActivity() {
 
             if(getStartDate!="" && getEndDate!="" && getCouponName!="" && getCouponValue!=""){
                 val id = db.collection("reviews").document().id
-                /*var newcp = coupon(id,getCouponName,getCouponValue.toDouble(),getStartDate,getEndDate,
-                user?.uid.toString())*/
-                var newcp = coupon(id,getCouponName,getCouponValue.toDouble()/100.0,getStartDate,getEndDate,
-                    "blabla")
+                var newcp = coupon(id,getCouponName,getCouponValue.toDouble(),getStartDate,getEndDate,
+                user?.uid.toString())
+                /*var newcp = coupon(id,getCouponName,getCouponValue.toDouble()/100.0,getStartDate,getEndDate,
+                    "blabla")*/
                 addCoupon(newcp,id)
+
+                var reply = Intent()
+                reply.putExtra("100", newcp)
+                setResult(Activity.RESULT_OK, reply)
+                finish()
             }
+
         }
 
     }
