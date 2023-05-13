@@ -54,6 +54,8 @@ class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
 
     private lateinit var room: RoomDetailModel
 
+    private var isValidPrice = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_room_add_hotel_detail_step2)
@@ -94,11 +96,11 @@ class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
         priceInfo.text = "Price for ${room?.guest_available} guest(s)"
         findViewById<TextView>(R.id.offerInfo).text = "Do you offer a lower rate when there are fewer than ${room?.guest_available} guests?"
 
-        if (room?.guest_available == 1) {
+        if (room.guest_available == 1) {
             selectorCV.visibility = View.GONE
         }
 
-        var nextBtn = findViewById<Button>(R.id.nextBtn)
+        val nextBtn = findViewById<Button>(R.id.nextBtn)
 
         discountET.editText?.isEnabled = false
 
@@ -128,8 +130,8 @@ class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
                             handleSummary()
                             if (text.isNotEmpty()) {
                                 val number = text.toIntOrNull()
-                                if (number == null || number < 1 || number > 99) {
-                                    discountET.error = "Rate should be 1-99%"
+                                if (number == null || number < 0 || number > 99) {
+                                    discountET.error = "Rate should be 0-99%"
 
                                 }
                                 else {
@@ -184,7 +186,7 @@ class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
 
         if(editMode == true){ // autofill
             calendar.date = timestamp * 1000
-            priceEt.editText?.setText( room?.origin_price.toString())
+            priceEt.editText?.setText( room.origin_price.toString())
         }
 
         calendar.setOnDateChangeListener { calView: CalendarView, year: Int, month: Int, dayOfMonth: Int ->
@@ -195,23 +197,48 @@ class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
         }
 
         nextBtn.setOnClickListener {
+            if (!isValidPrice) {
+                Toast.makeText(this, "Invalid Price", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
             timestamp =
                 calendar.date / 1000 // bước cuối mới thêm vào object để truyền đi không bị lỗi
             val price = priceEt.editText?.text.toString().replace(".","").toDouble()
-            room?.origin_price = price
+            val minGuest = if (room.guest_available == 1 || lowerRateDecline.isChecked) {1} else {
+                minGuestSpinner.text.toString().split(" ")[0].toInt()
+            }
+            var discountType: String? = null
+            if (lowerRateAccept.isChecked) {
+                discountType = if (spinnerRate.text.toString() == "") {null} else {spinnerRate.text.toString()}
+            }
+
+            var perGuestDiscount: Number? = null
+            if (discountType != null) {
+                perGuestDiscount = if (discountET.editText?.text.toString() == "") {0.00} else {
+                    discountET.editText?.text.toString().toDouble()
+                }
+            }
+
+            room.apply {
+                origin_price = price
+                min_guest = minGuest
+                discount_type = discountType
+                per_guest_discount = perGuestDiscount
+                origin_price = price
+            }
 
             val intent = Intent(this, RoomAddHotelDetailStep3Activity::class.java)
             intent.putExtra("roomInfo", room)
             intent.putExtra("timestamp", timestamp)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
 
         handleSummary()
     }
 
     private fun handlePriceSummaryLayout(guest: Int, price: Double) {
-        Log.d("testlog", "4 - ${price}")
-
         val inflater = LayoutInflater.from(this)
         val priceViewLayout = inflater.inflate(R.layout.room_price_summary, priceSummaryLL, false)
 
@@ -225,6 +252,7 @@ class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
         }
         else {
             currentPrice.setTextColor(Color.parseColor("#D80000"))
+            isValidPrice = false
         }
         currentPrice.text = numberFormat.format(price)
         numOfGuest.text = "x $guest"
@@ -232,26 +260,41 @@ class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
         priceSummaryLL.addView(priceViewLayout)
     }
 
-    private fun summaryWithoutDiscount() {
-        Log.d("testlog", "3")
 
+    private fun summaryWithoutDiscount() {
         if (priceSummaryLL.childCount > 0) {
             priceSummaryLL.removeAllViews()
         }
-        handlePriceSummaryLayout(room.guest_available.toInt(), priceEt.editText?.text.toString().replace(".", "").toDouble())
+
+        val currentPrice = priceEt.editText?.text.toString().replace(".", "").toDouble()
+
+        if (lowerRateDecline.isChecked) {
+            handlePriceSummaryLayout(room.guest_available.toInt(), currentPrice)
+
+        }
+        else if (lowerRateAccept.isChecked) {
+            val minGuest = minGuestSpinner.text.toString().split(" ")[0].toInt()
+            val maxGuest = room.guest_available.toInt()
+
+            for (i in maxGuest downTo minGuest) {
+                handlePriceSummaryLayout(i, currentPrice)
+            }
+        }
     }
 
     private fun summaryWithDiscountVND() {
         clearSummaryIfNotEmpty()
 
         val priceET = priceEt.editText?.text.toString().replace(".", "").toDouble()
-        val minGuest = minGuestSpinner.text.toString()[0].code
+        val minGuest = minGuestSpinner.text.toString().split(" ")[0].toInt()
         val maxGuest = room.guest_available.toInt()
-        val discountPrice = discountET.editText?.text.toString().toDouble()
+        val discountPrice = if (discountET.editText?.text.toString() == "") {0.00} else {
+            discountET.editText?.text.toString().replace(".", "").toDouble()
+        }
 
         for (i in maxGuest downTo minGuest) {
             val currentPrice = priceET - (maxGuest - i) * discountPrice
-            handlePriceSummaryLayout(maxGuest - i, currentPrice)
+            handlePriceSummaryLayout(i, currentPrice)
         }
     }
 
@@ -259,13 +302,15 @@ class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
         clearSummaryIfNotEmpty()
 
         val priceET = priceEt.editText?.text.toString().replace(".", "").toDouble()
-        val minGuest = minGuestSpinner.text.toString().toInt()
+        val minGuest = minGuestSpinner.text.toString().split(" ")[0].toInt()
         val maxGuest = room.guest_available.toInt()
-        val discountPrice = discountET.editText?.text.toString().toDouble() / 100.00
+        val discountPrice = if (discountET.editText?.text.toString() == "") { 0.00 } else {
+            discountET.editText?.text.toString().toDouble() / 100.00
+        }
 
         for (i in maxGuest downTo minGuest) {
             val currentPrice = priceET - (maxGuest - i) * discountPrice * priceET
-            handlePriceSummaryLayout(maxGuest - i, currentPrice)
+            handlePriceSummaryLayout(i, currentPrice)
         }
     }
 
@@ -323,20 +368,19 @@ class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
 
     private fun handleSummary() {
         val isPriceNotEmpty = priceEt.editText?.text.toString() != ""
-        val isDiscountNotEmpty = discountET.editText?.text.toString() != ""
+//        val isDiscountNotEmpty = discountET.editText?.text.toString() != ""
+
+        isValidPrice = true
 
         when {
             (room.guest_available.toInt() == 1 || lowerRateDecline.isChecked) && isPriceNotEmpty -> {
-                Log.d("testlog", "1")
                 summaryWithoutDiscount()
             }
-            lowerRateAccept.isChecked && isPriceNotEmpty && isDiscountNotEmpty -> {
-                Log.d("testlog", "2")
-
+            lowerRateAccept.isChecked && isPriceNotEmpty -> {
                 when (spinnerRate.text.toString()) {
                     "%" -> summaryWithDiscountPercentage()
                     "VND" -> summaryWithDiscountVND()
-                    else -> clearSummaryIfNotEmpty()
+                    else -> summaryWithoutDiscount()
                 }
             }
             else -> clearSummaryIfNotEmpty()
@@ -361,6 +405,7 @@ class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
         lowerRateDecline = findViewById(R.id.lower_rate_decline)
 
         lowerRateRG.setOnCheckedChangeListener { _, id ->
+            handleSummary()
             when (id) {
                 lowerRateAccept.id -> {
                     offerRateCV.visibility = View.VISIBLE
