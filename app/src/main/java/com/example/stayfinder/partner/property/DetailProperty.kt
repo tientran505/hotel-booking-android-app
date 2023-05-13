@@ -14,13 +14,11 @@ import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.stayfinder.R
 import com.example.stayfinder.model.HotelDetailModel
-import com.example.stayfinder.partner.property.adapter.Property
+//import com.example.stayfinder.partner.property.adapter.Property
 import com.example.stayfinder.partner.room.PartnerListRoomActivity
 import android.widget.ProgressBar
-import android.widget.TextView
-import androidx.annotation.RequiresApi
-import com.bumptech.glide.Glide
-import com.example.stayfinder.R
+import com.example.stayfinder.Property
+
 import com.example.stayfinder.hotels
 import com.example.stayfinder.services.room.RoomAddHotelDetailActivity
 import com.google.firebase.firestore.ktx.firestore
@@ -35,7 +33,7 @@ class DetailProperty : AppCompatActivity() {
 
 
     lateinit var uuidHotel:String
-    lateinit var hotel:Property
+//    lateinit var hotel: Property
     private lateinit var imgProperty: ImageView
     private lateinit var propertyName: TextView
     private lateinit var propertyAddress: TextView
@@ -49,7 +47,9 @@ class DetailProperty : AppCompatActivity() {
         setContentView(R.layout.partner_activity_detail_property)
 
         uuidHotel = intent.getStringExtra("uuidHotel")!!
-        hotel = intent.getSerializableExtra("hotel") as Property
+//        hotel = intent.getSerializableExtra("hotel") as Property
+        hotel = intent.getSerializableExtra("hotel") as hotels
+
 
         val intent = intent
 //        hotel = intent.getSerializableExtra("vwProperty", hotels::class.java) as hotels
@@ -59,22 +59,26 @@ class DetailProperty : AppCompatActivity() {
 
 
         CoroutineScope(Dispatchers.Main).launch {
-            hotel = hotelId?.let { getHotelById(it) }!!
+//            hotel = hotelId?.let { getHotelById(it) }!!
             assignComponent()
         }
 
+
         initActionBar()
 
-        findViewById<TextView>(R.id.propertyNameDetail).setText(hotel.propertyName)
-        findViewById<TextView>(R.id.propertyAddressDetail).setText(hotel.address)
+//        findViewById<TextView>(R.id.propertyNameDetail).setText(hotel.name)
+//        findViewById<TextView>(R.id.propertyAddressDetail).setText(hotel.address)
 
-        val img : ImageView = findViewById(R.id.imgPropertyDetail)
-        img.setImageResource(R.drawable.img_1)
+        assignComponent()
 
-        Glide.with(this)
-            .load(hotel.imgUrl)
-            .centerCrop()
-            .into(img)
+
+//        val img : ImageView = findViewById(R.id.imgPropertyDetail)
+//        img.setImageResource(R.drawable.img_1)
+//
+//        Glide.with(this)
+//            .load(hotel.imgUrl)
+//            .centerCrop()
+//            .into(img)
 
         findViewById<Button>(R.id.roomBtn).setOnClickListener {
             var intent = Intent(this, PartnerListRoomActivity::class.java)
