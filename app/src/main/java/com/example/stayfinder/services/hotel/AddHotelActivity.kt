@@ -285,6 +285,7 @@ class AddHotelActivity : AppCompatActivity() {
                 comment_count = 0,
                 map = ArrayList<Double>()
             )
+
             var intent = Intent(this, AddHotelConfirmActivity::class.java)
             intent.putExtra("hotelInfo", hotel)
             intent.putExtra("latitude", selectedLang?.latitude)

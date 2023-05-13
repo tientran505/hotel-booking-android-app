@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import com.example.stayfinder.MainActivity
 import com.example.stayfinder.R
+import com.example.stayfinder.model.NotificationModel
 import com.example.stayfinder.user.User
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -26,6 +27,7 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 
 class Login : AppCompatActivity() {
     private var emailET: EditText? = null
@@ -41,6 +43,8 @@ class Login : AppCompatActivity() {
     private lateinit var mGoogleSignInOptions: GoogleSignInOptions;
 
     private lateinit var auth: FirebaseAuth
+
+    val db = Firebase.firestore
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,13 +68,24 @@ class Login : AppCompatActivity() {
             val email = emailET?.text.toString()
             val password = pwET?.text.toString()
 
-
             progressDialog?.setTitle("Please wait")
             progressDialog?.setMessage("Verifying...")
             progressDialog?.show()
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
+
+                        var user = FirebaseAuth.getInstance().currentUser
+                        if(user!= null){
+                            val uuidUser = user.uid
+                            val token = FirebaseMessaging.getInstance().token.toString()
+                            //Update token, tạo document với uuid của user
+                            db.collection(getString(R.string.collection_name_token_notification)
+                            ).document(uuidUser)
+                                .set(NotificationModel(uuidUser,token))
+                        }
+
+
                         Toast.makeText(this, "Hello from this", Toast.LENGTH_SHORT).show()
                             // Sign in success, update UI with the signed-in user's information
                             Handler().postDelayed(Runnable {

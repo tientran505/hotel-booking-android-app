@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.stayfinder.databinding.ActivityMainBinding
+import com.example.stayfinder.model.NotificationModel
 import com.example.stayfinder.partner.PartnerMainActivity
 import com.example.stayfinder.saved.SavedAnonymous
 import com.example.stayfinder.services.login.ProfileFragment
@@ -18,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 
 //import com.google.android.material.color.DynamicColors
 
@@ -47,7 +49,6 @@ class MainActivity : AppCompatActivity() {
         else {
             replaceFragment(HomeFragment())
         }
-
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             when(it.itemId) {
