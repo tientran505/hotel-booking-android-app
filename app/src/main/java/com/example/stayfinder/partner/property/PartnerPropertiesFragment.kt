@@ -16,7 +16,6 @@ import com.example.stayfinder.R
 import com.example.stayfinder.model.HotelDetailModel
 import com.example.stayfinder.model.RoomDetailModel
 import com.example.stayfinder.partner.PartnerMainActivity
-import com.example.stayfinder.partner.property.adapter.Property
 
 import com.example.stayfinder.hotels
 import com.example.stayfinder.partner.property.adapter.PropertyAdapter
@@ -109,7 +108,7 @@ class PartnerPropertiesFragment : Fragment() {
 
         propertyLV.adapter = propertyAdapter
         propertyLV.setOnItemClickListener { adapterView, view, i, l ->
-            var itemIdHotel = propertyList[i].uuidHotel
+            var itemIdHotel = propertyList[i].id
             val intent = Intent(requireContext(), DetailProperty::class.java)
             intent.putExtra("uuidHotel", itemIdHotel)
             intent.putExtra("hotel", propertyList[i])

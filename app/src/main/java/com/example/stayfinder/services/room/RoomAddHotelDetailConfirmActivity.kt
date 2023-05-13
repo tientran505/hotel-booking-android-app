@@ -38,7 +38,7 @@ class RoomAddHotelDetailConfirmActivity : AppCompatActivity() {
         var timestamp = intent.getLongExtra("timestamp", 1683536679000)
         room?.available_start_date = Timestamp(timestamp, 0)
         var imgs = intent.getStringArrayListExtra("img")
-        var uuidHotel = room?.hotelId
+//        var uuidHotel = room?.hotelId
 
         var date = SimpleDateFormat("dd/MM/yyyy")
             .format(Date((timestamp?.toLong()?.times(1000)!!)))
@@ -46,10 +46,10 @@ class RoomAddHotelDetailConfirmActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.startDateTV).text = date
         findViewById<TextView>(R.id.priceTV).text = room?.origin_price.toString()
         findViewById<TextView>(R.id.typeRoomTV).text = room?.room_type.toString()
-        findViewById<TextView>(R.id.hasRoomTV).text = room?.have_room.toString()
-        findViewById<TextView>(R.id.numGuestTV).text = room?.num_guest.toString()
-        findViewById<TextView>(R.id.numBathroomTV).text = room?.num_bathroom.toString()
-        findViewById<TextView>(R.id.numBedroomTV).text = room?.num_bedroom.toString()
+//        findViewById<TextView>(R.id.hasRoomTV).text = room?.have_room.toString()
+//        findViewById<TextView>(R.id.numGuestTV).text = room?.num_guest.toString()
+//        findViewById<TextView>(R.id.numBathroomTV).text = room?.num_bathroom.toString()
+//        findViewById<TextView>(R.id.numBedroomTV).text = room?.num_bedroom.toString()
 
         var flex = findViewById<FlexboxLayout>(R.id.flexboxLayout)
         flex.removeAllViews()
