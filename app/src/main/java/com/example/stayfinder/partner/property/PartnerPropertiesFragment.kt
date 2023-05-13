@@ -25,7 +25,7 @@ import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
-zimport com.google.firebase.internal.InternalTokenProvider
+import com.google.firebase.internal.InternalTokenProvider
 import com.google.firebase.ktx.Firebase
 
 // TODO: Rename parameter arguments, choose names that match

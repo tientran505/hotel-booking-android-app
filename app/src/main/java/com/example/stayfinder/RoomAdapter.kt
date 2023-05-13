@@ -60,6 +60,7 @@ class RoomAdapter (private var item: ArrayList<Room>) : RecyclerView.Adapter<Roo
     override fun onBindViewHolder(holder: RoomAdapter.ViewHolder, position: Int) {
         val moneyexchange = DecimalFormat("###,###,###,###.##"+"$");
         holder.roomtypeTv.setText(this.item[position].roomType)
+        println("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
         holder.pageAdapter = this.context?.let { ViewPagerAdapter(this.item[position].img, it) }
         holder.viewpager?.adapter = holder.pageAdapter
         holder.descriptionTv.setText(this.item[position].description)

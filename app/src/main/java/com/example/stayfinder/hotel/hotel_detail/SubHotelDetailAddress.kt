@@ -37,7 +37,6 @@ class SubHotelDetailAddress : Fragment(), OnMapReadyCallback{
     private var REQUEST_CODE = 101;
 
     var address = ""
-    var addressfind =""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -74,13 +73,7 @@ class SubHotelDetailAddress : Fragment(), OnMapReadyCallback{
                 templatlng.longitude,
                 1
             ) // Here 1 represent max location result to returned, by documents it recommended 1 to 5
-            addressfind=""
-            addressfind += addressestemp!![0].getAddressLine(0)// If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-            addressfind+= addressestemp!![0].locality
-            addressfind+= addressestemp!![0].adminArea
-            addressfind+= addressestemp!![0].countryName
-            addressfind+= addressestemp!![0].postalCode
-            addressfind+= addressestemp!![0].featureName
+
 
             val mapFragment:SupportMapFragment =getChildFragmentManager().findFragmentById(R.id.map) as SupportMapFragment
             mapFragment.getMapAsync(this)
@@ -119,7 +112,7 @@ class SubHotelDetailAddress : Fragment(), OnMapReadyCallback{
     }
     override fun onMapReady(googleMap: GoogleMap) {//        mMap = googleMap
         val latLng = LatLng(currentLocation.latitude,currentLocation.longitude)
-        val marketOptions = MarkerOptions().position(latLng).title(addressfind)
+        val marketOptions = MarkerOptions().position(latLng).title(address)
         googleMap?.animateCamera(CameraUpdateFactory.newLatLng(latLng))
         googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,17f))
         googleMap?.addMarker(marketOptions)
