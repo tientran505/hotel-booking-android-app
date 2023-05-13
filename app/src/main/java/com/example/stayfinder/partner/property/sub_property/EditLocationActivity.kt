@@ -72,7 +72,7 @@ class EditLocationActivity : AppCompatActivity(), OnMapReadyCallback {
             if (document != null) {
                 val hotels = document.toObject(hotels::class.java)!!
                 val addressTemp = hotels?.address as address
-                address = addressTemp.number+" "+ addressTemp.street+", "+ addressTemp.district+", "+ addressTemp.ward+", "+addressTemp.city
+                address = addressTemp.address
                 searchMap(address)
                 progressBar.visibility = View.GONE
             }
@@ -124,7 +124,7 @@ class EditLocationActivity : AppCompatActivity(), OnMapReadyCallback {
             1
         ) // Here 1 represent max location result to returned, by documents it recommended 1 to 5
         address = addressestemp!![0].getAddressLine(0)// If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-        addressFb = address(addressestemp[0] )
+        addressFb = address(addressestemp[0].getAddressLine(0), addressestemp!![0].countryName )
     }
 
     private fun getLocationUser(){
@@ -189,7 +189,7 @@ class EditLocationActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             val location = addressList[0]
             println(location)
-            addressFb = address(location)
+            addressFb = address(location.getAddressLine(0), location!!.countryName )
             LatLan = LatLng(location.latitude, location.longitude)
         } catch (ex: IOException) {
             ex.printStackTrace()
@@ -216,7 +216,7 @@ class EditLocationActivity : AppCompatActivity(), OnMapReadyCallback {
             println("Address[0]"+ addressFb)
             if (addressTemp != null) {
                 address = addressTemp.getAddressLine(0)
-                addressFb = address(addressTemp)
+                addressFb = address(addressTemp.getAddressLine(0),addressTemp.countryName)
                 currentLocation = Location(LocationManager.NETWORK_PROVIDER)
                 currentLocation.latitude = point.latitude
                 currentLocation.longitude = point.longitude
