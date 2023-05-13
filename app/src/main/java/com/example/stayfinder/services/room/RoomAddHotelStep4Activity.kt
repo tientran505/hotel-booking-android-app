@@ -8,6 +8,7 @@ import android.graphics.DashPathEffect
 import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -37,8 +38,12 @@ class RoomAddHotelStep4Activity : AppCompatActivity() {
         continueBtn.setOnClickListener {
             val intent = Intent(this, RoomAddHotelDetailConfirmActivity::class.java)
             room?.apply {
+                facilities.clear()
                 facilities.addAll(checkedItems)
             }
+
+            Log.d("current_room", room.toString())
+
             intent.putExtra("roomInfo", room)
         }
 
@@ -54,11 +59,9 @@ class RoomAddHotelStep4Activity : AppCompatActivity() {
             checkBox.text = item
             checkBox.setOnCheckedChangeListener { compoundButton, isChecked ->
                 if (isChecked) {
-                    Toast.makeText(this, "${compoundButton.text} is checked", Toast.LENGTH_SHORT).show()
                     checkedItems.add(compoundButton.text.toString())
                 }
                 else {
-                    Toast.makeText(this, "${compoundButton.text} is unchecked", Toast.LENGTH_SHORT).show()
                     checkedItems.remove(compoundButton.text.toString())
                 }
             }

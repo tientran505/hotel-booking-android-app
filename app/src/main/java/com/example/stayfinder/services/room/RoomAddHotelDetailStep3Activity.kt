@@ -6,7 +6,9 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -21,13 +23,16 @@ import com.example.stayfinder.model.RoomDetailModel
 import com.google.android.flexbox.FlexboxLayout
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.Timestamp
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import java.util.UUID
 
 class RoomAddHotelDetailStep3Activity : AppCompatActivity() {
 
     private var uploadImgBtn: MaterialButton? = null
     private val REQUEST_CODE = 1752
+    private var photoUrlList = ArrayList<String>()
 
     private lateinit var flexboxLayout: FlexboxLayout
 
@@ -67,13 +72,15 @@ class RoomAddHotelDetailStep3Activity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_room_add_hotel_detail_step3)
 
-        var room = intent.getSerializableExtra("roomInfo") as RoomDetailModel?
-        var timestamp = intent.getLongExtra("timestamp", 1683536679000)
+        initActionBar()
+
+        val room = intent.getSerializableExtra("roomInfo") as RoomDetailModel?
+        val timestamp = intent.getLongExtra("timestamp", 1683536679000)
 
         uploadImgBtn = findViewById(R.id.chooseImageBtn)
 
         flexboxLayout = findViewById(R.id.flexboxLayout)
-        var tempUriImage: ArrayList<String> = ArrayList()
+        val tempUriImage: ArrayList<String> = ArrayList()
 
 //        for (i in 0 until flexboxLayout.childCount) {
 //            val subView: View = flexboxLayout.getChildAt(i)
@@ -88,12 +95,15 @@ class RoomAddHotelDetailStep3Activity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.nextBtn).setOnClickListener {
-            for (i in 0 until flexboxLayout.childCount) {
-                val subView: View = flexboxLayout.getChildAt(i)
-                if (subView is ImageView) {
-                    val imageView = subView
-                    tempUriImage.add(imageView.getTag().toString())
-                }
+            if (photoUrlList.size == 0) {
+                Toast.makeText(this, "Please upload at least 1 photo before continue",
+                Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            room?.apply {
+                photoUrl.clear()
+                photoUrl.addAll(photoUrlList)
             }
 
 //            var intent = Intent(this, RoomAddHotelDetailConfirmActivity::class.java)
@@ -102,6 +112,7 @@ class RoomAddHotelDetailStep3Activity : AppCompatActivity() {
             intent.putExtra("timestamp", timestamp)
             intent.putStringArrayListExtra("img", tempUriImage)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
     }
 
@@ -117,10 +128,10 @@ class RoomAddHotelDetailStep3Activity : AppCompatActivity() {
 
         flexboxLayout.addView(imageViewLayout)
 
-        uploadImageToFirebaseStorage(imageUri, imageView, progressBar, deleteButton)
+        uploadImageToFirebaseStorage(imageUri, imageView, progressBar, deleteButton, imageViewLayout)
     }
 
-    private fun uploadImageToFirebaseStorage(imageUri: Uri, imageView: ImageView, progressBar: ProgressBar, deleteButton: Button) {
+    private fun uploadImageToFirebaseStorage(imageUri: Uri, imageView: ImageView, progressBar: ProgressBar, deleteButton: Button, layout: View) {
         val ref = FirebaseStorage.getInstance().getReference("images/${UUID.randomUUID()}")
         val uploadTask = ref.putFile(imageUri)
 
@@ -145,16 +156,20 @@ class RoomAddHotelDetailStep3Activity : AppCompatActivity() {
                     imageView.alpha = 1.0f
                     val downloadUri = task.result
 
+                    photoUrlList.add(downloadUri.toString())
+
                     Glide.with(this@RoomAddHotelDetailStep3Activity)
                         .load(downloadUri)
                         .centerCrop()
                         .into(imageView)
 
+
                     // Handle the delete button click
                     deleteButton.setOnClickListener {
                         ref.delete().addOnSuccessListener {
                             // remove the image view from the FlexboxLayout
-                            flexboxLayout.removeView(imageView.parent as View)
+                            flexboxLayout.removeView(layout)
+                            photoUrlList.remove(downloadUri.toString())
                         }
                     }
                 }
@@ -177,22 +192,6 @@ class RoomAddHotelDetailStep3Activity : AppCompatActivity() {
                 val count = data.clipData!!.itemCount
 
                 for (i in 0 until count) {
-//                    val imageUri = data.clipData!!.getItemAt(i).uri
-//                    var imgView = ImageView(baseContext)
-//                    imgView.visibility = View.VISIBLE
-//                    imgView.setImageURI(null)
-//                    imgView.setImageURI(imageUri)
-//                    imgView.setPadding(5, 5, 5, 5)
-//                    imgView.tag = imageUri.toString()
-//                    imgView.scaleType = ImageView.ScaleType.CENTER_CROP
-//
-//                    //imgView.maxHeight = 100
-//                    //imgView.requestLayout();
-//                    val flexparams = FlexboxLayout.LayoutParams(300, 300)
-//                    imgView.layoutParams = flexparams
-//
-//                    flex.addView(imgView)
-
                     val imageUri = data.clipData!!.getItemAt(i).uri
                     addImageToFlexboxLayout(imageUri)
                 }
@@ -204,5 +203,27 @@ class RoomAddHotelDetailStep3Activity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    private fun initActionBar() {
+        val menu = supportActionBar
+        menu?.setDisplayHomeAsUpEnabled(true)
+        menu?.setHomeButtonEnabled(true)
+        menu?.title = "Photos for room"
     }
 }

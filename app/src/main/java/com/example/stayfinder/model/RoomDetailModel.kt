@@ -17,7 +17,9 @@ data class RoomDetailModel(
     var room_quantity: Number = 0,
     var room_available: Number = 0,
     var guest_available: Number = 0,
+    var min_guest: Number = 0,
     var beds: ArrayList<Bed> = ArrayList(),
+    var discount_type: String = "",
 
     //activity add room detail 2
     var available_start_date: Timestamp? = null,
