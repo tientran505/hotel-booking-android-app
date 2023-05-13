@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
+        android:name=".services.notification.Notification"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -21,11 +22,20 @@
         android:theme="@style/Theme.StayFinder"
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
+
+        <service
+            android:name=".services.notification.MessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <activity
             android:name=".partner.room.PartnerListRoomActivity"
             android:exported="false" />
 
-      <activity
+        <activity
             android:name=".partner.property.upload.PropertyTypeChooser"
             android:exported="false">
             <meta-data

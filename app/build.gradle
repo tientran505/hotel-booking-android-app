@@ -75,4 +75,6 @@ dependencies {
 
     implementation "com.github.kojofosu:Quantitizer:1.6.8"
     implementation 'com.nex3z:toggle-button-group:1.2.3'
+
+    implementation 'com.google.firebase:firebase-messaging-ktx'
 }
