@@ -44,9 +44,9 @@ class RatingActivity : AppCompatActivity() {
 
         var itemList = arrayListOf<HotelDetail>()
 
-        itemList.add(HotelDetail("bloblo","Căn nhà mơ ước", "Vũng Tàu"
-            , "King Room", 1000000.0, 0.5,
-            "Very good", 8.0, 500, R.drawable.purpl))
+        itemList.add(HotelDetail("bloblo","Căn nhà mơ ước", 1000000000.0
+            , "King Room"
+            , "https://firebasestorage.googleapis.com/v0/b/hotel-booking-app-b6d5b.appspot.com/o/images%2Fa9b80ff2-aeb6-4e98-906c-78b0932d5dd0?alt=media&token=bdea8bd6-0cb7-4de9-9e24-4080a82793da"))
 
         val lists = findViewById<RecyclerView>(R.id.hotelinfo) as RecyclerView
         var adapter = DetailListAdapter(itemList)

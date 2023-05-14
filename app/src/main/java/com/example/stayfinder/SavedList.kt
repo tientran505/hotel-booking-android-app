@@ -8,12 +8,14 @@ class SavedList:java.io.Serializable{
     public var titlename: String? = ""
     public var props: String? = ""
     var id: String?=""
+    var n_o_i:Int = 0
     var items : List<SavedListItem>? = null
 
-    constructor(stitlename: String, sname: String, sid:String){
+    constructor(stitlename: String, sname: String, sid:String, sn:Int){
         titlename = stitlename
         props = sname
         id = sid
+        n_o_i = sn
     }
 
     override fun toString(): String {

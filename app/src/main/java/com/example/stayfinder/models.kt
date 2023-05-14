@@ -25,7 +25,11 @@ data class hotels(
 }
 
 @IgnoreExtraProperties
-data class address ( val address: String = "", val city: String = ""): Serializable
+data class address ( val address: String = "", val city: String = ""): Serializable{
+    override fun toString(): String {
+        return super.toString()
+    }
+}
 @IgnoreExtraProperties
 data class facilities(val id: String ="",val name: String = "", val icon: String = ""):Serializable
 @IgnoreExtraProperties

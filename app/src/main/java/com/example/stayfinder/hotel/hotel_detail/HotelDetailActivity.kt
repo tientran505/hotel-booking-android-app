@@ -53,7 +53,7 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
         setContentView(R.layout.activity_hotel_detail)
         initActionBar()
         progressBar = findViewById(R.id.savedListPB)
-        hotel_id="5l5PibkyeRaZRFCVPrlB"
+        hotel_id=intent.getStringExtra("hotel_id")!!
         val fm: FragmentManager = supportFragmentManager
         val dateStart: String = "30-3-2023"
         val dateEnd: String = "1-4-2023"
