@@ -63,6 +63,7 @@ data class coupon(
     var owner_id: String = "",
 ):Serializable{
 
+
 }
 @IgnoreExtraProperties
 data class rooms(
