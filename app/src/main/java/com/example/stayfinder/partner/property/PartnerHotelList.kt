@@ -3,43 +3,86 @@ package com.example.stayfinder.partner.property
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.MenuItem
 import android.widget.ListView
 import com.example.stayfinder.R
-import com.example.stayfinder.partner.property.adapter.Property
+import com.example.stayfinder.hotels
 import com.example.stayfinder.partner.property.adapter.PropertyAdapter
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
 
 class PartnerHotelList : AppCompatActivity() {
+    private var collectionName :String? = null
+
     private lateinit var propertyLV: ListView
+    private val propertyList = ArrayList<hotels>()
+
+    val db = Firebase.firestore
+
+    private lateinit var propertyAdapter: PropertyAdapter
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    private fun initActionBar() {
+        val menu = supportActionBar
+        menu?.setDisplayHomeAsUpEnabled(true)
+        menu?.setHomeButtonEnabled(true)
+        menu?.title = "Manage Promotion"
+    }
+    private fun fetchData() {
+        val user = Firebase.auth.currentUser
+        if (user != null) {
+            val docRef = db.collection("hotels").whereEqualTo("owner_id", user.uid).whereNotEqualTo("hotel_name", "")
+            docRef.get().addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val hotel = document.toObject<hotels>()
+                    Log.d("tien", hotel.toString())
+                    propertyList.add(hotel)
+                }
+                propertyAdapter.notifyDataSetChanged()
+            }
+                .addOnFailureListener { exception ->
+                    Log.w("log", "Error getting documents: ", exception)
+                }
+
+        }
+    }
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.partner_activity_hotel_list)
 
+        initActionBar()
+        fetchData()
+
         propertyLV = findViewById(R.id.propertyPartnerLV)
+        propertyAdapter = PropertyAdapter(this,propertyList)
 
-        val urlStr = "https://images.unsplash.com/photo-1625244724120-1fd1d34d00f6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aG90ZWxzfGVufDB8fDB8fA%3D%3D&w=1000&q=80"
-
-        val propertyList = listOf<Property>(
-            Property(urlStr, "eb875113-c692-4219-b78e-59a016c625be"),
-            Property(urlStr, "I41FtWb5uunzcYIrkrmZ"),
-            Property(urlStr, "Property 3"),
-            Property(urlStr, "Property 4"),
-            Property(urlStr, "Property 5"),
-            Property(urlStr, "Property 6"),
-            Property(urlStr, "Property 7"),
-            Property(urlStr, "Property 8"),
-            Property(urlStr, "Property 9"),
-            Property(urlStr, "Property 10"),
-            Property(urlStr, "Property 11"),
-
-            )
-
-        val propertyAdapter = PropertyAdapter(this, propertyList)
         propertyLV.adapter = propertyAdapter
         propertyLV.setOnItemClickListener { adapterView, view, i, l ->
+            var itemIdHotel = propertyList[i].id
             val intent = Intent(this, PartnerCouponList::class.java)
-            intent.putExtra("hotel_id",propertyList[i].propertyName)
+            intent.putExtra("hotel_id", itemIdHotel)
             startActivity(intent)
-            this.overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
     }
 }

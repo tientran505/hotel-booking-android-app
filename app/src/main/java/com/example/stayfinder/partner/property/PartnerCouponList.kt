@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.MainScope
@@ -53,28 +54,46 @@ class PartnerCouponList : AppCompatActivity() {
         menu?.setHomeButtonEnabled(true)
         menu?.title = "Coupon Management"
     }
-    private suspend fun loadSavedLists(coupon_id: String) {
+    private fun loadSavedLists(coupon_id: String) {
         val documents = Firebase.firestore.collection("coupons")
             .whereEqualTo("owner_id", user!!.uid)
             .get()
-            .await()
-        for (document in documents) {
-            val l = document.toObject(coupon::class.java)
-            lateinit var cp:coupon_adapter
-            if(coupon_id == l.id){
-                cp = coupon_adapter(l.id,l.title,l.discount,l.startDate,l.endDate,true)
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val l = document.toObject(coupon::class.java)
+                    lateinit var cp:coupon_adapter
+                    if(coupon_id == l.id){
+                        cp = coupon_adapter(l.id,l.title,l.discount,l.startDate,l.endDate,true)
+                    }
+                    else{
+                        cp = coupon_adapter(l.id,l.title,l.discount,l.startDate,l.endDate,false)
+                    }
+                    couponListAdapter.add(cp)
+                    couponList.add(l)
+                    listadapter.notifyItemInserted(couponList.size - 1)
+                }
             }
-            else{
-                cp = coupon_adapter(l.id,l.title,l.discount,l.startDate,l.endDate,false)
+
+    }
+
+    private fun readCouponOfHotel(hotel_id:String):String{
+        var cp = ""
+        val document = Firebase.firestore.collection("hotels").document(hotel_id).get()
+            .addOnSuccessListener {
+                val result=it.toObject<hotels>()
+                cp = result!!.coupon_id
+                Log.d("test",cp)
+                loadSavedLists(cp)
             }
-            couponListAdapter.add(cp)
-            couponList.add(l)
-            listadapter.notifyItemInserted(couponList.size - 1)
-        }
+            .addOnFailureListener {
+
+            }
+
+        return cp
     }
 
     private fun changeCoupon(coupon_id: String, hotel_id:String){
-        db.collection("hotels").document(hotel_id).update("coupon",coupon_id)
+        db.collection("hotels").document(hotel_id).update("coupon_id",coupon_id)
             .addOnSuccessListener {  }
             .addOnFailureListener {  }
     }
@@ -92,11 +111,8 @@ class PartnerCouponList : AppCompatActivity() {
         initActionBar()
 
         var hotel_id = intent.getStringExtra("hotel_id")
-        var coupon_id = intent.getStringExtra("coupon_id")
 
-        CoroutineScope(MainScope().coroutineContext).launch {
-            loadSavedLists("")
-        }
+        readCouponOfHotel(hotel_id!!)
 
         val cpList = findViewById<RecyclerView>(R.id.recyclerView) as RecyclerView
         listadapter = CouponInfoAdapter(couponListAdapter)

@@ -145,7 +145,7 @@ class PartnerAddCoupon : AppCompatActivity() {
 
             if(getStartDate!="" && getEndDate!="" && getCouponName!="" && getCouponValue!=""){
                 val id = db.collection("reviews").document().id
-                var newcp = coupon(id,getCouponName,getCouponValue.toDouble(),getStartDate,getEndDate,
+                var newcp = coupon(id,getCouponName,getCouponValue.toDouble()/100.0,getStartDate,getEndDate,
                 user?.uid.toString())
                 /*var newcp = coupon(id,getCouponName,getCouponValue.toDouble()/100.0,getStartDate,getEndDate,
                     "blabla")*/
