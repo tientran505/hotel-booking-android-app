@@ -18,7 +18,8 @@ import com.example.stayfinder.model.HotelDetailModel
 import com.example.stayfinder.partner.room.PartnerListRoomActivity
 import android.widget.ProgressBar
 import com.example.stayfinder.Property
-
+import com.example.stayfinder.partner.property.sub_property.EditImageListActivity
+import com.example.stayfinder.partner.property.sub_property.EditLocationActivity
 import com.example.stayfinder.hotels
 import com.example.stayfinder.services.room.RoomAddHotelDetailActivity
 import com.google.firebase.firestore.ktx.firestore
@@ -41,7 +42,9 @@ class DetailProperty : AppCompatActivity() {
     private lateinit var hotel: hotels
 
     private lateinit var progressBar: ProgressBar
-
+    private val hotel_id="5l5PibkyeRaZRFCVPrlB"
+    lateinit var locationBtn: Button
+    lateinit var photoBtn: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.partner_activity_detail_property)
@@ -63,7 +66,9 @@ class DetailProperty : AppCompatActivity() {
             assignComponent()
         }
 
-
+        initActionBar()
+        locationBtn = findViewById(R.id.locationBtn)
+        photoBtn = findViewById(R.id.photoBtn)
         initActionBar()
 
 //        findViewById<TextView>(R.id.propertyNameDetail).setText(hotel.name)
@@ -129,6 +134,16 @@ class DetailProperty : AppCompatActivity() {
         propertyAddress.text = address.address
 
         progressBar.visibility = View.GONE
+        locationBtn.setOnClickListener {
+            val intent = Intent(this, EditLocationActivity::class.java)
+            intent.putExtra("hotel_id",hotel_id);
+            startActivity(intent)
+        }
+        photoBtn.setOnClickListener {
+            val intent = Intent(this, EditImageListActivity::class.java)
+            intent.putExtra("hotel_id",hotel_id);
+            startActivity(intent)
+        }
     }
 
     private fun initActionBar() {

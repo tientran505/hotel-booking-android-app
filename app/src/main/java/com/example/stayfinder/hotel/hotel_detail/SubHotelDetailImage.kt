@@ -59,7 +59,7 @@ class SubHotelDetailImage : Fragment() {
         var textview = view!!.findViewById<TextView>(R.id.titleTv)
         val imageLayout = view!!.findViewById<ConstraintLayout>(R.id.imageLayout)
         var recyclerView = view!!.findViewById(R.id.recyclerViewService) as RecyclerView
-        textview.setText(bookingDetail?.hotel_name)
+        textview.setText(bookingDetail?.name)
         var img1 = view!!.findViewById<ImageView>(R.id.imageView1)
         var img2 = view!!.findViewById<ImageView>(R.id.imageView2)
         var img3 = view!!.findViewById<ImageView>(R.id.imageView3)

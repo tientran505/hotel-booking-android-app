@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.MenuItem
 import android.view.View
 import android.widget.ProgressBar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,6 +44,7 @@ class RoomActivity : AppCompatActivity() , CoroutineScope by MainScope() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_room)
+        initActionBar()
         val bundle = intent.extras
         val hotel_id = bundle!!.getString("hotel_id")!!
         Log.i("testlog", "${hotel_id}")
@@ -80,5 +82,29 @@ class RoomActivity : AppCompatActivity() , CoroutineScope by MainScope() {
 //            listadapter.notifyItemInserted(savedList.size - 1)
         }
         progressBar.visibility = View.GONE
+    }
+    private fun initActionBar() {
+        val menu = supportActionBar
+        menu?.setDisplayHomeAsUpEnabled(true)
+        menu?.setHomeButtonEnabled(true)
+//        menu?.title = "Booking confirmation" // title of activity
+        if(this.title =="feedback") menu?.title = "Hotel Reviews"
+        if(this.title =="image") menu?.title = "Hotel Images"
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }
