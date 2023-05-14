@@ -3,10 +3,14 @@ package com.example.stayfinder.partner.room
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ListView
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.stayfinder.R
 import com.example.stayfinder.model.RoomDetailModel
 import com.example.stayfinder.partner.PartnerMainActivity
@@ -19,38 +23,34 @@ import com.google.firebase.ktx.Firebase
 
 class PartnerListRoomActivity : AppCompatActivity() {
 
-    private lateinit var propertyLV: ListView
+    private lateinit var propertyLV: RecyclerView
     private var db: FirebaseFirestore? = null
     private var collectionName :String? = null
     var uuidHotel: String? = null
-    var roomList:ArrayList<ListRoomModel> = ArrayList()
+    var roomList:ArrayList<RoomDetailModel> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_partner_list_room)
-        collectionName = "TestRoom"
+        initActionBar()
+        collectionName = "rooms"
 
         db = Firebase.firestore
 
         uuidHotel = intent.getStringExtra("uuidHotel")
-        //uuidHotel = "ddddddddd"
 
         requestListRoom(uuidHotel!!)
-
     }
 
     private fun requestListRoom(uuidHotel: String){
-
-        val urlStr = "https://images.unsplash.com/photo-1625244724120-1fd1d34d00f6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8aG90ZWxzfGVufDB8fDB8fA%3D%3D&w=1000&q=80"
-
-        db!!.collection(collectionName!!).whereEqualTo("hotelId", uuidHotel)
+        db!!.collection(collectionName!!).whereEqualTo("hotel_id", uuidHotel)
             .get()
             .addOnSuccessListener {
                 documents ->
                 for(document in documents){
                     val room = document.toObject(RoomDetailModel::class.java)
-                    var roomModel = ListRoomModel(uuidHotel = uuidHotel, uuidRoom = room.id, typeRoom = room.room_type, urlImage = if(room.photoUrl.size > 0) room.photoUrl[0] else urlStr)
-                    roomList.add(roomModel)
+//                    val roomModel = ListRoomModel(uuidHotel = uuidHotel, uuidRoom = room.id, typeRoom = room.room_type, urlImage = room.photoUrl[0])
+                    roomList.add(room)
                 }
                 initLV(roomList)
             }
@@ -60,20 +60,22 @@ class PartnerListRoomActivity : AppCompatActivity() {
                 startActivity(intent)
                 finishAffinity()
             }
+    }
 
+    private fun deleteRoom(id_room: String) {
 
     }
 
-    private fun initLV(propertyList:ArrayList<ListRoomModel>) {
-        propertyLV = findViewById(R.id.roomPartnerLV)
+    private fun initLV(propertyList:ArrayList<RoomDetailModel>) {
+        propertyLV = findViewById(R.id.roomPartnerRV)
+        propertyLV.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
 
         val propertyAdapter = RoomAdapter(this, propertyList)
 
-        propertyLV.adapter = propertyAdapter
 
-        propertyLV.setOnItemClickListener { adapterView, view, i, l ->
-            var itemIdRoom = roomList[i].uuidRoom
-            var itemIdHotel = roomList[i].uuidHotel
+        propertyAdapter.onEditBtnClick = {pos ->
+            val itemIdRoom = roomList[pos].id
+            val itemIdHotel = roomList[pos].hotel_id
             val intent = Intent(this, RoomAddHotelDetailActivity::class.java)
             intent.putExtra("uuidRoom", itemIdRoom)
             intent.putExtra("uuidHotel", itemIdHotel)
@@ -81,11 +83,66 @@ class PartnerListRoomActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        propertyAdapter.onDeleteBtnClick = {pos ->
+            val builder = AlertDialog.Builder(this)
+
+            builder.setTitle("Room Delete")
+            builder.setMessage("Are you sure you want to delete ${roomList[pos].name}?")
+
+            builder.setPositiveButton("Yes") { dialog, which ->
+                db?.collection("rooms")
+                    ?.document(roomList[pos].id)
+                    ?.delete()
+                    ?.addOnSuccessListener {
+                        roomList.removeAt(pos)
+                        propertyAdapter.notifyItemRemoved(pos)
+                        Toast.makeText(this, "Delete room successfully", Toast.LENGTH_SHORT).show()
+                        dialog.dismiss()
+                    }
+                    ?.addOnFailureListener { e ->
+                        Toast.makeText(this, "Fail to delete room: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+            }
+
+            builder.setNegativeButton("No") { dialog, _ ->
+                dialog.dismiss()
+            }
+
+            val alertDialog = builder.create()
+            alertDialog.show()
+        }
+
+        propertyLV.adapter = propertyAdapter
+
+
+
         var addBtn = findViewById<Button>(R.id.addPropertyBtn)
         addBtn.setOnClickListener {
             val intent = Intent(this, RoomAddHotelDetailActivity::class.java)
             intent.putExtra("uuidHotel", uuidHotel)
             startActivity(intent)
         }
+    }
+
+    private fun initActionBar() {
+        val menu = supportActionBar
+        menu?.setDisplayHomeAsUpEnabled(true)
+        menu?.setHomeButtonEnabled(true)
+        menu?.title = "Room Details"
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
     }
 }

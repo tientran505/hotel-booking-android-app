@@ -4,11 +4,9 @@ import android.app.Activity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
-import android.widget.BaseAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.example.stayfinder.R
 import com.example.stayfinder.hotels
 
@@ -24,8 +22,8 @@ class PropertyAdapter(
         val inflater = mActivity.layoutInflater
         val rowView: View = inflater.inflate(R.layout.partner_property_list_item, null, true)
 
-        val img: ImageView = rowView.findViewById(R.id.imgProperty)
-        val propertyTitle: TextView = rowView.findViewById(R.id.propertyName)
+        val img: ImageView = rowView.findViewById(R.id.imgRoom)
+        val propertyTitle: TextView = rowView.findViewById(R.id.roomNameTV)
 
         val property = myList[position]
         img.setImageResource(R.drawable.img_1)

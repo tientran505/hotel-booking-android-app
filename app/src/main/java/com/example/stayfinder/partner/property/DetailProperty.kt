@@ -81,9 +81,10 @@ class DetailProperty : AppCompatActivity() {
 //            .into(img)
 
         findViewById<Button>(R.id.roomBtn).setOnClickListener {
-            var intent = Intent(this, PartnerListRoomActivity::class.java)
+            val intent = Intent(this, PartnerListRoomActivity::class.java)
             intent.putExtra("uuidHotel",uuidHotel)
             startActivity(intent)
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
     }
 

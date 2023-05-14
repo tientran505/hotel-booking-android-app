@@ -75,7 +75,7 @@ class RoomAddHotelDetailStep3Activity : AppCompatActivity() {
         initActionBar()
 
         val room = intent.getSerializableExtra("roomInfo") as RoomDetailModel?
-        val timestamp = intent.getLongExtra("timestamp", 1683536679000)
+        val timestamp = intent.getLongExtra("timestamp", System.currentTimeMillis())
 
         uploadImgBtn = findViewById(R.id.chooseImageBtn)
 

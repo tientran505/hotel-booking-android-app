@@ -7,7 +7,7 @@
     >
 
     <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/imgProperty"
+        android:id="@+id/imgRoom"
         android:layout_width="75dp"
         android:layout_height="75dp"
         android:layout_marginStart="10dp"
@@ -20,7 +20,7 @@
         app:srcCompat="@drawable/img_1" />
 
     <TextView
-        android:id="@+id/propertyName"
+        android:id="@+id/roomNameTV"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
@@ -31,8 +31,8 @@
         android:text="Ho Tri An"
         android:textSize="20dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/imgProperty"
+        app:layout_constraintBottom_toBottomOf="@+id/imgRoom"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imgProperty"
-        app:layout_constraintTop_toTopOf="@+id/imgProperty" />
+        app:layout_constraintStart_toEndOf="@+id/imgRoom"
+        app:layout_constraintTop_toTopOf="@+id/imgRoom" />
 </androidx.constraintlayout.widget.ConstraintLayout>

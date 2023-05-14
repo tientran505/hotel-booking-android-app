@@ -14,13 +14,13 @@ data class RoomDetailModel(
     //activity add room detail 3
     var description: String = "",
     var photoUrl:ArrayList<String> = ArrayList(),
-    var room_quantity: Number = 0,
-    var room_available: Number = 0,
-    var guest_available: Number = 0,
-    var min_guest: Number = 0,
+    var room_quantity: Int = 0,
+    var room_available: Int = 0,
+    var guest_available: Int = 0,
+    var min_guest: Int = 0,
     var beds: ArrayList<Bed> = ArrayList(),
     var discount_type: String? = null,
-    var per_guest_discount: Number? = null,
+    var per_guest_discount: Double? = null,
 
     //activity add room detail 2
     var available_start_date: Timestamp? = null,
@@ -35,10 +35,10 @@ data class RoomDetailModel(
 
     var facilities: ArrayList<String> = ArrayList(),
 
-    var created_date: Any? = null
+    var created_date: Timestamp? = null
 ) :Serializable
 
 data class Bed (
     var name: String = "",
-    var quantity: Number = 0,
+    var quantity: Int = 0,
 ) : Serializable

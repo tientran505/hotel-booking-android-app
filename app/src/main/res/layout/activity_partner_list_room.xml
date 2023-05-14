@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
-                android:text="Live properties"
+                android:text="Live rooms"
                 android:textSize="20dp" />
 
             <View
@@ -57,8 +57,8 @@
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.Button.Circle" />
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/roomPartnerLV"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/roomPartnerRV"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="10dp" />

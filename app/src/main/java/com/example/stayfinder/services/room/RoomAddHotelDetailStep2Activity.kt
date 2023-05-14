@@ -64,7 +64,7 @@ class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
 
         room = intent.getSerializableExtra("roomInfo") as RoomDetailModel
         var editMode = intent.getBooleanExtra("editMode", false)
-        var timestamp = intent.getLongExtra("timestamp", 1683536679)
+        var timestamp = intent.getLongExtra("timestamp", System.currentTimeMillis())
 
 
         if(room == null){
@@ -190,10 +190,10 @@ class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
         }
 
         calendar.setOnDateChangeListener { calView: CalendarView, year: Int, month: Int, dayOfMonth: Int ->
-
             val calenderTemp: Calendar = Calendar.getInstance()
             calenderTemp.set(year, month, dayOfMonth)
             calView.setDate(calenderTemp.timeInMillis, true, true)
+            timestamp = calenderTemp.timeInMillis
         }
 
         nextBtn.setOnClickListener {
@@ -202,8 +202,8 @@ class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            timestamp =
-                calendar.date / 1000 // bước cuối mới thêm vào object để truyền đi không bị lỗi
+//            timestamp =
+//                calendar.date / 1000 // bước cuối mới thêm vào object để truyền đi không bị lỗi
             val price = priceEt.editText?.text.toString().replace(".","").toDouble()
             val minGuest = if (room.guest_available == 1 || lowerRateDecline.isChecked) {1} else {
                 minGuestSpinner.text.toString().split(" ")[0].toInt()
@@ -213,10 +213,10 @@ class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
                 discountType = if (spinnerRate.text.toString() == "") {null} else {spinnerRate.text.toString()}
             }
 
-            var perGuestDiscount: Number? = null
+            var perGuestDiscount: Double? = null
             if (discountType != null) {
                 perGuestDiscount = if (discountET.editText?.text.toString() == "") {0.00} else {
-                    discountET.editText?.text.toString().toDouble()
+                    discountET.editText?.text.toString().replace(".", "").toDouble()
                 }
             }
 
