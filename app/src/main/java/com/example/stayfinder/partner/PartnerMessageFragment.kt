@@ -1,20 +1,33 @@
 package com.example.stayfinder.partner
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.stayfinder.R
+import com.example.stayfinder.UserMessage
+import com.example.stayfinder.partner.property.adapter.ShowListRoom
+import com.example.stayfinder.partner.property.sub_property.EditImagePage
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.IgnoreExtraProperties
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -38,37 +51,36 @@ class PartnerMessageFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
     }
-    var mMessageRecycler: RecyclerView? = null
-    var messageList: List<Message> = listOf()
-    var currentUser: UserMessage = UserMessage("Cien", "","1")
+    lateinit var recyclerView : RecyclerView
+    var UserList: ArrayList<UserMessage> = arrayListOf()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.partner_fragment_message, container, false)
-        generateExampleMessages()
+        val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser!!
+        UserList.add(UserMessage( user!!.displayName,user!!.photoUrl.toString(),user.uid))
+        recyclerView= view!!.findViewById(R.id.recyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(this.context)
+        val adapter  =  ShowListChat(UserList)
+        recyclerView.adapter= adapter
 
-        mMessageRecycler = view!!.findViewById(R.id.recycler_gchat) as RecyclerView
-        val adapter = MessageListAdapter(view.context, messageList, currentUser)
-        mMessageRecycler!!.adapter = adapter
-        mMessageRecycler!!.layoutManager = LinearLayoutManager(view.context)
-        mMessageRecycler?.smoothScrollToPosition(adapter.itemCount - 1)
+//        adapter.onItemClick ={
+//                position ->
+//            run {
+//                val intent = Intent(this, EditImagePage::class.java)
+//                intent.putExtra("id", IdList[position])
+//                if (position == 0)
+//                    intent.putExtra("collection", "Hotels")
+//                else
+//                    intent.putExtra("collection", "rooms")
+//
+//                startActivity(intent)
+//            }
+//        }
+
         return view
-    }
-    private fun generateExampleMessages() {
-        val userAT = UserMessage("AT", "", "2")
-        val messagecheck1 = CheckinMessage("12:00 - 13:00","12-2-2023","14-2-2023",userAT,Date())
-        val messagecheck2 = CheckinMessage("12:00 - 13:00","12-2-2023","14-2-2023",currentUser,Date())
-        val message1 = NormalMessage("Hello AT!", currentUser, Date())
-        val message2 = NormalMessage("Hi Cien!", userAT, Date())
-        val message3 = NormalMessage("Di choi khom", currentUser, Date())
-        val message4 = NormalMessage("Di", userAT, Date())
-        val message5 = NormalMessage("Tui qua don ban", userAT, Date())
-        val message6 = NormalMessage("Uki", currentUser, Date())
-        val message7 = NormalMessage("uoauoauoauoauoauoaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", userAT, Date())
-
-        messageList = listOf(messagecheck1,messagecheck2,message1, message2, message3, message4, message5, message6, message7)
     }
     companion object {
         /**
@@ -90,223 +102,40 @@ class PartnerMessageFragment : Fragment() {
             }
     }
 }
-@IgnoreExtraProperties
-open class Message (
-    open var sender: UserMessage = UserMessage(),
-    open var createdAt: Date = Date(),
-    @DocumentId
-    open val id: String = ""
-)
+class ShowListChat(private var item: ArrayList<UserMessage>) : RecyclerView.Adapter<ShowListChat.ViewHolder>() {
+    var onItemClick: ((Int) -> Unit)? = null
 
-@IgnoreExtraProperties
-data class NormalMessage (
-    var message: String = "",
-    override var sender: UserMessage = UserMessage(),
-    override var createdAt: Date = Date(),
-    @DocumentId
-    override val id: String = "",
-): Message(sender, createdAt, id)
+    inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
+        val photoImg = listItemView.findViewById<ImageView>(R.id.photoImg)
+        val nameTv = listItemView.findViewById<TextView>(R.id.nameTv)
+//        init {
+//            button.setOnClickListener {
+//                onItemClick?.invoke(adapterPosition)
+//            }
+//        }
+    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShowListChat.ViewHolder {
+        val context = parent.context
+        val inflater = LayoutInflater.from(context)
+        val contactView = inflater.inflate(R.layout.show_list_chat_adapter, parent, false)
+        return ViewHolder(contactView)
+    }
 
-data class CheckinMessage(
-    var timeCheckin: String = "",
-    var dateStart: String = "",
-    var dateEnd:String ="",
-    override var sender: UserMessage = UserMessage(),
-    override var createdAt: Date = Date(),
-    @DocumentId
-    override val id: String = "",
-): Message(sender, createdAt, id)
-
-@IgnoreExtraProperties
-data class UserMessage (
-    var nickname: String = "",
-    var photoUrl: String = "",
-    @DocumentId
-    val id: String = ""
-): java.io.Serializable {
-}
-
-
-
-class MessageListAdapter(private val mContext: Context, private val mMessageList: List<Message>, private val mCurrentUser: UserMessage) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    override fun onBindViewHolder(holder: ShowListChat.ViewHolder, position: Int) {
+//        println("length "+ item.size)
+        println(this.item[position])
+        holder.nameTv?.setText(this.item[position].displayName)
+        Glide.with(holder.itemView)
+            .load(URL(this.item[position].photoUrl))
+            .apply(RequestOptions().centerCrop())
+            .into(holder.photoImg)
+    }
     override fun getItemCount(): Int {
-        return mMessageList.size
+        return item.size
     }
 
-    override fun getItemViewType(position: Int): Int {
-        val message = mMessageList[position]
-        val curID = mCurrentUser.id
-        return if(message.sender.id.equals(curID) && message is CheckinMessage){
-            VIEW_TYPE_CHECKIN_MESSAGE_SENT
-        }
-        else if(!message.sender.id.equals(curID) && message is CheckinMessage){
-            VIEW_TYPE_CHECKIN_MESSAGE_RECEIVED
-        }
-        else if (message.sender.id.equals(curID)) {
-            VIEW_TYPE_MESSAGE_SENT
-        } else {
-            VIEW_TYPE_MESSAGE_RECEIVED
-        }
-    }
-
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): RecyclerView.ViewHolder {
-        val view: View
-        if (viewType == VIEW_TYPE_MESSAGE_SENT) {
-            view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_chat_me, parent, false)
-            return SentMessageHolder(view)
-        } else if (viewType == VIEW_TYPE_MESSAGE_RECEIVED) {
-            view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_chat_other, parent, false)
-            return ReceivedMessageHolder(view)
-        }
-        else if (viewType == VIEW_TYPE_CHECKIN_MESSAGE_SENT) {
-            view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_booking_me, parent, false)
-            return SentCheckinRequestMessageHolder(view)
-        }
-        else if (viewType == VIEW_TYPE_CHECKIN_MESSAGE_RECEIVED) {
-            view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_booking_other, parent, false)
-            return ReceiveCheckinRequestMessageHolder(view)
-        }
-        return object : RecyclerView.ViewHolder(View(parent.context)) {}
-    }
-
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val message = mMessageList[position]
-        when (holder.itemViewType) {
-            VIEW_TYPE_MESSAGE_SENT -> (holder as SentMessageHolder).bind(message)
-            VIEW_TYPE_MESSAGE_RECEIVED -> (holder as ReceivedMessageHolder).bind(message)
-            VIEW_TYPE_CHECKIN_MESSAGE_SENT -> (holder as SentCheckinRequestMessageHolder).bind(message as CheckinMessage)
-            VIEW_TYPE_CHECKIN_MESSAGE_RECEIVED -> (holder as ReceiveCheckinRequestMessageHolder).bind(message as CheckinMessage)
-
-        }
-    }
-
-    inner class SentMessageHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var messageText: TextView
-        var dateText: TextView
-        init {
-            messageText = itemView.findViewById(R.id.text_gchat_message_me)
-            dateText = itemView.findViewById(R.id.text_gchat_date_me)
-        }
-
-        fun bind(message: Message) {
-            when (message) {
-                is NormalMessage -> {
-                    messageText.setText(message.message)
-                    dateText.setText(
-                        SimpleDateFormat(
-                            "MMMM dd YYYY",
-                            Locale.getDefault()
-                        ).format(message.createdAt)
-                                + " at " +
-                                SimpleDateFormat(
-                                    "HH:mm",
-                                    Locale.getDefault()
-                                ).format(message.createdAt)
-                    )
-                }
-            }
-        }
-    }
-
-    inner class ReceivedMessageHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var messageText: TextView
-        var dateText: TextView
-        var nameText: TextView
-        var profileImage: ImageView
-
-        init {
-            messageText = itemView.findViewById(R.id.text_gchat_message_other)
-            dateText = itemView.findViewById(R.id.text_gchat_date_other)
-            nameText = itemView.findViewById(R.id.text_gchat_user_other)
-            profileImage = itemView.findViewById(R.id.image_gchat_profile_other) as ImageView
-        }
-
-        fun bind(message: Message) {
-            when (message) {
-                is NormalMessage -> {
-                    messageText.setText(message.message)
-                    dateText.setText(
-                        SimpleDateFormat("MMMM dd YYYY",
-                            Locale.getDefault()).format(message.createdAt)+ " at "+
-                                SimpleDateFormat("HH:mm",
-                                    Locale.getDefault()).format(message.createdAt))
-                    nameText.setText(message.sender.nickname)
-
-                    //change image for message.sender.photoUrl / image_gchat_profile_other
-                }
-            }
-
-        }
-    }
-    inner class SentCheckinRequestMessageHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        //        var messageText: TextView
-        var dateText: TextView
-        //        var nameText: TextView
-        var timemessText: TextView
-        var datemessText: TextView
-        init {
-//            messageText = itemView.findViewById(R.id.text_gchat_message_other)
-            dateText = itemView.findViewById(R.id.text_gchat_date_me)
-//            nameText = itemView.findViewById(R.id.text_gchat_user_other)
-            timemessText = itemView.findViewById(R.id.timeTv)
-            datemessText = itemView.findViewById(R.id.dateTv)
-        }
-
-        fun bind(message: CheckinMessage) {
-//            messageText.setText(message.message)
-            dateText.setText(
-                SimpleDateFormat("MMMM dd YYYY",
-                    Locale.getDefault()).format(message.createdAt)+ " at "+
-                        SimpleDateFormat("HH:mm",
-                            Locale.getDefault()).format(message.createdAt))
-//            nameText.setText(message.sender.nickname)
-            timemessText.setText(message.timeCheckin)
-            datemessText.setText(message.dateStart +" to "+message.dateEnd)
-            //change image for message.sender.photoUrl / image_gchat_profile_other
-        }
-    }
-    inner class ReceiveCheckinRequestMessageHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        var dateText: TextView
-        var timemessText: TextView
-        var datemessText: TextView
-        var nameText: TextView
-        var profileImage: ImageView
-
-        init {
-            dateText = itemView.findViewById(R.id.text_gchat_date_other)
-            timemessText = itemView.findViewById(R.id.timeTv)
-            datemessText = itemView.findViewById(R.id.dateTv)
-            nameText = itemView.findViewById(R.id.text_gchat_user_other)
-            profileImage = itemView.findViewById(R.id.image_gchat_profile_other) as ImageView
-
-        }
-
-        fun bind(message: CheckinMessage) {
-//            messageText.setText(message.message)
-            nameText.setText(message.sender.nickname)
-
-            dateText.setText(
-                SimpleDateFormat("MMMM dd YYYY",
-                    Locale.getDefault()).format(message.createdAt)+ " at "+
-                        SimpleDateFormat("HH:mm",
-                            Locale.getDefault()).format(message.createdAt))
-            timemessText.setText(message.timeCheckin)
-            datemessText.setText(message.dateStart +" to "+message.dateEnd)
-            //change image for message.sender.photoUrl / image_gchat_profile_other
-        }
-    }
-
-    companion object {
-        private const val VIEW_TYPE_MESSAGE_SENT = 1
-        private const val VIEW_TYPE_MESSAGE_RECEIVED = 2
-        private const val VIEW_TYPE_CHECKIN_MESSAGE_SENT = 3
-        private const val VIEW_TYPE_CHECKIN_MESSAGE_RECEIVED = 4
+    fun updateList( list: ArrayList<UserMessage>){
+        this.item = list
+        this.notifyDataSetChanged()
     }
 }

@@ -22,6 +22,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".ChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".partner.property.PartnerCouponList"
             android:exported="false" />
         <activity
@@ -59,10 +62,10 @@
         <activity
             android:name=".services.room.RoomAddHotelDetailStep2Activity"
             android:exported="false" />
-
         <activity
             android:name=".partner.property.sub_property.EditImageListActivity"
             android:exported="false" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/MAP_API_KEY" />
