@@ -12,8 +12,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.IgnoreExtraProperties
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
@@ -22,27 +30,82 @@ import java.util.*
 class ChatActivity : AppCompatActivity() {
     var mMessageRecycler: RecyclerView? = null
     var messageList: ArrayList<MessageAdapter> = arrayListOf()
-    var currentUser: UserMessage = UserMessage("Cien", "","1")
+    lateinit var currentUser: UserMessage
+    lateinit var context: Context
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
         generateExampleMessages()
-        mMessageRecycler = findViewById(R.id.recycler_gchat) as RecyclerView
-        val adapter = MessageListAdapter(this, messageList,currentUser)
-        mMessageRecycler!!.adapter = adapter
-        mMessageRecycler!!.layoutManager = LinearLayoutManager(this)
-        mMessageRecycler?.smoothScrollToPosition(adapter.itemCount - 1)
+        context = this
+//        mMessageRecycler = findViewById(R.id.recycler_gchat) as RecyclerView
+//        val adapter = MessageListAdapter(this, messageList,currentUser)
+//        mMessageRecycler!!.adapter = adapter
+//        mMessageRecycler!!.layoutManager = LinearLayoutManager(this)
+//        mMessageRecycler?.smoothScrollToPosition(adapter.itemCount - 1)
+
+
     }
     private fun generateExampleMessages() {
+
         val bundle = intent.extras
         val userAT = bundle!!.getSerializable("user") as UserMessage
-        val messagecheck1 = CheckinMessageAdapter(userAT,currentUser,Date(),cimessage("12:00 - 13:00","15-5-2023 | 16-5-2023"))
-        val message = NormalMessageAdapter(userAT,currentUser,Date(),"xin chào bạn")
-        val message2 = NormalMessageAdapter(currentUser,userAT,Date(),"chào bạn")
+//        val messagecheck1 = CheckinMessageAdapter(userAT,currentUser,Date(),cimessage("12:00 - 13:00","15-5-2023 | 16-5-2023"))
+//        val message = NormalMessageAdapter(userAT,currentUser,Date(),"xin chào bạn")
+//        val message2 = NormalMessageAdapter(currentUser,userAT,Date(),"chào bạn")
+//        messageList = arrayListOf(messagecheck1,message,message2)
+        val userfb: FirebaseUser? = FirebaseAuth.getInstance().currentUser!!
+        val documents = Firebase.firestore.collection("users")
+            .document(userfb!!.uid)
+        documents.get().addOnSuccessListener { document ->
+            if (document != null) {
+                currentUser = UserMessage( document.get("displayName") as String,
+                    document.getString("photoUrl"),
+                    userfb!!.uid)
+            }
+            val db = FirebaseDatabase.getInstance()
+            val chatRef = db.reference.child("message").child(currentUser.uid!!).orderByChild("userid").equalTo(userAT.uid)
 
+            chatRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(dataSnapshot: DataSnapshot) {
+                    for (chatData in dataSnapshot.children) {
+                        val messages = chatData.child("message").children
+                        for (messageData in messages) {
+                            val isRequest = messageData.child("request").getValue(Boolean::class.java) as Boolean
+                            if(isRequest === true){
+                                val message = messageData.getValue(CheckinMessage::class.java) as CheckinMessage
+                                if(message.sender_id == currentUser.uid){
+                                    messageList.add(CheckinMessageAdapter(currentUser,userAT,message.createdAt,message.message))
+                                }
+                                else  messageList.add(CheckinMessageAdapter(userAT,currentUser,message.createdAt,message.message))
 
-        messageList = arrayListOf(messagecheck1,message,message2)
+                            }
+                            else{
+                                val message = messageData.getValue(NormalMessage::class.java) as NormalMessage
+                                if(message.sender_id == currentUser.uid){
+                                    messageList.add(NormalMessageAdapter(currentUser,userAT,message.createdAt,message.message))
+                                }
+                                else  messageList.add(NormalMessageAdapter(userAT,currentUser,message.createdAt,message.message))
+                            }
+
+//                            val message = messageData.getValue(Message::class.java)
+//                            println(message)
+
+                            // Do something with the message data here
+                        }
+                        mMessageRecycler = findViewById(R.id.recycler_gchat) as RecyclerView
+                        val adapter = MessageListAdapter(context, messageList,currentUser)
+                        mMessageRecycler!!.adapter = adapter
+                        mMessageRecycler!!.layoutManager = LinearLayoutManager(context)
+                        mMessageRecycler?.smoothScrollToPosition(adapter.itemCount - 1)
+                    }
+                }
+
+                override fun onCancelled(databaseError: DatabaseError) {
+                    // Handle database error
+                }
+            })
+        }
     }
 }
 
@@ -65,6 +128,10 @@ data class NormalMessage (
     @DocumentId
     override val id: String = "",
 ): Message(sender_id, receive_id,createdAt,false, id)
+{
+    constructor():this("","",Date(),"","")
+
+}
 
 @IgnoreExtraProperties
 data class CheckinMessage (
@@ -75,10 +142,15 @@ data class CheckinMessage (
     @DocumentId
     override val id: String = "",
 ): Message(sender_id, receive_id,createdAt,true, id)
+{
+    constructor():this("","",Date(), cimessage("",""),"")
+}
 data class cimessage(
-    val time: String,
-    val date: String,
-){
+    val date: String = "",
+    val time: String = ""
+) {
+    // add default constructor
+    constructor() : this("", "")
 }
 @IgnoreExtraProperties
 data class UserMessage (
