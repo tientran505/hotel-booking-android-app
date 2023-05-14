@@ -1,5 +1,6 @@
 package com.example.stayfinder.services.room
 
+import android.app.ProgressDialog
 import android.content.Context
 import android.content.Intent
 import android.graphics.Canvas
@@ -8,6 +9,7 @@ import android.graphics.DashPathEffect
 import android.graphics.Paint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +20,18 @@ import android.widget.Toast
 import androidx.core.view.marginTop
 import com.example.stayfinder.R
 import com.example.stayfinder.model.RoomDetailModel
+import com.example.stayfinder.partner.room.PartnerListRoomActivity
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import java.util.*
+import kotlin.collections.ArrayList
 
 class RoomAddHotelStep4Activity : AppCompatActivity() {
     private lateinit var facilitiesLL: LinearLayout
     private lateinit var continueBtn: Button
+    private var progressDialog: ProgressDialog? = null
+
 
     private val checkedItems = ArrayList<String>()
 
@@ -30,16 +40,48 @@ class RoomAddHotelStep4Activity : AppCompatActivity() {
         setContentView(R.layout.activity_room_add_hotel_step4)
 
         facilitiesLL = findViewById(R.id.facilitiesLL)
-        continueBtn = findViewById(R.id.continueBtn)
+        continueBtn = findViewById(R.id.finishBtn)
+
+        progressDialog = ProgressDialog(this)
 
         val room = intent.getSerializableExtra("roomInfo") as RoomDetailModel?
+        val timestamp = intent.getLongExtra("timestamp", System.currentTimeMillis())
 
         continueBtn.setOnClickListener {
-            val intent = Intent(this, RoomAddHotelDetailConfirmActivity::class.java)
             room?.apply {
+                facilities.clear()
                 facilities.addAll(checkedItems)
+                created_date = Timestamp(Date(System.currentTimeMillis()))
+                available_start_date = Timestamp(Date(timestamp))
             }
-            intent.putExtra("roomInfo", room)
+
+            val db = Firebase.firestore
+
+            progressDialog?.setTitle("Please wait")
+            progressDialog?.setMessage("Submitting...")
+            progressDialog?.show()
+
+            db.collection("rooms")
+                .document(room!!.id)
+                .set(room)
+                .addOnSuccessListener {
+                    val intent = Intent(this, PartnerListRoomActivity::class.java)
+                    intent.putExtra("uuidHotel", room.hotel_id)
+
+                    progressDialog?.dismiss()
+                    Toast.makeText(this, "Add new room successfully", Toast.LENGTH_SHORT).show()
+                    startActivity(intent)
+                    finishAffinity()
+                }
+                .addOnFailureListener { e ->
+                    progressDialog?.dismiss()
+                    Toast.makeText(this, "Error adding document: $e", Toast.LENGTH_SHORT).show()
+                }
+
+
+            Log.d("current_room", room.toString())
+
+//            intent.putExtra("roomInfo", room)
         }
 
         initActionBar()
@@ -54,11 +96,9 @@ class RoomAddHotelStep4Activity : AppCompatActivity() {
             checkBox.text = item
             checkBox.setOnCheckedChangeListener { compoundButton, isChecked ->
                 if (isChecked) {
-                    Toast.makeText(this, "${compoundButton.text} is checked", Toast.LENGTH_SHORT).show()
                     checkedItems.add(compoundButton.text.toString())
                 }
                 else {
-                    Toast.makeText(this, "${compoundButton.text} is unchecked", Toast.LENGTH_SHORT).show()
                     checkedItems.remove(compoundButton.text.toString())
                 }
             }

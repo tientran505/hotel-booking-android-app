@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    tools:context=".partner.room.adapter.ListingItemInListRoomActivity">
+    android:paddingVertical="10dp"
+    >
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/imgRoom"
@@ -24,16 +25,42 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="25dp"
-        android:layout_marginEnd="10dp"
-        android:drawableRight="@drawable/ic_right_arrow"
         android:ellipsize="end"
         android:maxLines="2"
         android:text="Ho Tri An"
         android:textSize="20dp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/imgRoom"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imgRoom"
         app:layout_constraintTop_toTopOf="@+id/imgRoom" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/deleteBtnMB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="?attr/materialButtonOutlinedStyle"
+        app:icon="@drawable/ic_delete"
+        app:iconTint="#F00"
+        android:minWidth="0dp"
+        app:iconPadding="0dp"
+        app:strokeColor="#F00"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/roomNameTV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/roomNameTV" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/editBtnMB"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="5dp"
+        app:strokeColor="@color/primary"
+        android:minWidth="0dp"
+        app:iconPadding="0dp"
+        app:icon="@drawable/ic_edit_property"
+        app:layout_constraintBottom_toBottomOf="@+id/deleteBtnMB"
+        app:layout_constraintEnd_toStartOf="@+id/deleteBtnMB"
+        app:layout_constraintTop_toTopOf="@+id/deleteBtnMB" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

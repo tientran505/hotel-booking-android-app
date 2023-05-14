@@ -158,7 +158,6 @@ class HomeFragment : Fragment(), RoomSelectionBottomSheetDialog.BottomSheetListe
 
         cityAdapter = CityAdapter(cities)
         cityAdapter.onItemClick = { position ->
-            Log.i("ttlog", position.toString())
             cityAdapter.setSelectedPosition(position)
         }
         rvCity.adapter = cityAdapter
