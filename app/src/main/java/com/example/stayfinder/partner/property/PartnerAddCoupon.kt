@@ -1,12 +1,15 @@
 package com.example.stayfinder.partner.property
 
 import android.app.Activity
+import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.InputFilter
 import android.text.Spanned
+import android.view.MenuItem
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
@@ -27,6 +30,27 @@ class PartnerAddCoupon : AppCompatActivity() {
         db.collection("coupons").document(id).set(cp)
             .addOnFailureListener {  }
             .addOnSuccessListener {  }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    private fun initActionBar() {
+        val menu = supportActionBar
+        menu?.setDisplayHomeAsUpEnabled(true)
+        menu?.setHomeButtonEnabled(true)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -82,6 +106,10 @@ class PartnerAddCoupon : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.partner_activity_add_coupon)
+
+        initActionBar()
+
+        var hotel_id = intent.getStringExtra("hotel_id")
 
         initActionBar()
 
@@ -155,7 +183,13 @@ class PartnerAddCoupon : AppCompatActivity() {
                 reply.putExtra("100", newcp)
                 setResult(Activity.RESULT_OK, reply)
                 finish()
+
+                var reply = Intent()
+                reply.putExtra("100", newcp)
+                setResult(Activity.RESULT_OK, reply)
+                finish()
             }
+
 
         }
 

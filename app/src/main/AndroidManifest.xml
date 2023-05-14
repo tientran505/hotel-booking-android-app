@@ -22,6 +22,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".partner.property.PartnerCouponList"
+            android:exported="false" />
+        <activity
+            android:name=".partner.property.PartnerHotelList"
+            android:exported="false" />
+        <activity
             android:name=".partner.property.sub_property.EditImagePage"
             android:exported="false" />
         <activity
