@@ -47,7 +47,7 @@
     <string-array name="facilities_item">
         <item>Free Wifi</item>
         <item>Restaurant</item>
-        <item>Room Services</item>
+        <item>Room Services</item>z
         <item>Bar</item>
         <item>24-hour front desk</item>
         <item>Fitness Center</item>
@@ -62,4 +62,5 @@
         <item>Water park</item>
         <item>Swimming pool</item>
     </string-array>
+    <string name="title_activity_edit_location">EditLocationActivity</string>
 </resources>
