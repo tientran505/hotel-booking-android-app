@@ -1,31 +1,24 @@
 package com.example.stayfinder.partner
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.example.stayfinder.R
-import com.example.stayfinder.UserMessage
-import com.example.stayfinder.partner.property.adapter.ShowListRoom
-import com.example.stayfinder.partner.property.sub_property.EditImagePage
+import com.example.stayfinder.*
+import com.example.stayfinder.hotel.hotel_detail.HotelDetailActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.DocumentId
-import com.google.firebase.firestore.IgnoreExtraProperties
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import java.net.URL
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -39,6 +32,14 @@ private const val ARG_PARAM2 = "param2"
  * Use the [PartnerMessageFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+data class userRealtime(
+    val userid: String?,
+    val withUser: ArrayList<withuserRealtime>?
+)
+data class withuserRealtime(
+    val userid: String?,
+    val message: ArrayList<Message>,
+)
 class PartnerMessageFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
@@ -64,8 +65,26 @@ class PartnerMessageFragment : Fragment() {
         recyclerView= view!!.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this.context)
         val adapter  =  ShowListChat(UserList)
+        adapter.onItemClick = {position ->
+            val intent = Intent(this.context, ChatActivity::class.java)
+            intent.putExtra("user", UserList[position]);
+            startActivity(intent)
+        }
         recyclerView.adapter= adapter
+        println("uid"+user!!.uid)
+//        var currentUser: UserMessage = UserMessage("Cien", "","1")
+//        val userAT = UserMessage("AT", "", "2")
+        val messagecheck1 = CheckinMessage("TiOWbclrs5gahZAKg1MvNVouDKE3","MlHDg6tlG2hXIWbmQTpQfxdW9Cx1",Date(), cimessage("12:00 - 13:00","hi"))
+        val messagecheck2 = NormalMessage("MlHDg6tlG2hXIWbmQTpQfxdW9Cx1","TiOWbclrs5gahZAKg1MvNVouDKE3",Date(),"hello")
+        val userRealtime =
+            arrayListOf(withuserRealtime("MlHDg6tlG2hXIWbmQTpQfxdW9Cx1", arrayListOf<Message>(messagecheck1,messagecheck2)))
 
+        val database = FirebaseDatabase.getInstance()
+        val myRef = database.getReference("message").child("TiOWbclrs5gahZAKg1MvNVouDKE3")
+        myRef.setValue(userRealtime)
+        val myRef2 = database.getReference("message").child("MlHDg6tlG2hXIWbmQTpQfxdW9Cx1")
+        val userRealtime2 = arrayListOf(withuserRealtime("TiOWbclrs5gahZAKg1MvNVouDKE3", arrayListOf<Message>(messagecheck1,messagecheck2)))
+        myRef2.setValue(userRealtime2)
 //        adapter.onItemClick ={
 //                position ->
 //            run {
@@ -108,11 +127,11 @@ class ShowListChat(private var item: ArrayList<UserMessage>) : RecyclerView.Adap
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
         val photoImg = listItemView.findViewById<ImageView>(R.id.photoImg)
         val nameTv = listItemView.findViewById<TextView>(R.id.nameTv)
-//        init {
-//            button.setOnClickListener {
-//                onItemClick?.invoke(adapterPosition)
-//            }
-//        }
+        init {
+            listItemView.setOnClickListener {
+                onItemClick?.invoke(adapterPosition)
+            }
+        }
     }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ShowListChat.ViewHolder {
         val context = parent.context

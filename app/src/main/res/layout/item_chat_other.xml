@@ -28,13 +28,19 @@
         android:orientation="horizontal"
         android:gravity="bottom">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/image_gchat_profile_other"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_launcher_background"
-            android:layout_marginBottom="4dp"
-            android:contentDescription="User Icon" />
+            android:layout_marginStart="10dp"
+            android:background="@drawable/custom_round_avatar"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+            android:layout_centerVertical="true"
+            app:srcCompat="@drawable/img_1" />
 
         <LinearLayout
             android:id="@+id/layout_gchat_container_other"

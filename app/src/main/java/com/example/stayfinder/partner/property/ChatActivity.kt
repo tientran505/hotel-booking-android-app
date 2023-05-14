@@ -10,71 +10,76 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.firebase.firestore.DocumentId
 import com.google.firebase.firestore.IgnoreExtraProperties
+import java.net.URL
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 class ChatActivity : AppCompatActivity() {
     var mMessageRecycler: RecyclerView? = null
-    var messageList: List<Message> = listOf()
+    var messageList: ArrayList<MessageAdapter> = arrayListOf()
     var currentUser: UserMessage = UserMessage("Cien", "","1")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
 
         generateExampleMessages()
-
         mMessageRecycler = findViewById(R.id.recycler_gchat) as RecyclerView
-        val adapter = MessageListAdapter(this, messageList, currentUser)
+        val adapter = MessageListAdapter(this, messageList,currentUser)
         mMessageRecycler!!.adapter = adapter
         mMessageRecycler!!.layoutManager = LinearLayoutManager(this)
         mMessageRecycler?.smoothScrollToPosition(adapter.itemCount - 1)
     }
     private fun generateExampleMessages() {
-        val userAT = UserMessage("AT", "", "2")
-        val messagecheck1 = CheckinMessage("12:00 - 13:00","12-2-2023","14-2-2023",userAT,Date())
-        val messagecheck2 = CheckinMessage("12:00 - 13:00","12-2-2023","14-2-2023",currentUser,Date())
-        val message1 = NormalMessage("Hello AT!", currentUser, Date())
-        val message2 = NormalMessage("Hi Cien!", userAT, Date())
-        val message3 = NormalMessage("Di choi khom", currentUser, Date())
-        val message4 = NormalMessage("Di", userAT, Date())
-        val message5 = NormalMessage("Tui qua don ban", userAT, Date())
-        val message6 = NormalMessage("Uki", currentUser, Date())
-        val message7 = NormalMessage("uoauoauoauoauoauoaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", userAT, Date())
+        val bundle = intent.extras
+        val userAT = bundle!!.getSerializable("user") as UserMessage
+        val messagecheck1 = CheckinMessageAdapter(userAT,currentUser,Date(),cimessage("12:00 - 13:00","15-5-2023 | 16-5-2023"))
+        val message = NormalMessageAdapter(userAT,currentUser,Date(),"xin chào bạn")
+        val message2 = NormalMessageAdapter(currentUser,userAT,Date(),"chào bạn")
 
-        messageList = listOf(messagecheck1,messagecheck2,message1, message2, message3, message4, message5, message6, message7)
+
+        messageList = arrayListOf(messagecheck1,message,message2)
     }
 }
 
 @IgnoreExtraProperties
-open class Message (
-    open var sender: UserMessage = UserMessage(),
-    open var createdAt: Date = Date(),
+open class Message(
+    open val sender_id: String,
+    open val receive_id: String,
+    open val createdAt: Date = Date(),
+    open val isRequest: Boolean,
     @DocumentId
-    open val id: String = ""
-)
+    open val id: String? = null,
+    )
 
 @IgnoreExtraProperties
 data class NormalMessage (
-    var message: String = "",
-    override var sender: UserMessage = UserMessage(),
-    override var createdAt: Date = Date(),
+    override val sender_id: String="",
+    override val receive_id: String="",
+    override val createdAt: Date = Date(),
+    val message: String?,
     @DocumentId
     override val id: String = "",
-): Message(sender, createdAt, id)
+): Message(sender_id, receive_id,createdAt,false, id)
 
-data class CheckinMessage(
-    var timeCheckin: String = "",
-    var dateStart: String = "",
-    var dateEnd:String ="",
-    override var sender: UserMessage = UserMessage(),
-    override var createdAt: Date = Date(),
+@IgnoreExtraProperties
+data class CheckinMessage (
+    override val sender_id: String="",
+    override val receive_id: String="",
+    override val createdAt: Date = Date(),
+    val message: cimessage?,
     @DocumentId
     override val id: String = "",
-): Message(sender, createdAt, id)
-
+): Message(sender_id, receive_id,createdAt,true, id)
+data class cimessage(
+    val time: String,
+    val date: String,
+){
+}
 @IgnoreExtraProperties
 data class UserMessage (
     var displayName: String? = "",
@@ -83,10 +88,36 @@ data class UserMessage (
     val uid: String? = ""
 ): java.io.Serializable {
 }
+open class MessageAdapter(
+    open val sender: UserMessage?,
+    open val receive: UserMessage?,
+    open val createdAt: Date = Date(),
+    open val isRequest: Boolean,
+    @DocumentId
+    open val id: String? = null,
+)
+@IgnoreExtraProperties
+data class NormalMessageAdapter (
+    override val sender: UserMessage?,
+    override val receive: UserMessage?,
+    override val createdAt: Date = Date(),
+    val message: String?,
+    @DocumentId
+    override val id: String = "",
+): MessageAdapter(sender, receive,createdAt,false, id)
+
+@IgnoreExtraProperties
+data class CheckinMessageAdapter (
+    override val sender: UserMessage?,
+    override val receive: UserMessage?,
+    override val createdAt: Date = Date(),
+    val message: cimessage?,
+    @DocumentId
+    override val id: String = "",
+): MessageAdapter(sender, receive,createdAt,true, id)
 
 
-
-class MessageListAdapter(private val mContext: Context, private val mMessageList: List<Message>, private val mCurrentUser: UserMessage) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MessageListAdapter(private val mContext: Context, private val mMessageList: List<MessageAdapter>, private val mCurrentUser: UserMessage) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun getItemCount(): Int {
         return mMessageList.size
     }
@@ -94,13 +125,13 @@ class MessageListAdapter(private val mContext: Context, private val mMessageList
     override fun getItemViewType(position: Int): Int {
         val message = mMessageList[position]
         val curID = mCurrentUser.uid
-        return if(message.sender.uid.equals(curID) && message is CheckinMessage){
+        return if(message.sender?.uid.equals(curID) && message is CheckinMessageAdapter){
             VIEW_TYPE_CHECKIN_MESSAGE_SENT
         }
-        else if(!message.sender.uid.equals(curID) && message is CheckinMessage){
+        else if(!message.sender?.uid.equals(curID) && message is CheckinMessageAdapter){
             VIEW_TYPE_CHECKIN_MESSAGE_RECEIVED
         }
-        else if (message.sender.uid.equals(curID)) {
+        else if (message.sender?.uid.equals(curID)) {
             VIEW_TYPE_MESSAGE_SENT
         } else {
             VIEW_TYPE_MESSAGE_RECEIVED
@@ -137,10 +168,10 @@ class MessageListAdapter(private val mContext: Context, private val mMessageList
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val message = mMessageList[position]
         when (holder.itemViewType) {
-            VIEW_TYPE_MESSAGE_SENT -> (holder as SentMessageHolder).bind(message)
-            VIEW_TYPE_MESSAGE_RECEIVED -> (holder as ReceivedMessageHolder).bind(message)
-            VIEW_TYPE_CHECKIN_MESSAGE_SENT -> (holder as SentCheckinRequestMessageHolder).bind(message as CheckinMessage)
-            VIEW_TYPE_CHECKIN_MESSAGE_RECEIVED -> (holder as ReceiveCheckinRequestMessageHolder).bind(message as CheckinMessage)
+            VIEW_TYPE_MESSAGE_SENT -> (holder as SentMessageHolder).bind(message as NormalMessageAdapter)
+            VIEW_TYPE_MESSAGE_RECEIVED -> (holder as ReceivedMessageHolder).bind(message as NormalMessageAdapter)
+            VIEW_TYPE_CHECKIN_MESSAGE_SENT -> (holder as SentCheckinRequestMessageHolder).bind(message as CheckinMessageAdapter)
+            VIEW_TYPE_CHECKIN_MESSAGE_RECEIVED -> (holder as ReceiveCheckinRequestMessageHolder).bind(message as CheckinMessageAdapter)
 
         }
     }
@@ -153,23 +184,19 @@ class MessageListAdapter(private val mContext: Context, private val mMessageList
             dateText = itemView.findViewById(R.id.text_gchat_date_me)
         }
 
-        fun bind(message: Message) {
-            when (message) {
-                is NormalMessage -> {
-                    messageText.setText(message.message)
-                    dateText.setText(
+        fun bind(message: NormalMessageAdapter) {
+            messageText.setText(message.message)
+            dateText.setText(
+                SimpleDateFormat(
+                    "MMMM dd YYYY",
+                    Locale.getDefault()
+                ).format(message.createdAt)
+                        + " at " +
                         SimpleDateFormat(
-                            "MMMM dd YYYY",
+                            "HH:mm",
                             Locale.getDefault()
                         ).format(message.createdAt)
-                                + " at " +
-                                SimpleDateFormat(
-                                    "HH:mm",
-                                    Locale.getDefault()
-                                ).format(message.createdAt)
-                    )
-                }
-            }
+            )
         }
     }
 
@@ -186,20 +213,19 @@ class MessageListAdapter(private val mContext: Context, private val mMessageList
             profileImage = itemView.findViewById(R.id.image_gchat_profile_other) as ImageView
         }
 
-        fun bind(message: Message) {
-            when (message) {
-                is NormalMessage -> {
-                    messageText.setText(message.message)
-                    dateText.setText(
-                        SimpleDateFormat("MMMM dd YYYY",
-                            Locale.getDefault()).format(message.createdAt)+ " at "+
-                                SimpleDateFormat("HH:mm",
-                                    Locale.getDefault()).format(message.createdAt))
-                    nameText.setText(message.sender.displayName)
-
+        fun bind(message: NormalMessageAdapter) {
+                messageText.setText(message.message)
+                dateText.setText(
+                    SimpleDateFormat("MMMM dd YYYY",
+                        Locale.getDefault()).format(message.createdAt)+ " at "+
+                            SimpleDateFormat("HH:mm",
+                                Locale.getDefault()).format(message.createdAt))
+                nameText.setText(message.sender?.displayName)
                     //change image for message.sender.photoUrl / image_gchat_profile_other
-                }
-            }
+            Glide.with(this.itemView)
+                .load(URL(message.sender?.photoUrl))
+                .apply(RequestOptions().centerCrop())
+                .into(profileImage)
 
         }
     }
@@ -217,7 +243,7 @@ class MessageListAdapter(private val mContext: Context, private val mMessageList
             datemessText = itemView.findViewById(R.id.dateTv)
         }
 
-        fun bind(message: CheckinMessage) {
+        fun bind(message: CheckinMessageAdapter) {
 //            messageText.setText(message.message)
             dateText.setText(
                 SimpleDateFormat("MMMM dd YYYY",
@@ -225,8 +251,8 @@ class MessageListAdapter(private val mContext: Context, private val mMessageList
                         SimpleDateFormat("HH:mm",
                             Locale.getDefault()).format(message.createdAt))
 //            nameText.setText(message.sender.nickname)
-            timemessText.setText(message.timeCheckin)
-            datemessText.setText(message.dateStart +" to "+message.dateEnd)
+            timemessText.setText(message.message?.time)
+            datemessText.setText(message.message?.date)
             //change image for message.sender.photoUrl / image_gchat_profile_other
         }
     }
@@ -246,18 +272,22 @@ class MessageListAdapter(private val mContext: Context, private val mMessageList
 
         }
 
-        fun bind(message: CheckinMessage) {
+        fun bind(message: CheckinMessageAdapter) {
 //            messageText.setText(message.message)
-            nameText.setText(message.sender.displayName)
+            nameText.setText(message.sender?.displayName)
 
             dateText.setText(
                 SimpleDateFormat("MMMM dd YYYY",
                     Locale.getDefault()).format(message.createdAt)+ " at "+
                         SimpleDateFormat("HH:mm",
                             Locale.getDefault()).format(message.createdAt))
-            timemessText.setText(message.timeCheckin)
-            datemessText.setText(message.dateStart +" to "+message.dateEnd)
+            timemessText.setText(message.message?.time)
+            datemessText.setText(message.message?.date)
             //change image for message.sender.photoUrl / image_gchat_profile_other
+            Glide.with(this.itemView)
+                .load(URL(message.sender?.photoUrl))
+                .apply(RequestOptions().centerCrop())
+                .into(profileImage)
         }
     }
 
