@@ -59,7 +59,6 @@
         <activity
             android:name=".services.room.RoomAddHotelDetailStep2Activity"
             android:exported="false" />
-
         <activity
             android:name=".partner.property.sub_property.EditImageListActivity"
             android:exported="false" />
