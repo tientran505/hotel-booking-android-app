@@ -9,6 +9,7 @@ import com.example.stayfinder.R
 import com.example.stayfinder.partner.booking.PartnerBookingFragment
 import com.example.stayfinder.partner.property.PartnerPropertiesFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.messaging.FirebaseMessaging
 
 class PartnerMainActivity : AppCompatActivity() {
     lateinit var bottomNavigationView: BottomNavigationView
@@ -16,6 +17,8 @@ class PartnerMainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.partner_activity__main)
+
+        FirebaseMessaging.getInstance().subscribeToTopic("all")
 
         bottomNavigationView = findViewById(R.id.bottomPartnerNavigationView)
         supportActionBar?.title = "StayFinder for Partner"

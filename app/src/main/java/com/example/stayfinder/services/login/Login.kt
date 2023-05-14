@@ -2,13 +2,13 @@ package com.example.stayfinder.services.login
 
 import android.app.ProgressDialog
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.MenuItem
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatButton
 import com.example.stayfinder.MainActivity
 import com.example.stayfinder.R
@@ -19,6 +19,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.AuthCredential
@@ -76,29 +77,47 @@ class Login : AppCompatActivity() {
                     if (task.isSuccessful) {
 
                         var user = FirebaseAuth.getInstance().currentUser
-                        if(user!= null){
+
+                        //Update token, tạo document với uuid của user
+                        if (user != null) {
                             val uuidUser = user.uid
-                            val token = FirebaseMessaging.getInstance().token.toString()
-                            //Update token, tạo document với uuid của user
-                            db.collection(getString(R.string.collection_name_token_notification)
-                            ).document(uuidUser)
-                                .set(NotificationModel(uuidUser,token))
+                            FirebaseMessaging.getInstance().token.addOnCompleteListener(
+                                OnCompleteListener { task ->
+                                    if (!task.isSuccessful) {
+                                        Log.w(
+                                            "BUG",
+                                            "Fetching FCM registration token failed",
+                                            task.exception
+                                        )
+                                        return@OnCompleteListener
+                                    }
+
+                                    // Get new FCM registration token
+                                    val token = task.result
+
+                                    db.collection(
+                                        getString(R.string.collection_name_token_notification)
+                                    ).document(uuidUser).set(NotificationModel(uuidUser, token))
+
+                                })
                         }
 
 
                         Toast.makeText(this, "Hello from this", Toast.LENGTH_SHORT).show()
-                            // Sign in success, update UI with the signed-in user's information
-                            Handler().postDelayed(Runnable {
-                                val intent = Intent(this, MainActivity::class.java)
-                                intent.putExtra("fragment", "profile")
-                                startActivity(intent)
-                                finishAffinity()
-                            }, 500)
+                        // Sign in success, update UI with the signed-in user's information
+                        Handler().postDelayed(Runnable {
+                            val intent = Intent(this, MainActivity::class.java)
+                            intent.putExtra("fragment", "profile")
+                            startActivity(intent)
+                            finishAffinity()
+                        }, 500)
 
                     } else {
                         // If sign in fails, display a message to the user.
-                        Toast.makeText(this, "Authentication failed.",
-                            Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            this, "Authentication failed.",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                     progressDialog?.dismiss()
                 }
@@ -117,7 +136,7 @@ class Login : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             android.R.id.home -> {
                 onBackPressed()
             }
@@ -134,7 +153,7 @@ class Login : AppCompatActivity() {
         ggLoginBtn = findViewById(R.id.logInWithGGBtn)
     }
 
-    private fun createRequest(){
+    private fun createRequest() {
         mGoogleSignInOptions = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.client_id))
             .requestEmail()
@@ -156,7 +175,8 @@ class Login : AppCompatActivity() {
 
             try {
                 val account: GoogleSignInAccount = task.getResult(ApiException::class.java)
-                val credential: AuthCredential = GoogleAuthProvider.getCredential(account.idToken, null)
+                val credential: AuthCredential =
+                    GoogleAuthProvider.getCredential(account.idToken, null)
 
                 progressDialog?.setTitle("Login with gmail")
                 progressDialog?.setMessage("Verifying...")
@@ -170,17 +190,44 @@ class Login : AppCompatActivity() {
 
                             if (authUser != null) {
                                 val db = Firebase.firestore
-
                                 val user = User(authUser)
+
+                                //Update token, tạo document với uuid của user
+                                val uuidUser = user.uid
+                                FirebaseMessaging.getInstance().token.addOnCompleteListener(
+                                    OnCompleteListener { task ->
+                                        if (!task.isSuccessful) {
+                                            Log.w(
+                                                "BUG",
+                                                "Fetching FCM registration token failed",
+                                                task.exception
+                                            )
+                                            return@OnCompleteListener
+                                        }
+
+                                        // Get new FCM registration token
+                                        val token = task.result
+
+                                        db.collection(
+                                            getString(R.string.collection_name_token_notification)
+                                        ).document(uuidUser).set(NotificationModel(uuidUser, token))
+
+                                    })
+
+
                                 db.collection("users").document(user.uid).set(user)
                                     .addOnSuccessListener {
-                                        Toast.makeText(this, "User data added successfully",
-                                            Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(
+                                            this, "User data added successfully",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     }
                                     .addOnFailureListener {
-                                        Toast.makeText(this, "Error adding user data with" +
-                                                " exception: $it",
-                                            Toast.LENGTH_SHORT).show()
+                                        Toast.makeText(
+                                            this, "Error adding user data with" +
+                                                    " exception: $it",
+                                            Toast.LENGTH_SHORT
+                                        ).show()
                                     }
                             }
 
@@ -190,11 +237,12 @@ class Login : AppCompatActivity() {
                                 startActivity(intent)
                                 finishAffinity()
                             }, 1000)
-                        }
-                        else {
+                        } else {
                             // If sign in fails, display a message to the user.
-                            Toast.makeText(this, "Authentication failed.",
-                                Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                this, "Authentication failed.",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                         progressDialog?.dismiss()
                     }

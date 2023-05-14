@@ -76,4 +76,5 @@ dependencies {
     implementation 'com.nex3z:toggle-button-group:1.2.3'
 
     implementation 'com.google.firebase:firebase-messaging-ktx'
+    implementation 'com.android.volley:volley:1.2.1'
 }

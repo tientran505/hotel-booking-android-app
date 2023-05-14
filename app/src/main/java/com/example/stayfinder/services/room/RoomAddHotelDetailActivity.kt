@@ -14,12 +14,14 @@ import com.example.stayfinder.R
 import com.example.stayfinder.model.Bed
 import com.example.stayfinder.model.RoomDetailModel
 import com.example.stayfinder.partner.PartnerMainActivity
+import com.example.stayfinder.services.notification.FcmNotificationSender
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.mcdev.quantitizerlibrary.HorizontalQuantitizer
 import java.util.*
 import kotlin.collections.ArrayList
@@ -73,6 +75,23 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_room_add_hotel_detail)
+
+
+        //=============================DEMO REQUEST TO ALL DEVICE============================
+        FirebaseMessaging.getInstance().subscribeToTopic("all")
+//        val sender = FcmNotificationSender("/topics/all", "Title o day", "Noi dung o day", applicationContext, this)
+//        sender.SendNotifications()
+        //=============================END DEMO REQUEST======================================
+
+        //=============================DEMO REQUEST TO ONE DEVICE WITH TOKEN============================
+        val sender = FcmNotificationSender("fKJwOpXsQomTSCd_hIHXXs:APA91bEYKE-PrOITP94UtaCmNIm0a-IIQYE8X2_QWKd-bqyHQsGM33B79bXVxnXfM8YTobIOwXpBF2kjOg2m8QRy24zCfSpBFNm2eP9hR7JT0jpdUOeEVzE1hfSxtY7OtEuzwrWrlCQg",
+            "Title o day",
+            "Noi dung o day",
+            applicationContext,
+            this
+            )
+        sender.SendNotifications()
+        //=============================END DEMO REQUEST=================================================
 
         categoryRoomSpinner = (findViewById<TextInputLayout?>(R.id.spinnerTypeRoom).editText as? MaterialAutoCompleteTextView)!!
 

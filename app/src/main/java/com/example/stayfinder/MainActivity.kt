@@ -3,6 +3,7 @@ package com.example.stayfinder
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -15,6 +16,7 @@ import com.example.stayfinder.model.NotificationModel
 import com.example.stayfinder.partner.PartnerMainActivity
 import com.example.stayfinder.saved.SavedAnonymous
 import com.example.stayfinder.services.login.ProfileFragment
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
@@ -34,9 +36,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //subscribe all channel
+        FirebaseMessaging.getInstance().subscribeToTopic("all")
+
         actionBarSetup()
         partnerAuth()
-
 
         val intent = intent
         val fragmentInfo = intent.getStringExtra("fragment")
