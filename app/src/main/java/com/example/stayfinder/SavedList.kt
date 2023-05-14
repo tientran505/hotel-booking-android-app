@@ -34,6 +34,19 @@ data class saved_lists(
     //constructor(a:saved_lists):this(a.id,a.user_id,a.name_list,a.number_of_item)
 }
 
+data class saved_list_item(
+    var id: String = "",
+    var hotel_id:String = "",
+    var list_id:String = "",
+    var titlename:String = "",
+    var img:String ="",
+    var create_date: Timestamp = Timestamp.now(),
+): Serializable {
+    //constructor(id:String, user_id: String, name_list: String) : this(id, user_id, name_list, 0)
+    //constructor():this("","","",0)
+    //constructor(a:saved_lists):this(a.id,a.user_id,a.name_list,a.number_of_item)
+}
+
 
 
 
