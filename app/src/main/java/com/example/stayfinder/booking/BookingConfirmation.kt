@@ -12,6 +12,7 @@ import android.widget.ListView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.view.get
+import com.example.stayfinder.BookingDetail
 import com.example.stayfinder.R
 import com.example.stayfinder.booking.adapter.HotelPriceList
 import com.example.stayfinder.booking.adapter.PriceDetailConfirmListAdapter
@@ -58,9 +59,13 @@ class BookingConfirmation : AppCompatActivity() {
     private lateinit var discountSum: TextView
     private lateinit var bookBtn: Button
 
+    private lateinit var bookingDetail: BookingDetail
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_booking_confirmation)
+
+        bookingDetail = intent.getSerializableExtra("booking_details") as BookingDetail
 
         initRoomConfirmListView()
         initHotelView()
@@ -115,11 +120,7 @@ class BookingConfirmation : AppCompatActivity() {
     }
 
     private fun initRoomConfirmListView() {
-        val mList = arrayListOf(
-            Room("One-Bedroom Apartment", "", 4),
-            Room("Apartment with Balcony", "", 5),
-            Room("Apartment with Balcony", "", 5)
-        )
+        val mList = bookingDetail.rooms
 
         roomLV = findViewById(R.id.roomLV)
 

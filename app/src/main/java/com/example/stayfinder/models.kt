@@ -1,5 +1,7 @@
 package com.example.stayfinder
 
+import com.example.stayfinder.model.RoomDetailModel
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.PropertyName
 import java.io.Serializable
@@ -83,17 +85,17 @@ data class rooms(
 
 }
 
-@IgnoreExtraProperties
-data class booking_details(
-    var id:String="",
-    var startDate: String = "",
-    var endDate: String = "",
-    var num_of_days: Int=0,
-    var user_id : String = "",
-
-):Serializable{
-
-}
+//@IgnoreExtraProperties
+//data class booking_details(
+//    var id:String="",
+//    var startDate: String = "",
+//    var endDate: String = "",
+//    var num_of_days: Int=0,
+//    var user_id : String = "",
+//
+//):Serializable{
+//
+//}
 
 @IgnoreExtraProperties
 data class room_information(
@@ -105,8 +107,31 @@ data class room_information(
 
 }
 
-data class Property (
-    val id: String,
-    val imgUrl: String,
-    val propertyName: String,
-)
+@IgnoreExtraProperties
+data class BookingDetail(
+    var id: String = "",
+    var num_of_adults: Int = 0,
+    var created_date: Timestamp? = null,
+    var date_start: Timestamp? = null,
+    var date_end: Timestamp? = null,
+    var num_of_nights: Int = 0,
+    var user_id: String = "",
+    var personal_contact: ContactInformation? = null,
+    var booking_information: BookingInformation? = null,
+    var hotel_name: String = "",
+    var rooms: ArrayList<RoomDetailModel> = arrayListOf()
+) : Serializable{}
+
+@IgnoreExtraProperties
+data class ContactInformation(
+    var name: String? = "",
+    var email: String? = "",
+    var phone_number: String? = ""
+): Serializable{}
+
+@IgnoreExtraProperties
+data class BookingInformation(
+    var number_of_adult: Int = 0,
+    var number_of_children: Int = 0,
+    var number_of_rooms: Int = 0,
+): Serializable{}

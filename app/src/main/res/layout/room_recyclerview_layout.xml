@@ -1,97 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.google.android.material.card.MaterialCardView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="20dp">
-
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/viewPager"
-        android:layout_width="0dp"
-        android:layout_height="200dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/roomtitleTv"
-        android:layout_width="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="10dp"
+    android:layout_marginHorizontal="10dp"
+    android:layout_marginVertical="10dp"
+    style="?attr/materialCardViewFilledStyle"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
-        android:text="Phòng 2 giường đơn"
-        android:textColor="@color/primary"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/viewPager" />
+        android:orientation="vertical"
+        android:paddingBottom="20dp">
 
-    <TextView
-        android:id="@+id/descriptionTv"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="5dp"
-        android:text="TextView"
-        android:textColor="@color/black"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/roomtitleTv"
-        app:layout_constraintTop_toBottomOf="@+id/roomtitleTv" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <TextView
-        android:id="@+id/discount_priceTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text="123"
-        android:textColor="@android:color/holo_red_light"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="@+id/date_rangeTv"
-        app:layout_constraintTop_toBottomOf="@+id/date_rangeTv" />
+        <TextView
+            android:id="@+id/roomtitleTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:text="Phòng 2 giường đơn"
+            android:textColor="@color/primary"
+            android:textSize="25sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/originalPriceTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/bg_strikethrough"
-        android:text="TextView"
-        android:textColor="@color/black"
-        app:layout_constraintStart_toStartOf="@+id/discount_priceTv"
-        app:layout_constraintTop_toBottomOf="@+id/discount_priceTv" />
+        <TextView
+            android:id="@+id/bedInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:text="3 beds (2 Sofa bed(s) / Variable size + 2 Sofa bed(s) / Variable size)"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
-    <Button
-        android:id="@+id/bookingBtn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginEnd="10dp"
-        android:text="Select"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/originalPriceTV" />
 
-    <TextView
-        android:id="@+id/percentage_discountTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:text="TextView"
-        android:textColor="@android:color/holo_red_dark"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="@+id/originalPriceTV"
-        app:layout_constraintStart_toEndOf="@+id/originalPriceTV" />
 
-    <TextView
-        android:id="@+id/date_rangeTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
-        android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/descriptionTv" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+
+        <TextView
+            android:id="@+id/descriptionTv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginHorizontal="10dp"
+            android:text="Đồ vệ sinh cá nhân miễn phí Bếp Máy giặt Nhà vệ sinh Ghế sofa Bồn tắm hoặc Vòi sen Sàn lát gỗ Khăn tắm Ra trải giường Ổ điện gần giường Sản phẩm lau rửa Bàn làm việc ng máy Căn hộ riêng trong tòa nhà Giá treo quần áo Giá phơi quần áo Giấy vệ sinh Giường sofa Máy điều hòa độc lập cho từng phòng"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Facilities"
+            android:textColor="@color/black"
+            android:textSize="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            />
+
+        <com.google.android.flexbox.FlexboxLayout
+            android:id="@+id/facilitiesFlex"
+            android:layout_width="match_parent"
+            app:flexWrap="wrap"
+            android:layout_marginTop="5dp"
+            android:layout_marginHorizontal="10dp"
+            app:justifyContent="flex_start"
+            android:layout_height="wrap_content">
+
+
+        </com.google.android.flexbox.FlexboxLayout>
+
+        <View
+            android:id="@+id/divider18"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginVertical="10dp"
+            android:background="?android:attr/listDivider" />
+
+
+        <TextView
+            android:id="@+id/guestInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Price for 8 guest(s)"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:layout_marginStart="10dp"
+            >
+
+            <TextView
+                android:id="@+id/originalPriceTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/bg_strikethrough"
+                android:text="TextView"
+                android:layout_marginEnd="10dp"
+                android:textColor="@android:color/holo_red_light"/>
+
+            <TextView
+                android:id="@+id/discount_priceTv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:text="123"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@+id/date_rangeTv"
+                app:layout_constraintTop_toBottomOf="@+id/date_rangeTv" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/percentage_discountTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Sales 5%"
+            android:textColor="@color/white"
+            android:background="#00CC00"
+            android:layout_marginVertical="5dp"
+            android:paddingHorizontal="5dp"
+            android:textSize="18sp" />
+
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/bookingBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:strokeColor="@color/primary"
+            android:textColor="@color/primary"
+            android:text="Select"
+            style="?attr/materialButtonOutlinedStyle"
+            />
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

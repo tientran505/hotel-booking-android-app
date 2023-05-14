@@ -6,8 +6,12 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.example.stayfinder.BookingDetail
+import com.example.stayfinder.ContactInformation
 import com.example.stayfinder.R
 import com.example.stayfinder.booking.model.GuestForm
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import java.util.regex.Matcher
@@ -25,25 +29,40 @@ class PersonalConfirmation : AppCompatActivity() {
 
     private lateinit var nextBtn: Button
 
+    private lateinit var bookingDetail: BookingDetail
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_personal_confirmation)
 
+        bookingDetail = intent.getSerializableExtra("booking_details") as BookingDetail
+
         initActionBar()
         initComponent()
+        fillFormWithUser()
 
         nextBtn.setOnClickListener {
-
             if (validateForm()) {
                 val intent = Intent(this, BookingConfirmation::class.java)
 
 
-                val parseString = Json.encodeToString(GuestForm(nameET.text.toString(),
-                phoneET.text.toString(), emailET.text.toString()))
-                intent.putExtra("data", parseString)
+                val contactInformation = ContactInformation(nameET.text.toString(),
+                    emailET.text.toString(), phoneET.text.toString())
+                bookingDetail.personal_contact = contactInformation
+
+                intent.putExtra("booking_details", bookingDetail)
                 startActivity(intent)
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
+        }
+    }
+
+    private fun fillFormWithUser() {
+        val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+        if (user != null) {
+            nameET.setText(user.displayName)
+            emailET.setText(user.email)
+            phoneET.setText(user.phoneNumber)
         }
     }
 

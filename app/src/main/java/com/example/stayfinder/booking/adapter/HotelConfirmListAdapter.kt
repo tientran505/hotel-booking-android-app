@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.bumptech.glide.Glide
 import com.example.stayfinder.R
+import com.example.stayfinder.model.RoomDetailModel
 
 data class Room(
     val name: String,
@@ -17,8 +18,8 @@ data class Room(
 )
 
 class RoomConfirmListAdapter(
-    private val context: Activity, private val myList: List<Room>
-) : ArrayAdapter<Room>(context, R.layout.room_confirm_booking, myList){
+    private val context: Activity, private val myList: List<RoomDetailModel>
+) : ArrayAdapter<RoomDetailModel>(context, R.layout.room_confirm_booking, myList){
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         val inflater = context.layoutInflater
         val rowView: View = inflater.inflate(R.layout.room_confirm_booking, null, true)
@@ -36,7 +37,7 @@ class RoomConfirmListAdapter(
 //            .load(R.drawable.img_1)
 //            .centerCrop()
 //            .into(img)
-        roomPeople.text = "${myList[position].numberOfPeople} adult(s)"
+        roomPeople.text = "${myList[position].guest_available} adult(s)"
 
         img.setImageResource(R.drawable.img_1)
 
