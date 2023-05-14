@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.stayfinder.MainActivity
 import com.example.stayfinder.R
+import com.example.stayfinder.partner.property.PartnerHotelList
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
@@ -29,6 +30,7 @@ class PartnerMoreFragment : Fragment() {
     private var param2: String? = null
 
     private lateinit var logOutBtn: Button
+    private lateinit var promotionBtn: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +79,11 @@ class PartnerMoreFragment : Fragment() {
             Firebase.auth.signOut()
             startActivity(Intent(requireActivity(), MainActivity::class.java))
             requireActivity().finishAffinity()
+        }
+
+        promotionBtn = view.findViewById(R.id.promotionBtn)
+        promotionBtn.setOnClickListener{
+            startActivity(Intent(requireActivity(), PartnerHotelList::class.java))
         }
     }
 }
