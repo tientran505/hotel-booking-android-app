@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -30,13 +32,35 @@ import java.util.*
 class ChatActivity : AppCompatActivity() {
     var mMessageRecycler: RecyclerView? = null
     var messageList: ArrayList<MessageAdapter> = arrayListOf()
+    var messageListFb: ArrayList<Message> = arrayListOf()
     lateinit var currentUser: UserMessage
     lateinit var context: Context
+    lateinit var adapter:MessageListAdapter
+    lateinit var userOther : UserMessage
+    lateinit var messageET: EditText
+    val userfb: FirebaseUser? = FirebaseAuth.getInstance().currentUser!!
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
+        val documents = Firebase.firestore.collection("users")
+            .document(userfb!!.uid)
+        documents.get().addOnSuccessListener { document ->
+            if (document != null) {
+                currentUser = UserMessage(
+                    document.get("displayName") as String,
+                    document.getString("photoUrl"),
+                    userfb!!.uid
+                )
 
-        generateExampleMessages()
+            }
+            mMessageRecycler = findViewById(R.id.recycler_gchat) as RecyclerView
+            adapter = MessageListAdapter(context, messageList,currentUser)
+            mMessageRecycler!!.adapter = adapter
+            mMessageRecycler!!.layoutManager = LinearLayoutManager(context)
+            MessageHandleReceive()
+        }
+        val bundle = intent.extras
+        userOther = bundle!!.getSerializable("user") as UserMessage
         context = this
 //        mMessageRecycler = findViewById(R.id.recycler_gchat) as RecyclerView
 //        val adapter = MessageListAdapter(this, messageList,currentUser)
@@ -45,68 +69,69 @@ class ChatActivity : AppCompatActivity() {
 //        mMessageRecycler?.smoothScrollToPosition(adapter.itemCount - 1)
 
 
-    }
-    private fun generateExampleMessages() {
-
-        val bundle = intent.extras
-        val userAT = bundle!!.getSerializable("user") as UserMessage
-//        val messagecheck1 = CheckinMessageAdapter(userAT,currentUser,Date(),cimessage("12:00 - 13:00","15-5-2023 | 16-5-2023"))
-//        val message = NormalMessageAdapter(userAT,currentUser,Date(),"xin chào bạn")
-//        val message2 = NormalMessageAdapter(currentUser,userAT,Date(),"chào bạn")
-//        messageList = arrayListOf(messagecheck1,message,message2)
-        val userfb: FirebaseUser? = FirebaseAuth.getInstance().currentUser!!
-        val documents = Firebase.firestore.collection("users")
-            .document(userfb!!.uid)
-        documents.get().addOnSuccessListener { document ->
-            if (document != null) {
-                currentUser = UserMessage( document.get("displayName") as String,
-                    document.getString("photoUrl"),
-                    userfb!!.uid)
+//        mMessageRecycler?.smoothScrollToPosition(adapter.itemCount - 1)
+//        MessageHandleReceive()
+        val sendBtn = findViewById(R.id.button_gchat_send) as Button
+        messageET  = findViewById(R.id.edit_gchat_message) as EditText
+        sendBtn.setOnClickListener {
+            if(messageET.text.toString() !="" && messageET.text.toString() != null){
+                MessageHandleSent(messageET.text.toString())
             }
+        }
+    }
+    private fun MessageHandleReceive() {
             val db = FirebaseDatabase.getInstance()
-            val chatRef = db.reference.child("message").child(currentUser.uid!!).orderByChild("userid").equalTo(userAT.uid)
-
-            chatRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            val chatRef = db.reference.child("message").child(currentUser.uid!!).child(userOther.uid!!)
+            chatRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(dataSnapshot: DataSnapshot) {
-                    for (chatData in dataSnapshot.children) {
-                        val messages = chatData.child("message").children
-                        for (messageData in messages) {
+//                    for (chatData in dataSnapshot.children) {
+//                        val messages = chatData.child("message").children
+                        for (messageData in dataSnapshot.children) {
                             val isRequest = messageData.child("request").getValue(Boolean::class.java) as Boolean
                             if(isRequest === true){
                                 val message = messageData.getValue(CheckinMessage::class.java) as CheckinMessage
+                                messageListFb.add(message)
                                 if(message.sender_id == currentUser.uid){
-                                    messageList.add(CheckinMessageAdapter(currentUser,userAT,message.createdAt,message.message))
+                                    messageList.add(CheckinMessageAdapter(currentUser,userOther,message.createdAt,message.message))
                                 }
-                                else  messageList.add(CheckinMessageAdapter(userAT,currentUser,message.createdAt,message.message))
+                                else  messageList.add(CheckinMessageAdapter(userOther,currentUser,message.createdAt,message.message))
 
                             }
                             else{
                                 val message = messageData.getValue(NormalMessage::class.java) as NormalMessage
                                 if(message.sender_id == currentUser.uid){
-                                    messageList.add(NormalMessageAdapter(currentUser,userAT,message.createdAt,message.message))
+                                    messageList.add(NormalMessageAdapter(currentUser,userOther,message.createdAt,message.message))
                                 }
-                                else  messageList.add(NormalMessageAdapter(userAT,currentUser,message.createdAt,message.message))
+                                else  messageList.add(NormalMessageAdapter(userOther,currentUser,message.createdAt,message.message))
                             }
-
 //                            val message = messageData.getValue(Message::class.java)
 //                            println(message)
-
                             // Do something with the message data here
+                            adapter.notifyItemChanged(messageList.size -1)
+                            mMessageRecycler?.smoothScrollToPosition(adapter.itemCount - 1)
+
                         }
-                        mMessageRecycler = findViewById(R.id.recycler_gchat) as RecyclerView
-                        val adapter = MessageListAdapter(context, messageList,currentUser)
-                        mMessageRecycler!!.adapter = adapter
-                        mMessageRecycler!!.layoutManager = LinearLayoutManager(context)
-                        mMessageRecycler?.smoothScrollToPosition(adapter.itemCount - 1)
-                    }
+
+//                    }
                 }
 
                 override fun onCancelled(databaseError: DatabaseError) {
                     // Handle database error
                 }
             })
-        }
+
     }
+    private fun MessageHandleSent(message: String) {
+            val db = FirebaseDatabase.getInstance()
+//            messageListFb.add(Message(currentUser.uid!!,userOther.uid!!,Date(),false))
+        val chatRef1 = db.reference.child("message").child(currentUser.uid!!).child(userOther.uid!!).push()
+        chatRef1.setValue(
+                NormalMessage(currentUser.uid!!,userOther.uid!!,Date(),message))
+        val chatRef2 = db.reference.child("message").child(userOther.uid!!).child(currentUser.uid!!).push()
+        chatRef2.setValue(
+            NormalMessage(currentUser.uid!!,userOther.uid!!,Date(),message))
+            messageET.setText("")
+        }
 }
 
 @IgnoreExtraProperties

@@ -74,36 +74,17 @@ class PartnerMessageFragment : Fragment() {
             startActivity(intent)
         }
         recyclerView.adapter= adapter
-//        var currentUser: UserMessage = UserMessage("Cien", "","1")
-//        val userAT = UserMessage("AT", "", "2")
-//        val messagecheck1 = CheckinMessage("TiOWbclrs5gahZAKg1MvNVouDKE3","MlHDg6tlG2hXIWbmQTpQfxdW9Cx1",Date(), cimessage("12:00 - 13:00","hi"))
-//        val messagecheck2 = NormalMessage("MlHDg6tlG2hXIWbmQTpQfxdW9Cx1","TiOWbclrs5gahZAKg1MvNVouDKE3",Date(),"hello")
-//        val userRealtime =
-//            arrayListOf(withuserRealtime("MlHDg6tlG2hXIWbmQTpQfxdW9Cx1", arrayListOf(messagecheck1,messagecheck2)))
-
-        val database = FirebaseDatabase.getInstance()
-
-//        val myRef = database.getReference("message").child("TiOWbclrs5gahZAKg1MvNVouDKE3")
-//        myRef.setValue(userRealtime)
-//        val myRef2 = database.getReference("message").child("MlHDg6tlG2hXIWbmQTpQfxdW9Cx1")
-//        val userRealtime2 = arrayListOf(withuserRealtime("TiOWbclrs5gahZAKg1MvNVouDKE3", arrayListOf<Message?>(messagecheck1,messagecheck2)))
-//        myRef2.setValue(userRealtime2)
-
-        val originUserId = "MlHDg6tlG2hXIWbmQTpQfxdW9Cx1"
-
-        val myRef = FirebaseDatabase.getInstance().reference.child("message")
-
-        myRef.addListenerForSingleValueEvent(object : ValueEventListener {
+        val myRef = FirebaseDatabase.getInstance().reference.child("message").child(user?.uid!!)
+        myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val userSet = mutableSetOf<String>()
                 // Loop through each child node under the "message" root
                 for (child in dataSnapshot.children) {
                     // Loop through each child node under the current user ID node
-                    for (userChat in child.children) {
-                        val userId = userChat.child("userid").getValue(String::class.java)
-
+//                        val userId = userChat.child("userid").getValue(String::class.java)
+                        val userId = child.key
                         // Add the user ID to the set if it's not the origin user ID
-                        if (userId != null && userId != originUserId) {
+                        if (userId != null && userId != user?.uid) {
                             userSet.add(userId)
                             val documents = Firebase.firestore.collection("users")
                                 .document(userId)
@@ -117,11 +98,11 @@ class PartnerMessageFragment : Fragment() {
                             }
 //                            println(userSet)
                         }
-                    }
+
                 }
 
                 // Print the set of user IDs
-//                println(UserList)
+                println(UserList)
                 adapter.updateList(UserList)
 
             }
@@ -131,7 +112,46 @@ class PartnerMessageFragment : Fragment() {
             }
         })
 
-//        val userRef: DatabaseReference = database.getReference("message").child("TiOWbclrs5gahZAKg1MvNVouDKE3")
+
+
+//
+//        val userRef: DatabaseReference =  FirebaseDatabase.getInstance().getReference("message").child(user?.uid!!).child("TiOWbclrs5gahZAKg1MvNVouDKE3").push()
+//        userRef.setValue( NormalMessage(user?.uid!!,"TiOWbclrs5gahZAKg1MvNVouDKE3",Date(),"1232131231312321"))
+
+//        userRef.addValueEventListener(object : ValueEventListener {
+//            override fun onDataChange(dataSnapshot: DataSnapshot) {
+//                val userSet = mutableSetOf<String>()
+//                // Loop through each child node under the "message" root
+//                for (child in dataSnapshot.children) {
+//                    // Loop through each child node under the current user ID node
+//                    for (userChat in child.children) {
+////                        val userId = userChat.child("userid").getValue(String::class.java)
+//                        val userId = userChat.key
+//                        // Add the user ID to the set if it's not the origin user ID
+//                        if (userId != null && userId != user?.uid) {
+//                            userSet.add(userId)
+//                            val documents = Firebase.firestore.collection("users")
+//                                .document(userId)
+//                            documents.get().addOnSuccessListener { document ->
+//                                if (document != null) {
+//                                    UserList.add(UserMessage( document.get("displayName") as String,
+//                                        document.getString("photoUrl"),
+//                                        userId))
+//                                    adapter.updateList(UserList)
+//                                }
+//                            }
+////                            println(userSet)
+//                        }
+//                    }
+//                }
+//
+//                // Print the set of user IDs
+//                println(UserList)
+//                adapter.updateList(UserList)
+//
+//            }
+
+
 //        userRef.addValueEventListener(object : ValueEventListener {
 //            override fun onDataChange(dataSnapshot: DataSnapshot) {
 //                val userIDs: ArrayList<String?> = arrayListOf()
