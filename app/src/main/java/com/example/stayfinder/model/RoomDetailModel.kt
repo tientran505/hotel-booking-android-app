@@ -24,9 +24,9 @@ data class RoomDetailModel(
 
     //activity add room detail 2
     var available_start_date: Timestamp? = null,
-    var origin_price: Double? = null,
-    var discount_price:Double? = null,
-    var percentage_discount: Double? = null,
+    var origin_price: Double = 0.00,
+    var discount_price:Double = 0.00,
+    var percentage_discount: Double = 0.00,
     var applied_coupon_id: String? = null,
 
     var available_prices: ArrayList<AvailablePrice> = ArrayList(),

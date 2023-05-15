@@ -72,6 +72,8 @@ class BookingConfirmation : AppCompatActivity() {
     val db = Firebase.firestore
     private var progressDialog: ProgressDialog? = null
 
+    private var total_price: Double = 0.00
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -205,7 +207,8 @@ class BookingConfirmation : AppCompatActivity() {
             hotel = this.hotel,
             rooms = arrayListOf(this.room),
             created_date = Timestamp(Date(System.currentTimeMillis())),
-            status = "Active"
+            status = "Active",
+            total_price = total_price
         )
 
 
@@ -284,12 +287,14 @@ class BookingConfirmation : AppCompatActivity() {
 
         if (room.applied_coupon_id == null || room.applied_coupon_id == "") {
             originalSum.visibility = View.GONE
-            discountSum.text = numberFormat.format(price)
+            total_price = price!!
+            discountSum.text = numberFormat.format(total_price)
         }
         else {
             originalSum.text = numberFormat.format(price)
             if (price != null) {
-                discountSum.text = numberFormat.format(price * (1 - room.percentage_discount!! / 100.00))
+                total_price = price * (1 - room.percentage_discount!! / 100.00)
+                discountSum.text = numberFormat.format(total_price)
             }
         }
     }
