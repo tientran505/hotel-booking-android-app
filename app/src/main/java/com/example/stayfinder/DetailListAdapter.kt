@@ -72,10 +72,7 @@ class DetailListAdapter(private val lists: List<HotelDetail>):
         val titleView = holder.title
         val imgView = holder.img
 
-
-        val moneyexchange = DecimalFormat("###,###,###,###.##"+"đ");
-
-        priceView.setText(moneyexchange.format(this.lists[position].price).toString())
+        priceView.setText(this.lists[position].price.toString())
         typeView.setText((this.lists[position].type))
         titleView.setText(this.lists[position].title)
 

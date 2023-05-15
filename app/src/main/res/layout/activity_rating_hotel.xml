@@ -30,15 +30,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/hotelinfo"
-                android:layout_width="409dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/title" />
-
             <TextView
                 android:id="@+id/subtitle1"
                 android:layout_width="wrap_content"
@@ -50,6 +41,15 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/cleanliness" />
 
+            <ImageView
+                android:id="@+id/imageView8"
+                android:layout_width="match_parent"
+                android:layout_height="168dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title"
+                app:srcCompat="@drawable/ic_launcher_background" />
+
 
             <RatingBar
                 android:id="@+id/cleanliness"
@@ -59,7 +59,7 @@
                 android:layout_marginEnd="20dp"
                 android:stepSize="0.5"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/hotelinfo" />
+                app:layout_constraintTop_toBottomOf="@+id/hotelName" />
 
             <TextView
                 android:id="@+id/subtitle2"
@@ -184,6 +184,20 @@
                 app:layout_constraintBottom_toBottomOf="@+id/comment"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/comment" />
+
+            <TextView
+                android:id="@+id/hotelName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="28dp"
+                android:text="TextView"
+                android:textColor="@color/primary"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView8" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 

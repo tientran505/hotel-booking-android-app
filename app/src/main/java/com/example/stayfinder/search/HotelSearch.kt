@@ -145,9 +145,9 @@ class HotelSearch : AppCompatActivity() {
         hotelSearchAdapter.onButtonClick = {position ->
 //            hotels[position].isSaved = !hotels[position].isSaved
 
-            val collectionBottomSheet = SavedListChooseBottomSheetDialog("eb875113-c692-4219-b78e-59a016c625be"
-                ,"Melody Vũng Tàu"
-                , "https://firebasestorage.googleapis.com/v0/b/hotel-booking-app-b6d5b.appspot.com/o/imgsTest%2Feb875113-c692-4219-b78e-59a016c625be-0?alt=media&token=d9ff197d-d9e1-4925-971a-3031c7b21fb1")
+            val collectionBottomSheet = SavedListChooseBottomSheetDialog(hotelList[position].id!!
+                ,hotelList[position].hotel_name!!
+                , hotelList[position].photoUrl[0]!!)
             collectionBottomSheet.show(this.supportFragmentManager
                 , SavedListChooseBottomSheetDialog.TAG)
 

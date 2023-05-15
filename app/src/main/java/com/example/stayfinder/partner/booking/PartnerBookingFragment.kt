@@ -1,5 +1,6 @@
 package com.example.stayfinder.partner.booking
 
+import android.content.Intent
 import android.icu.lang.UCharacter.VerticalOrientation
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stayfinder.BookingAdapter
 import com.example.stayfinder.BookingDetail
+import com.example.stayfinder.DetailListActivity
 import com.example.stayfinder.R
 import com.example.stayfinder.partner.booking.adapter.Booking
 import com.example.stayfinder.partner.booking.adapter.PartnerBookingAdapter
@@ -82,7 +84,13 @@ class PartnerBookingFragment : Fragment() {
 
         bookingAdapter = PartnerBookingAdapter(mList)
         bookingRV.adapter = bookingAdapter
-
+        bookingAdapter.setOnItemClickListener(object: PartnerBookingAdapter.onItemClickListener{
+            override fun onItemClick(position: Int){
+                val intent = Intent(activity, PartnerBookingDetail::class.java)
+                intent.putExtra("booking_id",mList[position].id)
+                startActivity(intent)
+            }
+        })
     }
 
     companion object {

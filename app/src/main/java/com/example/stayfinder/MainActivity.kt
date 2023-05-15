@@ -13,13 +13,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.stayfinder.databinding.ActivityMainBinding
+import com.example.stayfinder.model.NotificationModel
 import com.example.stayfinder.partner.PartnerMainActivity
 import com.example.stayfinder.saved.SavedAnonymous
 import com.example.stayfinder.services.login.ProfileFragment
+import com.example.stayfinder.services.notification.FcmNotificationSender
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import java.util.Locale
 
 //import com.google.android.material.color.DynamicColors
@@ -34,10 +37,28 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        FirebaseMessaging.getInstance().subscribeToTopic("all")
         actionBarSetup()
         partnerAuth()
-
+//        val uuidUser ="MlHDg6tlG2hXIWbmQTpQfxdW9Cx1"
+//        db.collection(
+//            getString(R.string.collection_name_token_notification)
+//        ).document(uuidUser).get().addOnSuccessListener { document ->
+//            if (document != null) {
+//                var notificationObj = document.toObject(NotificationModel::class.java)
+//                val token = notificationObj?.tokenUser
+//                if (token != null) {
+//                    val sender = FcmNotificationSender(
+//                        token,
+//                        "Booking ",
+//                        " peoples",
+//                        applicationContext,
+//                        this
+//                    )
+//                    sender.SendNotifications()
+//                }
+//            }
+//        }
 //        val locale = Locale.ENGLISH
 //        Locale.setDefault(locale)
 //        val config = Configuration()
