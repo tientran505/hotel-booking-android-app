@@ -77,9 +77,10 @@ class SubHotelDetailDescription : Fragment() {
         val FeedbackBtn = view.findViewById<RelativeLayout>(R.id.FeedbackBtn)
         FeedbackBtn.setOnClickListener{
             val intent = Intent(this.context, HotelDetailActivity2::class.java)
-            val rating = this.arguments?.getSerializable("rating") as rating
+            var rating = this.arguments?.getSerializable("rating")
+            if(rating == null) rating = rating()
             intent.putExtra("fragment_type","feedback");
-            intent.putExtra("booking_id", hotel_id);
+            intent.putExtra("hotel_id", hotel_id);
 //            intent.putExtra("hotel_detail",bookingDetail);
             intent.putExtra("rating",rating);
             startActivity(intent)

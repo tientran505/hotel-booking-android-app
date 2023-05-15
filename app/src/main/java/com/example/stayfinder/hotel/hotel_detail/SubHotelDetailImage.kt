@@ -53,7 +53,7 @@ class SubHotelDetailImage : Fragment() {
 
         val photoList = this.arguments?.getStringArrayList("photo_hotels")
         val hotelName = this.arguments?.getString("hotel_name")
-
+        val hotel_id = this.arguments?.getString("hotel_id")
 //        for( i in bookingDetail.facilities){
 //            a.add(Service(i))
 //        }
@@ -201,7 +201,7 @@ class SubHotelDetailImage : Fragment() {
         imageLayout.setOnClickListener{
             val intent = Intent(this.context, HotelDetailActivity2::class.java)
             intent.putExtra("fragment_type","image");
-//            intent.putExtra("booking_id",bookingDetail.id);
+            intent.putExtra("hotel_id",hotel_id);
             startActivity(intent)
         }
         return view

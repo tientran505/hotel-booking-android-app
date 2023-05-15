@@ -10,11 +10,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stayfinder.*
-import com.example.stayfinder.user.User
-import com.google.firebase.auth.UserInfo
+
 import com.google.firebase.firestore.IgnoreExtraProperties
-import java.io.Serializable
-import java.net.URL
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -53,17 +51,17 @@ class HotelDetailFeedBack : Fragment() {
             feedBacks.add(FeedBack(i))
         }
         println("feedback" +feedBacks)
-        val hotel_rating =getArguments()?.getSerializable("rating") as rating?
+        val hotel_rating =getArguments()?.getSerializable("rating") as  HashMap<String, Int>
         val textView = view!!.findViewById<TextView>(R.id.textView)
         val cleanBar = view!!.findViewById<ProgressBar>(R.id.cleanBar)
         val comfortBar = view!!.findViewById<ProgressBar>(R.id.comfortBar)
         val locationBar = view!!.findViewById<ProgressBar>(R.id.locationBar)
         val serviceBar = view!!.findViewById<ProgressBar>(R.id.servicesBar)
 
-        cleanBar.setProgress((hotel_rating?.cleanliness!!*20).toInt())
-        comfortBar.setProgress((hotel_rating?.comfort!!*20).toInt())
-        locationBar.setProgress((hotel_rating?.location!!*20).toInt())
-        serviceBar.setProgress((hotel_rating?.services!!*20).toInt())
+        cleanBar.setProgress((hotel_rating?.get("cleanliness")!!*20))
+        comfortBar.setProgress((hotel_rating?.get("comfort")!!*20))
+        locationBar.setProgress((hotel_rating?.get("services")!!*20))
+        serviceBar.setProgress((hotel_rating?.get("location")!!*20))
         textView.setText("Customer reviews about the place ")
 
         val recyclerview = view!!.findViewById<RecyclerView>(R.id.recyclerview)
