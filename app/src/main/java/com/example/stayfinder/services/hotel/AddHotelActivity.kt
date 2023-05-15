@@ -59,7 +59,6 @@ class AddHotelActivity : AppCompatActivity() {
 
     private var startAutocompleteIntentListener = View.OnClickListener { view: View ->
         view.setOnClickListener(null)
-        Log.d("meocon", "hello22")
 
         startAutocompleteIntent()
     }
@@ -110,7 +109,7 @@ class AddHotelActivity : AppCompatActivity() {
                 Log.d("meocon", "User canceled autocomplete")
             }
             else {
-                Log.d("meocon", "error")
+                Log.d("meocon", "error: ${result.resultCode}")
             }
         } as ActivityResultCallback<ActivityResult>)
     // [END maps_solutions_android_autocomplete_define]
@@ -131,6 +130,7 @@ class AddHotelActivity : AppCompatActivity() {
             .setCountries(listOf("VN"))
             .setTypesFilter(listOf(TypeFilter.ADDRESS.toString().lowercase()))
             .build(this)
+
         startAutocomplete.launch(intent)
 
         Log.d("meocon", "hello345678")
@@ -258,7 +258,6 @@ class AddHotelActivity : AppCompatActivity() {
 
         submitBtn!!.setOnClickListener {
             if (!validateForm()) {
-                Toast.makeText(this, "LatLng: ${selectedLang} | full address: ${selectedAddress}", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -277,6 +276,8 @@ class AddHotelActivity : AppCompatActivity() {
                 }
             }
 
+            val checkAddress = if (selectedAddress == null) {address.editText?.text.toString()} else {selectedAddress}
+
             //Create the object of hotelDetail
             val hotel = HotelDetailModel(
                 owner_id = Firebase.auth.currentUser?.uid.toString(),
@@ -288,7 +289,7 @@ class AddHotelActivity : AppCompatActivity() {
                 ),
                 rating_overall = 0.00,
                 address = hashMapOf(
-                    "address" to selectedAddress!!,
+                    "address" to checkAddress!!,
                     "city" to city.editText?.text.toString(),
                 ),
                 photoUrl = photoUrl,
