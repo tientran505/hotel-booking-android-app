@@ -10,6 +10,7 @@ import android.widget.Button
 import androidx.core.view.isVisible
 import com.example.stayfinder.AnonymousUser
 import com.example.stayfinder.R
+import com.example.stayfinder.user.ProfileActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
@@ -55,7 +56,11 @@ class ProfileFragment : Fragment() {
                 .replace(R.id.frameLayout, ProfileFragment())
                 .commit()
         }
-
+        val viewProfileBtn = view!!.findViewById<Button>(R.id.viewProfileBtn)
+        viewProfileBtn.setOnClickListener {
+            val intent = Intent(this.context, ProfileActivity::class.java)
+            startActivity(intent)
+        }
         return view
     }
 
