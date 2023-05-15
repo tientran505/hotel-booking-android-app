@@ -47,7 +47,14 @@ class PartnerMessageFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-
+    fun checkIdExist(list: ArrayList<UserMessage>, id: String): Boolean{
+        for ( i in list){
+            if(i.uid.equals(id)){
+                return true
+            }
+        }
+        return false
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -64,7 +71,6 @@ class PartnerMessageFragment : Fragment() {
         // Inflate the layout for this fragment
         val view =  inflater.inflate(R.layout.partner_fragment_message, container, false)
         val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser!!
-//        UserList.add(UserMessage( user!!.displayName,user!!.photoUrl.toString(),user.uid))
         recyclerView= view!!.findViewById(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this.context)
         val adapter  =  ShowListChat(UserList)
@@ -77,19 +83,20 @@ class PartnerMessageFragment : Fragment() {
         val myRef = FirebaseDatabase.getInstance().reference.child("message").child(user?.uid!!)
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val userSet = mutableSetOf<String>()
-                // Loop through each child node under the "message" root
+                val userSet = ArrayList<String>()
                 for (child in dataSnapshot.children) {
-                    // Loop through each child node under the current user ID node
-//                        val userId = userChat.child("userid").getValue(String::class.java)
-                        val userId = child.key
-                        // Add the user ID to the set if it's not the origin user ID
-                        if (userId != null && userId != user?.uid) {
+                    val userId = child.key
+                    // Add the user ID to the set if it's not the origin user ID
+                    if (userId != null && userId != user?.uid && !checkIdExist(UserList,userId)) {
+                        println(UserList)
+                        println(userId)
+                        println(!checkIdExist(UserList,userId))
                             userSet.add(userId)
                             val documents = Firebase.firestore.collection("users")
                                 .document(userId)
                             documents.get().addOnSuccessListener { document ->
                                 if (document != null) {
+                                    println("checkidExisted"+!checkIdExist(UserList,userId))
                                     UserList.add(UserMessage( document.get("displayName") as String,
                                         document.getString("photoUrl"),
                                         userId))
@@ -97,10 +104,9 @@ class PartnerMessageFragment : Fragment() {
                                 }
                             }
 //                            println(userSet)
-                        }
+                    }
 
                 }
-
                 // Print the set of user IDs
                 println(UserList)
                 adapter.updateList(UserList)
