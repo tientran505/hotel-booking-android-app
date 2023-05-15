@@ -8,6 +8,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stayfinder.BookingDetail
+import com.example.stayfinder.DetailListAdapter
+import com.example.stayfinder.HorizontalAdapter
 import com.example.stayfinder.R
 import java.text.NumberFormat
 import java.text.SimpleDateFormat
@@ -27,7 +29,8 @@ data class Booking(
 class PartnerBookingAdapter(private val myList: ArrayList<BookingDetail>) :
     RecyclerView.Adapter<PartnerBookingAdapter.ViewHolder>() {
 
-    inner class ViewHolder(listItem: View): RecyclerView.ViewHolder(listItem) {
+    inner class ViewHolder(listItem: View, listener: onItemClickListener)
+        : RecyclerView.ViewHolder(listItem) {
         val propertyName: TextView = listItem.findViewById(R.id.propertyNameBooking)
         val statusBooking: ImageView = listItem.findViewById(R.id.statusBookingIV)
         val titleBooking: TextView = listItem.findViewById(R.id.titleBooking)
@@ -36,13 +39,30 @@ class PartnerBookingAdapter(private val myList: ArrayList<BookingDetail>) :
         val numberOfNight: TextView = listItem.findViewById(R.id.numOfNightBooking)
         val roomInfo: TextView = listItem.findViewById(R.id.roomInfoBooking)
         val totalPrice: TextView = listItem.findViewById(R.id.totalPriceBooking)
+
+        init{
+            listItem.setOnClickListener{
+                listener.onItemClick(adapterPosition)
+            }
+
+        }
+    }
+
+    private lateinit var mListener : onItemClickListener
+
+    interface onItemClickListener {
+        fun onItemClick(position: Int)
+    }
+
+    fun setOnItemClickListener(listener: onItemClickListener){
+        mListener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val context = parent.context
         val inflater = LayoutInflater.from(context)
         val contactView = inflater.inflate(R.layout.partner_booking_list_item, parent, false)
-        return ViewHolder(contactView)
+        return ViewHolder(contactView, mListener)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
