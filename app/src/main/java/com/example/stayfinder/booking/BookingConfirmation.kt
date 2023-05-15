@@ -99,27 +99,7 @@ class BookingConfirmation : AppCompatActivity() {
 
         bookBtn.setOnClickListener {
             writeDB()
-            val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
 
-            val uuidUser = hotel.owner_id!!
-            db.collection(
-                getString(R.string.collection_name_token_notification)
-            ).document(uuidUser).get().addOnSuccessListener { document ->
-                if (document != null) {
-                    var notificationObj = document.toObject(NotificationModel::class.java)
-                    val token = notificationObj?.tokenUser
-                    if (token != null) {
-                        val sender = FcmNotificationSender(
-                            token,
-                            "Booking ${hotel.hotel_name}",
-                            "${bookingInformation.number_of_rooms} roooms - ${bookingInformation.sum_people} people",
-                            applicationContext,
-                            this
-                        )
-                        sender.SendNotifications()
-                    }
-                }
-            }
         }
     }
 
@@ -216,8 +196,6 @@ class BookingConfirmation : AppCompatActivity() {
         val docId = db.collection("bookings").document().id
 
         val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
-
-
         val booking = BookingDetail(
             id = docId,
             booking_information = bookingInformation,
@@ -233,15 +211,33 @@ class BookingConfirmation : AppCompatActivity() {
             status = "Active",
             total_price = total_price
         )
-
-
-
         db.collection("bookings").document(docId).set(booking).addOnSuccessListener {
             Toast.makeText(this, "Add booking successfully", Toast.LENGTH_SHORT).show()
             Handler().postDelayed(Runnable {
                 val intent = Intent(this, MainActivity::class.java)
                 progressDialog?.dismiss()
-
+                val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+//            val uuidUser = user!!.uid!!
+                val uuidUser = hotel.owner_id!!
+                db.collection(
+                    getString(R.string.collection_name_token_notification)
+                ).document(uuidUser).get().addOnSuccessListener { document ->
+                    if (document != null) {
+                        var notificationObj = document.toObject(NotificationModel::class.java)
+                        val token = notificationObj?.tokenUser
+                        if (token != null) {
+                            val sender = FcmNotificationSender(
+                                token,
+                                "Booking ${hotel.hotel_name}",
+                                "${bookingInformation.number_of_rooms} rooms - ${bookingInformation.sum_people} people",
+                                docId,
+                                applicationContext,
+                                this
+                            )
+                            sender.SendNotifications()
+                        }
+                    }
+                }
                 startActivity(intent)
                 finishAffinity()
             }, 500)

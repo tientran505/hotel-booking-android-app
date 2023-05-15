@@ -15,6 +15,7 @@ import com.example.stayfinder.MainActivity
 import com.example.stayfinder.R
 import com.example.stayfinder.model.HotelDetailModel
 import com.example.stayfinder.model.NotificationModel
+import com.example.stayfinder.partner.booking.PartnerBookingDetail
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
@@ -38,8 +39,7 @@ class MessagingService : FirebaseMessagingService() {
 //
         var strTitle = notificationx!!.title!!
         var strBody = notificationx.body!!
-
-
+        var booking_id = notificationx.tag!!
 
 //        var stringMap: Map<String, String>? = message.data
 //
@@ -74,13 +74,14 @@ class MessagingService : FirebaseMessagingService() {
 ////        }
 //        builder.setSmallIcon(resourceImage)
 
-        sendNotification(strTitle, strBody)
+        sendNotification(strTitle, strBody,booking_id)
 
     }
 
 
-    private fun sendNotification(strTitle: String, strBody: String) {
-        var intent = Intent(this, MainActivity::class.java)
+    private fun sendNotification(strTitle: String, strBody: String,booking_id: String) {
+        var intent = Intent(this, PartnerBookingDetail::class.java)
+        intent.putExtra("booking_id",booking_id)
         var pendingIntent = PendingIntent.getActivity(this, 0,intent, PendingIntent.FLAG_IMMUTABLE)
 
 

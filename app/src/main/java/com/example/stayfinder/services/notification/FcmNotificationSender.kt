@@ -12,7 +12,7 @@ import org.json.JSONException
 import org.json.JSONObject
 
 
-class FcmNotificationSender (var userFcmToken:String, var   title: String,var   body:String, var mContext: Context,var mActivity:Activity) {
+class FcmNotificationSender (var userFcmToken:String, var   title: String,var   body:String, var booking_id: String ,var mContext: Context,var mActivity:Activity) {
 //    lateinit var userFcmToken:String
 //    lateinit var title: String
 //    lateinit var body :String
@@ -45,7 +45,7 @@ class FcmNotificationSender (var userFcmToken:String, var   title: String,var   
             notiObj.put("title", title)
             notiObj.put("body", body)
             notiObj.put("icon", R.drawable.ic_message)
-
+            notiObj.put("tag", booking_id)
             mainObj.put("notification", notiObj)
 
             var request = object :  JsonObjectRequest(Request.Method.POST, postUrl, mainObj,
