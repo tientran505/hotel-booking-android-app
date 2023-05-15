@@ -175,6 +175,7 @@ class BookingFragment : Fragment() {
 
             adapter.onItemClick={position->
                 val intent = Intent(activity, RatingActivity::class.java)
+                intent.putExtra("hotel_id",DoneList[position].id)
                 startActivity(intent)
             }
         }

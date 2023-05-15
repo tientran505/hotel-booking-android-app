@@ -34,7 +34,8 @@ import java.time.format.DateTimeFormatter
 class RatingActivity : AppCompatActivity() {
     var submitbtn : Button? = null
     val db = Firebase.firestore
-    var hotel_id ="eb875113-c692-4219-b78e-59a016c625be"
+    var hotel_id =""
+    var overall_rating = 0.0
     lateinit var hotel:hotels
 
 
@@ -61,10 +62,42 @@ class RatingActivity : AppCompatActivity() {
         menu?.setHomeButtonEnabled(true)
         menu?.title = "Coupon Management"
     }
+
+    private fun allRating(){
+        var documents = db.collection("reviews").whereEqualTo("hotel_id",hotel_id)
+            .get()
+            .addOnSuccessListener { documents->
+                var each_rating:rating = rating()
+                for(document in documents){
+                    Log.d("test",each_rating.location.toString())
+                    var rv = document.toObject(Review::class.java)
+                    overall_rating+=rv.rating_overall
+                    each_rating = rating(each_rating.cleanliness + rv.rating.cleanliness,
+                        each_rating.comfort + rv.rating.comfort,
+                        each_rating.services + rv.rating.services,
+                    each_rating.location + rv.rating.location)
+                }
+                Log.d("testA",each_rating.location.toString())
+                db.collection("hotels").document(hotel_id)
+                    .update("rating_overall",overall_rating/(hotel.comment_count+1))
+                each_rating = rating(each_rating.cleanliness/(hotel.comment_count+1),
+                    each_rating.comfort/(hotel.comment_count+1),
+                    each_rating.services/(hotel.comment_count+1),
+                    each_rating.location/(hotel.comment_count+1))
+
+                db.collection("hotels").document(hotel_id)
+                    .update("rating",each_rating)
+            }
+            .addOnFailureListener {  }
+    }
     private fun addReview(review:Review, id: String){
         db.collection("reviews").document(id).set(review)
             .addOnFailureListener {  }
             .addOnSuccessListener {  }
+        db.collection("hotels").document(hotel_id)
+            .update("comment_count",hotel.comment_count+1)
+        allRating()
+
     }
 
     private fun getHotelInfo(callback: () -> Unit){
@@ -80,6 +113,8 @@ class RatingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_rating_hotel)
         initActionBar()
+
+        hotel_id = intent.getStringExtra("hotel_id")!!
 
         getHotelInfo{
             var hotel_name = findViewById<TextView>(R.id.hotelName)
@@ -118,6 +153,7 @@ class RatingActivity : AppCompatActivity() {
                     ,user?.displayName.toString(),user?.photoUrl.toString())
                     ,hotel_id!!,review_date,rating,rating_overall,title,content)
                 addReview(userReview,id)
+                submitbtn!!.visibility = View.GONE
             }
         }
     }
