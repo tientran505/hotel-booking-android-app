@@ -2,6 +2,9 @@ package com.example.stayfinder.partner.booking
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
+import android.view.View
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -15,7 +18,9 @@ import com.example.stayfinder.partner.booking.adapter.room_book
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import org.w3c.dom.Text
 import java.sql.Date
+import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
@@ -24,6 +29,28 @@ class PartnerBookingDetail : AppCompatActivity() {
     val db = Firebase.firestore
     var booking_id = ""
     lateinit var booking:BookingDetail
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    private fun initActionBar() {
+        val menu = supportActionBar
+        menu?.setDisplayHomeAsUpEnabled(true)
+        menu?.setHomeButtonEnabled(true)
+        menu?.title = "Coupon Management"
+    }
     private fun getBookingInfo(id:String, callback: () -> Unit){
         db.collection("bookings").document(id).get()
             .addOnSuccessListener {
@@ -31,6 +58,14 @@ class PartnerBookingDetail : AppCompatActivity() {
                 callback.invoke()
             }
             .addOnFailureListener {  }
+    }
+
+
+    private fun acceptBooking(){
+        db.collection("bookings").document(booking_id).update("status","Completed")
+    }
+    private fun declineBooking(){
+        db.collection("bookings").document(booking_id).update("status","Cancel")
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,6 +111,30 @@ class PartnerBookingDetail : AppCompatActivity() {
             recyclerView.adapter = adapter
             recyclerView.layoutManager = LinearLayoutManager(this)
 
+            var totalMoney = findViewById<TextView>(R.id.totalMoney)
+            val moneyexchange = DecimalFormat("###,###,###,###.##"+"đ");
+            totalMoney.setText(moneyexchange.format(booking.total_price))
+
+            var acceptBtn = findViewById<Button>(R.id.acceptBtn)
+            var declineBtn = findViewById<Button>(R.id.declineBtn)
+
+            if(booking.status == "Active"){
+                acceptBtn.setOnClickListener{
+                    acceptBooking()
+                    booking.status="Completed"
+                    acceptBtn.visibility = View.GONE
+                    declineBtn.visibility = View.GONE
+                }
+                declineBtn.setOnClickListener{
+                    declineBooking()
+                    booking.status="Cancel"
+                    acceptBtn.visibility = View.GONE
+                    declineBtn.visibility = View.GONE
+                }
+            }else{
+                acceptBtn.visibility = View.GONE
+                declineBtn.visibility = View.GONE
+            }
 
         }
     }
