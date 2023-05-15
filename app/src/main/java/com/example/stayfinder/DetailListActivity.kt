@@ -121,9 +121,7 @@ class DetailListActivity : AppCompatActivity() {
 
         listadapter.setOnItemClickListener((object : DetailListAdapter.onItemClickListener{
             override fun onItemClick(position: Int){
-                val intent = Intent(this@DetailListActivity,HotelDetailActivity::class.java)
-                intent.putExtra("hotel_id",hotelList[position].id)
-                startActivity(intent)
+
             }
         }))
 
