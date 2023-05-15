@@ -41,14 +41,6 @@
             android:textSize="20dp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/messTv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ellipsize="end"
-            android:maxLines="1"
-            android:text="Ho Tri An"
-            android:textSize="16dp" />
     </LinearLayout>
     <ImageView
         android:id="@+id/icon"

@@ -3,6 +3,7 @@ package com.example.stayfinder
 import java.net.URL
 
 class Booking() {
+    var id: String? = ""
     var titlename: String? = ""
     var dateStart: String? = ""
     var dateEnd: String? = ""
@@ -10,11 +11,13 @@ class Booking() {
     var status: String? = ""
     lateinit var img : URL
     constructor(
+        id: String,
         titlename: String, dateStart: String,
         dateEnd: String, price: Double,
         status: String, img: URL
     ) : this()
     {
+        this.id = id
         this.titlename = titlename
         this.dateStart = dateStart
         this.dateEnd= dateEnd

@@ -109,7 +109,6 @@ class ChatActivity : AppCompatActivity() {
                             // Do something with the message data here
                             adapter.notifyItemChanged(messageList.size -1)
                             mMessageRecycler?.smoothScrollToPosition(adapter.itemCount - 1)
-
                         }
 
 //                    }

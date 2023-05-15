@@ -94,6 +94,7 @@ class BookingFragment : Fragment() {
                         val bookingDb = document.toObject(BookingDetail::class.java)
                         listbooking.add(
                             Booking(
+                                bookingDb.hotel?.id!!,
                                 bookingDb.hotel?.hotel_name!!,
                                 SimpleDateFormat(
                                     "dd/MM/yyyy",
