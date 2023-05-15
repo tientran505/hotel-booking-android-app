@@ -12,17 +12,21 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Recycler
 import com.example.stayfinder.R
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.IgnoreExtraProperties
 
 @kotlinx.serialization.Serializable
-data class Hotel(
-    var id: String,
-    var name_list: String,
+@IgnoreExtraProperties
+data class list(
+    var id: String = "",
+    var name_list: String = "",
+    var number_of_item: Int = 0,
     var isAdded: Boolean = false,
+    var doc_id:String = "",
 ) {
-    constructor() : this("", "")
+
 }
 
-class HotelCollectionAdapter(val mContext: Context, private val myList: List<Hotel>) :
+class HotelCollectionAdapter(val mContext: Context, private val myList: List<list>) :
 RecyclerView.Adapter<HotelCollectionAdapter.ViewHolder>(){
     var onButtonClick: ((Int) -> Unit)? = null
 
