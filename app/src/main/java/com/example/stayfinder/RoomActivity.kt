@@ -23,6 +23,7 @@ import kotlinx.coroutines.tasks.await
 import java.net.URL
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class RoomActivity : AppCompatActivity() , CoroutineScope by MainScope() {
@@ -33,42 +34,53 @@ class RoomActivity : AppCompatActivity() , CoroutineScope by MainScope() {
     lateinit var adapter : RoomAdapter
     val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     lateinit var progressBar: ProgressBar
-    fun parseDate(startdate: String, enddate: String)  {
-        val formatter = SimpleDateFormat("dd-MM-yyyy")
-        val start = formatter.parse(startdate)
-        val end = formatter.parse(enddate)
-        numberofdate = TimeUnit.DAYS.convert(end.getTime() - start.getTime(), TimeUnit.MILLISECONDS)
-        daterange = "From "+ startdate +" to "+ enddate
+
+    fun parseDate(startdate: Long, enddate: Long)  {
+        val formatter = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+
+        val start = formatter.format(Date(startdate))
+        val end = formatter.format(Date(enddate))
+
+        val diffInMillies = kotlin.math.abs(enddate - startdate)
+        numberofdate = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS)
+
+        daterange = "From $start to $end"
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_room)
         initActionBar()
-        val bundle = intent.extras
-        val hotel_id = bundle!!.getString("hotel_id")!!
-        Log.i("testlog", "${hotel_id}")
-        val dateStart = bundle!!.getString("dateStart")!!
-        val dateEnd = bundle!!.getString("dateEnd")!!
-        println("dateStart"+ dateStart +"dateend"+dateEnd)
+//        val bundle = intent.extras
+
+
+        val hotel_id = intent.getStringExtra("hotel_id")!!
+        val dateStart = intent.getLongExtra("date_start", 0)
+        val dateEnd = intent.getLongExtra("date_end", 0)
+        val bookingInformation: BookingInformation = intent.getSerializableExtra("booking_info") as BookingInformation
+
         parseDate(dateStart,dateEnd)
+
         progressBar = findViewById(R.id.savedListPB)
         val recyclerview = findViewById<RecyclerView>(R.id.recyclerview)
         recyclerview.layoutManager = LinearLayoutManager(this)
-         adapter = RoomAdapter(this, itemList, 8)
+         adapter = RoomAdapter(this, itemList, bookingInformation)
         recyclerview?.adapter = adapter
         launch {
-            loadRoomLists("f2d2064b-0b44-48f3-b2e8-cdce773280d5")
+            loadRoomLists(hotel_id)
         }
+
         adapter.onButtonClick = { pos ->
             val intent = Intent(this, PersonalConfirmation::class.java)
 
-            val documentId = db.collection("bookings").document()
-            val bookingDetail = BookingDetail(
-                id = documentId.id,
-                rooms = arrayListOf(itemList[pos].id)
-            )
+            val currentRoom = itemList[pos]
+            currentRoom.available_start_date = null
+            currentRoom.created_date = null
 
-            intent.putExtra("booking_detail", bookingDetail)
+            intent.putExtra("room", currentRoom)
+            intent.putExtra("date_start", dateStart)
+            intent.putExtra("date_end", dateEnd)
+            intent.putExtra("booking_info", bookingInformation)
+
             startActivity(intent)
         }
     }

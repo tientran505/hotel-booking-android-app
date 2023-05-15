@@ -1,6 +1,8 @@
 package com.example.stayfinder
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +15,11 @@ import com.example.stayfinder.hotel.hotel_detail.ViewPagerAdapter
 import com.example.stayfinder.model.RoomDetailModel
 import com.google.android.flexbox.FlexboxLayout
 import android.view.ViewGroup.LayoutParams
+import android.widget.LinearLayout
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.card.MaterialCardView
+import com.tbuonomo.viewpagerdotsindicator.DotsIndicator
+import me.relex.circleindicator.CircleIndicator3
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.*
@@ -38,7 +45,7 @@ data class Room(
     }
 class RoomAdapter (private var mContext: Context,
                    private var item: ArrayList<RoomDetailModel>,
-                   private val currentGuest: Int) : RecyclerView.Adapter<RoomAdapter.ViewHolder>() {
+                   private val currentGuest: BookingInformation) : RecyclerView.Adapter<RoomAdapter.ViewHolder>() {
     private var context: Context? = null
     var onButtonClick: ((Int) -> Unit)? = null
     inner class ViewHolder(listItemView: View) : RecyclerView.ViewHolder(listItemView) {
@@ -52,7 +59,10 @@ class RoomAdapter (private var mContext: Context,
         val discountpriceTv = listItemView.findViewById<TextView>(R.id.discount_priceTv)
         val originpriceTv = listItemView.findViewById<TextView>(R.id.originalPriceTV)
         val percentagediscountTv = listItemView.findViewById<TextView>(R.id.percentage_discountTv)
-        val bookingBtn = listItemView.findViewById<Button>(R.id.bookingBtn)
+        val bookingBtn = listItemView.findViewById<MaterialButton>(R.id.bookingBtn)
+        val priceInfoMCV = listItemView.findViewById<LinearLayout>(R.id.priceInfoLL)
+        val availableGuest = listItemView.findViewById<TextView>(R.id.availableGuests)
+        val circleIndicator = listItemView.findViewById<DotsIndicator>(R.id.circle_indicator_room)
 
         init {
             bookingBtn.setOnClickListener {
@@ -73,38 +83,52 @@ class RoomAdapter (private var mContext: Context,
         holder.roomName.setText(this.item[position].name)
         holder.pageAdapter = this.context?.let { ViewPagerAdapter(this.item[position].photoUrl, it) }
         holder.viewpager.adapter = holder.pageAdapter
+        holder.circleIndicator.attachTo(holder.viewpager)
+
+
         holder.descriptionTv.text = this.item[position].description
 
+        val item = this.item[position]
 
-        val price: Double = if (this.item[position].applied_coupon_id == null) {
-            holder.percentagediscountTv.visibility = View.GONE
-            holder.originpriceTv.visibility = View.GONE
-            this.item[position].origin_price!!
-        } else {
-            this.item[position].discount_price!!
+        val filtered_price = item.available_prices.filter { item ->
+            item.num_of_guest == currentGuest.sum_people
         }
 
-        if (this.item[position].discount_type == null || this.item[position].discount_type == "") {
-            holder.discountpriceTv.text = numberFormat.format(price)
+        val price = if (filtered_price.isNotEmpty()) {filtered_price[0].price} else {null}
+
+        if (price != null) {
+            if (item.applied_coupon_id == null || item.applied_coupon_id == "") {
+                holder.percentagediscountTv.visibility = View.GONE
+                holder.originpriceTv.visibility = View.GONE
+                holder.discountpriceTv.text = numberFormat.format(price)
+            }
+            else {
+                holder.originpriceTv.text = numberFormat.format(price)
+                holder.discountpriceTv.text = numberFormat.format(price * (1 - item.percentage_discount!! / 100.00))
+            }
         }
         else {
-            if (this.item[position].discount_type == "VND") {
-                val maxGuest = this.item[position].guest_available
-                val i = currentGuest
-                val discountPrice = this.item[position].per_guest_discount!!
-                val finalPrice = price - (maxGuest - i) * discountPrice
-                holder.discountpriceTv.text = numberFormat.format(finalPrice)
+            holder.bookingBtn.isEnabled = false
+            holder.bookingBtn.strokeColor = ColorStateList.valueOf(Color.GRAY)
+            holder.bookingBtn.setTextColor(ColorStateList.valueOf(Color.GRAY))
+
+            holder.bookingBtn.text = "Exceed number of guests"
+            holder.priceInfoMCV.visibility = View.GONE
+        }
+
+        when (item.min_guest) {
+            1 -> {
+                holder.availableGuest.text = "1 person"
             }
-            else if (this.item[position].discount_type == "%") {
-                val maxGuest = this.item[position].guest_available
-                val i = currentGuest
-                val discountPrice = (this.item[position].per_guest_discount!!) / 100.00
-                val finalPrice = price - (maxGuest - i) * discountPrice * price
-                holder.discountpriceTv.text = numberFormat.format(finalPrice)
+            item.guest_available -> {
+                holder.availableGuest.text = "${item.min_guest} people"
+            }
+            else -> {
+                holder.availableGuest.text = "${item.min_guest} - ${item.guest_available} people"
             }
         }
 
-        holder.guestInfo.text = "Price for $currentGuest guest(s)"
+        holder.guestInfo.text = "Price for ${currentGuest.display()}"
 
         var bedInfo = ""
         var numOfBed = 0

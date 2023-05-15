@@ -38,7 +38,7 @@ class HotelDetailActivity2 : AppCompatActivity() {
         progressBar = findViewById(R.id.savedListPB)
         val bundle = intent.extras
         val fragment_type = bundle!!.getString("fragment_type")
-        val hotel_id = bundle!!.getString("booking_id")
+        val hotel_id = bundle.getString("booking_id")
         val bookingBtn = findViewById<Button>(R.id.BookingBtn)
         val db = Firebase.firestore
 
