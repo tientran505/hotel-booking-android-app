@@ -3,6 +3,7 @@ package com.example.stayfinder
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -11,13 +12,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.example.stayfinder.databinding.ActivityMainBinding
+import com.example.stayfinder.model.NotificationModel
 import com.example.stayfinder.partner.PartnerMainActivity
 import com.example.stayfinder.saved.SavedAnonymous
 import com.example.stayfinder.services.login.ProfileFragment
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 
 //import com.google.android.material.color.DynamicColors
 
@@ -32,9 +36,24 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        //subscribe all channel
+        FirebaseMessaging.getInstance().subscribeToTopic("all")
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.e("Error", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+
+            Log.e("Token ID", token)
+
+        })
+
         actionBarSetup()
         partnerAuth()
-
 
         val intent = intent
         val fragmentInfo = intent.getStringExtra("fragment")
@@ -47,7 +66,6 @@ class MainActivity : AppCompatActivity() {
         else {
             replaceFragment(HomeFragment())
         }
-
 
         binding.bottomNavigationView.setOnItemSelectedListener {
             when(it.itemId) {
