@@ -6,6 +6,7 @@ import android.location.Geocoder
 import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -19,6 +20,7 @@ import com.example.stayfinder.R
 import com.example.stayfinder.address
 import com.example.stayfinder.databinding.ActivityEditLocationBinding
 import com.example.stayfinder.hotels
+import com.example.stayfinder.model.HotelDetailModel
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -29,6 +31,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
 import java.io.IOException
 import java.util.*
@@ -48,9 +51,14 @@ class EditLocationActivity : AppCompatActivity(), OnMapReadyCallback {
     lateinit var searchBtn: Button
     lateinit var saveBtn: Button
     var marker: Marker? = null
+    val db = Firebase.firestore;
+
     private lateinit var defaultLocation: Location
     var lastKnownLocation: Location? = null
     private var locationPermissionGranted: Boolean= true
+
+    private lateinit var hotel_id: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityEditLocationBinding.inflate(layoutInflater)
@@ -63,26 +71,10 @@ class EditLocationActivity : AppCompatActivity(), OnMapReadyCallback {
         progressBar.visibility = View.VISIBLE
         initActionBar()
         val bundle = intent.extras
-        val hotel_id = bundle!!.getString("hotel_id")!!
-        val db = Firebase.firestore;
-        val documents = Firebase.firestore.collection("Hotels")
-            .document(hotel_id)
-            .get()
-            .addOnSuccessListener  { document ->
-            if (document != null) {
-                val hotels = document.toObject(hotels::class.java)!!
-                val addressTemp = hotels?.address as address
-                address = addressTemp.address
-                searchMap(address)
-                progressBar.visibility = View.GONE
-            }
-            else{
-                address = "Việt Nam"
-                searchMap(address)
-                progressBar.visibility = View.GONE
+        hotel_id = bundle!!.getString("hotel_id")!!
 
-            }
-        }
+        fetchData()
+
         fusedClient = LocationServices.getFusedLocationProviderClient(this)
         searchBtn.setOnClickListener {
             if(searchET.text.toString()!= ""&&searchET.text.toString()!= null){
@@ -113,6 +105,24 @@ class EditLocationActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 //        searchMap()
 //        getLocationUser()
+    }
+
+    private fun fetchData() {
+        db.collection("hotels")
+            .document(hotel_id)
+            .get()
+            .addOnSuccessListener  { document ->
+                if (document != null && document.exists()) {
+                    val hotel = document.toObject(HotelDetailModel::class.java) as HotelDetailModel
+                    address = hotel.address["address"].toString()
+                    searchMap(address)
+
+                    currentLocation.latitude = hotel.map[0]
+                    currentLocation.longitude = hotel.map[1]
+
+                    progressBar.visibility = View.GONE
+                }
+            }
     }
 
     private fun convertLocationtoAddress(currentLocation: Location) {
@@ -147,7 +157,7 @@ class EditLocationActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
     }
-    fun searchMap(address: String){
+    private fun searchMap(address: String){
         if(ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)!= PackageManager.PERMISSION_GRANTED
             && ActivityCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_COARSE_LOCATION)!= PackageManager.PERMISSION_GRANTED){
             ActivityCompat.requestPermissions(this,
@@ -198,11 +208,11 @@ class EditLocationActivity : AppCompatActivity(), OnMapReadyCallback {
     }
     override fun onMapReady(mMap: GoogleMap) {
         var latLng = LatLng(currentLocation.latitude,currentLocation.longitude)
-        mMap?.animateCamera(CameraUpdateFactory.newLatLng(latLng))
-        mMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,17f))
+        mMap.animateCamera(CameraUpdateFactory.newLatLng(latLng))
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,17f))
         marker?.remove()
         marker?.isDraggable = true
-        marker = mMap?.addMarker(MarkerOptions().position(latLng).title(address))
+        marker = mMap.addMarker(MarkerOptions().position(latLng).title(address))
         mMap.setOnMapClickListener { point -> //save current location
             latLng = point
             var addresses: ArrayList<Address> = ArrayList()

@@ -33,16 +33,15 @@ class AddHotelConfirmActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_hotel_confirm)
 
-        nameCollection = getString(R.string.hotel_collection_name)
+        nameCollection = "hotels"
         db = Firebase.firestore
 
         initActionBar()
 
         val fm: FragmentManager = supportFragmentManager
 
-        var hotel = intent.getSerializableExtra("hotelInfo") as HotelDetailModel?
-        var tempUriImage = intent.getStringArrayListExtra("uriImage")
-        var uuidHotel = hotel!!.id
+        val hotel = intent.getSerializableExtra("hotelInfo") as HotelDetailModel?
+        val uuidHotel = hotel!!.id
 
         findViewById<TextView>(R.id.addressTv).text = hotel.address["address"]
 
@@ -57,7 +56,6 @@ class AddHotelConfirmActivity : AppCompatActivity() {
         bundle.putSerializable("BookingDetail", hotel)
         bundle.putDouble("latitude", latitude)
         bundle.putDouble("longitude", longitude)
-        bundle.putStringArrayList("uriImage", tempUriImage)
 
         val fragAddress = SubAddressFragment()
         fragAddress.arguments = bundle;
@@ -81,28 +79,28 @@ class AddHotelConfirmActivity : AppCompatActivity() {
                     ).show()
                 }
 
-            if (tempUriImage != null) {
-                if(tempUriImage.size > 0 ){ // Có hình mới thì xoá hết cập nhật lại
-                    var hotelObj: HotelDetailModel? = null
-                    db!!.collection(nameCollection!!).document(uuidHotel).get()
-                        .addOnSuccessListener { document ->
-                            if (document != null) {
-                                hotelObj = document.toObject(HotelDetailModel::class.java)
-                                hotelObj!!.photoUrl = ArrayList() // delete all image
-
-                                //Update object
-                                db!!.collection(nameCollection!!).document(uuidHotel).set(hotelObj!!)
-                            }
-                        }
-                }
-                for (i in 0 until tempUriImage.size) {
-                    var imgUri = Uri.parse(tempUriImage[i])
-                    val fileName = "$uuidHotel-$i"
-                    Handler().postDelayed({
-                    uploadImg(imgUri, fileName, uuidHotel!!)
-                    }, 2000)
-                }
-            }
+//            if (tempUriImage != null) {
+//                if(tempUriImage.size > 0 ){ // Có hình mới thì xoá hết cập nhật lại
+//                    var hotelObj: HotelDetailModel? = null
+//                    db!!.collection(nameCollection!!).document(uuidHotel).get()
+//                        .addOnSuccessListener { document ->
+//                            if (document != null) {
+//                                hotelObj = document.toObject(HotelDetailModel::class.java)
+//                                hotelObj!!.photoUrl = ArrayList() // delete all image
+//
+//                                //Update object
+//                                db!!.collection(nameCollection!!).document(uuidHotel).set(hotelObj!!)
+//                            }
+//                        }
+//                }
+//                for (i in 0 until tempUriImage.size) {
+//                    var imgUri = Uri.parse(tempUriImage[i])
+//                    val fileName = "$uuidHotel-$i"
+//                    Handler().postDelayed({
+//                    uploadImg(imgUri, fileName, uuidHotel!!)
+//                    }, 2000)
+//                }
+//            }
 
 
             val intent = Intent(this, PartnerMainActivity::class.java)
