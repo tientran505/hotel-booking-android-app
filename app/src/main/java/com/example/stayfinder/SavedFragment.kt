@@ -116,10 +116,6 @@ class SavedFragment : Fragment(), CoroutineScope by MainScope() {
         var view: View? = null
         view = inflater.inflate(R.layout.fragment_saved, container, false)
 
-        itemList.add(SavedListItem("Căn nhà mơ ước", "Vũng Tàu", R.drawable.purpl))
-        itemList.add(SavedListItem("Homestay trong mơ", "Vũng Tàu", R.drawable.purpl))
-        itemList.add(SavedListItem("Rất tuyệt vời", "Vũng Tàu", R.drawable.purpl))
-
         progressBar = view.findViewById(R.id.savedListPB)
 
         val dialog = this.context?.let { BottomSheetDialog(it) }
@@ -129,22 +125,8 @@ class SavedFragment : Fragment(), CoroutineScope by MainScope() {
         val rename: LinearLayout = dialog.findViewById<LinearLayout>(R.id.rename)!!
         val delete: LinearLayout = dialog.findViewById<LinearLayout>(R.id.delete)!!
 
-        val myList = view.findViewById<RecyclerView>(R.id.horizontalScrollView) as RecyclerView
-
         val addbutton = view.findViewById<MaterialButton>(R.id.addListBtn)
 
-        var horadapter = HorizontalAdapter(itemList)
-        myList.adapter = horadapter
-
-        myList.layoutManager = LinearLayoutManager(this.context,
-            LinearLayoutManager.HORIZONTAL, false)
-
-
-        horadapter.setOnItemClickListener(object: HorizontalAdapter.onItemClickListener{
-            override fun onItemClick(position: Int){
-
-            }
-        })
 
         val allList = view.findViewById<RecyclerView>(R.id.recyclerView) as RecyclerView
         listadapter = SavedListAdapter(savedList)
