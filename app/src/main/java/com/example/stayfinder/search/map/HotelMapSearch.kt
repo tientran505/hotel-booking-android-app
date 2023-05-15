@@ -16,12 +16,16 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.stayfinder.R
 import com.example.stayfinder.hotel.Hotel
 import com.example.stayfinder.hotel.hotel_detail.HotelDetailActivity
+import com.example.stayfinder.model.HotelDetailModel
+import com.example.stayfinder.model.RoomDetailModel
 import com.example.stayfinder.saved.choose_item.SavedListChooseBottomSheetDialog
 import com.example.stayfinder.search.Photo
 import com.example.stayfinder.search.PhotoAdapter
+import com.google.firebase.firestore.FirebaseFirestore
 import me.relex.circleindicator.CircleIndicator3
 import java.text.NumberFormat
 import java.util.*
+import kotlin.math.min
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -33,7 +37,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [HotelMapSearch.newInstance] factory method to
  * create an instance of this fragment.
  */
-class HotelMapSearch(val hotel: Hotel) : Fragment() {
+class HotelMapSearch(val hotel: HotelDetailModel, val db: FirebaseFirestore, val currentGuest: Int) : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -95,7 +99,7 @@ class HotelMapSearch(val hotel: Hotel) : Fragment() {
     }
 
     private fun bindingComponents() {
-        val photoAdapter = PhotoAdapter(requireContext(), getListPhoto())
+        val photoAdapter = PhotoAdapter(requireContext(), hotel.photoUrl)
         hotelVP.adapter = photoAdapter
         indicator.setViewPager(hotelVP)
         photoAdapter.registerAdapterDataObserver(indicator.adapterDataObserver)
@@ -103,26 +107,31 @@ class HotelMapSearch(val hotel: Hotel) : Fragment() {
         card.clipToOutline = true
         card.outlineProvider = ViewOutlineProvider.BACKGROUND
         heartBtn.setImageResource(R.drawable.add_circle_outline)
-        rating.rating = hotel.rating
+        rating.rating = hotel.rating_overall!!.toFloat()
 
         val numberFormat = NumberFormat.getCurrencyInstance(Locale("vn", "VN"))
 
-        originalPrice.text = numberFormat.format(hotel.originalPrice)
-        originalPrice.paintFlags = originalPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+        db.collection("rooms").whereEqualTo("hotel_id", hotel.id)
+            .get()
+            .addOnSuccessListener { documents ->
+                var minPrice = Double.MAX_VALUE
+                var percentage = 0.00
 
-        discountPrice.text = numberFormat.format(hotel.discountPrice)
-        cityName.text = hotel.cityName
-        hotelName.text = hotel.hotelName
+                documents.map { it.toObject(RoomDetailModel::class.java) }
+                    .forEach { room ->
+                        room.available_prices.firstOrNull { it.num_of_guest == currentGuest }?.price?.let { price ->
+                            minPrice = min(price, minPrice)
+                            percentage = room.percentage_discount.takeIf { room.applied_coupon_id.isNullOrEmpty() } ?: percentage
+                        }
+                    }
 
-    }
+                originalPrice.visibility = if (hotel.applied_coupon == null) View.GONE else View.VISIBLE
+                originalPrice.text = numberFormat.format(minPrice)
+                discountPrice.text = numberFormat.format(minPrice * (1 - percentage / 100.00))
+            }
 
-    private fun getListPhoto(): List<Photo> {
-        return listOf(
-            Photo(R.drawable.img_1),
-            Photo(R.drawable.img_2),
-            Photo(R.drawable.img_3),
-            Photo(R.drawable.img_4),
-            Photo(R.drawable.img_5),
-        )
+        cityName.text = hotel.address["city"]
+        hotelName.text = hotel.hotel_name
+
     }
 }

@@ -1,6 +1,7 @@
 package com.example.stayfinder
 
 import android.content.Intent
+import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -18,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.util.Locale
 
 //import com.google.android.material.color.DynamicColors
 
@@ -35,6 +37,11 @@ class MainActivity : AppCompatActivity() {
         actionBarSetup()
         partnerAuth()
 
+        val locale = Locale.ENGLISH
+        Locale.setDefault(locale)
+        val config = Configuration()
+        config.locale = locale
+        resources.updateConfiguration(config, resources.displayMetrics)
 
         val intent = intent
         val fragmentInfo = intent.getStringExtra("fragment")

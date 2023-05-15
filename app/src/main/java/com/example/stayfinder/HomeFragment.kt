@@ -20,10 +20,12 @@ import com.example.stayfinder.search.HotelSearch
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.firebase.Timestamp
 import java.util.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.text.SimpleDateFormat
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -55,12 +57,29 @@ class HomeFragment : Fragment(), RoomSelectionBottomSheetDialog.BottomSheetListe
 
     private var currentRoomInformation: RoomInformation? = null
 
+    private var start: Long = 0
+    private var end: Long = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+    }
+
+    private fun formValidate(): Boolean {
+        if (dateET?.text.toString().isEmpty()) {
+            Toast.makeText(requireContext(), "Please fill all fields before searching", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        if (roomET?.text.toString().isEmpty()) {
+            Toast.makeText(requireContext(), "Please fill all fields before searching", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        return true
     }
 
     override fun onCreateView(
@@ -101,19 +120,27 @@ class HomeFragment : Fragment(), RoomSelectionBottomSheetDialog.BottomSheetListe
 
 
             dateRangePicker.addOnPositiveButtonClickListener {
-                Toast.makeText(requireContext(), "${dateRangePicker.headerText} is selected"
-                    , Toast.LENGTH_LONG).show()
-                dateET?.setText(dateRangePicker.headerText)
+                val startDate = it.first
+                val endDate = it.second
+
+                if (startDate != null && endDate != null) {
+                    val startDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(startDate)
+                    val endDateFormat = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault()).format(endDate)
+
+                    start = startDate.toLong()
+                    end = endDate.toLong()
+
+                    dateET?.setText(dateRangePicker.headerText)
+                }
+
             }
 
             dateRangePicker.addOnNegativeButtonClickListener {
-                Toast.makeText(requireContext(), "${dateRangePicker.headerText} is cancelled"
-                    , Toast.LENGTH_LONG).show()
+
             }
 
             dateRangePicker.addOnCancelListener {
-                Toast.makeText(requireContext(), "DateRangePicker is cancelled"
-                    , Toast.LENGTH_LONG).show()
+
             }
 
             dateRangePicker.show(requireActivity().supportFragmentManager, "DatePicker")
@@ -133,9 +160,30 @@ class HomeFragment : Fragment(), RoomSelectionBottomSheetDialog.BottomSheetListe
 
         searchBtn = view.findViewById(R.id.searchBtn)
         searchBtn?.setOnClickListener {
-            val intent = Intent(requireContext(), HotelSearch::class.java)
-            startActivity(intent)
+            if (formValidate()) {
+                val intent = Intent(requireContext(), HotelSearch::class.java)
+                val bookings = currentRoomInformation?.let { it1 ->
+                    BookingInformation(
+                        number_of_adult = it1.adult,
+                        number_of_children = it1.children,
+                        number_of_rooms = it1.room,
+                        sum_people = calculateTotalPeople(it1.adult, it1.children)
+                    )
+                }
+
+                intent.putExtra("booking_info", bookings)
+                intent.putExtra("start_date", start)
+                intent.putExtra("end_date", end)
+
+                startActivity(intent)
+            }
         }
+    }
+
+    private fun calculateTotalPeople(adults: Int, children: Int): Int {
+        return if (children % 2 == 0) {
+            adults + children / 2
+        } else adults + (children - 1) / 2
     }
 
     private fun initCityName(view: View) {

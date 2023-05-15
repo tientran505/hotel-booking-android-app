@@ -49,7 +49,6 @@ class PartnerListRoomActivity : AppCompatActivity() {
                 documents ->
                 for(document in documents){
                     val room = document.toObject(RoomDetailModel::class.java)
-//                    val roomModel = ListRoomModel(uuidHotel = uuidHotel, uuidRoom = room.id, typeRoom = room.room_type, urlImage = room.photoUrl[0])
                     roomList.add(room)
                 }
                 initLV(roomList)

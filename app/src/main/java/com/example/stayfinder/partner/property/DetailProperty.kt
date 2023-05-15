@@ -17,7 +17,6 @@ import com.example.stayfinder.model.HotelDetailModel
 //import com.example.stayfinder.partner.property.adapter.Property
 import com.example.stayfinder.partner.room.PartnerListRoomActivity
 import android.widget.ProgressBar
-import com.example.stayfinder.Property
 import com.example.stayfinder.partner.property.sub_property.EditImageListActivity
 import com.example.stayfinder.partner.property.sub_property.EditLocationActivity
 import com.example.stayfinder.hotels

@@ -64,7 +64,7 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
 
     var editMode = false
     private val db = Firebase.firestore
-    var nameCollection: String = "TestRoom"
+    var nameCollection: String = "rooms"
 
     var tempRoom:RoomDetailModel = RoomDetailModel()
 
@@ -128,7 +128,7 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
         } else if (uuidHotel != null && uuidRoom != null) { // entry exist - > fill form
             editMode = true
 
-            val docRef = db!!.collection(nameCollection!!).document(uuidRoom)
+            val docRef = db!!.collection(nameCollection).document(uuidRoom)
             docRef.get().addOnSuccessListener { document ->
                 if (document != null) {
                     // fill out the form

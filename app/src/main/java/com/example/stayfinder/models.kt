@@ -1,5 +1,8 @@
 package com.example.stayfinder
 
+import com.example.stayfinder.model.HotelDetailModel
+import com.example.stayfinder.model.RoomDetailModel
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.IgnoreExtraProperties
 import com.google.firebase.firestore.PropertyName
 import java.io.Serializable
@@ -87,17 +90,17 @@ data class rooms(
 
 }
 
-@IgnoreExtraProperties
-data class booking_details(
-    var id:String="",
-    var startDate: String = "",
-    var endDate: String = "",
-    var num_of_days: Int=0,
-    var user_id : String = "",
-
-):Serializable{
-
-}
+//@IgnoreExtraProperties
+//data class booking_details(
+//    var id:String="",
+//    var startDate: String = "",
+//    var endDate: String = "",
+//    var num_of_days: Int=0,
+//    var user_id : String = "",
+//
+//):Serializable{
+//
+//}
 
 @IgnoreExtraProperties
 data class room_information(
@@ -109,8 +112,44 @@ data class room_information(
 
 }
 
-data class Property (
-    val id: String,
-    val imgUrl: String,
-    val propertyName: String,
-)
+@IgnoreExtraProperties
+data class BookingDetail(
+    var id: String = "",
+    var created_date: Timestamp? = null,
+    var status: String = "",
+    var date_start: Timestamp? = null,
+    var date_end: Timestamp? = null,
+    var num_of_nights: Int = 0,
+    var user_id: String = "",
+    var message: String = "",
+    var personal_contact: ContactInformation? = null,
+    var booking_information: BookingInformation? = null,
+    var hotel: HotelDetailModel? = null,
+    var rooms: ArrayList<RoomDetailModel> = arrayListOf()
+) : Serializable{}
+
+@IgnoreExtraProperties
+data class ContactInformation(
+    var name: String? = "",
+    var email: String? = "",
+    var phone_number: String? = ""
+): Serializable{}
+
+@IgnoreExtraProperties
+data class BookingInformation(
+    var number_of_adult: Int = 0,
+    var number_of_children: Int = 0,
+    var number_of_rooms: Int = 0,
+    var sum_people: Int = 0,
+): Serializable{
+     fun display(): String {
+        val adultStr: String = "${this.number_of_adult} adult" + if (this.number_of_adult > 1) "s" else ""
+        val childStr: String = when (this.number_of_children) {
+            0 -> "No child"
+            1 -> "1 child"
+            else -> "${this.number_of_children} children"
+        }
+
+        return "$adultStr - $childStr"
+    }
+}
