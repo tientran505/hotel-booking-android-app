@@ -24,6 +24,7 @@ import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
+import android.graphics.Color
 
 class PartnerBookingDetail : AppCompatActivity() {
     val db = Firebase.firestore
@@ -74,6 +75,19 @@ class PartnerBookingDetail : AppCompatActivity() {
         booking_id = intent.getStringExtra("booking_id")!!
         //booking_id = "e226dER1qHNTalZsShH4"
         getBookingInfo(booking_id){
+            var status = findViewById<TextView>(R.id.status)
+            if(booking.status == "Cancel"){
+                status.setText("Decline")
+                status.setTextColor(Color.RED)
+            }
+            else if(booking.status == "Active"){
+                status.setText("DWaiting")
+            }
+            else{
+                status.setText("Accept")
+                status.setTextColor(Color.GREEN)
+            }
+
             var guestName = findViewById<TextView>(R.id.guestName)
             guestName.setText(booking.personal_contact!!.name)
             var guestPhoneNumber = findViewById<TextView>(R.id.guestPhoneNumber)
