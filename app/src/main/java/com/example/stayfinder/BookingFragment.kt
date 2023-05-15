@@ -7,12 +7,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stayfinder.hotel.RatingActivity
+import com.example.stayfinder.model.HotelDetailModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import java.net.URL
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -32,8 +39,8 @@ class BookingFragment : Fragment() {
     var doneBtn: android.widget.Button? = null
     var cancelBtn: android.widget.Button? = null
     var rv: RecyclerView?= null
-    var listbooking  = ArrayList<Booking>()
-    var login = true
+    var listbooking  : ArrayList<Booking> = arrayListOf()
+    lateinit var progressBar: ProgressBar
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -44,52 +51,77 @@ class BookingFragment : Fragment() {
     fun messageLayoutShow(mess: String, submess: String, login: Boolean, view: View){
         val messTv = view.findViewById<TextView>(R.id.messTv)
         val submessTv = view.findViewById<TextView>(R.id.submessTv)
-        val loginBtn = view.findViewById<Button>(R.id.loginBtn)
+//        val loginBtn = view.findViewById<Button>(R.id.loginBtn)
 
         messTv.setText(mess)
         submessTv.setText(submess)
-        if(login == false ) loginBtn.setVisibility(View.VISIBLE)
-        else loginBtn.setVisibility(View.INVISIBLE)
+//        if(login == false ) loginBtn.setVisibility(View.VISIBLE)
+//        else loginBtn.setVisibility(View.INVISIBLE)
     }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val adapter = BookingAdapter(listbooking)
+        val auth = FirebaseAuth.getInstance().currentUser
 
-        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 1","4 Feb","5 Feb",2000000.0,"Completed",URL("https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F124%2F1246280%2F1246280_16061017110043391702.jpg%3Fca%3D6%26ce%3D1%26s%3D1024x768&tbnid=6v7Euel4ecy_8M&vet=12ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ..i&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fl-hotel%2Fhotel%2Fkhon-kaen-th.html&docid=mssDHIF707HKHM&w=1024&h=768&q=hotel%20image&ved=2ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ")))
-        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 2","4 Feb","5 Feb",2000000.0,"Active",URL("https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F124%2F1246280%2F1246280_16061017110043391702.jpg%3Fca%3D6%26ce%3D1%26s%3D1024x768&tbnid=6v7Euel4ecy_8M&vet=12ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ..i&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fl-hotel%2Fhotel%2Fkhon-kaen-th.html&docid=mssDHIF707HKHM&w=1024&h=768&q=hotel%20image&ved=2ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ")))
-        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 3","4 Feb","5 Feb",2000000.0,"Active",URL("https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F124%2F1246280%2F1246280_16061017110043391702.jpg%3Fca%3D6%26ce%3D1%26s%3D1024x768&tbnid=6v7Euel4ecy_8M&vet=12ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ..i&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fl-hotel%2Fhotel%2Fkhon-kaen-th.html&docid=mssDHIF707HKHM&w=1024&h=768&q=hotel%20image&ved=2ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ")))
-        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 4","4 Feb","5 Feb",2000000.0,"Cancel",URL("https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F124%2F1246280%2F1246280_16061017110043391702.jpg%3Fca%3D6%26ce%3D1%26s%3D1024x768&tbnid=6v7Euel4ecy_8M&vet=12ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ..i&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fl-hotel%2Fhotel%2Fkhon-kaen-th.html&docid=mssDHIF707HKHM&w=1024&h=768&q=hotel%20image&ved=2ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ")))
-        listbooking?.add(Booking("The Sóng Vũng Tàu Homestay- Vũng Tàu Land 5","4 Feb","5 Feb",2000000.0,"Cancel",URL("https://www.google.com/imgres?imgurl=https%3A%2F%2Fpix10.agoda.net%2FhotelImages%2F124%2F1246280%2F1246280_16061017110043391702.jpg%3Fca%3D6%26ce%3D1%26s%3D1024x768&tbnid=6v7Euel4ecy_8M&vet=12ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ..i&imgrefurl=https%3A%2F%2Fwww.agoda.com%2Fvi-vn%2Fl-hotel%2Fhotel%2Fkhon-kaen-th.html&docid=mssDHIF707HKHM&w=1024&h=768&q=hotel%20image&ved=2ahUKEwiDkN6e5ov-AhVdDbcAHQTPDKkQMygAegUIARCyAQ")))
-
-        // Inflate the layout for this fragment
-        var view: View? = null
-        view = inflater.inflate(R.layout.fragment_booking, container, false)
-
+        var view= inflater.inflate(R.layout.fragment_booking, container, false)
+        rv = view.findViewById(R.id.rv)
+        rv?.layoutManager = LinearLayoutManager(this.context) //GridLayoutManager(this, 2)
+        val layout = view.findViewById<ConstraintLayout>(R.id.messageLayout)
+        rv?.adapter = adapter
+        println(auth?.uid)
         activeBtn = view.findViewById(R.id.activeBtn)
         doneBtn = view.findViewById(R.id.doneBtn)
         cancelBtn = view.findViewById(R.id.cancelBtn)
-        rv = view.findViewById(R.id.rv)
-        rv?.layoutManager = LinearLayoutManager(this.context) //GridLayoutManager(this, 2)
-        val adapter = BookingAdapter(listbooking)
-        val layout = view.findViewById<ConstraintLayout>(R.id.messageLayout)
-        rv?.adapter = adapter
-        var ListDefault: ArrayList<Booking> = listbooking.filter { it.status == "Active" } as ArrayList<Booking>
-        adapter.updateList(ListDefault)
-        if(login == true && ListDefault.size != 0 ){
-            layout.setVisibility(View.INVISIBLE)
-            rv?.setVisibility(View.VISIBLE)
-        }
-        else if(login == true){
-            layout.setVisibility(View.VISIBLE)
-            messageLayoutShow("Where to next?","You haven't started any trips yet. Once you make a booking, it'll appear here",true, layout)
-            rv?.setVisibility(View.INVISIBLE)
+        progressBar = view!!.findViewById<ProgressBar>(R.id.savedListPB)
+        if(auth != null ) {
+            FirebaseFirestore.getInstance().collection("bookings")
+                .whereEqualTo("user_id", auth.uid).limit(6)
+                .get()
+                .addOnSuccessListener { documents ->
+                    if(documents.size()==0) {
+                        layout.setVisibility(View.VISIBLE)
+                        messageLayoutShow("Where to next?","You haven't started any trips yet. Once you make a booking, it'll appear here",true, layout)
+                        rv?.setVisibility(View.INVISIBLE)
+                    }
+                    else{
+                        layout.setVisibility(View.INVISIBLE)
+                        rv?.setVisibility(View.VISIBLE)
+                    }
+                    for (document in documents) {
+                        println("1")
+                        val bookingDb = document.toObject(BookingDetail::class.java)
+                        listbooking.add(
+                            Booking(
+                                bookingDb.hotel?.hotel_name!!,
+                                SimpleDateFormat(
+                                    "dd/MM/yyyy",
+                                    Locale.getDefault()
+                                ).format((bookingDb.date_start?.toDate())),
+                                SimpleDateFormat(
+                                    "dd/MM/yyyy",
+                                    Locale.getDefault()
+                                ).format((bookingDb.date_end?.toDate())),
+                                bookingDb.total_price,
+                                bookingDb.status,
+                                URL(bookingDb.hotel!!.photoUrl[0])
+                            )
+                        )
+//                        adapter.notifyItemChanged(listbooking.size-1)
+                    }
+                    var ListDefault: ArrayList<Booking> = listbooking.filter { it.status == "Active" } as ArrayList<Booking>
+                    adapter.updateList(ListDefault)
+                    progressBar.visibility = View.GONE
+                }
         }
         else{
+            progressBar.visibility = View.GONE
             layout.setVisibility(View.VISIBLE)
             messageLayoutShow("Login or Register to Start","",false, layout)
             rv?.setVisibility(View.INVISIBLE)
         }
+
 
         activeBtn!!.setBackgroundResource(R.drawable.custom_button_booking_select)
         doneBtn!!.setBackgroundResource(R.drawable.custom_button_booking)
@@ -101,11 +133,11 @@ class BookingFragment : Fragment() {
             var activeList: ArrayList<Booking> = listbooking.filter { it.status == "Active" } as ArrayList<Booking>
 
             adapter.updateList(activeList)
-            if(login == true && activeList.size != 0 ){
+            if(auth != null && activeList.size != 0 ){
                 layout.setVisibility(View.INVISIBLE)
                 rv?.setVisibility(View.VISIBLE)
             }
-            else if(login == true){
+            else if(auth != null){
                 layout.setVisibility(View.VISIBLE)
                 messageLayoutShow("Where to next?","You haven't started any trips yet. Once you finish a booking, it'll appear here",true, layout)
                 rv?.setVisibility(View.INVISIBLE)
@@ -114,10 +146,6 @@ class BookingFragment : Fragment() {
                 layout.setVisibility(View.VISIBLE)
                 messageLayoutShow("Login or Register to Start","",false, layout)
                 rv?.setVisibility(View.INVISIBLE)
-            }
-
-            adapter.onItemClick={position->
-
             }
 
         }
@@ -129,11 +157,11 @@ class BookingFragment : Fragment() {
 
             var DoneList: ArrayList<Booking> = listbooking.filter { it.status == "Completed" } as ArrayList<Booking>
             adapter.updateList(DoneList)
-            if(login == true && DoneList.size != 0 ){
+            if(auth != null && DoneList.size != 0 ){
                 layout.setVisibility(View.INVISIBLE)
                 rv?.setVisibility(View.VISIBLE)
             }
-            else if(login == true){
+            else if(auth != null){
                 layout.setVisibility(View.VISIBLE)
                 messageLayoutShow("There was no booking Done","You haven't make any trip. Let's start one",true, layout)
                 rv?.setVisibility(View.INVISIBLE)
@@ -156,11 +184,11 @@ class BookingFragment : Fragment() {
 
             var CancelList: ArrayList<Booking> = listbooking.filter { it.status == "Cancel" } as ArrayList<Booking>
             adapter.updateList(CancelList)
-            if(login == true && CancelList.size != 0 ){
+            if(auth != null && CancelList.size != 0 ){
                 layout.setVisibility(View.INVISIBLE)
                 rv?.setVisibility(View.VISIBLE)
             }
-            else if(login == true){
+            else if(auth != null){
                 layout.setVisibility(View.VISIBLE)
                 messageLayoutShow("There's nothing to show","Great!!",true, layout)
                 rv?.setVisibility(View.INVISIBLE)
