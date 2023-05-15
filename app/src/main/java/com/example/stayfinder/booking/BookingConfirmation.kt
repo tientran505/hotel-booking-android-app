@@ -14,7 +14,9 @@ import com.example.stayfinder.booking.adapter.HotelPriceList
 import com.example.stayfinder.booking.adapter.PriceDetailConfirmListAdapter
 import com.example.stayfinder.booking.adapter.RoomConfirmListAdapter
 import com.example.stayfinder.model.HotelDetailModel
+import com.example.stayfinder.model.NotificationModel
 import com.example.stayfinder.model.RoomDetailModel
+import com.example.stayfinder.services.notification.FcmNotificationSender
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -97,6 +99,27 @@ class BookingConfirmation : AppCompatActivity() {
 
         bookBtn.setOnClickListener {
             writeDB()
+            val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+
+            val uuidUser = hotel.owner_id!!
+            db.collection(
+                getString(R.string.collection_name_token_notification)
+            ).document(uuidUser).get().addOnSuccessListener { document ->
+                if (document != null) {
+                    var notificationObj = document.toObject(NotificationModel::class.java)
+                    val token = notificationObj?.tokenUser
+                    if (token != null) {
+                        val sender = FcmNotificationSender(
+                            token,
+                            "Booking ${hotel.hotel_name}",
+                            "${bookingInformation.number_of_rooms} roooms - ${bookingInformation.sum_people} people",
+                            applicationContext,
+                            this
+                        )
+                        sender.SendNotifications()
+                    }
+                }
+            }
         }
     }
 
