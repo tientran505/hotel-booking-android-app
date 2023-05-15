@@ -59,6 +59,7 @@ class AddHotelActivity : AppCompatActivity() {
 
     private var startAutocompleteIntentListener = View.OnClickListener { view: View ->
         view.setOnClickListener(null)
+
         startAutocompleteIntent()
     }
 
@@ -90,7 +91,9 @@ class AddHotelActivity : AppCompatActivity() {
     private val startAutocomplete = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult(),
         ActivityResultCallback { result: ActivityResult ->
+            Log.d("meocon", "hello dong thap")
             address.editText?.setOnClickListener(startAutocompleteIntentListener)
+            Log.d("meocon", "vao day")
             if (result.resultCode == RESULT_OK) {
                 val intent = result.data
                 if (intent != null) {
@@ -98,12 +101,15 @@ class AddHotelActivity : AppCompatActivity() {
 
                     // Write a method to read the address components from the Place
                     // and populate the form with the address components
-//                    Log.d(TAG, "Place: " + place.addressComponents)
+                    Log.d("CANCEL", "Place: " + place.addressComponents)
                     fillInAddress(place)
                 }
             } else if (result.resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.
-//                Log.i(TAG, "User canceled autocomplete")
+                Log.d("meocon", "User canceled autocomplete")
+            }
+            else {
+                Log.d("meocon", "error: ${result.resultCode}")
             }
         } as ActivityResultCallback<ActivityResult>)
     // [END maps_solutions_android_autocomplete_define]
@@ -117,12 +123,18 @@ class AddHotelActivity : AppCompatActivity() {
             Place.Field.LAT_LNG, Place.Field.VIEWPORT
         )
 
+        Log.d("meocon", "hello345")
+
         // Build the autocomplete intent with field, country, and type filters applied
         val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
             .setCountries(listOf("VN"))
             .setTypesFilter(listOf(TypeFilter.ADDRESS.toString().lowercase()))
             .build(this)
+
         startAutocomplete.launch(intent)
+
+        Log.d("meocon", "hello345678")
+
     }
     // [END maps_solutions_android_autocomplete_intent]
 
@@ -246,7 +258,6 @@ class AddHotelActivity : AppCompatActivity() {
 
         submitBtn!!.setOnClickListener {
             if (!validateForm()) {
-                Toast.makeText(this, "LatLng: ${selectedLang} | full address: ${selectedAddress}", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -265,6 +276,8 @@ class AddHotelActivity : AppCompatActivity() {
                 }
             }
 
+            val checkAddress = if (selectedAddress == null) {address.editText?.text.toString()} else {selectedAddress}
+
             //Create the object of hotelDetail
             val hotel = HotelDetailModel(
                 owner_id = Firebase.auth.currentUser?.uid.toString(),
@@ -274,9 +287,9 @@ class AddHotelActivity : AppCompatActivity() {
                 rating = hashMapOf(
                     "cleanliness" to 0, "comfort" to 0, "services" to 0, "location" to 0
                 ),
-                rating_overall = null,
+                rating_overall = 0.00,
                 address = hashMapOf(
-                    "address" to selectedAddress!!,
+                    "address" to checkAddress!!,
                     "city" to city.editText?.text.toString(),
                 ),
                 photoUrl = photoUrl,

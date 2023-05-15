@@ -19,6 +19,7 @@ import android.widget.RadioGroup
 import android.widget.TextView
 import android.widget.Toast
 import com.example.stayfinder.R
+import com.example.stayfinder.model.AvailablePrice
 import com.example.stayfinder.model.RoomDetailModel
 import com.example.stayfinder.partner.PartnerMainActivity
 import com.google.android.material.card.MaterialCardView
@@ -27,6 +28,7 @@ import com.google.android.material.textfield.TextInputLayout
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
     private lateinit var calendar: CalendarView
@@ -53,6 +55,8 @@ class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
     private val numberFormat: NumberFormat = DecimalFormat("#,##0")
 
     private lateinit var room: RoomDetailModel
+
+    private var currentAvailablePrice = ArrayList<AvailablePrice>()
 
     private var isValidPrice = true
 
@@ -226,6 +230,7 @@ class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
                 discount_type = discountType
                 per_guest_discount = perGuestDiscount
                 origin_price = price
+                available_prices = currentAvailablePrice
             }
 
             val intent = Intent(this, RoomAddHotelDetailStep3Activity::class.java)
@@ -239,6 +244,7 @@ class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
     }
 
     private fun handlePriceSummaryLayout(guest: Int, price: Double) {
+        currentAvailablePrice.add(AvailablePrice(guest, price))
         val inflater = LayoutInflater.from(this)
         val priceViewLayout = inflater.inflate(R.layout.room_price_summary, priceSummaryLL, false)
 
@@ -262,9 +268,7 @@ class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
 
 
     private fun summaryWithoutDiscount() {
-        if (priceSummaryLL.childCount > 0) {
-            priceSummaryLL.removeAllViews()
-        }
+        clearSummaryIfNotEmpty()
 
         val currentPrice = priceEt.editText?.text.toString().replace(".", "").toDouble()
 
@@ -274,7 +278,7 @@ class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
         }
         else if (lowerRateAccept.isChecked) {
             val minGuest = minGuestSpinner.text.toString().split(" ")[0].toInt()
-            val maxGuest = room.guest_available.toInt()
+            val maxGuest = room.guest_available
 
             for (i in maxGuest downTo minGuest) {
                 handlePriceSummaryLayout(i, currentPrice)
@@ -310,6 +314,7 @@ class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
 
         for (i in maxGuest downTo minGuest) {
             val currentPrice = priceET - (maxGuest - i) * discountPrice * priceET
+
             handlePriceSummaryLayout(i, currentPrice)
         }
     }
@@ -363,6 +368,7 @@ class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
     private fun clearSummaryIfNotEmpty() {
         if (priceSummaryLL.childCount > 0) {
             priceSummaryLL.removeAllViews()
+            currentAvailablePrice.clear()
         }
     }
 
@@ -373,7 +379,7 @@ class RoomAddHotelDetailStep2Activity : AppCompatActivity() {
         isValidPrice = true
 
         when {
-            (room.guest_available.toInt() == 1 || lowerRateDecline.isChecked) && isPriceNotEmpty -> {
+            (room.guest_available == 1 || lowerRateDecline.isChecked) && isPriceNotEmpty -> {
                 summaryWithoutDiscount()
             }
             lowerRateAccept.isChecked && isPriceNotEmpty -> {

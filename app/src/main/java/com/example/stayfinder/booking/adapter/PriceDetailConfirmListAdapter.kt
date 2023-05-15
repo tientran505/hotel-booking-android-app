@@ -12,7 +12,7 @@ import java.util.*
 
 data class HotelPriceList(
     val name: String,
-    val originalPrice: Float,
+    val originalPrice: Float?,
     val discountPrice: Float,
 )
 
@@ -32,8 +32,13 @@ class PriceDetailConfirmListAdapter
 
         val numberFormat = NumberFormat.getCurrencyInstance(Locale("vn", "VN"))
 
-        originalPrice.paintFlags = originalPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
-        originalPrice.text = numberFormat.format(mList[position].originalPrice)
+        if (mList[position].originalPrice == null) {
+            originalPrice.visibility = View.GONE
+        }
+        else {
+            originalPrice.paintFlags = originalPrice.paintFlags or Paint.STRIKE_THRU_TEXT_FLAG
+            originalPrice.text = numberFormat.format(mList[position].originalPrice)
+        }
 
         discountPrice.text = numberFormat.format(mList[position].discountPrice)
 

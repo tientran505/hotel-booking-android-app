@@ -68,7 +68,7 @@ class AddHotelConfirmActivity : AppCompatActivity() {
 
         //upload to firebase
         findViewById<Button>(R.id.confirmBtn).setOnClickListener {
-            db!!.collection(nameCollection!!).document(uuidHotel!!).set(hotel)
+            db!!.collection(nameCollection).document(uuidHotel!!).set(hotel)
                 .addOnSuccessListener {
                     Toast.makeText(
                         this, "Hotel data added successfully", Toast.LENGTH_SHORT

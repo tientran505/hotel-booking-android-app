@@ -10,6 +10,7 @@ import android.widget.ProgressBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stayfinder.booking.PersonalConfirmation
+import com.example.stayfinder.model.RoomDetailModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.Query
@@ -22,64 +23,78 @@ import kotlinx.coroutines.tasks.await
 import java.net.URL
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 class RoomActivity : AppCompatActivity() , CoroutineScope by MainScope() {
-    var itemList = arrayListOf<Room>()
+    var itemList = arrayListOf<RoomDetailModel>()
     val db = Firebase.firestore
     var numberofdate : Long = 0
     var daterange: String = ""
     lateinit var adapter : RoomAdapter
     val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
     lateinit var progressBar: ProgressBar
-    val moneyexchange = DecimalFormat("###,###,###,###.##"+" vnđ");
-//    costTv.setText(moneyexchange.format(price*daysDiff))
-    fun parseDate(startdate: String, enddate: String)  {
-        val formatter = SimpleDateFormat("dd-MM-yyyy")
-        val start = formatter.parse(startdate)
-        val end = formatter.parse(enddate)
-        numberofdate = TimeUnit.DAYS.convert(end.getTime() - start.getTime(), TimeUnit.MILLISECONDS)
-        daterange = "From "+ startdate +" to "+ enddate
+
+    fun parseDate(startdate: Long, enddate: Long)  {
+        val formatter = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+
+        val start = formatter.format(Date(startdate))
+        val end = formatter.format(Date(enddate))
+
+        val diffInMillies = kotlin.math.abs(enddate - startdate)
+        numberofdate = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS)
+
+        daterange = "From $start to $end"
     }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_room)
         initActionBar()
-        val bundle = intent.extras
-        val hotel_id = bundle!!.getString("hotel_id")!!
-        Log.i("testlog", "${hotel_id}")
-        val dateStart = bundle!!.getString("dateStart")!!
-        val dateEnd = bundle!!.getString("dateEnd")!!
-        println("dateStart"+ dateStart +"dateend"+dateEnd)
+//        val bundle = intent.extras
+
+
+        val hotel_id = intent.getStringExtra("hotel_id")!!
+        val dateStart = intent.getLongExtra("date_start", 0)
+        val dateEnd = intent.getLongExtra("date_end", 0)
+        val bookingInformation: BookingInformation = intent.getSerializableExtra("booking_info") as BookingInformation
+
         parseDate(dateStart,dateEnd)
+
         progressBar = findViewById(R.id.savedListPB)
         val recyclerview = findViewById<RecyclerView>(R.id.recyclerview)
         recyclerview.layoutManager = LinearLayoutManager(this)
-         adapter = RoomAdapter(itemList)
+         adapter = RoomAdapter(this, itemList, bookingInformation)
         recyclerview?.adapter = adapter
         launch {
             loadRoomLists(hotel_id)
         }
+
         adapter.onButtonClick = { pos ->
-            startActivity(Intent(this, PersonalConfirmation::class.java))
+            val intent = Intent(this, PersonalConfirmation::class.java)
+
+            val currentRoom = itemList[pos]
+            currentRoom.available_start_date = null
+            currentRoom.created_date = null
+
+            intent.putExtra("room", currentRoom)
+            intent.putExtra("date_start", dateStart)
+            intent.putExtra("date_end", dateEnd)
+            intent.putExtra("booking_info", bookingInformation)
+
+            startActivity(intent)
         }
     }
 
     private suspend fun loadRoomLists(hotel_id: String) {
-        println("hotel_id"+hotel_id)
         val documents = db.collection("rooms")
             .whereEqualTo("hotel_id", hotel_id)
 //            .orderBy("discount_price", Query.Direction.ASCENDING)
             .get()
             .await()
         for (document in documents) {
-            val l = document.toObject(rooms::class.java)
-            println("l" + l)
-            itemList.add(Room(l,daterange, numberofdate))
-            println("Room" + Room(l,daterange, numberofdate))
-            adapter.notifyItemInserted(itemList.size -1)
-//            itemList.add(SavedList(l.name_list,l.number_of_item.toString() + " items saved", l.id))
-//            listadapter.notifyItemInserted(savedList.size - 1)
+            val room = document.toObject(RoomDetailModel::class.java)
+            itemList.add(room)
+            adapter.notifyItemInserted(itemList.size - 1)
         }
         progressBar.visibility = View.GONE
     }

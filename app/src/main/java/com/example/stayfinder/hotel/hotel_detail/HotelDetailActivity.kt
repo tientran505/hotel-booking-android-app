@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.FragmentManager
 import com.example.stayfinder.*
+import com.example.stayfinder.model.HotelDetailModel
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
@@ -43,7 +44,6 @@ fun convertStringtoURL(a: ArrayList<String>):ArrayList<URL>{
     return url
 }
 class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() {
-    var hoteldetails:HotelDetails? = null
     var isPress = false
     lateinit var progressBar: ProgressBar
     var hotel_id: String=""
@@ -53,54 +53,80 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
         setContentView(R.layout.activity_hotel_detail)
         initActionBar()
         progressBar = findViewById(R.id.savedListPB)
-        hotel_id="5l5PibkyeRaZRFCVPrlB"
+
+        hotel_id=intent.getStringExtra("hotel_id")!!
+
         val fm: FragmentManager = supportFragmentManager
-        val dateStart: String = "30-3-2023"
-        val dateEnd: String = "1-4-2023"
+
+        val dateStart: Long = intent.getLongExtra("start_date", 0)
+        val dateEnd: Long = intent.getLongExtra("end_date", 0)
+        val bookingInformation: BookingInformation = intent.getSerializableExtra("booking_info") as BookingInformation
+
         val detailRoom = arrayListOf<Int>(1, 2, 0)
         val bookingBtn = findViewById<Button>(R.id.BookingBtn)
-        bookingBtn.setOnClickListener() {
+
+        bookingBtn.setOnClickListener {
             val intent = Intent(this, RoomActivity::class.java)
             intent.putExtra("hotel_id", hotel_id);
-            intent.putExtra("dateStart", dateStart)
-            intent.putExtra("dateEnd", dateEnd)
-            intent.putIntegerArrayListExtra("detailRoom", detailRoom)
+            intent.putExtra("date_start", dateStart)
+            intent.putExtra("date_end", dateEnd)
+            intent.putExtra("booking_info", bookingInformation)
+
+//            intent.putIntegerArrayListExtra("detailRoom", detailRoom)
             startActivity(intent)
         }
-        val documents = Firebase.firestore.collection("Hotels")
+        val documents = Firebase.firestore.collection("hotels")
             .document(hotel_id)
         documents.get().addOnSuccessListener { document ->
             if (document != null) {
-                val l = document.toObject(hotels::class.java)
-                val name = document.get("name") as String
-                println("name" + name)
-                val roomref = Firebase.firestore.collection("rooms").whereEqualTo("hotel_id",hotel_id).orderBy("discount_price").limit(1).get()
+                val hotel = document.toObject(HotelDetailModel::class.java)
+                println(hotel)
+                val roomref = Firebase.firestore.collection("rooms").whereEqualTo("hotel_id",hotel_id).get()
                     .addOnSuccessListener { documents ->
                         if (!documents.isEmpty) {
-                            println(document.get("name"))
                             val smallestPrice = documents.documents[0].getDouble("discount_price")
                             if (smallestPrice != null) {
-                                hoteldetails = l?.let { HotelDetails(it,smallestPrice.toDouble()) }
-                                hoteldetails?.name=name
-                                println(hoteldetails)
+
                                 val bundle = Bundle()
-                                bundle.putSerializable("BookingDetail", hoteldetails)
-                                bundle.putString("dateStart", dateStart)
-                                bundle.putString("dateEnd", dateEnd)
+                                bundle.putLong("dateStart", dateStart)
+                                bundle.putLong("dateEnd", dateEnd)
+
                                 bundle.putIntegerArrayList("detailRoom", detailRoom)
+                                bundle.putStringArrayList("photo_hotels", hotel?.photoUrl)
+                                bundle.putString("hotel_name", hotel?.hotel_name)
+                                bundle.putString("hotel_address", hotel?.address?.get("address"))
+
+                                bundle.putDouble("hotel_address_lat", hotel!!.map[0])
+                                bundle.putDouble("hotel_address_long", hotel!!.map[1])
+
+                                bundle.putString("hotel_description", hotel!!.description)
+                                if (hotel.rating_overall != null) {
+                                    bundle.putDouble("hotel_rating", hotel.rating_overall!!)
+                                }
+                                else {
+                                    bundle.putDouble("hotel_rating", 0.00)
+                                }
+                                bundle.putInt("num_of_feedback", hotel!!.comment_count)
+                                bundle.putString("hotel_id", hotel!!.id)
+                                bundle.putString("booking_id",hotel.id)
                                 val fragImage = SubHotelDetailImage()
-                                fragImage.setArguments(bundle);
-                                val fragPeriod = SubHotelDetailPeriod()
-                                fragPeriod.setArguments(bundle);
+                                fragImage.arguments = bundle;
+//                                val fragPeriod = SubHotelDetailPeriod()
+//                                fragPeriod.arguments = bundle;
                                 val fragAddress = SubHotelDetailAddress()
-                                fragAddress.setArguments(bundle);
+                                fragAddress.arguments = bundle;
                                 val fragDescription = SubHotelDetailDescription()
-                                bundle.putSerializable("rating", hoteldetails?.rating)
+                                bundle.putSerializable("rating", hotel!!.rating)
                                 fragDescription.setArguments(bundle);
+                                val fragRelateHotel = SubHotelDetailRelatedHotel()
                                 fm.beginTransaction().replace(R.id.fame1, fragImage).commit();
-                                fm.beginTransaction().replace(R.id.fame2, fragPeriod).commit();
+                                bundle.putString("city",hotel!!.address.get("city"))
+                                fragRelateHotel.setArguments(bundle);
+//                                fm.beginTransaction().replace(R.id.fame2, fragPeriod).commit();
                                 fm.beginTransaction().replace(R.id.fame3, fragAddress).commit();
                                 fm.beginTransaction().replace(R.id.fame4, fragDescription).commit();
+                                fm.beginTransaction().replace(R.id.fame5, fragRelateHotel).commit();
+
                                 progressBar.visibility = View.GONE
                             }
                         }

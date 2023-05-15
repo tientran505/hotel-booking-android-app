@@ -70,8 +70,25 @@
                     android:drawableLeft="@drawable/ic_people_group"
                     android:drawablePadding="5dp"
                     android:gravity="center_vertical"
+                    android:text="4 - 15 people" />
 
-                    android:text="4 adults" />
+                <TextView
+                    android:id="@+id/bedInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="3 beds (2 Sofa bed(s) / Variable size + 2 Sofa bed(s) / Variable size)"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+
+                <com.google.android.flexbox.FlexboxLayout
+                    android:id="@+id/facilitiesFlex"
+                    android:layout_width="match_parent"
+                    app:flexWrap="wrap"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginHorizontal="10dp"
+                    app:justifyContent="flex_start"
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
         </LinearLayout>
 

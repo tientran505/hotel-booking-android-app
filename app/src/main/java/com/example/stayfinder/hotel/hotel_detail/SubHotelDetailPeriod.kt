@@ -58,11 +58,12 @@ class SubHotelDetailPeriod : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         val view: View? = inflater.inflate(R.layout.fragment_sub_hotel_detail_period_cost, container, false)
-        val bookingDetail :HotelDetails ? = this.getArguments()?.getSerializable("BookingDetail") as HotelDetails?
+//        val bookingDetail :HotelDetails ? = this.getArguments()?.getSerializable("BookingDetail") as HotelDetails?
+
         val dateStartString : String? = this.getArguments()?.getString("dateStart")
         val dateEndString: String? =this.getArguments()?.getString("dateEnd")
         val detailRoom: ArrayList<Int>? =this.getArguments()?.getIntegerArrayList("detailRoom")
-        price = bookingDetail!!.priceless!!
+//        price = bookingDetail!!.priceless!!
         dateStart = view!!.findViewById(R.id.datestartTv)
         dateEnd = view.findViewById(R.id.dateendTv)
         periodTv = view.findViewById(R.id.periodTv)
@@ -70,6 +71,7 @@ class SubHotelDetailPeriod : Fragment() {
         noRoom = view.findViewById(R.id.noRoomTv)
         noPeople = view.findViewById(R.id.noPeopleTv)
         noKid = view.findViewById(R.id.nopKidTv)
+
         if(detailRoom != null){
             noRoom.setText(detailRoom?.get(0).toString()+" Room(s)")
             noPeople.setText(detailRoom?.get(1).toString()+" People(s)")
@@ -114,10 +116,7 @@ class SubHotelDetailPeriod : Fragment() {
             dateRangePicker.addOnPositiveButtonClickListener {it->
                 Toast.makeText(requireContext(), "${dateRangePicker.headerText} is selected"
                     , Toast.LENGTH_LONG).show()
-                val dateperiod = dateRangePicker.headerText.toString()
-                print(dateperiod)
-//                calendar.setTimeInMillis(it.first);
-//                calendar.timeInMillis = it.first
+
                 val formatter = SimpleDateFormat("dd-MM-yyyy")
                 val start = formatter.format(it.first)
                 dateStart.setText(start.toString())

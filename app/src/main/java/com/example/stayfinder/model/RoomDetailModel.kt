@@ -24,10 +24,12 @@ data class RoomDetailModel(
 
     //activity add room detail 2
     var available_start_date: Timestamp? = null,
-    var origin_price: Double? = null,
-    var discount_price:Double? = null,
-    var percentage_discount: Double? = null,
+    var origin_price: Double = 0.00,
+    var discount_price:Double = 0.00,
+    var percentage_discount: Double = 0.00,
     var applied_coupon_id: String? = null,
+
+    var available_prices: ArrayList<AvailablePrice> = ArrayList(),
 
     //Addition field, activity add room detail 1
     var room_type:String? = null,
@@ -41,4 +43,9 @@ data class RoomDetailModel(
 data class Bed (
     var name: String = "",
     var quantity: Int = 0,
+) : Serializable
+
+data class AvailablePrice (
+    var num_of_guest: Int = 0,
+    var price: Double = 0.00,
 ) : Serializable

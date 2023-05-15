@@ -71,7 +71,7 @@ class RoomAddHotelStep4Activity : AppCompatActivity() {
                     progressDialog?.dismiss()
                     Toast.makeText(this, "Add new room successfully", Toast.LENGTH_SHORT).show()
                     startActivity(intent)
-                    finishAffinity()
+                    finish()
                 }
                 .addOnFailureListener { e ->
                     progressDialog?.dismiss()

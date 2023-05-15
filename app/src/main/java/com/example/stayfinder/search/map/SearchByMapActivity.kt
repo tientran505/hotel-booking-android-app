@@ -16,15 +16,23 @@ import androidx.fragment.app.FragmentTransaction
 import com.example.stayfinder.R
 import com.example.stayfinder.databinding.ActivitySearchByMapBinding
 import com.example.stayfinder.hotel.Hotel
+import com.example.stayfinder.model.HotelDetailModel
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.*
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.firestore.ktx.toObject
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.lang.Math.*
 import java.text.NumberFormat
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.random.Random
 
 class SearchByMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -33,28 +41,9 @@ class SearchByMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.O
     private lateinit var binding: ActivitySearchByMapBinding
     private var selectedMarker: Marker? = null
 
-    val hotels = listOf(
-        Hotel("Vung Tau", "Sherwood Residence", 4.5.toFloat(), 4500000.0.toFloat(),
-            3200000.0.toFloat(), false),
-        Hotel("Phan Thiet", "Somerset Ho Chi Minh City", 5.0.toFloat(), 4500000.0.toFloat(),
-            3200000.0.toFloat(), true),
-        Hotel("Vung Tau", "SILA Urban Living", 3.3.toFloat(), 4500000.0.toFloat(),
-            3200000.0.toFloat(), true),
-        Hotel("Da Nang", "La vela Saigon Hotel", 2.5.toFloat(), 4500000.0.toFloat(),
-            3200000.0.toFloat(), false),
-        Hotel("Vung Tau", "Novotel Saigon", 3.0.toFloat(), 4500000.0.toFloat(),
-            3200000.0.toFloat(), false),
-        Hotel("Ha Noi", "Villa Song Saigon", 4.8.toFloat(), 4500000.0.toFloat(),
-            3200000.0.toFloat(), false),
-        Hotel("Hai Phong", "Norfolk mansion - Luxury Service Ap..", 50.toFloat(), 4500000.0.toFloat(),
-            3200000.0.toFloat(), true),
-        Hotel("Phan Thiet", "CityHouse - Ariosa", 4.5.toFloat(), 4500000.0.toFloat(),
-            3200000.0.toFloat(), false),
-        Hotel("Da Lat", "Sherwood Residence", 4.5.toFloat(), 4500000.0.toFloat(),
-            3200000.0.toFloat(), true),
-        Hotel("Vung Tau", "Sherwood Residence", 4.5.toFloat(), 4500000.0.toFloat(),
-            3200000.0.toFloat(), false),
-    )
+    val db = Firebase.firestore
+
+    private var hotels = ArrayList<HotelDetailModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,10 +55,8 @@ class SearchByMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.O
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.mapSearch) as SupportMapFragment
         mapFragment.getMapAsync(this)
-//
-//        val hotel = Hotel("Vung Tau", "Sherwood Residence", 4.5.toFloat(), 4500000.0.toFloat(),
-//            3200000.0.toFloat(), false)
-//        replaceFragment(HotelMapSearch(hotel))
+
+        fetchData()
     }
 
     private fun replaceFragment(fragment: Fragment) {
@@ -88,33 +75,42 @@ class SearchByMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.O
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
-    override fun onMapReady(googleMap: GoogleMap) {
-        mMap = googleMap
 
-        // Add a marker in Sydney and move the camera
-//        val sydney = LatLng(-34.0, 151.0)
-//        mMap.addMarker(MarkerOptions().position(sydney)
-//            .title("Marker in Sydney")
-//            .icon(createHotelPriceIcon("VND 1.539.000")))
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+    private fun fetchData() {
+        db.collection("hotels")
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val hotel = document.toObject(HotelDetailModel::class.java)
+                    hotels.add(hotel)
+                }
+                CoroutineScope(Dispatchers.IO).launch {
+                    addMarkersToMap()
+                }
+            }
+    }
 
-        val center = LatLng(10.762622, 106.660172) // Ví dụ: trung tâm thành phố Hồ Chí Minh
-        val radius = 5000.0 // Bán kính 5km
+    private suspend fun addMarkersToMap() {
+        for (hotel in hotels) {
 
-        for (i in 1..10) {
-            val randomLocation = randomLocationNearby(center, radius)
-            val randomPrice = randomInRange(1000000, 3000000) // Giá ngẫu nhiên từ 500.000đ đến 5.000.000đ
-            val formattedPrice = NumberFormat.getCurrencyInstance(Locale("vi", "VN")).format(randomPrice)
+            val minPrice = hotel.getMinPriceOfHotel(7)
+            val location = LatLng(hotel.map[0], hotel.map[1])
+            val formattedPrice = NumberFormat.getCurrencyInstance(Locale("vi", "VN")).format(minPrice)
 
             mMap.addMarker(
                 MarkerOptions()
-                    .position(randomLocation)
+                    .position(location)
                     .title(formattedPrice)
                     .icon(createHotelPriceIcon(formattedPrice, 0))
             )
         }
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(center, 12f))
         mMap.setOnMarkerClickListener(this)
+    }
+
+    override fun onMapReady(googleMap: GoogleMap) {
+        mMap = googleMap
+//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(center, 12f))
+//        mMap.setOnMarkerClickListener(this)
     }
 
     override fun onMarkerClick(marker: Marker): Boolean {
@@ -123,9 +119,8 @@ class SearchByMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.O
         selectedMarker = marker
 
 //        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.position, 15f))
-
-        val i = kotlin.random.Random.nextInt(0, hotels.size - 1)
-        replaceFragment(HotelMapSearch(hotels[i]))
+        val i = Random.nextInt(0, hotels.size - 1)
+        replaceFragment(HotelMapSearch(hotels[i], db, 8))
 
         return true
     }
@@ -189,6 +184,4 @@ class SearchByMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.O
         menu?.setHomeButtonEnabled(true)
         menu?.title = "Search by Map"
     }
-
-
 }
