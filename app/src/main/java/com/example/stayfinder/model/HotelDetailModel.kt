@@ -21,7 +21,7 @@ data class HotelDetailModel (
         "services" to 0,
         "location" to 0
     ),
-    var rating_overall: Double? = null,
+    var rating_overall: Double = 0.00,
     var address: HashMap<String, String> = hashMapOf(
         "address" to "",
         "city" to ""

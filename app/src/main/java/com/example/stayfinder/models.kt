@@ -113,6 +113,7 @@ data class BookingDetail(
     var id: String = "",
     var created_date: Timestamp? = null,
     var status: String = "",
+    var total_price: Double = 0.00,
     var date_start: Timestamp? = null,
     var date_end: Timestamp? = null,
     var num_of_nights: Int = 0,

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.res.Configuration
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -37,11 +38,11 @@ class MainActivity : AppCompatActivity() {
         actionBarSetup()
         partnerAuth()
 
-        val locale = Locale.ENGLISH
-        Locale.setDefault(locale)
-        val config = Configuration()
-        config.locale = locale
-        resources.updateConfiguration(config, resources.displayMetrics)
+//        val locale = Locale.ENGLISH
+//        Locale.setDefault(locale)
+//        val config = Configuration()
+//        config.locale = locale
+//        resources.updateConfiguration(config, resources.displayMetrics)
 
         val intent = intent
         val fragmentInfo = intent.getStringExtra("fragment")
@@ -120,6 +121,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun partnerAuth() {
         if (user != null) {
+            Toast.makeText(this, "user khac null", Toast.LENGTH_SHORT).show()
+            Log.d("userisnull", "${user.uid} - ${user.displayName} - ${user.email}")
             val docRef = db.collection("users").document(user.uid).get()
             docRef.addOnCompleteListener { document ->
                 val role = document.result.get("role")
