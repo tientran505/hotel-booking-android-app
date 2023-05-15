@@ -14,7 +14,9 @@ import com.example.stayfinder.booking.adapter.HotelPriceList
 import com.example.stayfinder.booking.adapter.PriceDetailConfirmListAdapter
 import com.example.stayfinder.booking.adapter.RoomConfirmListAdapter
 import com.example.stayfinder.model.HotelDetailModel
+import com.example.stayfinder.model.NotificationModel
 import com.example.stayfinder.model.RoomDetailModel
+import com.example.stayfinder.services.notification.FcmNotificationSender
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -97,6 +99,7 @@ class BookingConfirmation : AppCompatActivity() {
 
         bookBtn.setOnClickListener {
             writeDB()
+
         }
     }
 
@@ -193,8 +196,6 @@ class BookingConfirmation : AppCompatActivity() {
         val docId = db.collection("bookings").document().id
 
         val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
-
-
         val booking = BookingDetail(
             id = docId,
             booking_information = bookingInformation,
@@ -210,15 +211,33 @@ class BookingConfirmation : AppCompatActivity() {
             status = "Active",
             total_price = total_price
         )
-
-
-
         db.collection("bookings").document(docId).set(booking).addOnSuccessListener {
             Toast.makeText(this, "Add booking successfully", Toast.LENGTH_SHORT).show()
             Handler().postDelayed(Runnable {
                 val intent = Intent(this, MainActivity::class.java)
                 progressDialog?.dismiss()
-
+                val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+//            val uuidUser = user!!.uid!!
+                val uuidUser = hotel.owner_id!!
+                db.collection(
+                    getString(R.string.collection_name_token_notification)
+                ).document(uuidUser).get().addOnSuccessListener { document ->
+                    if (document != null) {
+                        var notificationObj = document.toObject(NotificationModel::class.java)
+                        val token = notificationObj?.tokenUser
+                        if (token != null) {
+                            val sender = FcmNotificationSender(
+                                token,
+                                "Booking ${hotel.hotel_name}",
+                                "${bookingInformation.number_of_rooms} rooms - ${bookingInformation.sum_people} people",
+                                docId,
+                                applicationContext,
+                                this
+                            )
+                            sender.SendNotifications()
+                        }
+                    }
+                }
                 startActivity(intent)
                 finishAffinity()
             }, 500)

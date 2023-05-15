@@ -50,7 +50,7 @@ class PartnerBookingDetail : AppCompatActivity() {
         val menu = supportActionBar
         menu?.setDisplayHomeAsUpEnabled(true)
         menu?.setHomeButtonEnabled(true)
-        menu?.title = "Coupon Management"
+        menu?.title = "Booking Information"
     }
     private fun getBookingInfo(id:String, callback: () -> Unit){
         db.collection("bookings").document(id).get()
