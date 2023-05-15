@@ -59,7 +59,7 @@
                 android:layout_marginEnd="20dp"
                 android:stepSize="0.5"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/hotelinfo" />
+                app:layout_constraintTop_toBottomOf="@+id/hotelName" />
 
             <TextView
                 android:id="@+id/subtitle2"
