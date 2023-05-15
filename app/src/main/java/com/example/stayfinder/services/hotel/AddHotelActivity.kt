@@ -286,7 +286,7 @@ class AddHotelActivity : AppCompatActivity() {
                 rating = hashMapOf(
                     "cleanliness" to 0, "comfort" to 0, "services" to 0, "location" to 0
                 ),
-                rating_overall = null,
+                rating_overall = 0.00,
                 address = hashMapOf(
                     "address" to selectedAddress!!,
                     "city" to city.editText?.text.toString(),
