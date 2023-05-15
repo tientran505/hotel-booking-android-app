@@ -36,7 +36,7 @@ class SubHotelDetailAddress : Fragment(), OnMapReadyCallback{
     private lateinit var currentLocation : Location
     private var REQUEST_CODE = 101;
 
-    var address = ""
+    lateinit var address : String
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -45,7 +45,7 @@ class SubHotelDetailAddress : Fragment(), OnMapReadyCallback{
 //        val bookingDetail :HotelDetails? = this.getArguments()?.getSerializable("BookingDetail") as HotelDetails?
 //        val addressTemp : address = bookingDetail!!.address
 
-        val address = this.arguments?.getString("hotel_address")
+        address = this.arguments?.getString("hotel_address") as String
         val map_lat = this.requireArguments().getDouble("hotel_address_lat")
         val map_long = this.requireArguments().getDouble("hotel_address_long")
 

@@ -44,7 +44,6 @@ fun convertStringtoURL(a: ArrayList<String>):ArrayList<URL>{
     return url
 }
 class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() {
-    var hoteldetails:HotelDetails? = null
     var isPress = false
     lateinit var progressBar: ProgressBar
     var hotel_id: String=""
@@ -81,7 +80,7 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
         documents.get().addOnSuccessListener { document ->
             if (document != null) {
                 val hotel = document.toObject(HotelDetailModel::class.java)
-
+                println(hotel)
                 val roomref = Firebase.firestore.collection("rooms").whereEqualTo("hotel_id",hotel_id).get()
                     .addOnSuccessListener { documents ->
                         if (!documents.isEmpty) {
@@ -109,7 +108,7 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
                                 }
                                 bundle.putInt("num_of_feedback", hotel!!.comment_count)
                                 bundle.putString("hotel_id", hotel!!.id)
-
+                                bundle.putString("booking_id",hotel.id)
                                 val fragImage = SubHotelDetailImage()
                                 fragImage.arguments = bundle;
 //                                val fragPeriod = SubHotelDetailPeriod()
@@ -117,12 +116,17 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
                                 val fragAddress = SubHotelDetailAddress()
                                 fragAddress.arguments = bundle;
                                 val fragDescription = SubHotelDetailDescription()
-                                bundle.putSerializable("rating", hoteldetails?.rating)
+                                bundle.putSerializable("rating", hotel!!.rating)
                                 fragDescription.setArguments(bundle);
+                                val fragRelateHotel = SubHotelDetailRelatedHotel()
                                 fm.beginTransaction().replace(R.id.fame1, fragImage).commit();
+                                bundle.putString("city",hotel!!.address.get("city"))
+                                fragRelateHotel.setArguments(bundle);
 //                                fm.beginTransaction().replace(R.id.fame2, fragPeriod).commit();
                                 fm.beginTransaction().replace(R.id.fame3, fragAddress).commit();
                                 fm.beginTransaction().replace(R.id.fame4, fragDescription).commit();
+                                fm.beginTransaction().replace(R.id.fame5, fragRelateHotel).commit();
+
                                 progressBar.visibility = View.GONE
                             }
                         }
