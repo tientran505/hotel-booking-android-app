@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stayfinder.hotel.hotel_detail.HotelDetailActivity
+import com.example.stayfinder.model.RoomDetailModel
 import com.example.stayfinder.partner.property.PartnerCouponList
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
@@ -67,7 +68,7 @@ class DetailListActivity : AppCompatActivity() {
                                         .addOnSuccessListener {room_documents ->
                                             Log.d("test", "${room_documents.documents} => ${room_documents.size()}")
                                             if (!room_documents.isEmpty){
-                                                var room = room_documents.documents[0].toObject<rooms>()
+                                                var room = room_documents.documents[0].toObject<RoomDetailModel>()
                                                 hotelList.add(HotelDetail(hotel.hotel_id, hotel.titlename,
                                                     room!!.discount_price, room!!.room_type,hotel.img))
                                                 listadapter.notifyItemInserted(hotelList.size - 1)
