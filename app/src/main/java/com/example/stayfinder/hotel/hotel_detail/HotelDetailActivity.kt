@@ -53,7 +53,8 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
         setContentView(R.layout.activity_hotel_detail)
         initActionBar()
         progressBar = findViewById(R.id.savedListPB)
-        hotel_id=intent.getStringExtra("hotel_id")!!
+//        hotel_id=intent.getStringExtra("hotel_id")!!
+        hotel_id ="eb875113-c692-4219-b78e-59a016c625be"
         val fm: FragmentManager = supportFragmentManager
         val dateStart: String = "30-3-2023"
         val dateEnd: String = "1-4-2023"
@@ -67,13 +68,12 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
             intent.putIntegerArrayListExtra("detailRoom", detailRoom)
             startActivity(intent)
         }
-        val documents = Firebase.firestore.collection("Hotels")
+        val documents = Firebase.firestore.collection("hotels")
             .document(hotel_id)
         documents.get().addOnSuccessListener { document ->
             if (document != null) {
                 val l = document.toObject(hotels::class.java)
-                val name = document.get("name") as String
-                println("name" + name)
+                println(l)
                 val roomref = Firebase.firestore.collection("rooms").whereEqualTo("hotel_id",hotel_id).orderBy("discount_price").limit(1).get()
                     .addOnSuccessListener { documents ->
                         if (!documents.isEmpty) {
@@ -81,7 +81,6 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
                             val smallestPrice = documents.documents[0].getDouble("discount_price")
                             if (smallestPrice != null) {
                                 hoteldetails = l?.let { HotelDetails(it,smallestPrice.toDouble()) }
-                                hoteldetails?.name=name
                                 println(hoteldetails)
                                 val bundle = Bundle()
                                 bundle.putSerializable("BookingDetail", hoteldetails)
