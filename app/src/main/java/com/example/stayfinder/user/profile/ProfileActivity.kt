@@ -45,10 +45,10 @@ import java.util.concurrent.TimeUnit
 
 class ProfileActivity : AppCompatActivity() {
     lateinit var displaynameET: EditText
-    lateinit var phoneET: EditText
-    lateinit var emailET: EditText
+//    lateinit var phoneET: EditText
+//    lateinit var emailET: EditText
     lateinit var displaynameLayout: View
-    lateinit var verifyImg: ImageView
+//    lateinit var verifyImg: ImageView
     lateinit var avarImg: ImageView
     lateinit var progressBar: ProgressBar
     lateinit var editBtn: Button
@@ -56,15 +56,15 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var cancelBtn: Button
     lateinit var displaynameTv: TextView
     lateinit var editImg: ImageView
-    lateinit var emaillayout: View
-    lateinit var channgeEmailBtn:Button
+//    lateinit var emaillayout: View
+//    lateinit var channgeEmailBtn:Button
     val db = Firebase.firestore
     val storageRef = Firebase.storage.reference
     private var activityResultLauncher: ActivityResultLauncher<Array<String>>
     private val user: FirebaseUser = FirebaseAuth.getInstance().currentUser!!
     private val auth = Firebase.auth
     var imageUri: Uri? = null
-    lateinit var editTextTextPassword: EditText
+//    lateinit var editTextTextPassword: EditText
     init {
         this.activityResultLauncher = registerForActivityResult(
             ActivityResultContracts.RequestMultiplePermissions()
@@ -83,26 +83,26 @@ class ProfileActivity : AppCompatActivity() {
 
     fun renderView(){
         displaynameET.setEnabled(false);
-        phoneET.setEnabled(false);
-        emailET.setEnabled(false);
-        editTextTextPassword.setEnabled(false);
+//        phoneET.setEnabled(false);
+//        emailET.setEnabled(false);
+//        editTextTextPassword.setEnabled(false);
         editImg.visibility = View.GONE
         saveBtn.visibility = View.GONE
         editBtn.visibility = View.VISIBLE
         cancelBtn.visibility = View.GONE
-        channgeEmailBtn.visibility = View.GONE
+//        channgeEmailBtn.visibility = View.GONE
         displaynameTv.setText(user.displayName)
         displaynameET.setText(user.displayName)
-        phoneET.setText(user.phoneNumber)
-        if(user.email == null){
-            emaillayout.visibility = View.GONE
-        }
-        else{
-            emailET.setText(user?.email)
-        }
-        if(user.isEmailVerified == false){
-            verifyImg.visibility= View.GONE
-        }
+//        phoneET.setText(user.phoneNumber)
+//        if(user.email == null){
+//            emaillayout.visibility = View.GONE
+//        }
+//        else{
+//            emailET.setText(user?.email)
+//        }
+//        if(user.isEmailVerified == false){
+//            verifyImg.visibility= View.GONE
+//        }
         Glide.with(this)
             .load(URL(user.photoUrl.toString()))
             .apply(RequestOptions().centerCrop())
@@ -111,9 +111,9 @@ class ProfileActivity : AppCompatActivity() {
     }
     fun renderEditView(){
         displaynameET.setEnabled(true);
-        phoneET.setEnabled(true)
-        emailET.setEnabled(true);
-        editTextTextPassword.setEnabled(true)
+//        phoneET.setEnabled(true)
+//        emailET.setEnabled(true);
+//        editTextTextPassword.setEnabled(true)
         editImg.visibility = View.VISIBLE
         saveBtn.visibility = View.VISIBLE
         cancelBtn.visibility = View.VISIBLE
@@ -125,12 +125,12 @@ class ProfileActivity : AppCompatActivity() {
         avarImg.setOnClickListener{
             activityResultLauncher.launch(appPerms)
         }
-        channgeEmailBtn.visibility = View.VISIBLE
+//        channgeEmailBtn.visibility = View.VISIBLE
         val providerData = user.providerData
         val passwordProvider = providerData.find { it.providerId == "password" }
         if (passwordProvider == null) {
             // If the user doesn't have a password set, show an error message
-            emaillayout.visibility = View.GONE
+//            emaillayout.visibility = View.GONE
             Toast.makeText(this, "The user does not have a password set.", Toast.LENGTH_LONG).show()
         }
     }
@@ -141,19 +141,19 @@ class ProfileActivity : AppCompatActivity() {
         println(user?.let { User(it) })
         displaynameLayout = findViewById(R.id.displaynameLayout)
         displaynameET = findViewById(R.id.displaynameET)
-        phoneET = findViewById(R.id.phoneET)
-        emailET = findViewById(R.id.emailET)
-        verifyImg = findViewById(R.id.emailVerified)
+//        phoneET = findViewById(R.id.phoneET)
+//        emailET = findViewById(R.id.emailET)
+//        verifyImg = findViewById(R.id.emailVerified)
         avarImg = findViewById(R.id.avarImg)
         editBtn = findViewById(R.id.EditBtn)
         saveBtn = findViewById(R.id.SaveBtn)
         editImg = findViewById(R.id.editImg)
-        emaillayout = findViewById(R.id.emaillayout)
-        editTextTextPassword = findViewById(R.id.editTextTextPassword)
+//        emaillayout = findViewById(R.id.emaillayout)
+//        editTextTextPassword = findViewById(R.id.editTextTextPassword)
         cancelBtn = findViewById(R.id.cancelBtn)
         displaynameTv = findViewById(R.id.displayname)
         progressBar = findViewById(R.id.savedListPB)
-        channgeEmailBtn = findViewById(R.id.channgeEmailBtn)
+//        channgeEmailBtn = findViewById(R.id.channgeEmailBtn)
 
         renderView()
 
@@ -180,6 +180,9 @@ class ProfileActivity : AppCompatActivity() {
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
                                     Log.d(TAG, "User profile photo updated.")
+                                    Glide.with(this)
+                                        .load(imageUri!!)
+                                        .into(avarImg);
                                 } else {
                                     Log.w(TAG, "User profile photo not updated.", task.exception)
                                 }
@@ -197,6 +200,8 @@ class ProfileActivity : AppCompatActivity() {
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             Log.d(TAG, "User profile profile updated.")
+                            displaynameTv.setText(user!!.displayName)
+                            displaynameET.setText(user.displayName)
                         } else {
                             Log.w(TAG, "User profile photo not updated.", task.exception)
                         }
@@ -204,94 +209,17 @@ class ProfileActivity : AppCompatActivity() {
                 displaynameTv.setText(user!!.displayName)
                 displaynameET.setText(user.displayName)
             }
-            if (user.email != emailET.text.toString()) {
-                println("email")
-                user!!.updateEmail(emailET.text.toString())
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Log.d(TAG, "User email address updated: {${user.email}")
-                        } else {
-                            Log.w(TAG, "User email address not updated.", task.exception)
-                        }
-                    }
-                emailET.setText(user.email)
-            }
-            if (user.phoneNumber != phoneET.text.toString() || phoneET.text.toString() != "" || !phoneET.text.isEmpty()) {
-                println("phone")
-            }
-//                val newPhoneNumber = phoneET.text.toString()
-//                val options = PhoneAuthOptions.newBuilder(FirebaseAuth.getInstance())
-//                    .setPhoneNumber(newPhoneNumber)       // Phone number to verify
-//                    .setTimeout(60L, TimeUnit.SECONDS)    // Timeout after 60 seconds
-//                    .setActivity(this)                     // Activity to launch the verification flow
-//                    .setCallbacks(object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-//                        override fun onVerificationCompleted(credential: PhoneAuthCredential) {
-//                            // Auto-retrieval of verification code completed successfully
-//                            // Update the user's phone number with the new phone number and verification credential
-//                            user?.updatePhoneNumber(credential)?.addOnCompleteListener { task ->
-//                                if (task.isSuccessful) {
-//                                    // Phone number updated successfully
-//                                    Log.d(TAG, "User phone number updated.")
-//                                } else {
-//                                    // Phone number update failed
-//                                    Log.w(TAG, "User phone number update failed.", task.exception)
-//                                    Toast.makeText(this@ProfileActivity, "Verification for phone number failed.", Toast.LENGTH_LONG)
-//
-//                                }
-//                            }
-//                        }
-//
-//                        override fun onVerificationFailed(exception: FirebaseException) {
-//                            // Verification failed
-//                            Log.w(TAG, "Verification failed.", exception)
-//                            Toast.makeText(this@ProfileActivity, "Verification for phone number failed.", Toast.LENGTH_LONG)
-//                        }
-//
-//                        override fun onCodeSent(
-//                            verificationId: String,
-//                            token: PhoneAuthProvider.ForceResendingToken
-//                        ) {
-//                            this@ProfileActivity.verificationId = verificationId
-//                        }
-//                    })
-//                    .build()
-//                PhoneAuthProvider.verifyPhoneNumber(options)
-//
-//                phoneET.setText(user.phoneNumber)
-
-            if (editTextTextPassword.text.toString() != "" && editTextTextPassword.text.toString() != null && user != null && user.email != null) {
-                val email = user.email
-                if (email != null) {
-                    FirebaseAuth.getInstance().fetchSignInMethodsForEmail(email)
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                val result = task.result
-                                if (result != null && result.signInMethods != null && result.signInMethods!!.contains(EmailAuthProvider.EMAIL_PASSWORD_SIGN_IN_METHOD)) {
-                                    // The user has a password set for their account
-                                    val newPassword = editTextTextPassword.text.toString()
-                                    user.updatePassword(newPassword)
-                                        .addOnCompleteListener { passwordTask ->
-                                            if (passwordTask.isSuccessful) {
-                                                Log.d(TAG, "User password updated.")
-                                                Toast.makeText(this, "User password updated.", Toast.LENGTH_LONG).show()
-                                            } else {
-                                                Log.d(TAG, "User password update failed.")
-                                                Toast.makeText(this, "User password update failed.", Toast.LENGTH_LONG).show()
-                                            }
-                                        }
-                                } else {
-                                    // The user does not have a password set for their account
-                                    Toast.makeText(this, "The user does not have a password set.", Toast.LENGTH_LONG).show()
-                                }
-                            } else {
-                                // Handle the error
-                                Log.e(TAG, "Error fetching sign-in methods for email.", task.exception)
-                                Toast.makeText(this, "Error fetching sign-in methods for email.", Toast.LENGTH_LONG).show()
-                            }
-                        }
-
+            db.collection("users").document(user.uid)
+                .set(User(user))
+                .addOnSuccessListener {
+                    Log.d(
+                        TAG,
+                        "DocumentSnapshot successfully written!"
+                    )
                 }
-            }
+                .addOnFailureListener { e -> Log.w(TAG, "Error writing document", e) }
+
+
             progressBar.visibility = View.GONE
             renderView()
         }
