@@ -22,6 +22,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".partner.property.PartnerCouponList"
+            android:exported="false" />
+        <activity
+            android:name=".partner.property.PartnerHotelList"
+            android:exported="false" />
+        <activity
             android:name=".partner.property.sub_property.EditImagePage"
             android:exported="false" />
         <activity
@@ -53,10 +59,23 @@
         <activity
             android:name=".services.room.RoomAddHotelDetailStep2Activity"
             android:exported="false" />
-
         <activity
             android:name=".partner.property.sub_property.EditImageListActivity"
             android:exported="false" />
+            <activity
+            android:name=".partner.booking.PartnerBookingDetail"
+            android:exported="false" />
+        <!--
+             TODO: Before you run your application, you need a Google Maps API key.
+
+             To get one, follow the directions here:
+
+                https://developers.google.com/maps/documentation/android-sdk/get-api-key
+
+             Once you have your API key (it starts with "AIza"), define a new property in your
+             project's local.properties file (e.g. MAPS_API_KEY=Aiza...), and replace the
+             "YOUR_API_KEY" string in this file with "${MAPS_API_KEY}".
+        -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/MAP_API_KEY" />

@@ -54,7 +54,9 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
         setContentView(R.layout.activity_hotel_detail)
         initActionBar()
         progressBar = findViewById(R.id.savedListPB)
+
         hotel_id=intent.getStringExtra("hotel_id")!!
+
         val fm: FragmentManager = supportFragmentManager
 
         val dateStart: Long = intent.getLongExtra("start_date", 0)
@@ -85,6 +87,7 @@ class HotelDetailActivity : AppCompatActivity() , CoroutineScope by MainScope() 
                         if (!documents.isEmpty) {
                             val smallestPrice = documents.documents[0].getDouble("discount_price")
                             if (smallestPrice != null) {
+
                                 val bundle = Bundle()
                                 bundle.putLong("dateStart", dateStart)
                                 bundle.putLong("dateEnd", dateEnd)

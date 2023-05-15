@@ -15,6 +15,7 @@ import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.stayfinder.partner.property.PartnerCouponList
 import com.google.android.gms.tasks.Tasks
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
@@ -75,7 +76,7 @@ class SavedFragment : Fragment(), CoroutineScope by MainScope() {
             .await()
         for (document in documents) {
             val l = document.toObject(saved_lists::class.java)
-            savedList.add(SavedList(l.name_list,l.number_of_item.toString() + " items saved", l.id))
+            savedList.add(SavedList(l.name_list,l.number_of_item.toString() + " items saved", l.id,l.number_of_item.toInt()))
             listadapter.notifyItemInserted(savedList.size - 1)
         }
         progressBar.visibility = View.GONE
@@ -102,7 +103,7 @@ class SavedFragment : Fragment(), CoroutineScope by MainScope() {
 
         docRef.set(list)
 
-        savedList.add(SavedList(name,list.number_of_item.toString() + " items saved",id))
+        savedList.add(SavedList(name,list.number_of_item.toString() + " items saved",id,list.number_of_item))
         listadapter.notifyItemInserted(savedList.size-1)
     }
 
@@ -180,6 +181,9 @@ class SavedFragment : Fragment(), CoroutineScope by MainScope() {
         listadapter.setOnItemClickListener((object : SavedListAdapter.onItemClickListener{
             override fun onItemClick(position: Int){
                 val intent = Intent(activity, DetailListActivity::class.java)
+                intent.putExtra("list_id", savedList[position].id)
+                intent.putExtra("list_name", savedList[position].titlename)
+                intent.putExtra("number_item", savedList[position].n_o_i)
                 startActivity(intent)
             }
         }))
