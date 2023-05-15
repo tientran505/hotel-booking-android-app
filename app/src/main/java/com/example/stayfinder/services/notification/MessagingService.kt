@@ -80,9 +80,8 @@ class MessagingService : FirebaseMessagingService() {
 
 
     private fun sendNotification(strTitle: String, strBody: String,booking_id: String) {
-        var intent = Intent(this, MainActivity::class.java)
+        var intent = Intent(this, PartnerBookingDetail::class.java)
         intent.putExtra("booking_id",booking_id)
-        println("booking_id" + booking_id)
         var pendingIntent = PendingIntent.getActivity(this, 0,intent, PendingIntent.FLAG_IMMUTABLE)
 
 

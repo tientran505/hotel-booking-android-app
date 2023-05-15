@@ -142,19 +142,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun partnerAuth() {
         if (user != null) {
-            val booking_id= intent.getStringExtra("booking_id")
-
             Toast.makeText(this, "user khac null", Toast.LENGTH_SHORT).show()
             Log.d("userisnull", "${user.uid} - ${user.displayName} - ${user.email}")
             val docRef = db.collection("users").document(user.uid).get()
             docRef.addOnCompleteListener { document ->
                 val role = document.result.get("role")
                 if (role != null && role == "partner") {
-                    val intent = Intent(this, PartnerMainActivity::class.java)
-                    if(booking_id!=null){
-                        intent.putExtra("booking_id",booking_id)
-                    }
-                    startActivity(intent)
+                    startActivity(Intent(this, PartnerMainActivity::class.java))
                     finishAffinity()
                 }
             }
