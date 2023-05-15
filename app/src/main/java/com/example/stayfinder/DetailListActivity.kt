@@ -62,17 +62,15 @@ class DetailListActivity : AppCompatActivity() {
                     //Log.d("test", "${document.id} => ${document.data}")
                     var hotel = document.toObject(saved_list_item::class.java)
                     itemList.add(hotel)
-                    val room_documents = db.collection("rooms")
-                                        .whereEqualTo("hotel_id",hotel.hotel_id)
-                                        .orderBy("discount_price").limit(1).get()
-                                        .addOnSuccessListener {room_documents ->
-                                            Log.d("test", "${room_documents.documents} => ${room_documents.size()}")
-                                            if (!room_documents.isEmpty){
-                                                var room = room_documents.documents[0].toObject<RoomDetailModel>()
+                    val room_documents = db.collection("hotels")
+                                        .document(hotel.hotel_id)
+                                        .get()
+                                        .addOnSuccessListener {
+                                                var room = it.toObject<hotels>()
                                                 hotelList.add(HotelDetail(hotel.hotel_id, hotel.titlename,
-                                                    room!!.discount_price, room!!.room_type,hotel.img))
+                                                    room!!.rating_overall, room!!.description,hotel.img))
                                                 listadapter.notifyItemInserted(hotelList.size - 1)
-                                            }
+
                                         }
                 }
             }
