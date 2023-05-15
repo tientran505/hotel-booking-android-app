@@ -81,7 +81,7 @@ class PartnerBookingDetail : AppCompatActivity() {
                 status.setTextColor(Color.RED)
             }
             else if(booking.status == "Active"){
-                status.setText("DWaiting")
+                status.setText("Waiting")
             }
             else{
                 status.setText("Accept")
@@ -138,12 +138,16 @@ class PartnerBookingDetail : AppCompatActivity() {
                     booking.status="Completed"
                     acceptBtn.visibility = View.GONE
                     declineBtn.visibility = View.GONE
+                    status.setText("Accept")
+                    status.setTextColor(Color.GREEN)
                 }
                 declineBtn.setOnClickListener{
                     declineBooking()
                     booking.status="Cancel"
                     acceptBtn.visibility = View.GONE
                     declineBtn.visibility = View.GONE
+                    status.setText("Decline")
+                    status.setTextColor(Color.RED)
                 }
             }else{
                 acceptBtn.visibility = View.GONE
