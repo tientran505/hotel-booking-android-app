@@ -12,23 +12,23 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.stayfinder.R
 import com.example.stayfinder.model.Bed
+import com.example.stayfinder.model.NotificationModel
 import com.example.stayfinder.model.RoomDetailModel
 import com.example.stayfinder.partner.PartnerMainActivity
 import com.example.stayfinder.services.notification.FcmNotificationSender
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.textfield.MaterialAutoCompleteTextView
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.firestore.FieldValue
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
 import com.mcdev.quantitizerlibrary.HorizontalQuantitizer
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class RoomAddHotelDetailActivity : AppCompatActivity() {
-//    val arr_typeroom = arrayListOf<String>("Bed Room", "Bath Room", "Kitchen Room")
+    //    val arr_typeroom = arrayListOf<String>("Bed Room", "Bath Room", "Kitchen Room")
     var typesRoom: ArrayList<String> = ArrayList<String>()
     private lateinit var guestStayHQ: HorizontalQuantitizer
 //    private lateinit var bathroomHQ: HorizontalQuantitizer
@@ -56,9 +56,9 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
     private lateinit var bedType_row2: MaterialAutoCompleteTextView
     private lateinit var numBedType_row2: MaterialAutoCompleteTextView
 
-    private lateinit var btnDeleteRow1 : ImageButton
+    private lateinit var btnDeleteRow1: ImageButton
 
-    private lateinit var btnDeleteRow2 : ImageButton
+    private lateinit var btnDeleteRow2: ImageButton
     private lateinit var addRow: Button
 
     private lateinit var row1: LinearLayout
@@ -68,7 +68,7 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
     private val db = Firebase.firestore
     var nameCollection: String = "TestRoom"
 
-    var tempRoom:RoomDetailModel = RoomDetailModel()
+    var tempRoom: RoomDetailModel = RoomDetailModel()
 
     private lateinit var uuidHotel: String
 
@@ -78,22 +78,47 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
 
 
         //=============================DEMO REQUEST TO ALL DEVICE============================
-        FirebaseMessaging.getInstance().subscribeToTopic("all")
+//        FirebaseMessaging.getInstance().subscribeToTopic("all")
 //        val sender = FcmNotificationSender("/topics/all", "Title o day", "Noi dung o day", applicationContext, this)
 //        sender.SendNotifications()
         //=============================END DEMO REQUEST======================================
 
+
         //=============================DEMO REQUEST TO ONE DEVICE WITH TOKEN============================
-        val sender = FcmNotificationSender("fKJwOpXsQomTSCd_hIHXXs:APA91bEYKE-PrOITP94UtaCmNIm0a-IIQYE8X2_QWKd-bqyHQsGM33B79bXVxnXfM8YTobIOwXpBF2kjOg2m8QRy24zCfSpBFNm2eP9hR7JT0jpdUOeEVzE1hfSxtY7OtEuzwrWrlCQg",
-            "Title o day",
-            "Noi dung o day",
-            applicationContext,
-            this
-            )
-        sender.SendNotifications()
+//        val sender = FcmNotificationSender("eWBSqyDWQc-u57ApNm4q1I:APA91bHGLeZVfJtZKe_3ARYPD8pii59Y7N2R_n8wEucNpwIvlPZVaAszPNkYxXqyc_d-e90WHOtokdYLfbb4vawTO193uqTIW7j61pAi3Qk-KRh6tKyCwZ9eX5WH_8MwTHSKw8Crh6hI",
+//            "Title o day",
+//            "Noi dung o day",
+//            applicationContext,
+//            this
+//            )
+//        sender.SendNotifications()
         //=============================END DEMO REQUEST=================================================
 
-        categoryRoomSpinner = (findViewById<TextInputLayout?>(R.id.spinnerTypeRoom).editText as? MaterialAutoCompleteTextView)!!
+
+        //=============================DEMO REQUEST TO ONE DEVICE WITH TOKEN FROM FIREBASE CURRENT USER============================
+        val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+        val uuidUser = user!!.uid
+        db.collection(
+            getString(R.string.collection_name_token_notification)
+        ).document(uuidUser).get().addOnSuccessListener { document ->
+            if (document != null) {
+                var notificationObj = document.toObject(NotificationModel::class.java)
+                val token = notificationObj?.tokenUser
+                if (token != null) {
+                    val sender = FcmNotificationSender(
+                        token,
+                        "Title test current user",
+                        "Noi dung current user",
+                        applicationContext,
+                        this
+                    )
+                    sender.SendNotifications()
+                }
+            }
+        }
+        //=============================END DEMO REQUEST=================================================
+        categoryRoomSpinner =
+            (findViewById<TextInputLayout?>(R.id.spinnerTypeRoom).editText as? MaterialAutoCompleteTextView)!!
 
         roomNumber = findViewById(R.id.roomNumber)
         roomNumber.minValue = 1
@@ -135,8 +160,7 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
                 findViewById<TextInputLayout?>(R.id.spinnerTypeBed).error = null
                 findViewById<TextInputLayout?>(R.id.spinnerNumber).error = null
 
-            }
-            else {
+            } else {
                 bedSelectionCV.visibility = View.VISIBLE
             }
         }
@@ -154,7 +178,8 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
                     val room = document.toObject(RoomDetailModel::class.java)!!
 
                     // set spinner style room
-                    val typeRoom = applicationContext.resources.getStringArray(R.array.spinner_type_room)
+                    val typeRoom =
+                        applicationContext.resources.getStringArray(R.array.spinner_type_room)
                     categoryRoomSpinner.setText(room.room_type)
                     categoryRoomSpinner.setSimpleItems(typeRoom)
 //                    categoryRoomSpinner.setSelection(indexTypeRoom)
@@ -214,7 +239,7 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
 
             val room = getRoomData()
             Log.d("current_room", room.toString())
-            val timestamp : Long? = null
+            val timestamp: Long? = null
 
 //            if(editMode != false){
 //                timestamp = tempRoom.available_start_date?.seconds // đã chia 1000
@@ -228,7 +253,7 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
             val intent = Intent(this, RoomAddHotelDetailStep2Activity::class.java)
             intent.putExtra("roomInfo", room)
             intent.putExtra("editMode", editMode)
-            if(editMode){
+            if (editMode) {
                 intent.putExtra("timestamp", timestamp)
             }
 
@@ -307,29 +332,43 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
 
 
     private fun formValidate(): Boolean {
-        val isCategoryRoomSpinnerValid = validateField(findViewById(R.id.spinnerTypeRoom), categoryRoomSpinner.text.toString())
+        val isCategoryRoomSpinnerValid =
+            validateField(findViewById(R.id.spinnerTypeRoom), categoryRoomSpinner.text.toString())
         val isRoomNameValid = validateField(roomName, roomName.editText?.text.toString().orEmpty())
-        val isAreaSquareETValid = validateField(areaSquareET, areaSquareET.editText?.text.toString().orEmpty())
-        val isDescriptionValid = validateField(description, description.editText?.text.toString().orEmpty())
+        val isAreaSquareETValid =
+            validateField(areaSquareET, areaSquareET.editText?.text.toString().orEmpty())
+        val isDescriptionValid =
+            validateField(description, description.editText?.text.toString().orEmpty())
 
-        var result = isCategoryRoomSpinnerValid && isRoomNameValid && isAreaSquareETValid && isDescriptionValid
+        var result =
+            isCategoryRoomSpinnerValid && isRoomNameValid && isAreaSquareETValid && isDescriptionValid
 
         if (categoryRoomSpinner.text.toString() != "Single") {
-            val isBedTypeValid = validateField(findViewById(R.id.spinnerTypeBed), bedType.text.toString())
-            val isNumBedTypeValid = validateField(findViewById(R.id.spinnerNumber), numBedType.text.toString())
+            val isBedTypeValid =
+                validateField(findViewById(R.id.spinnerTypeBed), bedType.text.toString())
+            val isNumBedTypeValid =
+                validateField(findViewById(R.id.spinnerNumber), numBedType.text.toString())
 
             result = result && isBedTypeValid && isNumBedTypeValid
 
             if (row1.visibility == View.VISIBLE) {
-                val isBedTypeRow1Valid = validateField(findViewById(R.id.spinnerTypeBed1), bedType_row1.text.toString())
-                val isNumBedTypeRow1Valid = validateField(findViewById(R.id.spinnerNumber1), numBedType_row1.text.toString())
+                val isBedTypeRow1Valid =
+                    validateField(findViewById(R.id.spinnerTypeBed1), bedType_row1.text.toString())
+                val isNumBedTypeRow1Valid = validateField(
+                    findViewById(R.id.spinnerNumber1),
+                    numBedType_row1.text.toString()
+                )
 
                 result = result && isBedTypeRow1Valid && isNumBedTypeRow1Valid
             }
 
             if (row2.visibility == View.VISIBLE) {
-                val isBedTypeRow2Valid = validateField(findViewById(R.id.spinnerTypeBed2), bedType_row2.text.toString())
-                val isNumBedTypeRow2Valid = validateField(findViewById(R.id.spinnerNumber2), numBedType_row2.text.toString())
+                val isBedTypeRow2Valid =
+                    validateField(findViewById(R.id.spinnerTypeBed2), bedType_row2.text.toString())
+                val isNumBedTypeRow2Valid = validateField(
+                    findViewById(R.id.spinnerNumber2),
+                    numBedType_row2.text.toString()
+                )
 
                 result = result && isBedTypeRow2Valid && isNumBedTypeRow2Valid
             }
@@ -340,13 +379,19 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
 
     @SuppressLint("CutPasteId")
     private fun initComponent() {
-        bedType = (findViewById<TextInputLayout?>(R.id.spinnerTypeBed).editText as? MaterialAutoCompleteTextView)!!
-        bedType_row1 = (findViewById<TextInputLayout?>(R.id.spinnerTypeBed1).editText as? MaterialAutoCompleteTextView)!!
-        bedType_row2 = (findViewById<TextInputLayout?>(R.id.spinnerTypeBed2).editText as? MaterialAutoCompleteTextView)!!
+        bedType =
+            (findViewById<TextInputLayout?>(R.id.spinnerTypeBed).editText as? MaterialAutoCompleteTextView)!!
+        bedType_row1 =
+            (findViewById<TextInputLayout?>(R.id.spinnerTypeBed1).editText as? MaterialAutoCompleteTextView)!!
+        bedType_row2 =
+            (findViewById<TextInputLayout?>(R.id.spinnerTypeBed2).editText as? MaterialAutoCompleteTextView)!!
 
-        numBedType = (findViewById<TextInputLayout?>(R.id.spinnerNumber).editText as? MaterialAutoCompleteTextView)!!
-        numBedType_row1 = (findViewById<TextInputLayout?>(R.id.spinnerNumber1).editText as? MaterialAutoCompleteTextView)!!
-        numBedType_row2 = (findViewById<TextInputLayout?>(R.id.spinnerNumber2).editText as? MaterialAutoCompleteTextView)!!
+        numBedType =
+            (findViewById<TextInputLayout?>(R.id.spinnerNumber).editText as? MaterialAutoCompleteTextView)!!
+        numBedType_row1 =
+            (findViewById<TextInputLayout?>(R.id.spinnerNumber1).editText as? MaterialAutoCompleteTextView)!!
+        numBedType_row2 =
+            (findViewById<TextInputLayout?>(R.id.spinnerNumber2).editText as? MaterialAutoCompleteTextView)!!
 
         btnDeleteRow1 = findViewById(R.id.delete_btn_row_1)
         btnDeleteRow2 = findViewById(R.id.delete_btn_row_2)
@@ -382,8 +427,7 @@ class RoomAddHotelDetailActivity : AppCompatActivity() {
                 if (row2.visibility == View.VISIBLE) {
                     addRow.visibility = View.GONE
                 }
-            }
-            else if (row2.visibility == View.GONE) {
+            } else if (row2.visibility == View.GONE) {
                 row2.visibility = View.VISIBLE
 
                 if (row1.visibility == View.VISIBLE) {

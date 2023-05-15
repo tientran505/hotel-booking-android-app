@@ -12,7 +12,7 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <!--        android:name=".services.notification.Notification"-->
     <application
-
+        android:name=".services.notification.NotificationAndroid"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -26,7 +26,9 @@
 
         <service
             android:name=".services.notification.MessagingService"
-            android:exported="false">
+            android:exported="false"
+            android:permission="TODO"
+            tools:ignore="ExportedService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

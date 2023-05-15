@@ -39,6 +39,19 @@ class MainActivity : AppCompatActivity() {
         //subscribe all channel
         FirebaseMessaging.getInstance().subscribeToTopic("all")
 
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.e("Error", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+
+            Log.e("Token ID", token)
+
+        })
+
         actionBarSetup()
         partnerAuth()
 

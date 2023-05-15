@@ -62,17 +62,17 @@ class MessagingService : FirebaseMessagingService() {
 //        }
 
         //cài rung khi có thông báo
-        val v = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-        val pattern = longArrayOf(100,300,300,100)
-        v.vibrate(pattern,-1)
-
-        val resourceImage = resources.getIdentifier(message.notification?.icon,"drawable", packageName)
-
-        var builder = NotificationCompat.Builder(this, "CHANNEL_ID")
-//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+//        val v = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+//        val pattern = longArrayOf(100,300,300,100)
+//        v.vibrate(pattern,-1)
 //
-//        }
-        builder.setSmallIcon(resourceImage)
+//        val resourceImage = resources.getIdentifier(message.notification?.icon,"drawable", packageName)
+//
+//        var builder = NotificationCompat.Builder(this, "CHANNEL_ID")
+////        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+////
+////        }
+//        builder.setSmallIcon(resourceImage)
 
         sendNotification(strTitle, strBody)
 
@@ -81,36 +81,20 @@ class MessagingService : FirebaseMessagingService() {
 
     private fun sendNotification(strTitle: String, strBody: String) {
         var intent = Intent(this, MainActivity::class.java)
-        var pendingIntent = PendingIntent.getActivity(this, 1,intent, PendingIntent.FLAG_IMMUTABLE)
+        var pendingIntent = PendingIntent.getActivity(this, 0,intent, PendingIntent.FLAG_IMMUTABLE)
 
 
         var notificationBuilder = NotificationCompat.Builder(this, "push_notification_id")
-                                    .setContentTitle(strTitle)
-                                    .setContentText(strBody)
-                                    .setSmallIcon(R.mipmap.ic_launcher)
-                                    .setContentIntent(pendingIntent)
-                                    .setStyle(NotificationCompat.BigTextStyle().bigText(strBody))
-                                    .setAutoCancel(true)
-                                    .setPriority(android.app.Notification.PRIORITY_MAX)
+            .setContentTitle(strTitle)
+            .setContentText(strBody)
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentIntent(pendingIntent)
 
         var notification = notificationBuilder.build()
         var notificationManager : NotificationManager?  = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager? ?: return
 
-
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            val channelId = "CHANNEL_ID"
-            val channel = NotificationChannel(
-                channelId,
-                "Channel human readable title",
-                NotificationManager.IMPORTANCE_HIGH
-            )
-
-            notificationManager!!.createNotificationChannel(channel)
-            notificationBuilder.setChannelId(channelId)
-        }
-
         if (notificationManager != null) {
-            notificationManager.notify(100, notification)
+            notificationManager.notify(1, notification)
         }
 
     }
@@ -120,32 +104,4 @@ class MessagingService : FirebaseMessagingService() {
         Log.e("DEBUG LOG================", token)
     }
 
-//    fun getToken(): String{
-//        return FirebaseMessaging.getInstance().token.toString()
-//    }
-//
-//    fun getToken(uuid:String):String?{
-//        var result : String? = null
-//        collection_name_token_notification = getString(R.string.collection_name_token_notification)
-//        db.collection(collection_name_token_notification!!).document(uuid).get().addOnSuccessListener {
-//            document ->
-//            if(document!= null) {
-//                val message = document.toObject(NotificationModel::class.java)
-//                result = message!!.tokenUser
-//            }
-//
-//        }
-//        return result
-//    }
-
-    fun sendMessageToServer(title:String, message:String, token:String){
-        val fm = Firebase.messaging
-        fm.send(
-            remoteMessage("$token@fcm.googleapis.com") {
-                setMessageId(messageId.toString())
-                addData("strTitle", title)
-                addData("body", message)
-            },
-        )
-    }
 }
