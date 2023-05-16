@@ -49,7 +49,7 @@ class DetailListActivity : AppCompatActivity() {
         val menu = supportActionBar
         menu?.setDisplayHomeAsUpEnabled(true)
         menu?.setHomeButtonEnabled(true)
-        menu?.title = "Coupon Management"
+        menu?.title = "Favorite List"
     }
 
     private fun loadSavedLists(list_id:String){
