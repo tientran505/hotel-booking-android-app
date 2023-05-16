@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardElevation="10dp"
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginVertical="10dp"
+    android:paddingVertical="10dp"
+    style="?attr/materialCardViewFilledStyle"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingVertical="10dp"
+        >
+
+        <TextView
+            android:id="@+id/propertyNameBooking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:text="Thanh Huynh"
+            android:textSize="15sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginVertical="10dp"
+            android:paddingHorizontal="10dp"
+            >
+
+            <ImageView
+                android:id="@+id/statusBookingIV"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center_vertical"
+                android:padding="7dp"
+                android:layout_marginHorizontal="10dp"
+                android:background="@drawable/bg_icon_green"
+                app:srcCompat="@drawable/calendar_check_svgrepo_com" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/titleBooking"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLines="2"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:text="Luong Dien made a reservation" />
+
+                <TextView
+                    android:id="@+id/bookingDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="a day ago"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/divider15"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginVertical="10dp"
+            android:layout_weight="1"
+            android:background="?android:attr/listDivider" />
+
+        <TextView
+            android:id="@+id/checkInDateBooking"
+            android:layout_width="match_parent"
+            android:paddingHorizontal="10dp"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/door_exit_svgrepo_com"
+            android:drawablePadding="10dp"
+            android:gravity="center_vertical"
+            android:text="Saturday, April 29, 2023" />
+
+        <TextView
+            android:id="@+id/numOfNightBooking"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:text="Saturday, April 29, 2023"
+            android:gravity="center_vertical"
+            android:layout_marginVertical="10dp"
+            android:drawablePadding="10dp"
+            android:drawableStart="@drawable/night_moon_svgrepo_com"
+            />
+
+        <TextView
+            android:id="@+id/roomInfoBooking"
+            android:layout_width="match_parent"
+            android:paddingHorizontal="10dp"
+            android:layout_height="wrap_content"
+            android:text="Saturday, April 29, 2023"
+            android:gravity="center_vertical"
+            android:drawablePadding="10dp"
+            android:drawableStart="@drawable/bed_svgrepo_com"
+            />
+
+        <View
+            android:id="@+id/divider16"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginVertical="10dp"
+            android:background="?android:attr/listDivider" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp"
+            >
+
+            <TextView
+                android:id="@+id/textView30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total price: " />
+
+            <TextView
+                android:id="@+id/totalPriceBooking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingStart="10dp"
+                android:textStyle="bold"
+                android:text="VND 200,000" />
+        </LinearLayout>
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

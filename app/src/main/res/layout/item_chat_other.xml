@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/text_gchat_date_other"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="June 10 at 11:00"
+        android:textColor="#C0C0C0"
+        android:gravity="center_horizontal"/>
+
+    <TextView
+        android:id="@+id/text_gchat_user_other"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Anh Thu"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="bottom">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/image_gchat_profile_other"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/custom_round_avatar"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/roundedImageViewRounded"
+            android:layout_centerVertical="true"
+            app:srcCompat="@drawable/img_1" />
+
+        <LinearLayout
+            android:id="@+id/layout_gchat_container_other"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_gchat_message_other"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="#eef1f6"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1dp"
+                app:strokeColor="@color/black"
+                app:cardPreventCornerOverlap="false"
+                app:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:id="@+id/layout_gchat_container_me"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="8dp"
+                        android:gravity="center">
+                        <TextView
+                            android:id="@+id/text_gchat_message_other"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:maxWidth="260dp"
+                            android:text="This is a Message"
+                            android:textColor="@color/black"
+                            android:textSize="16sp" />
+                    </LinearLayout>
+
+                </com.google.android.material.card.MaterialCardView>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

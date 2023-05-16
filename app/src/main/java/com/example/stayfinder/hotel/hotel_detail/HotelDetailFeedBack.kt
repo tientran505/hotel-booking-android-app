@@ -9,10 +9,10 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.stayfinder.FeedBack
-import com.example.stayfinder.FeedbackAdapter
-import com.example.stayfinder.R
-import java.net.URL
+import com.example.stayfinder.*
+
+import com.google.firebase.firestore.IgnoreExtraProperties
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -42,40 +42,35 @@ class HotelDetailFeedBack : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view: View? =inflater.inflate(R.layout.fragment_sub_hotel_detail_feed_back, container, false)
-        val feedBacks :ArrayList<FeedBack>? = arrayListOf(
-            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
-            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
-            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
-            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
-            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
-            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
-            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
-            FeedBack("Anh Thư", URL("https://i.pinimg.com/originals/17/17/32/171732cf7fa89190d48ddb9feee8242e.jpg"),"Excellent","really happy to live here","4-4-2023",4.5,"single","30-3-2023",3,"single"),
-        )
-//        val reviews: ArrayList<reviews> = arrayListOf()
-//            Reviews()
-
-        val cleanliness = 4.5
-        val service = 4.2
-        val location = 4.0
-        val comfort = 3.2
-
-//        val bookingDetail :bookingDetail? = this.getArguments()?.getSerializable("BookingDetail") as bookingDetail?
-//        val bookingid = this.getArguments()?.getString("booking_id")
+        val listReview  = (activity as HotelDetailActivity2?)?.getReview() as ArrayList<Review>
+        println("listReview"+listReview)
+        val feedBacks :ArrayList<FeedBack> = ArrayList<FeedBack>()
+        for( i in listReview){
+            feedBacks.add(FeedBack(i))
+        }
+        println("feedback" +feedBacks)
+        val hotel_rating =getArguments()?.getSerializable("rating") as  HashMap<String, Int>
         val textView = view!!.findViewById<TextView>(R.id.textView)
         val cleanBar = view!!.findViewById<ProgressBar>(R.id.cleanBar)
         val comfortBar = view!!.findViewById<ProgressBar>(R.id.comfortBar)
         val locationBar = view!!.findViewById<ProgressBar>(R.id.locationBar)
         val serviceBar = view!!.findViewById<ProgressBar>(R.id.servicesBar)
 
-        cleanBar.setProgress((cleanliness*20).toInt())
-        comfortBar.setProgress((comfort*20).toInt())
-        locationBar.setProgress((location*20).toInt())
-        serviceBar.setProgress((service*20).toInt())
+        val cleanTV = view.findViewById<TextView>(R.id.cleanlinessRate)
+        val comfortTV = view.findViewById<TextView>(R.id.comfortRate)
+        val servicesTV = view.findViewById<TextView>(R.id.servicesRate)
+        val locationTV = view.findViewById<TextView>(R.id.locationRate)
 
-//        if (bookingid != null) {
-            textView.setText("Customer reviews about the place ")
-//        }
+        cleanTV.text = hotel_rating["cleanliness"].toString()
+        comfortTV.text = hotel_rating["comfort"].toString()
+        servicesTV.text = hotel_rating["services"].toString()
+        locationTV.text = hotel_rating["location"].toString()
+
+        cleanBar.progress = (hotel_rating["cleanliness"]!!*20)
+        comfortBar.progress = (hotel_rating["comfort"]!!*20)
+        locationBar.progress = (hotel_rating["services"]!!*20)
+        serviceBar.progress = (hotel_rating["location"]!!*20)
+        textView.text = "Customer reviews about the place "
 
         val recyclerview = view!!.findViewById<RecyclerView>(R.id.recyclerview)
         recyclerview?.layoutManager = LinearLayoutManager(this.context)

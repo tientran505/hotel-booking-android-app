@@ -120,6 +120,3 @@ class HotelSearch : AppCompatActivity() {
         }
 
         hotelSearchRV.adapter = hotelSearchAdapter
-
-    }
-}

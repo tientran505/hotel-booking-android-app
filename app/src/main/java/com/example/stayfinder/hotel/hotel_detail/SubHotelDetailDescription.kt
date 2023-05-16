@@ -37,40 +37,59 @@ class SubHotelDetailDescription : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val bookingDetail :HotelDetails ? = this.getArguments()?.getSerializable("BookingDetail") as HotelDetails ?
+    ): View {
         val view: View? = inflater.inflate(R.layout.fragment_sub_hotel_detail_description, container, false)
         val expendTv = view!!.findViewById<ExpandableTextView>(R.id.expand_text_view)
-        expendTv.setText(bookingDetail!!.description )
+
+        val description = requireArguments().getString("hotel_description")!!
+        val ratingOverall = requireArguments().getDouble("hotel_rating")
+        val numOfFeedBack = requireArguments().getInt("num_of_feedback")
+        val hotel_id = requireArguments().getString("hotel_id")
+
+
+
+        expendTv.text = description
         val ratingTv = view!!.findViewById<TextView>(R.id.ratingTv)
-        ratingTv.setText(bookingDetail.rating_overall.toString())
+
         val EvaluateTv= view!!.findViewById<TextView>(R.id.EvaluateTv)
-        if(bookingDetail.rating_overall!! < 1.0){
-            EvaluateTv.setText("Very Poor")
-        }
-        else if(bookingDetail.rating_overall!! <2.0){
-            EvaluateTv.setText("Very Poor")
-        }
-        else if (bookingDetail.rating_overall!! <3.0){
-            EvaluateTv.setText("Average")
 
+        val noFeedbackTv = view.findViewById<TextView>(R.id.noFeedbackTv)
+        if (numOfFeedBack == 0) {
+            noFeedbackTv.text = "No guest reviews yet"
+            EvaluateTv.text = "No guest reviews to evaluate"
+            ratingTv.text = "?.?"
         }
-        else if (bookingDetail.rating_overall!! <4.0){
-            EvaluateTv.setText("Good")
-        }
-        else{
-            EvaluateTv.setText("Excelent")
-        }
-        if(bookingDetail.noFeedback!=0){
-            val noFeedbackTv = view!!.findViewById<TextView>(R.id.noFeedbackTv)
-            noFeedbackTv.setText(bookingDetail.noFeedback.toString()+" have leave a feedback for this place")
+        else {
+            noFeedbackTv.text = "$numOfFeedBack guest(s) left a feedback for this place"
+            if(ratingOverall < 1.0){
+                EvaluateTv.text = "Very Poor"
+            }
+            else if(ratingOverall < 2.0){
+                EvaluateTv.text = "Very Poor"
+            }
+            else if (ratingOverall < 3.0){
+                EvaluateTv.text = "Average"
+            }
+            else if (ratingOverall < 4.0){
+                EvaluateTv.text = "Good"
+            }
+            else{
+                EvaluateTv.text = "Excellent"
+            }
+            ratingTv.text = ratingOverall.toString()
         }
 
-        val FeedbackBtn = view!!.findViewById<RelativeLayout>(R.id.FeedbackBtn)
+
+
+        val FeedbackBtn = view.findViewById<RelativeLayout>(R.id.FeedbackBtn)
         FeedbackBtn.setOnClickListener{
             val intent = Intent(this.context, HotelDetailActivity2::class.java)
-            intent.putExtra("fragment_type","feebback");
-            intent.putExtra("booking_id",bookingDetail.id);
+            var rating = this.arguments?.getSerializable("rating")
+            if(rating == null) rating = rating()
+            intent.putExtra("fragment_type","feedback");
+            intent.putExtra("hotel_id", hotel_id);
+//            intent.putExtra("hotel_detail",bookingDetail);
+            intent.putExtra("rating",rating);
             startActivity(intent)
         }
 

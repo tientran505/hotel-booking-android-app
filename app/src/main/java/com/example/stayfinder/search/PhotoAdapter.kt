@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide
 import com.example.stayfinder.R
 
 class PhotoAdapter(private val mContext: Context,
-                   private val mListPhoto: List<Photo>?): RecyclerView.Adapter<PhotoAdapter.ViewHolder>() {
+                   private val mListPhoto: List<String>): RecyclerView.Adapter<PhotoAdapter.ViewHolder>() {
 
     inner class ViewHolder(listItemView: View): RecyclerView.ViewHolder(listItemView) {
         val imgPhoto: ImageView = listItemView.findViewById(R.id.imgPhoto)
@@ -23,19 +23,14 @@ class PhotoAdapter(private val mContext: Context,
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val photo = mListPhoto?.get(position)
+        val photo = mListPhoto[position]
 
-        if (photo != null) {
-            Glide.with(mContext)
-                .load(photo.getResourceId())
-                .into(holder.imgPhoto)
-        }
+        Glide.with(mContext)
+            .load(photo)
+            .into(holder.imgPhoto)
     }
 
     override fun getItemCount(): Int {
-        if (mListPhoto != null) {
-            return mListPhoto.size
-        }
-        return 0
+        return mListPhoto.size
     }
 }
