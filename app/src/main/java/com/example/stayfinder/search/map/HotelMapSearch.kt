@@ -9,10 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewOutlineProvider
 import android.widget.ImageButton
+import android.widget.LinearLayout
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.viewpager2.widget.ViewPager2
+import com.example.stayfinder.BookingInformation
 import com.example.stayfinder.R
 import com.example.stayfinder.hotel.Hotel
 import com.example.stayfinder.hotel.hotel_detail.HotelDetailActivity
@@ -37,7 +39,8 @@ private const val ARG_PARAM2 = "param2"
  * Use the [HotelMapSearch.newInstance] factory method to
  * create an instance of this fragment.
  */
-class HotelMapSearch(val hotel: HotelDetailModel, val db: FirebaseFirestore, val currentGuest: Int) : Fragment() {
+class HotelMapSearch(val hotel: HotelDetailModel, val db: FirebaseFirestore, val currentGuest: Int,
+val startDate: Long, val endDate: Long, val bookingInformation: BookingInformation) : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -50,7 +53,7 @@ class HotelMapSearch(val hotel: HotelDetailModel, val db: FirebaseFirestore, val
     private lateinit var hotelVP: ViewPager2
     private lateinit var indicator: CircleIndicator3
     private lateinit var cityName: TextView
-    private lateinit var card: ConstraintLayout
+    private lateinit var card: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +74,12 @@ class HotelMapSearch(val hotel: HotelDetailModel, val db: FirebaseFirestore, val
 
         view.setOnClickListener {
             val intent = Intent(requireContext(), HotelDetailActivity::class.java)
+
+            intent.putExtra("start_date", startDate)
+            intent.putExtra("end_date", endDate)
+            intent.putExtra("booking_info", bookingInformation)
+            intent.putExtra("hotel_id", hotel.id)
+
             startActivity(intent)
         }
 

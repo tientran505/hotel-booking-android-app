@@ -52,7 +52,6 @@ class PartnerHotelList : AppCompatActivity() {
             docRef.get().addOnSuccessListener { documents ->
                 for (document in documents) {
                     val hotel = document.toObject<hotels>()
-                    Log.d("tien", hotel.toString())
                     propertyList.add(hotel)
                 }
                 propertyAdapter.notifyDataSetChanged()

@@ -38,10 +38,15 @@ class ChatActivity : AppCompatActivity() {
     lateinit var adapter:MessageListAdapter
     lateinit var userOther : UserMessage
     lateinit var messageET: EditText
+    lateinit var textChatIndicator: TextView
+
     val userfb: FirebaseUser? = FirebaseAuth.getInstance().currentUser!!
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_chat)
+
+        textChatIndicator = findViewById(R.id.text_gchat_indicator)
+
         val documents = Firebase.firestore.collection("users")
             .document(userfb!!.uid)
         documents.get().addOnSuccessListener { document ->
@@ -53,6 +58,7 @@ class ChatActivity : AppCompatActivity() {
                 )
 
             }
+
             mMessageRecycler = findViewById(R.id.recycler_gchat) as RecyclerView
             adapter = MessageListAdapter(context, messageList,currentUser)
             mMessageRecycler!!.adapter = adapter
@@ -62,6 +68,9 @@ class ChatActivity : AppCompatActivity() {
         val bundle = intent.extras
         userOther = bundle!!.getSerializable("user") as UserMessage
         context = this
+
+        textChatIndicator.text = userOther.displayName
+
 //        mMessageRecycler = findViewById(R.id.recycler_gchat) as RecyclerView
 //        val adapter = MessageListAdapter(this, messageList,currentUser)
 //        mMessageRecycler!!.adapter = adapter

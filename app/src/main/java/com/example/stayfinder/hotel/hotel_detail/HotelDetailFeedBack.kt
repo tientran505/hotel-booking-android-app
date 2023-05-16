@@ -58,11 +58,21 @@ class HotelDetailFeedBack : Fragment() {
         val locationBar = view!!.findViewById<ProgressBar>(R.id.locationBar)
         val serviceBar = view!!.findViewById<ProgressBar>(R.id.servicesBar)
 
-        cleanBar.setProgress((hotel_rating?.get("cleanliness")!!*20))
-        comfortBar.setProgress((hotel_rating?.get("comfort")!!*20))
-        locationBar.setProgress((hotel_rating?.get("services")!!*20))
-        serviceBar.setProgress((hotel_rating?.get("location")!!*20))
-        textView.setText("Customer reviews about the place ")
+        val cleanTV = view.findViewById<TextView>(R.id.cleanlinessRate)
+        val comfortTV = view.findViewById<TextView>(R.id.comfortRate)
+        val servicesTV = view.findViewById<TextView>(R.id.servicesRate)
+        val locationTV = view.findViewById<TextView>(R.id.locationRate)
+
+        cleanTV.text = hotel_rating["cleanliness"].toString()
+        comfortTV.text = hotel_rating["comfort"].toString()
+        servicesTV.text = hotel_rating["services"].toString()
+        locationTV.text = hotel_rating["location"].toString()
+
+        cleanBar.progress = (hotel_rating["cleanliness"]!!*20)
+        comfortBar.progress = (hotel_rating["comfort"]!!*20)
+        locationBar.progress = (hotel_rating["services"]!!*20)
+        serviceBar.progress = (hotel_rating["location"]!!*20)
+        textView.text = "Customer reviews about the place "
 
         val recyclerview = view!!.findViewById<RecyclerView>(R.id.recyclerview)
         recyclerview?.layoutManager = LinearLayoutManager(this.context)
