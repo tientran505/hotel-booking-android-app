@@ -48,7 +48,7 @@ class EditImageListActivity : AppCompatActivity() {
                                 println(IdList)
                                 intent.putExtra("id", IdList[position])
                                 if (position == 0)
-                                    intent.putExtra("collection", "Hotels")
+                                    intent.putExtra("collection", "hotels")
                                 else
                                     intent.putExtra("collection", "rooms")
 
