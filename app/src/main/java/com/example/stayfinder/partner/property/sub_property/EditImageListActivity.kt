@@ -14,14 +14,16 @@ import com.google.firebase.ktx.Firebase
 class EditImageListActivity : AppCompatActivity() {
     private var NameList: ArrayList<String?> = arrayListOf<String?>()
     private var IdList: ArrayList<String?> = arrayListOf<String?>()
-    val hotel_id ="5l5PibkyeRaZRFCVPrlB"
     lateinit var recyclerView : RecyclerView
+    lateinit var hotel_id: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_image_list)
         initActionBar()
         recyclerView= findViewById(R.id.recyclerView)
-        val documents = Firebase.firestore.collection("Hotels").document(hotel_id)
+//        println("hotel_id"+hotel_id)
+        hotel_id=intent.getStringExtra("hotel_id")!!
+        val documents = Firebase.firestore.collection("hotels").document(hotel_id)
         documents.get().addOnSuccessListener { document ->
             if (document != null) {
                 IdList.add(document.getString("id"))
@@ -43,6 +45,7 @@ class EditImageListActivity : AppCompatActivity() {
                             position ->
                             run {
                                 val intent = Intent(this, EditImagePage::class.java)
+                                println(IdList)
                                 intent.putExtra("id", IdList[position])
                                 if (position == 0)
                                     intent.putExtra("collection", "Hotels")

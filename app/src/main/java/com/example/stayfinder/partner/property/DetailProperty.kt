@@ -41,7 +41,7 @@ class DetailProperty : AppCompatActivity() {
     private lateinit var hotel: hotels
 
     private lateinit var progressBar: ProgressBar
-    private val hotel_id="5l5PibkyeRaZRFCVPrlB"
+//    private val hotel_id="5l5PibkyeRaZRFCVPrlB"
     lateinit var locationBtn: Button
     lateinit var photoBtn: Button
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -136,12 +136,12 @@ class DetailProperty : AppCompatActivity() {
         progressBar.visibility = View.GONE
         locationBtn.setOnClickListener {
             val intent = Intent(this, EditLocationActivity::class.java)
-            intent.putExtra("hotel_id",hotel_id);
+            intent.putExtra("hotel_id",hotel.id);
             startActivity(intent)
         }
         photoBtn.setOnClickListener {
             val intent = Intent(this, EditImageListActivity::class.java)
-            intent.putExtra("hotel_id",hotel_id);
+            intent.putExtra("hotel_id",hotel.id);
             startActivity(intent)
         }
     }
