@@ -10,6 +10,8 @@
         style="?android:attr/progressBarStyle"
         android:layout_width="match_parent"
         android:layout_gravity="center"
+        android:scaleY="0.3"
+        android:scaleX="0.3"
         android:layout_height="match_parent"
         android:layout_marginVertical="15dp" />
     <Button
@@ -50,32 +52,32 @@
             <FrameLayout
                 android:id="@+id/fame1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></FrameLayout>
+                android:layout_height="wrap_content" />
 
             <FrameLayout
                 android:id="@+id/fame2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></FrameLayout>
+                android:layout_height="wrap_content" />
 
             <FrameLayout
                 android:id="@+id/fame3"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></FrameLayout>
+                android:layout_height="wrap_content" />
 
             <FrameLayout
                 android:id="@+id/fame4"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></FrameLayout>
+                android:layout_height="wrap_content" />
 
             <FrameLayout
                 android:id="@+id/fame5"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></FrameLayout>
+                android:layout_height="wrap_content" />
 
             <FrameLayout
                 android:id="@+id/fame6"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"></FrameLayout>
+                android:layout_height="wrap_content" />
         </LinearLayout>
     </ScrollView>
 
@@ -87,5 +89,5 @@
         app:layout_constraintBottom_toTopOf="@+id/BookingBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"></FrameLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

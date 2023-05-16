@@ -20,6 +20,7 @@ import android.widget.Toast
 import androidx.core.view.marginTop
 import com.example.stayfinder.R
 import com.example.stayfinder.model.RoomDetailModel
+import com.example.stayfinder.partner.PartnerMainActivity
 import com.example.stayfinder.partner.room.PartnerListRoomActivity
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ktx.firestore
@@ -65,13 +66,10 @@ class RoomAddHotelStep4Activity : AppCompatActivity() {
                 .document(room!!.id)
                 .set(room)
                 .addOnSuccessListener {
-                    val intent = Intent(this, PartnerListRoomActivity::class.java)
-                    intent.putExtra("uuidHotel", room.hotel_id)
-
                     progressDialog?.dismiss()
                     Toast.makeText(this, "Add new room successfully", Toast.LENGTH_SHORT).show()
-                    startActivity(intent)
-                    finish()
+                    startActivity(Intent(this, PartnerMainActivity::class.java))
+                    finishAffinity()
                 }
                 .addOnFailureListener { e ->
                     progressDialog?.dismiss()

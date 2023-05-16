@@ -60,7 +60,7 @@ class RatingActivity : AppCompatActivity() {
         val menu = supportActionBar
         menu?.setDisplayHomeAsUpEnabled(true)
         menu?.setHomeButtonEnabled(true)
-        menu?.title = "Coupon Management"
+        menu?.title = "Rating"
     }
 
     private fun allRating(){

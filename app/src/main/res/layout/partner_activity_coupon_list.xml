@@ -7,17 +7,6 @@
     tools:context=".partner.property.PartnerCouponList"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView40"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Coupon Management"
-        android:textColor="@color/black"
-        android:textSize="30dp"
-        tools:layout_editor_absoluteX="179dp"
-        tools:layout_editor_absoluteY="41dp"
-        android:layout_gravity="center_horizontal"/>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"

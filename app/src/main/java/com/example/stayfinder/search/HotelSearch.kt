@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.widget.Button
 import android.widget.TextView
@@ -15,12 +16,17 @@ import com.example.stayfinder.R
 import com.example.stayfinder.hotel.Hotel
 import com.example.stayfinder.hotel.hotel_detail.HotelDetailActivity
 import com.example.stayfinder.model.HotelDetailModel
+import com.example.stayfinder.model.RoomDetailModel
 import com.example.stayfinder.saved.choose_item.SavedListChooseBottomSheetDialog
 import com.example.stayfinder.search.map.SearchByMapActivity
 import com.example.stayfinder.search.sort.SortListFragment
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
+import java.util.*
+import kotlin.collections.ArrayList
 
 class HotelSearch : AppCompatActivity() {
     lateinit var searchBar: TextView
@@ -28,7 +34,6 @@ class HotelSearch : AppCompatActivity() {
     lateinit var hotelSearchAdapter: HotelSearchAdapter
 
     lateinit var sortBtn: Button
-    lateinit var filterBtn: Button
     lateinit var mapBtn: Button
 
     private var hotelList: ArrayList<HotelDetailModel> = ArrayList()
@@ -36,6 +41,8 @@ class HotelSearch : AppCompatActivity() {
     private var startDate: Long = 0
     private var endDate: Long = 0
     private lateinit var bookingInformation: BookingInformation
+    private lateinit var chosenCity: String
+    private lateinit var header: String
 
     val db = Firebase.firestore
 
@@ -50,13 +57,17 @@ class HotelSearch : AppCompatActivity() {
         startDate = intent.getLongExtra("start_date", 0)
         endDate = intent.getLongExtra("end_date", 0)
         bookingInformation = intent.getSerializableExtra("booking_info") as BookingInformation
+        chosenCity = intent.getStringExtra("city") as String
+        header = intent.getStringExtra("header") as String
+
 
         searchBar = findViewById(R.id.searchBar)
-        Toast.makeText(this, searchBar.text.toString(), Toast.LENGTH_SHORT).show()
 
-        searchBar.setOnClickListener {
-            Toast.makeText(this, "Search bar clicked", Toast.LENGTH_SHORT).show()
-        }
+        searchBar.text = "$chosenCity  $header"
+
+//        searchBar.setOnClickListener {
+//            Toast.makeText(this, "Search bar clicked", Toast.LENGTH_SHORT).show()
+//        }
 
         searchBar.setOnTouchListener { _, motionEvent ->
             if (motionEvent.action == MotionEvent.ACTION_UP) {
@@ -71,7 +82,7 @@ class HotelSearch : AppCompatActivity() {
         sortBtnHandle()
         mapBtnHandler()
         initRV()
-        fetchData()
+        fetchData(bookingInformation.sum_people, startDate, chosenCity)
     }
 
     private fun sortBtnHandle() {
@@ -86,19 +97,41 @@ class HotelSearch : AppCompatActivity() {
     private fun mapBtnHandler() {
         mapBtn = findViewById(R.id.mapBtn)
         mapBtn.setOnClickListener {
-            startActivity(Intent(this, SearchByMapActivity::class.java))
+            val intent = Intent(this, SearchByMapActivity::class.java)
+
+            intent.putExtra("booking_info", bookingInformation)
+            intent.putExtra("start_date", startDate)
+            intent.putExtra("end_date", endDate)
+            intent.putExtra("city", chosenCity)
+            intent.putExtra("header", header)
+
+            startActivity(intent)
         }
-
-
     }
 
-    private fun fetchData() {
-        val docRef = db.collection("hotels").get()
+    private fun fetchData(guest: Int, start_date: Long, city: String) {
+        db.collection("hotels")
+            .whereEqualTo("address.city", city)
+            .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
                     val hotel = document.toObject(HotelDetailModel::class.java)
-                    hotelList.add(hotel)
-                    hotelSearchAdapter.notifyItemInserted(hotelList.size - 1)
+
+                    db.collection("rooms")
+                        .whereEqualTo("hotel_id", hotel.id)
+                        .get()
+                        .addOnSuccessListener { docs ->
+                            for (doc in docs) {
+                                val room = doc.toObject(RoomDetailModel::class.java)
+
+                                if (room.room_available > 0 && guest >= room.min_guest
+                                    && guest <= room.guest_available) {
+                                    hotelList.add(hotel)
+                                    hotelSearchAdapter.notifyItemInserted(hotelList.size - 1)
+                                    break;
+                                }
+                            }
+                        }
                 }
             }
     }

@@ -51,28 +51,36 @@ class SubHotelDetailDescription : Fragment() {
 
         expendTv.text = description
         val ratingTv = view!!.findViewById<TextView>(R.id.ratingTv)
-        ratingTv.text = ratingOverall.toString()
 
         val EvaluateTv= view!!.findViewById<TextView>(R.id.EvaluateTv)
-        if(ratingOverall < 1.0){
-            EvaluateTv.text = "Very Poor"
+
+        val noFeedbackTv = view.findViewById<TextView>(R.id.noFeedbackTv)
+        if (numOfFeedBack == 0) {
+            noFeedbackTv.text = "No guest reviews yet"
+            EvaluateTv.text = "No guest reviews"
+            ratingTv.text = "?.?"
         }
-        else if(ratingOverall < 2.0){
-            EvaluateTv.text = "Very Poor"
+        else {
+            noFeedbackTv.text = "$numOfFeedBack guest(s) left a feedback for this place"
+            if(ratingOverall < 1.0){
+                EvaluateTv.text = "Very Poor"
+            }
+            else if(ratingOverall < 2.0){
+                EvaluateTv.text = "Very Poor"
+            }
+            else if (ratingOverall < 3.0){
+                EvaluateTv.text = "Average"
+            }
+            else if (ratingOverall < 4.0){
+                EvaluateTv.text = "Good"
+            }
+            else{
+                EvaluateTv.text = "Excellent"
+            }
+            ratingTv.text = ratingOverall.toString()
         }
-        else if (ratingOverall < 3.0){
-            EvaluateTv.text = "Average"
-        }
-        else if (ratingOverall < 4.0){
-            EvaluateTv.text = "Good"
-        }
-        else{
-            EvaluateTv.text = "Excellent"
-        }
-        if(numOfFeedBack != 0){
-            val noFeedbackTv = view.findViewById<TextView>(R.id.noFeedbackTv)
-            noFeedbackTv.text = "$numOfFeedBack have leave a feedback for this place"
-        }
+
+
 
         val FeedbackBtn = view.findViewById<RelativeLayout>(R.id.FeedbackBtn)
         FeedbackBtn.setOnClickListener{

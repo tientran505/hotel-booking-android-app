@@ -8,6 +8,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
@@ -16,6 +17,7 @@ import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.example.stayfinder.CustomTextInputEditText
 import com.example.stayfinder.R
 import com.example.stayfinder.model.HotelDetailModel
@@ -31,6 +33,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import java.util.*
 import kotlin.math.log
@@ -55,7 +58,11 @@ class AddHotelActivity : AppCompatActivity() {
     private var selectedAddress: String? = null
     private var selectedLang: LatLng? = null
 
+    private lateinit var flexboxLayout: FlexboxLayout
+
     private lateinit var placesClient: PlacesClient
+
+    private var photoUrlList = ArrayList<String>()
 
     private var startAutocompleteIntentListener = View.OnClickListener { view: View ->
         view.setOnClickListener(null)
@@ -91,9 +98,7 @@ class AddHotelActivity : AppCompatActivity() {
     private val startAutocomplete = registerForActivityResult(
         ActivityResultContracts.StartActivityForResult(),
         ActivityResultCallback { result: ActivityResult ->
-            Log.d("meocon", "hello dong thap")
             address.editText?.setOnClickListener(startAutocompleteIntentListener)
-            Log.d("meocon", "vao day")
             if (result.resultCode == RESULT_OK) {
                 val intent = result.data
                 if (intent != null) {
@@ -101,15 +106,10 @@ class AddHotelActivity : AppCompatActivity() {
 
                     // Write a method to read the address components from the Place
                     // and populate the form with the address components
-                    Log.d("CANCEL", "Place: " + place.addressComponents)
                     fillInAddress(place)
                 }
             } else if (result.resultCode == RESULT_CANCELED) {
                 // The user canceled the operation.
-                Log.d("meocon", "User canceled autocomplete")
-            }
-            else {
-                Log.d("meocon", "error: ${result.resultCode}")
             }
         } as ActivityResultCallback<ActivityResult>)
     // [END maps_solutions_android_autocomplete_define]
@@ -123,8 +123,6 @@ class AddHotelActivity : AppCompatActivity() {
             Place.Field.LAT_LNG, Place.Field.VIEWPORT
         )
 
-        Log.d("meocon", "hello345")
-
         // Build the autocomplete intent with field, country, and type filters applied
         val intent = Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fields)
             .setCountries(listOf("VN"))
@@ -132,8 +130,6 @@ class AddHotelActivity : AppCompatActivity() {
             .build(this)
 
         startAutocomplete.launch(intent)
-
-        Log.d("meocon", "hello345678")
 
     }
     // [END maps_solutions_android_autocomplete_intent]
@@ -203,13 +199,8 @@ class AddHotelActivity : AppCompatActivity() {
 
         placesClient = Places.createClient(this)
 
-        var photoUrl = ArrayList<String>()
-
         initComponent()
 
-//        address.setOnClickListener(startAutocompleteIntentListener)
-
-//        findViewById<TextInputLayout>(R.id.addressET).setOnClickListener(startAutocompleteIntentListener)
 
         nameCollection = getString(R.string.hotel_collection_name)
         extras = intent.extras
@@ -220,68 +211,66 @@ class AddHotelActivity : AppCompatActivity() {
         var uuidHotel: String? = extras?.getString("uuidHotel")
         //uuidHotel = "e4d58adc-171a-4509-89c0-36cb5d91e716"
 
-        if (uuidHotel == null || uuidHotel == "") {
-            uuidHotel = UUID.randomUUID().toString()
-        } else { //Exist entry -> fill out the form
-            isEditMode = true
-            val docRef = db!!.collection(nameCollection!!).document(uuidHotel)
-            docRef.get().addOnSuccessListener { document ->
-                if (document != null) {
-                    // fill out the form
-                    val hotelObj = document.toObject(HotelDetailModel::class.java)
-                    photoUrl = hotelObj!!.photoUrl
-                    //Check permission
-                    if (Firebase.auth.currentUser?.uid.toString() != hotelObj?.owner_id) {
-                        Toast.makeText(this, "You have not permitted to access", Toast.LENGTH_SHORT)
-                            .show()
-                        uuidHotel = UUID.randomUUID().toString()
-                    } else {
-//                        nameHotel.editText?.setText(hotelObj.hotel_name.toString())
-//                        descriptionHotel.editText?.setText(hotelObj.description.toString())
-//                        cityHotel.editText?.setText(hotelObj.address["city"].toString())
-//                        districtHotel.setText(hotelObj.address["district"].toString())
-//                        wardHotel.setText(hotelObj.address["ward"].toString())
-//                        streetHotel.setText(hotelObj.address["street"].toString())
-//                        numberStreetHotel.setText(hotelObj.address["number"].toString())
-                    }
+//        if (uuidHotel == null || uuidHotel == "") {
+//            uuidHotel = UUID.randomUUID().toString()
+//        } else { //Exist entry -> fill out the form
+//            isEditMode = true
+//            val docRef = db!!.collection(nameCollection!!).document(uuidHotel)
+//            docRef.get().addOnSuccessListener { document ->
+//                if (document != null) {
+//                    // fill out the form
+//                    val hotelObj = document.toObject(HotelDetailModel::class.java)
+//                    photoUrl = hotelObj!!.photoUrl
+//                    //Check permission
+//                    if (Firebase.auth.currentUser?.uid.toString() != hotelObj?.owner_id) {
+//                        Toast.makeText(this, "You have not permitted to access", Toast.LENGTH_SHORT)
+//                            .show()
+//                        uuidHotel = UUID.randomUUID().toString()
+//                    } else {
+////                        nameHotel.editText?.setText(hotelObj.hotel_name.toString())
+////                        descriptionHotel.editText?.setText(hotelObj.description.toString())
+////                        cityHotel.editText?.setText(hotelObj.address["city"].toString())
+////                        districtHotel.setText(hotelObj.address["district"].toString())
+////                        wardHotel.setText(hotelObj.address["ward"].toString())
+////                        streetHotel.setText(hotelObj.address["street"].toString())
+////                        numberStreetHotel.setText(hotelObj.address["number"].toString())
+//                    }
+//
+//                }
+//
+//                else {
+//                    Toast.makeText(this, "No document to show", Toast.LENGTH_SHORT).show()
+//
+//                }
+//            }.addOnFailureListener { ex ->
+//                Toast.makeText(this, "Fail to get an entry. Ex: $ex", Toast.LENGTH_SHORT).show()
+//            }
+//        }
 
-                }
 
-                else {
-                    Toast.makeText(this, "No document to show", Toast.LENGTH_SHORT).show()
-
-                }
-            }.addOnFailureListener { ex ->
-                Toast.makeText(this, "Fail to get an entry. Ex: $ex", Toast.LENGTH_SHORT).show()
-            }
-        }
+        flexboxLayout = findViewById(R.id.flexboxLayout)
 
         submitBtn!!.setOnClickListener {
+            if (photoUrlList.size == 0) {
+                Toast.makeText(this, "Please upload at least 1 photo before continue",
+                    Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+
             if (!validateForm()) {
                 return@setOnClickListener
             }
 
             //Firstly Upload photo to firebase
-            val flexboxLayout = findViewById<FlexboxLayout>(R.id.flexboxLayout)
             var tempUriImage: ArrayList<String> = ArrayList()
-
-            for (i in 0 until flexboxLayout.childCount) {
-                val subView: View = flexboxLayout.getChildAt(i)
-                if (subView is ImageView) { // if choosed image, the iseditmode will be turn off in the first time running
-                    val imageView = subView
-//                    var imgUri = Uri.parse(imageView.getTag().toString())
-                    tempUriImage.add(imageView.getTag().toString())
-//                    val fileName = "$uuidHotel-$i"
-//                    uploadImg(imgUri, fileName, uuidHotel!!)
-                }
-            }
 
             val checkAddress = if (selectedAddress == null) {address.editText?.text.toString()} else {selectedAddress}
 
             //Create the object of hotelDetail
             val hotel = HotelDetailModel(
                 owner_id = Firebase.auth.currentUser?.uid.toString(),
-                id = uuidHotel,
+                id = db!!.collection("hotels").document().id,
                 hotel_name = hotelName.editText?.text.toString(),
                 description = description.editText?.text.toString(),
                 rating = hashMapOf(
@@ -292,18 +281,22 @@ class AddHotelActivity : AppCompatActivity() {
                     "address" to checkAddress!!,
                     "city" to city.editText?.text.toString(),
                 ),
-                photoUrl = photoUrl,
                 booking_count = 0,
                 facilities = ArrayList<Objects>(),
                 comment_count = 0,
                 map = ArrayList<Double>()
             )
-            var intent = Intent(this, AddHotelConfirmActivity::class.java)
+
+            hotel.apply {
+                photoUrl.clear()
+                photoUrl.addAll(photoUrlList)
+            }
+
+            val intent = Intent(this, AddHotelConfirmActivity::class.java)
             intent.putExtra("hotelInfo", hotel)
             intent.putExtra("latitude", selectedLang?.latitude)
             intent.putExtra("longitude", selectedLang?.longitude)
 
-            intent.putStringArrayListExtra("uriImage", tempUriImage)
             startActivity(intent)
 
         }
@@ -311,6 +304,69 @@ class AddHotelActivity : AppCompatActivity() {
         uploadImgBtn!!.setOnClickListener {
             activityResultLauncher.launch(appPerms)
         }
+    }
+
+    private fun addImageToFlexboxLayout(imageUri: Uri) {
+        val inflater = LayoutInflater.from(this)
+        val imageViewLayout = inflater.inflate(R.layout.image_item_upload, flexboxLayout, false)
+
+        val imageView: ImageView = imageViewLayout.findViewById(R.id.imageIV)
+        val progressBar: ProgressBar = imageViewLayout.findViewById(R.id.imgPB)
+        val deleteButton: Button = imageViewLayout.findViewById(R.id.removeBtn)
+
+        imageView.setImageURI(imageUri)
+
+        flexboxLayout.addView(imageViewLayout)
+
+        uploadImageToFirebaseStorage(imageUri, imageView, progressBar, deleteButton, imageViewLayout)
+    }
+
+    private fun uploadImageToFirebaseStorage(imageUri: Uri, imageView: ImageView, progressBar: ProgressBar, deleteButton: Button, layout: View) {
+        val ref = FirebaseStorage.getInstance().getReference("images/${UUID.randomUUID()}")
+        val uploadTask = ref.putFile(imageUri)
+
+        uploadTask.addOnProgressListener { taskSnapshot ->
+            val progress = (100.0 * taskSnapshot.bytesTransferred) / taskSnapshot.totalByteCount
+            progressBar.progress = progress.toInt()
+            deleteButton.visibility = View.GONE
+        }
+
+        uploadTask.continueWithTask { task ->
+            if (!task.isSuccessful) {
+                task.exception?.let {
+                    throw it
+                }
+            }
+            ref.downloadUrl
+        }
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    progressBar.visibility = View.GONE
+                    deleteButton.visibility = View.VISIBLE
+                    imageView.alpha = 1.0f
+                    val downloadUri = task.result
+
+                    photoUrlList.add(downloadUri.toString())
+
+                    Glide.with(this@AddHotelActivity)
+                        .load(downloadUri)
+                        .centerCrop()
+                        .into(imageView)
+
+
+                    // Handle the delete button click
+                    deleteButton.setOnClickListener {
+                        ref.delete().addOnSuccessListener {
+                            // remove the image view from the FlexboxLayout
+                            flexboxLayout.removeView(layout)
+                            photoUrlList.remove(downloadUri.toString())
+                        }
+                    }
+                }
+                else {
+                    Toast.makeText(this@AddHotelActivity, "Upload failed: ${task.exception?.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 
     private fun validateForm() : Boolean {
@@ -367,7 +423,7 @@ class AddHotelActivity : AppCompatActivity() {
 
         if (resultCode == Activity.RESULT_OK && requestCode == REQUEST_CODE) {
 
-            var flex = findViewById<FlexboxLayout>(R.id.flexboxLayout)
+            val flex = findViewById<FlexboxLayout>(R.id.flexboxLayout)
             flex.removeAllViews()
 
             if (data?.clipData != null) {
@@ -375,23 +431,17 @@ class AddHotelActivity : AppCompatActivity() {
 
                 for (i in 0 until count) {
                     val imageUri = data.clipData!!.getItemAt(i).uri
-                    var imgView = ImageView(baseContext)
-                    imgView.visibility = View.VISIBLE
-                    imgView.setImageURI(null)
-                    imgView.setImageURI(imageUri)
-                    imgView.setPadding(5, 5, 5, 5)
-                    imgView.tag = imageUri.toString()
-                    imgView.scaleType = ImageView.ScaleType.CENTER_CROP
-
-                    //imgView.maxHeight = 100
-                    //imgView.requestLayout();
-                    val flexparams = FlexboxLayout.LayoutParams(300, 300)
-                    imgView.layoutParams = flexparams
-
-                    flex.addView(imgView)
+                    addImageToFlexboxLayout(imageUri)
+                }
+            }
+            else {
+                val imageUri = data?.data
+                if (imageUri != null) {
+                    addImageToFlexboxLayout(imageUri)
                 }
             }
         }
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

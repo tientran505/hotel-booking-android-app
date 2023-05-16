@@ -24,6 +24,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import me.relex.circleindicator.CircleIndicator3
+import org.w3c.dom.Text
 import java.lang.Float.min
 import java.text.NumberFormat
 import java.util.*
@@ -44,6 +45,8 @@ class HotelSearchAdapter(private val hotels: List<HotelDetailModel>,
         val originalPrice: TextView = listItemView.findViewById(R.id.originalPriceSearchTV)
         val discountPrice: TextView = listItemView.findViewById(R.id.discountPriceSearchTV)
         val hotelName: TextView = listItemView.findViewById(R.id.hotelNameSearchTV)
+        val feedbackCount: TextView = listItemView.findViewById(R.id.reviewSearchCountTV)
+        val ratingTV: TextView = listItemView.findViewById(R.id.ratingSearchTV)
         var hotelVP: ViewPager2 = listItemView.findViewById(R.id.viewPager2)
         val indicator: CircleIndicator3 = listItemView.findViewById(R.id.circle_indicator)
         val cityName: TextView = listItemView.findViewById(R.id.locationSearchTV)
@@ -79,7 +82,11 @@ class HotelSearchAdapter(private val hotels: List<HotelDetailModel>,
         holder.card.clipToOutline = true
         holder.card.outlineProvider = ViewOutlineProvider.BACKGROUND
         holder.heartBtn.setImageResource(R.drawable.add_circle_outline)
-        holder.rating.rating = hotel.rating_overall?.toFloat() ?: 0.00.toFloat()
+        holder.rating.rating = hotel.rating_overall.toFloat()
+
+        holder.feedbackCount.text = if (hotel.comment_count <= 1) {"${hotel.comment_count} rating"}
+        else {"${hotel.comment_count} ratings"}
+        holder.ratingTV.text = hotel.rating_overall.toFloat().toString()
 
         val numberFormat = NumberFormat.getCurrencyInstance(Locale("vn", "VN"))
 

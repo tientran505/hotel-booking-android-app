@@ -13,10 +13,12 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.example.stayfinder.BookingInformation
 import com.example.stayfinder.R
 import com.example.stayfinder.databinding.ActivitySearchByMapBinding
 import com.example.stayfinder.hotel.Hotel
 import com.example.stayfinder.model.HotelDetailModel
+import com.example.stayfinder.model.RoomDetailModel
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -29,6 +31,7 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.lang.Math.*
 import java.text.NumberFormat
 import java.util.*
@@ -41,9 +44,16 @@ class SearchByMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.O
     private lateinit var binding: ActivitySearchByMapBinding
     private var selectedMarker: Marker? = null
 
+    private var hotels: ArrayList<HotelDetailModel> = ArrayList()
+
+    private var startDate: Long = 0
+    private var endDate: Long = 0
+    private lateinit var bookingInformation: BookingInformation
+    private lateinit var chosenCity: String
+    private lateinit var header: String
+
     val db = Firebase.firestore
 
-    private var hotels = ArrayList<HotelDetailModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,12 +61,19 @@ class SearchByMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.O
         binding = ActivitySearchByMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initActionBar()
+
+        startDate = intent.getLongExtra("start_date", 0)
+        endDate = intent.getLongExtra("end_date", 0)
+        bookingInformation = intent.getSerializableExtra("booking_info") as BookingInformation
+        chosenCity = intent.getStringExtra("city") as String
+        header = intent.getStringExtra("header") as String
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.mapSearch) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-        fetchData()
+        fetchData(bookingInformation.sum_people, startDate, chosenCity)
     }
 
     private fun replaceFragment(fragment: Fragment) {
@@ -76,35 +93,69 @@ class SearchByMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.O
      * installed Google Play services and returned to the app.
      */
 
-    private fun fetchData() {
+    private fun fetchData(guest: Int, start_date: Long, city: String) {
         db.collection("hotels")
+            .whereEqualTo("address.city", city)
             .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
                     val hotel = document.toObject(HotelDetailModel::class.java)
-                    hotels.add(hotel)
-                }
-                CoroutineScope(Dispatchers.IO).launch {
-                    addMarkersToMap()
+
+                    db.collection("rooms")
+                        .whereEqualTo("hotel_id", hotel.id)
+                        .get()
+                        .addOnSuccessListener { docs ->
+                            for (doc in docs) {
+                                val room = doc.toObject(RoomDetailModel::class.java)
+
+                                if (room.room_available > 0 && guest >= room.min_guest
+                                    && guest <= room.guest_available) {
+                                    hotels.add(hotel)
+                                    break;
+                                }
+                            }
+
+                            CoroutineScope(Dispatchers.IO).launch {
+                                addMarkersToMap()
+                            }
+                        }
                 }
             }
     }
 
     private suspend fun addMarkersToMap() {
+        var latSum = 0.0
+        var lngSum = 0.0
+
         for (hotel in hotels) {
 
-            val minPrice = hotel.getMinPriceOfHotel(7)
+            val minPrice = hotel.getMinPriceOfHotel(currentGuest = bookingInformation.sum_people)
             val location = LatLng(hotel.map[0], hotel.map[1])
             val formattedPrice = NumberFormat.getCurrencyInstance(Locale("vi", "VN")).format(minPrice)
 
-            mMap.addMarker(
-                MarkerOptions()
-                    .position(location)
-                    .title(formattedPrice)
-                    .icon(createHotelPriceIcon(formattedPrice, 0))
-            )
+            latSum += location.latitude
+            lngSum += location.longitude
+
+            withContext(Dispatchers.Main) {
+                val marker = mMap.addMarker(
+                    MarkerOptions()
+                        .position(location)
+                        .title(formattedPrice)
+                        .icon(createHotelPriceIcon(formattedPrice, 0))
+                )
+                marker?.tag = hotel
+            }
+
         }
-        mMap.setOnMarkerClickListener(this)
+
+        val avgLat = latSum / hotels.size
+        val avgLng = lngSum / hotels.size
+        val avgLatLng = LatLng(avgLat, avgLng)
+
+        withContext(Dispatchers.Main) {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(avgLatLng, 12f))
+            mMap.setOnMarkerClickListener(this@SearchByMapActivity)
+        }
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -119,8 +170,8 @@ class SearchByMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.O
         selectedMarker = marker
 
 //        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(marker.position, 15f))
-        val i = Random.nextInt(0, hotels.size - 1)
-        replaceFragment(HotelMapSearch(hotels[i], db, 8))
+        val hotel = marker.tag as HotelDetailModel
+        replaceFragment(HotelMapSearch(hotel, db, bookingInformation.sum_people, startDate, endDate, bookingInformation))
 
         return true
     }
@@ -149,23 +200,6 @@ class SearchByMapActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.O
         view.draw(canvas)
 
         return BitmapDescriptorFactory.fromBitmap(bitmap)
-    }
-
-    private fun randomInRange(min: Int, max: Int): Int {
-        return Random.nextInt(min, max + 1)
-    }
-
-    private fun randomLocationNearby(center: LatLng, radius: Double): LatLng {
-        val randomRadius = radius * kotlin.math.sqrt(Random.nextDouble())
-        val randomAngle = Random.nextDouble() * 2 * PI
-
-        val offsetX = randomRadius * kotlin.math.cos(randomAngle)
-        val offsetY = randomRadius * kotlin.math.sin(randomAngle)
-
-        val offsetXInDegrees = offsetX / 111320.0
-        val offsetYInDegrees = offsetY / (40075000.0 * kotlin.math.cos(center.latitude * PI / 180) / 360)
-
-        return LatLng(center.latitude + offsetYInDegrees, center.longitude + offsetXInDegrees)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
