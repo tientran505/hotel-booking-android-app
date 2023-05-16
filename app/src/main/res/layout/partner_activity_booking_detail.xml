@@ -112,11 +112,6 @@
                         android:textStyle="bold"
                         />
 
-                    <TextView
-                        android:id="@+id/checkinTimeTV"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="14:00" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -165,12 +160,6 @@
                         android:textStyle="bold"
                         android:text="Fri, 21 Apr" />
 
-                    <TextView
-                        android:id="@+id/checkoutTimeTV"
-                        android:gravity="end"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="12:00" />
                 </LinearLayout>
 
             </LinearLayout>

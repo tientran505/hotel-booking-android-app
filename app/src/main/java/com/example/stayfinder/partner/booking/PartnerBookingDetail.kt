@@ -6,19 +6,15 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.stayfinder.Booking
 import com.example.stayfinder.BookingDetail
 import com.example.stayfinder.R
-import com.example.stayfinder.SavedListItem
 import com.example.stayfinder.partner.booking.adapter.BookingRoomAdapter
 import com.example.stayfinder.partner.booking.adapter.room_book
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.firestore.ktx.toObject
 import com.google.firebase.ktx.Firebase
-import org.w3c.dom.Text
 import java.sql.Date
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
@@ -114,11 +110,8 @@ class PartnerBookingDetail : AppCompatActivity() {
             nightDays.setText(daysBetween.toString() + " nights")
 
             var roomList = arrayListOf<room_book>()
-            for(r in booking.rooms){
-                for (p in r.available_prices){
-                    roomList.add(room_book(p.num_of_guest,p.price))
-                }
-            }
+            roomList.add(room_book(booking.rooms[0].name,booking.booking_information!!.number_of_adult,
+                booking.booking_information!!.number_of_children))
 
             var recyclerView = findViewById<RecyclerView>(R.id.recycler)
             var adapter = BookingRoomAdapter(roomList)

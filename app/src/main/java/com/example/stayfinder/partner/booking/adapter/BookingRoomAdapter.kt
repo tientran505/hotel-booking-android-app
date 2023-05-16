@@ -14,8 +14,9 @@ import com.example.stayfinder.partner.property.adapter.coupon_adapter
 import java.text.DecimalFormat
 
 data class room_book(
-    var num_of_guests:Int = 0,
-    var price:Double = 0.0,
+    var room_name: String ="",
+    var num_of_adults:Int = 0,
+    var num_of_children:Int = 0,
 ){
 
 }
@@ -49,10 +50,9 @@ class BookingRoomAdapter(private val lists: List<room_book>):
         val price = holder.priceTv
         val room = holder.roomTv
 
-        num_of_guests.setText(lists[position].num_of_guests.toString())
-        val moneyexchange = DecimalFormat("###,###,###,###.##"+"đ");
-        price.setText(moneyexchange.format(this.lists[position].price).toString())
-        room.setText("Room" + position)
+        num_of_guests.setText(lists[position].num_of_adults.toString())
+        price.setText(lists[position].num_of_children.toString())
+        room.setText(lists[position].room_name)
     }
 
 }
