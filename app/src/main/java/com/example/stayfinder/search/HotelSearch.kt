@@ -34,7 +34,6 @@ class HotelSearch : AppCompatActivity() {
     lateinit var hotelSearchAdapter: HotelSearchAdapter
 
     lateinit var sortBtn: Button
-    lateinit var filterBtn: Button
     lateinit var mapBtn: Button
 
     private var hotelList: ArrayList<HotelDetailModel> = ArrayList()
@@ -42,6 +41,8 @@ class HotelSearch : AppCompatActivity() {
     private var startDate: Long = 0
     private var endDate: Long = 0
     private lateinit var bookingInformation: BookingInformation
+    private lateinit var chosenCity: String
+    private lateinit var header: String
 
     val db = Firebase.firestore
 
@@ -56,9 +57,13 @@ class HotelSearch : AppCompatActivity() {
         startDate = intent.getLongExtra("start_date", 0)
         endDate = intent.getLongExtra("end_date", 0)
         bookingInformation = intent.getSerializableExtra("booking_info") as BookingInformation
+        chosenCity = intent.getStringExtra("city") as String
+        header = intent.getStringExtra("header") as String
+
 
         searchBar = findViewById(R.id.searchBar)
-        Toast.makeText(this, searchBar.text.toString(), Toast.LENGTH_SHORT).show()
+
+        searchBar.text = "$chosenCity  $header"
 
 //        searchBar.setOnClickListener {
 //            Toast.makeText(this, "Search bar clicked", Toast.LENGTH_SHORT).show()
@@ -77,7 +82,7 @@ class HotelSearch : AppCompatActivity() {
         sortBtnHandle()
         mapBtnHandler()
         initRV()
-        fetchData(bookingInformation.sum_people, startDate)
+        fetchData(bookingInformation.sum_people, startDate, chosenCity)
     }
 
     private fun sortBtnHandle() {
@@ -92,14 +97,22 @@ class HotelSearch : AppCompatActivity() {
     private fun mapBtnHandler() {
         mapBtn = findViewById(R.id.mapBtn)
         mapBtn.setOnClickListener {
-            startActivity(Intent(this, SearchByMapActivity::class.java))
+            val intent = Intent(this, SearchByMapActivity::class.java)
+
+            intent.putExtra("booking_info", bookingInformation)
+            intent.putExtra("start_date", startDate)
+            intent.putExtra("end_date", endDate)
+            intent.putExtra("city", chosenCity)
+            intent.putExtra("header", header)
+
+            startActivity(intent)
         }
-
-
     }
 
-    private fun fetchData(guest: Int, start_date: Long) {
-        db.collection("hotels").get()
+    private fun fetchData(guest: Int, start_date: Long, city: String) {
+        db.collection("hotels")
+            .whereEqualTo("address.city", city)
+            .get()
             .addOnSuccessListener { documents ->
                 for (document in documents) {
                     val hotel = document.toObject(HotelDetailModel::class.java)

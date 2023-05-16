@@ -65,6 +65,8 @@ class HomeFragment : Fragment(), RoomSelectionBottomSheetDialog.BottomSheetListe
     private var start: Long = 0
     private var end: Long = 0
 
+    private var headerText = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -75,6 +77,11 @@ class HomeFragment : Fragment(), RoomSelectionBottomSheetDialog.BottomSheetListe
 
     private fun formValidate(): Boolean {
         if (dateET?.text.toString().isEmpty()) {
+            Toast.makeText(requireContext(), "Please fill all fields before searching", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        if (locationET?.text.toString().isEmpty()) {
             Toast.makeText(requireContext(), "Please fill all fields before searching", Toast.LENGTH_SHORT).show()
             return false
         }
@@ -99,7 +106,6 @@ class HomeFragment : Fragment(), RoomSelectionBottomSheetDialog.BottomSheetListe
                         cityList.add(city)
                     }
                 }
-                Log.d("cityList", cityList.toString())
                 val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, cityList)
                 locationET?.setAdapter(adapter)
                 locationET?.threshold = 1
@@ -151,6 +157,7 @@ class HomeFragment : Fragment(), RoomSelectionBottomSheetDialog.BottomSheetListe
                     end = endDate.toLong()
 
                     dateET?.setText(dateRangePicker.headerText)
+
                 }
 
             }
@@ -193,6 +200,8 @@ class HomeFragment : Fragment(), RoomSelectionBottomSheetDialog.BottomSheetListe
                 intent.putExtra("booking_info", bookings)
                 intent.putExtra("start_date", start)
                 intent.putExtra("end_date", end)
+                intent.putExtra("city", locationET?.text.toString())
+                intent.putExtra("header", dateET?.text.toString())
 
                 startActivity(intent)
             }
