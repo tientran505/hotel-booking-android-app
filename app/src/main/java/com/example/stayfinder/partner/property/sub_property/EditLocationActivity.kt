@@ -65,7 +65,7 @@ class EditLocationActivity : AppCompatActivity(), OnMapReadyCallback {
         val bundle = intent.extras
         val hotel_id = bundle!!.getString("hotel_id")!!
         val db = Firebase.firestore;
-        val documents = Firebase.firestore.collection("Hotels")
+        val documents = Firebase.firestore.collection("hotels")
             .document(hotel_id)
             .get()
             .addOnSuccessListener  { document ->
