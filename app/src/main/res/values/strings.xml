@@ -6,9 +6,10 @@
     <string name="client_id">823421392498-hb77v5fahvl9nsljuleg7m4q221jhdlm.apps.googleusercontent.com</string>
     <string name="title_activity_maps">MapsActivity</string>
     <!--    <string name="client_id">823421392498-hb77v5fahvl9nsljuleg7m4q221jhdlm.apps.googleusercontent.com</string>-->
-    <string name="hotel_collection_name">TestHotel</string>
-    <string name="MAP_API_KEY">AIzaSyB8PtvFFoKAKMAm1tWtrdkX0RJ9Kx8l0tI</string>
+    <string name="hotel_collection_name">hotels</string>
+    <string name="MAP_API_KEY">AIzaSyAgJYKGbNK_WSUhKmdFhgGWUY33N1jHAyA</string>
     <string name="action_geolocate">Pick Place</string>
+    <string name="collection_name_token_notification">NotificationToken</string>
     <string name="default_info_title">Default Location</string>
     <string name="default_info_snippet">No places found, because location permission is disabled.</string>
     <string name="title_activity_search_by_map">SearchByMapActivity</string>
@@ -17,7 +18,50 @@
         <item>Couple</item>
         <item>Triple</item>
         <item>Family</item>
-        <item>Villa</item>
-        <item>Family</item>
+        <item>Suite</item>
+        <item>Dorm</item>
     </string-array>
+
+    <string-array name="spinner_type_bed">
+        <item>Twin bed(s) / 90–130 cm wide</item>
+        <item>Full bed(s) / 131–150 cm wide</item>
+        <item>Queen bed(s) / 151–180 cm wide</item>
+        <item>King bed(s) / 181–210 cm wide</item>
+        <item>Bunk bed(s) / Variable size</item>
+        <item>Sofa bed(s) / Variable size</item>
+        <item>Futon bed(s) / Variable size</item>
+    </string-array>
+
+    <string-array name="spinner_bed_num">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="spinner_rate">
+        <item>VND</item>
+        <item>%</item>
+    </string-array>
+
+    <string-array name="facilities_item">
+        <item>Free Wifi</item>
+        <item>Restaurant</item>
+        <item>Room Services</item>z
+        <item>Bar</item>
+        <item>24-hour front desk</item>
+        <item>Fitness Center</item>
+        <item>Garden</item>
+        <item>Terrace</item>
+        <item>Non-smoking rooms</item>
+        <item>Airport Shuttle</item>
+        <item>Family rooms</item>
+        <item>Spa</item>
+        <item>Hot tub/Jacuzzi</item>
+        <item>Air conditioning</item>
+        <item>Water park</item>
+        <item>Swimming pool</item>
+    </string-array>
+    <string name="title_activity_edit_location">EditLocationActivity</string>
 </resources>

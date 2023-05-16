@@ -120,7 +120,7 @@
                         android:layout_height="wrap_content"
                         android:background="#484848"
                         android:textColor="@color/white"
-                        android:text="Apartment" />
+                        android:text="Hotel" />
 
                     <TextView
                         android:id="@+id/hotelNameBC"
@@ -142,6 +142,18 @@
                         android:maxLines="2"
                         android:text="28 Thi Sách, Phường Thắng Tam, Vung Tau"
                         android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/cityConfirm"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:drawableLeft="@drawable/ic_pin_location"
+                        android:textStyle="bold"
+                        android:textSize="15sp"
+                        android:drawablePadding="5dp"
+                        android:gravity="center_vertical"
+                        android:text="Vung Tau"/>
                 </LinearLayout>
             </LinearLayout>
 
@@ -154,7 +166,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:weightSum="9"
                 android:paddingHorizontal="10dp"
@@ -162,7 +174,7 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_weight="3"
                     >
@@ -181,16 +193,11 @@
                         android:textStyle="bold"
                         />
 
-                    <TextView
-                        android:id="@+id/checkinTimeTV"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="14:00" />
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_weight="3"
                     >
@@ -213,7 +220,7 @@
 
                 <LinearLayout
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:orientation="vertical"
                     android:layout_weight="3"
                     >
@@ -234,12 +241,6 @@
                         android:textStyle="bold"
                         android:text="Fri, 21 Apr" />
 
-                    <TextView
-                        android:id="@+id/checkoutTimeTV"
-                        android:gravity="end"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="12:00" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -253,7 +254,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:layout_marginHorizontal="10dp"
                 >
@@ -361,7 +362,7 @@
                 android:layout_width="match_parent"
                 android:dividerHeight="10dp"
                 android:listSelector="@android:color/transparent"
-                android:layout_height="match_parent" />
+                android:layout_height="wrap_content" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -394,12 +395,12 @@
                     android:inputType="textMultiLine" />
             </LinearLayout>
 
-            <View
-                android:id="@+id/divider7"
-                android:layout_width="match_parent"
-                android:layout_height="10dp"
-                android:layout_marginVertical="15dp"
-                android:background="?android:attr/listDivider" />
+<!--            <View-->
+<!--                android:id="@+id/divider7"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="10dp"-->
+<!--                android:layout_marginVertical="15dp"-->
+<!--                android:background="?android:attr/listDivider" />-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -410,96 +411,96 @@
 
                 >
 
-                <TextView
-                    android:id="@+id/textView34"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:text="Price Detail" />
+<!--                <TextView-->
+<!--                    android:id="@+id/textView34"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:textSize="20sp"-->
+<!--                    android:textStyle="bold"-->
+<!--                    android:text="Price Detail" />-->
 
-                <ListView
-                    android:id="@+id/priceDetailLV"
-                    android:layout_width="match_parent"
-                    android:listSelector="@android:color/transparent"
-                    android:layout_height="match_parent" />
+<!--                <ListView-->
+<!--                    android:id="@+id/priceDetailLV"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:listSelector="@android:color/transparent"-->
+<!--                    android:layout_height="match_parent" />-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:layout_marginVertical="5dp"
-                    android:weightSum="10">
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:layout_marginVertical="5dp"-->
+<!--                    android:weightSum="10">-->
 
-                    <TextView
-                        android:id="@+id/textView36"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="6"
-                        android:text="Original"
-                        android:textStyle="bold" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/textView36"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="6"-->
+<!--                        android:text="Original"-->
+<!--                        android:textStyle="bold" />-->
 
-                    <TextView
-                        android:id="@+id/originalConfirmPriceTV"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:gravity="end"
-                        android:text="đ1.195.000" />
-                </LinearLayout>
+<!--                    <TextView-->
+<!--                        android:id="@+id/originalConfirmPriceTV"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="4"-->
+<!--                        android:gravity="end"-->
+<!--                        android:text="đ1.195.000" />-->
+<!--                </LinearLayout>-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:weightSum="10">
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:weightSum="10">-->
 
-                    <TextView
-                        android:id="@+id/textView38"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="6"
-                        android:text="Discount"
-                        android:textStyle="bold" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/textView38"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="6"-->
+<!--                        android:text="Discount"-->
+<!--                        android:textStyle="bold" />-->
 
-                    <TextView
-                        android:id="@+id/discountConfirmPriceTV"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:gravity="end"
-                        android:text="-đ195.000" />
-                </LinearLayout>
+<!--                    <TextView-->
+<!--                        android:id="@+id/discountConfirmPriceTV"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="4"-->
+<!--                        android:gravity="end"-->
+<!--                        android:text="-đ195.000" />-->
+<!--                </LinearLayout>-->
 
-                <View
-                    android:id="@+id/divider11"
-                    android:layout_width="match_parent"
-                    android:layout_marginVertical="5dp"
-                    android:layout_height="2dp"
-                    android:background="?android:attr/listDivider" />
+<!--                <View-->
+<!--                    android:id="@+id/divider11"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_marginVertical="5dp"-->
+<!--                    android:layout_height="2dp"-->
+<!--                    android:background="?android:attr/listDivider" />-->
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    android:weightSum="10">
+<!--                <LinearLayout-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:orientation="horizontal"-->
+<!--                    android:weightSum="10">-->
 
-                    <TextView
-                        android:id="@+id/total"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="6"
-                        android:text="Total"
-                        android:textStyle="bold" />
+<!--                    <TextView-->
+<!--                        android:id="@+id/total"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="6"-->
+<!--                        android:text="Total"-->
+<!--                        android:textStyle="bold" />-->
 
-                    <TextView
-                        android:id="@+id/totalPriceConfirm"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="4"
-                        android:gravity="end"
-                        android:text="đ1.000.000" />
-                </LinearLayout>
+<!--                    <TextView-->
+<!--                        android:id="@+id/totalPriceConfirm"-->
+<!--                        android:layout_width="0dp"-->
+<!--                        android:layout_height="wrap_content"-->
+<!--                        android:layout_weight="4"-->
+<!--                        android:gravity="end"-->
+<!--                        android:text="đ1.000.000" />-->
+<!--                </LinearLayout>-->
 
             </LinearLayout>
 

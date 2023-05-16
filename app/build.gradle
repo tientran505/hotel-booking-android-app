@@ -46,13 +46,13 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:20.4.1'
     implementation 'com.google.firebase:firebase-storage-ktx'
     implementation 'com.firebaseui:firebase-ui-storage:7.2.0'
-    implementation 'com.google.firebase:firebase-firestore-ktx'
-    implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.google.android.material:material:1.8.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     implementation 'com.google.firebase:firebase-analytics-ktx'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.0.3'
     testImplementation 'junit:junit:4.13.2'
     implementation 'com.squareup.picasso:picasso:2.5.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
@@ -63,16 +63,18 @@ dependencies {
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0'
     implementation 'com.google.android.gms:play-services-maps:18.1.0'
     implementation 'com.google.android.gms:play-services-location:21.0.1'
+    implementation 'com.tbuonomo:dotsindicator:4.3'
     implementation 'com.ms-square:expandableTextView:0.1.4'
     implementation 'com.google.android.flexbox:flexbox:3.0.0' // wrap image fit to content
 
-
-    implementation 'com.google.android.libraries.places:places:3.1.0'
     implementation 'com.github.suchoX:PlacePicker:1.1.2'
+    implementation 'com.google.android.libraries.places:places:3.1.0'
 
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation 'me.relex:circleindicator:2.1.6'
 
     implementation "com.github.kojofosu:Quantitizer:1.6.8"
     implementation 'com.nex3z:toggle-button-group:1.2.3'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'com.google.firebase:firebase-database:20.0.0'
 }

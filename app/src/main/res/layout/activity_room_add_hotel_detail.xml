@@ -11,194 +11,490 @@
         android:layout_height="match_parent">
 
 
-        <TextView
-            android:id="@+id/textView21"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="Where can people sleep?"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/spinnerTypeRoom"
-            app:layout_constraintTop_toBottomOf="@+id/spinnerTypeRoom" />
-
-        <com.mcdev.quantitizerlibrary.HorizontalQuantitizer
-            android:id="@+id/guestStay_HQ"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:layout_constraintStart_toStartOf="@+id/textView18"
-            app:layout_constraintTop_toBottomOf="@+id/textView18" />
-
-        <TextView
-            android:id="@+id/textView18"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="How many guest can stay?"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/textView21"
-            app:layout_constraintTop_toBottomOf="@+id/roomSelected_MultiGroup" />
-
-        <TextView
-            android:id="@+id/textView22"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="How many bathrooms are there?"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/guestStay_HQ"
-            app:layout_constraintTop_toBottomOf="@+id/guestStay_HQ" />
-
-        <com.mcdev.quantitizerlibrary.HorizontalQuantitizer
-            android:id="@+id/bathroom_HQ"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:layout_constraintStart_toStartOf="@+id/textView22"
-            app:layout_constraintTop_toBottomOf="@+id/textView22" />
-
-        <TextView
-            android:id="@+id/textView24"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="How many bedrooms are there?"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/bathroom_HQ"
-            app:layout_constraintTop_toBottomOf="@+id/bathroom_HQ" />
-
-        <com.mcdev.quantitizerlibrary.HorizontalQuantitizer
-            android:id="@+id/bedroom_HQ"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:layout_constraintStart_toStartOf="@+id/textView24"
-            app:layout_constraintTop_toBottomOf="@+id/textView24" />
-
-        <TextView
-            android:id="@+id/textView23"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="How big is this apartment?"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="@+id/bedroom_HQ"
-            app:layout_constraintTop_toBottomOf="@+id/bedroom_HQ" />
-
-        <EditText
-            android:id="@+id/areaET"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:ems="10"
-            android:inputType="number"
-            app:layout_constraintStart_toStartOf="@+id/textView23"
-            app:layout_constraintTop_toBottomOf="@+id/textView23" />
-
-        <TextView
-            android:id="@+id/textView25"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="7dp"
-            android:text="square meters"
-            app:layout_constraintBottom_toBottomOf="@+id/areaET"
-            app:layout_constraintStart_toEndOf="@+id/areaET" />
-
-
-        <com.nex3z.togglebuttongroup.MultiSelectToggleGroup
-            android:id="@+id/roomSelected_MultiGroup"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textView21"
-            app:layout_constraintTop_toBottomOf="@+id/textView21"
-            app:tbgChildSpacing="auto">
-
-            <com.nex3z.togglebuttongroup.button.LabelToggle
-                android:id="@+id/bedRoomSelected_Btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Bed Room" />
-
-            <com.nex3z.togglebuttongroup.button.LabelToggle
-                android:id="@+id/livingRoomSelected_Btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Living Room" />
-
-            <com.nex3z.togglebuttongroup.button.LabelToggle
-                android:id="@+id/kitchenRoomSelected_Btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Kitchen Room" />
-
-            <!--...-->
-
-        </com.nex3z.togglebuttongroup.MultiSelectToggleGroup>
-
-        <Button
-            android:id="@+id/nextBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
-            android:text="Continue"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/descriptionEt" />
+            app:layout_constraintTop_toTopOf="parent">
 
-        <Spinner
-            android:id="@+id/spinnerTypeRoom"
-            style="@android:style/Widget.Material.Spinner.Underlined"
-            android:layout_width="301dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="10dp"
-            android:entries="@array/spinner_type_room"
-            app:layout_constraintStart_toStartOf="@+id/textView28"
-            app:layout_constraintTop_toBottomOf="@+id/textView28" />
+            <TextView
+                android:id="@+id/textView28"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:layout_marginStart="15dp"
+                android:text="What type of room?"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView28"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="10dp"
-            android:text="What type of room?"
-            android:textColor="@color/black"
-            android:textSize="20dp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/spinnerTypeRoom"
+                style="?attr/textInputOutlinedExposedDropdownMenuStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="20dp"
+                android:layout_marginTop="5dp"
+                app:errorEnabled="true"
+                android:hint="Room type">
 
-        <EditText
-            android:id="@+id/descriptionEt"
-            android:layout_width="0dp"
-            android:layout_height="100dp"
-            android:layout_marginStart="45dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="45dp"
-            android:background="@drawable/edit_text_bg"
-            android:ems="10"
-            android:scrollHorizontally="false"
-            android:hint="Description"
-            android:inputType="text|textMultiLine"
-            android:paddingHorizontal="20dp"
-            android:text=""
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/areaET" />
+                <AutoCompleteTextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none"
+                    app:simpleItems="@array/spinner_type_room" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+<!--            <TextView-->
+<!--                android:id="@+id/textView21"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginLeft="15dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                android:text="Where can people sleep?"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="20dp"-->
+<!--                android:textStyle="bold" />-->
+
+<!--            <com.nex3z.togglebuttongroup.MultiSelectToggleGroup-->
+<!--                android:id="@+id/roomSelected_MultiGroup"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginHorizontal="10dp"-->
+<!--                android:layout_marginTop="20dp"-->
+<!--                app:tbgChildSpacing="auto">-->
+
+<!--                <com.nex3z.togglebuttongroup.button.LabelToggle-->
+<!--                    android:id="@+id/bedRoomSelected_Btn"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Bed Room" />-->
+
+<!--                <com.nex3z.togglebuttongroup.button.LabelToggle-->
+<!--                    android:id="@+id/livingRoomSelected_Btn"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Living Room" />-->
+
+<!--                <com.nex3z.togglebuttongroup.button.LabelToggle-->
+<!--                    android:id="@+id/kitchenRoomSelected_Btn"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Kitchen Room" />-->
+
+<!--                &lt;!&ndash;...&ndash;&gt;-->
+
+<!--            </com.nex3z.togglebuttongroup.MultiSelectToggleGroup>-->
+
+            <TextView
+                android:id="@+id/textView41"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:layout_marginStart="15dp"
+                android:text="Name of room"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="?attr/textInputOutlinedStyle"
+                android:id="@+id/roomNameET"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Room's name"
+                app:errorEnabled="true"
+                android:layout_marginHorizontal="20dp"
+                app:endIconMode="clear_text"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text="How many rooms for this type?"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <com.mcdev.quantitizerlibrary.HorizontalQuantitizer
+                android:id="@+id/roomNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:layout_marginStart="15dp">
+
+            </com.mcdev.quantitizerlibrary.HorizontalQuantitizer>
+
+            <com.google.android.material.card.MaterialCardView
+                style="?attr/materialCardViewFilledStyle"
+                android:id="@+id/bedSelection"
+                android:layout_width="match_parent"
+                android:layout_marginHorizontal="5dp"
+                android:layout_marginVertical="10dp"
+                android:paddingVertical="10dp"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+
+                    <TextView
+                        android:id="@+id/textView42"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:text="Bed Selection"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/textView43"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:textColor="@color/black"
+                        android:textSize="15dp"
+                        android:text="What kind of beds are available in this room?" />
+
+                    <LinearLayout
+                        android:id="@+id/bedContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/spinnerTypeBed"
+                                style="?attr/textInputOutlinedExposedDropdownMenuStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="15dp"
+                                app:errorEnabled="true"
+                                android:gravity="center"
+                                android:hint="Bed type">
+
+                                <AutoCompleteTextView
+                                    android:layout_width="200dp"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="none"
+                                    app:simpleItems="@array/spinner_type_bed" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <TextView
+                                android:id="@+id/textView44"
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginHorizontal="10dp"
+                                android:gravity="center"
+                                android:paddingBottom="10dp"
+                                android:text="x"
+                                android:textSize="20dp" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/spinnerNumber"
+                                style="?attr/textInputOutlinedExposedDropdownMenuStyle"
+                                android:layout_width="80dp"
+                                android:layout_height="match_parent"
+                                app:errorEnabled="true"
+                                android:layout_gravity="center">
+
+                                <AutoCompleteTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="none"
+                                    app:simpleItems="@array/spinner_bed_num" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/row_1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/spinnerTypeBed1"
+                                style="?attr/textInputOutlinedExposedDropdownMenuStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="15dp"
+                                app:errorEnabled="true"
+                                android:gravity="center"
+
+                                android:hint="Bed type">
+
+                                <AutoCompleteTextView
+                                    android:layout_width="200dp"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="none"
+                                    app:simpleItems="@array/spinner_type_bed" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginHorizontal="10dp"
+                                android:gravity="center"
+                                android:text="x"
+                                android:paddingBottom="10dp"
+                                android:textSize="20dp" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/spinnerNumber1"
+                                style="?attr/textInputOutlinedExposedDropdownMenuStyle"
+                                android:layout_width="80dp"
+                                android:layout_height="match_parent"
+                                app:errorEnabled="true"
+                                android:layout_gravity="center">
+
+                                <AutoCompleteTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="none"
+                                    app:simpleItems="@array/spinner_bed_num" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <ImageButton
+                                android:id="@+id/delete_btn_row_1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="15dp"
+                                android:paddingBottom="10dp"
+                                android:background="@color/white"
+                                android:scaleX="0.7"
+                                android:scaleY="0.7"
+                                android:src="@drawable/delete" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/row_2"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginBottom="10dp"
+                            android:orientation="horizontal">
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/spinnerTypeBed2"
+                                style="?attr/textInputOutlinedExposedDropdownMenuStyle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="15dp"
+                                app:errorEnabled="true"
+                                android:gravity="center"
+
+                                android:hint="Bed type">
+
+                                <AutoCompleteTextView
+                                    android:layout_height="wrap_content"
+                                    android:layout_width="200dp"
+                                    android:inputType="none"
+                                    app:simpleItems="@array/spinner_type_bed" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:layout_marginHorizontal="10dp"
+                                android:gravity="center"
+                                android:paddingBottom="10dp"
+                                android:text="x"
+                                android:textSize="20dp" />
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:id="@+id/spinnerNumber2"
+                                style="?attr/textInputOutlinedExposedDropdownMenuStyle"
+                                android:layout_width="80dp"
+                                android:layout_height="match_parent"
+                                app:errorEnabled="true"
+                                android:layout_gravity="center">
+
+                                <AutoCompleteTextView
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="none"
+                                    app:simpleItems="@array/spinner_bed_num" />
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <ImageButton
+                                android:id="@+id/delete_btn_row_2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:layout_marginStart="15dp"
+                                android:background="@color/white"
+                                android:paddingBottom="10dp"
+                                android:scaleX="0.7"
+                                android:scaleY="0.7"
+                                android:src="@drawable/delete" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <Button
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:id="@+id/add_row"
+                        app:icon="@drawable/ic_plus"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAllCaps="false"
+                        android:layout_marginHorizontal="15dp"
+                        android:text="Add another bed" />
+
+                    <TextView
+                        android:id="@+id/textView22"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="15dp"
+                        android:text="How many guests can stay?"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
+
+                    <com.mcdev.quantitizerlibrary.HorizontalQuantitizer
+                        android:id="@+id/guestStay_HQ"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="10dp"
+                        android:layout_marginStart="15dp">
+
+                    </com.mcdev.quantitizerlibrary.HorizontalQuantitizer>
+
+
+                </LinearLayout>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <TextView
+                android:id="@+id/textView23"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:text="Room size"
+                android:textColor="@color/black"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:orientation="horizontal"
+                android:weightSum="10"
+                >
+
+<!--                <EditText-->
+<!--                    android:id="@+id/areaET"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:ems="10"-->
+<!--                    android:inputType="number" />-->
+
+                <com.google.android.material.textfield.TextInputLayout
+                    style="?attr/textInputOutlinedStyle"
+                    android:id="@+id/areaET"
+                    android:layout_width="0dp"
+                    android:layout_weight="5"
+                    android:layout_height="wrap_content"
+                    android:hint="Room's size"
+                    app:errorEnabled="true"
+                    app:endIconMode="clear_text"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:layout_width="match_parent"
+                        android:inputType="numberDecimal"
+                        android:layout_height="wrap_content" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <TextView
+                    android:id="@+id/textView25"
+                    android:layout_width="0dp"
+                    android:layout_weight="5"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_gravity="center_vertical"
+                    android:text="square meters" />
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/descriptionRoomET"
+                style="?attr/textInputOutlinedStyle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="15dp"
+                android:hint="Description"
+                app:counterEnabled="true"
+                app:counterMaxLength="100"
+                android:layout_marginVertical="10dp"
+                app:errorEnabled="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+
+                app:layout_constraintTop_toBottomOf="@+id/nameHotelEt">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lines="5"
+                    android:gravity="start|top"
+                    android:inputType="textMultiLine"
+                    android:maxLines="5" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/nextBtn"
+                android:layout_width="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:layout_gravity="center"
+                android:layout_height="wrap_content"
+                android:text="Continue" />
+
+        </LinearLayout>
+
+
+        <!--        <Spinner-->
+<!--            android:id="@+id/spinnerTypeRoom"-->
+<!--            style="@android:style/Widget.Material.Spinner.Underlined"-->
+<!--            android:layout_width="305dp"-->
+<!--            android:layout_height="52dp"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:entries="@array/spinner_type_room"-->
+<!--            app:layout_constraintStart_toStartOf="@+id/textView28"-->
+<!--            app:layout_constraintTop_toBottomOf="@+id/textView28" />-->
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

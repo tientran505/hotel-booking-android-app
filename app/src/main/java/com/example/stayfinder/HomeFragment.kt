@@ -7,6 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -20,10 +22,16 @@ import com.example.stayfinder.search.HotelSearch
 import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.DateValidatorPointForward
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import java.util.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import java.text.SimpleDateFormat
+import kotlin.collections.ArrayList
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -41,19 +49,23 @@ class HomeFragment : Fragment(), RoomSelectionBottomSheetDialog.BottomSheetListe
     private var param2: String? = null
     private var dateET: EditText? = null
     private var roomET: EditText? = null
+    private var locationET: AutoCompleteTextView? = null
+
+    private var cityList = arrayListOf<String>()
+
+    private val db = Firebase.firestore
+
     private var searchBtn: Button? = null
-
-
-    private lateinit var rvCity: RecyclerView
-    private lateinit var cityAdapter: CityAdapter
-
-    private lateinit var rvHotel: RecyclerView
-    private lateinit var hotelAdapter: HotelAdapter
 
     private lateinit var listener: RoomSelectionBottomSheetDialog.BottomSheetListener
     private lateinit var modalBottomSheet: RoomSelectionBottomSheetDialog
 
     private var currentRoomInformation: RoomInformation? = null
+
+    private var start: Long = 0
+    private var end: Long = 0
+
+    private var headerText = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,6 +73,43 @@ class HomeFragment : Fragment(), RoomSelectionBottomSheetDialog.BottomSheetListe
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+    }
+
+    private fun formValidate(): Boolean {
+        if (dateET?.text.toString().isEmpty()) {
+            Toast.makeText(requireContext(), "Please fill all fields before searching", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        if (locationET?.text.toString().isEmpty()) {
+            Toast.makeText(requireContext(), "Please fill all fields before searching", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        if (roomET?.text.toString().isEmpty()) {
+            Toast.makeText(requireContext(), "Please fill all fields before searching", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        return true
+    }
+
+    private fun fetchCityData(view: View) {
+        locationET = view.findViewById(R.id.locationET)
+
+        db.collection("hotels")
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val city = document.getString("address.city")
+                    if (city != null && !cityList.contains(city)) {
+                        cityList.add(city)
+                    }
+                }
+                val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, cityList)
+                locationET?.setAdapter(adapter)
+                locationET?.threshold = 1
+            }
     }
 
     override fun onCreateView(
@@ -71,8 +120,7 @@ class HomeFragment : Fragment(), RoomSelectionBottomSheetDialog.BottomSheetListe
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
         initRoomSelection(view)
-        initCityName(view)
-        initCuratedHotel(view)
+        fetchCityData(view)
 
         return view
     }
@@ -101,19 +149,25 @@ class HomeFragment : Fragment(), RoomSelectionBottomSheetDialog.BottomSheetListe
 
 
             dateRangePicker.addOnPositiveButtonClickListener {
-                Toast.makeText(requireContext(), "${dateRangePicker.headerText} is selected"
-                    , Toast.LENGTH_LONG).show()
-                dateET?.setText(dateRangePicker.headerText)
+                val startDate = it.first
+                val endDate = it.second
+
+                if (startDate != null && endDate != null) {
+                    start = startDate.toLong()
+                    end = endDate.toLong()
+
+                    dateET?.setText(dateRangePicker.headerText)
+
+                }
+
             }
 
             dateRangePicker.addOnNegativeButtonClickListener {
-                Toast.makeText(requireContext(), "${dateRangePicker.headerText} is cancelled"
-                    , Toast.LENGTH_LONG).show()
+
             }
 
             dateRangePicker.addOnCancelListener {
-                Toast.makeText(requireContext(), "DateRangePicker is cancelled"
-                    , Toast.LENGTH_LONG).show()
+
             }
 
             dateRangePicker.show(requireActivity().supportFragmentManager, "DatePicker")
@@ -133,76 +187,31 @@ class HomeFragment : Fragment(), RoomSelectionBottomSheetDialog.BottomSheetListe
 
         searchBtn = view.findViewById(R.id.searchBtn)
         searchBtn?.setOnClickListener {
-            val intent = Intent(requireContext(), HotelSearch::class.java)
-            startActivity(intent)
+            if (formValidate()) {
+                val intent = Intent(requireContext(), HotelSearch::class.java)
+                val bookings = currentRoomInformation?.let { it1 ->
+                    BookingInformation(
+                        number_of_adult = it1.adult,
+                        number_of_children = it1.children,
+                        sum_people = calculateTotalPeople(it1.adult, it1.children)
+                    )
+                }
+
+                intent.putExtra("booking_info", bookings)
+                intent.putExtra("start_date", start)
+                intent.putExtra("end_date", end)
+                intent.putExtra("city", locationET?.text.toString())
+                intent.putExtra("header", dateET?.text.toString())
+
+                startActivity(intent)
+            }
         }
     }
 
-    private fun initCityName(view: View) {
-        val cities = listOf(
-            City("HCMC"),
-            City("Hanoi"),
-            City("Da Lat"),
-            City("Da Nang"),
-            City("Vung Tau"),
-            City("Can Tho"),
-            City("Phu Quoc"),
-            City("Sa Pa"),
-            City("Ha Giang"),
-            City("Bac Ninh"),
-            City("My Tho")
-        )
-
-        rvCity = view.findViewById(R.id.cityNameRV)
-        rvCity.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
-        cityAdapter = CityAdapter(cities)
-        cityAdapter.onItemClick = { position ->
-            Log.i("ttlog", position.toString())
-            cityAdapter.setSelectedPosition(position)
-        }
-        rvCity.adapter = cityAdapter
-    }
-
-    private fun initCuratedHotel(view: View) {
-        val hotels = listOf(
-            Hotel("HCMC", "Sherwood Residence", 4.5.toFloat(), 4500000.0.toFloat(),
-                3200000.0.toFloat(), false),
-            Hotel("HCMC", "Somerset Ho Chi Minh City", 5.0.toFloat(), 4500000.0.toFloat(),
-                3200000.0.toFloat(), true),
-            Hotel("HCMC", "SILA Urban Living", 3.3.toFloat(), 4500000.0.toFloat(),
-                3200000.0.toFloat(), true),
-            Hotel("HCMC", "La vela Saigon Hotel", 2.5.toFloat(), 4500000.0.toFloat(),
-                3200000.0.toFloat(), false),
-            Hotel("HCMC", "Novotel Saigon", 3.0.toFloat(), 4500000.0.toFloat(),
-                3200000.0.toFloat(), false),
-            Hotel("HCMC", "Villa Song Saigon", 4.8.toFloat(), 4500000.0.toFloat(),
-                3200000.0.toFloat(), false),
-            Hotel("HCMC", "Norfolk mansion - Luxury Service Ap..", 50.toFloat(), 4500000.0.toFloat(),
-                3200000.0.toFloat(), true),
-            Hotel("HCMC", "CityHouse - Ariosa", 4.5.toFloat(), 4500000.0.toFloat(),
-                3200000.0.toFloat(), false),
-            Hotel("HCMC", "Sherwood Residence", 4.5.toFloat(), 4500000.0.toFloat(),
-                3200000.0.toFloat(), true),
-            Hotel("HCMC", "Sherwood Residence", 4.5.toFloat(), 4500000.0.toFloat(),
-                3200000.0.toFloat(), false),
-        )
-
-        rvHotel = view.findViewById(R.id.curatedHotelRV)
-        rvHotel.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
-        hotelAdapter = HotelAdapter(hotels)
-        hotelAdapter.onImageViewClick = {position ->
-            Log.i("hotel", "Bookmark $position clicked")
-            hotelAdapter.setBookmark(position)
-        }
-
-        hotelAdapter.onItemClick = {position ->
-            Log.i("hotel", "Item $position clicked")
-        }
-
-        rvHotel.adapter = hotelAdapter
-
+    private fun calculateTotalPeople(adults: Int, children: Int): Int {
+        return if (children % 2 == 0) {
+            adults + children / 2
+        } else adults + (children - 1) / 2
     }
 
     companion object {
@@ -228,7 +237,6 @@ class HomeFragment : Fragment(), RoomSelectionBottomSheetDialog.BottomSheetListe
     override fun onValueSelected(value: String) {
         currentRoomInformation = Json.decodeFromString(value)
 
-        val roomStr: String = "${currentRoomInformation!!.room} room" + if (currentRoomInformation!!.room > 1) "s" else ""
         val adultStr: String = "${currentRoomInformation!!.adult} adult" + if (currentRoomInformation!!.adult > 1) "s" else ""
         val childStr: String = when (currentRoomInformation!!.children) {
             0 -> "No child"
@@ -237,7 +245,7 @@ class HomeFragment : Fragment(), RoomSelectionBottomSheetDialog.BottomSheetListe
         }
 
 
-        roomET?.setText("$roomStr - $adultStr - $childStr")
+        roomET?.setText("$adultStr - $childStr")
         modalBottomSheet.dismiss()
     }
 

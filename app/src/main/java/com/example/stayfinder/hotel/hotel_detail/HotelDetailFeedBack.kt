@@ -10,11 +10,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stayfinder.*
-import com.example.stayfinder.user.User
-import com.google.firebase.auth.UserInfo
+
 import com.google.firebase.firestore.IgnoreExtraProperties
-import java.io.Serializable
-import java.net.URL
+
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -53,18 +51,28 @@ class HotelDetailFeedBack : Fragment() {
             feedBacks.add(FeedBack(i))
         }
         println("feedback" +feedBacks)
-        val hotel_rating =getArguments()?.getSerializable("rating") as rating?
+        val hotel_rating =getArguments()?.getSerializable("rating") as  HashMap<String, Int>
         val textView = view!!.findViewById<TextView>(R.id.textView)
         val cleanBar = view!!.findViewById<ProgressBar>(R.id.cleanBar)
         val comfortBar = view!!.findViewById<ProgressBar>(R.id.comfortBar)
         val locationBar = view!!.findViewById<ProgressBar>(R.id.locationBar)
         val serviceBar = view!!.findViewById<ProgressBar>(R.id.servicesBar)
 
-        cleanBar.setProgress((hotel_rating?.cleanliness!!*20).toInt())
-        comfortBar.setProgress((hotel_rating?.comfort!!*20).toInt())
-        locationBar.setProgress((hotel_rating?.location!!*20).toInt())
-        serviceBar.setProgress((hotel_rating?.services!!*20).toInt())
-        textView.setText("Customer reviews about the place ")
+        val cleanTV = view.findViewById<TextView>(R.id.cleanlinessRate)
+        val comfortTV = view.findViewById<TextView>(R.id.comfortRate)
+        val servicesTV = view.findViewById<TextView>(R.id.servicesRate)
+        val locationTV = view.findViewById<TextView>(R.id.locationRate)
+
+        cleanTV.text = hotel_rating["cleanliness"].toString()
+        comfortTV.text = hotel_rating["comfort"].toString()
+        servicesTV.text = hotel_rating["services"].toString()
+        locationTV.text = hotel_rating["location"].toString()
+
+        cleanBar.progress = (hotel_rating["cleanliness"]!!*20)
+        comfortBar.progress = (hotel_rating["comfort"]!!*20)
+        locationBar.progress = (hotel_rating["services"]!!*20)
+        serviceBar.progress = (hotel_rating["location"]!!*20)
+        textView.text = "Customer reviews about the place "
 
         val recyclerview = view!!.findViewById<RecyclerView>(R.id.recyclerview)
         recyclerview?.layoutManager = LinearLayoutManager(this.context)

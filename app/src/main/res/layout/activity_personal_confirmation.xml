@@ -42,7 +42,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="đ1.195.000"
-                    android:textColor="#F00"
+                    android:textColor="#ffff4444"
+                    android:background="@drawable/bg_strikethrough"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 

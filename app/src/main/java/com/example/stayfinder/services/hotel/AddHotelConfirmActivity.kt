@@ -6,6 +6,8 @@ import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -31,40 +33,21 @@ class AddHotelConfirmActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_hotel_confirm)
 
-        nameCollection = getString(R.string.hotel_collection_name)
+        nameCollection = "hotels"
         db = Firebase.firestore
+
+        initActionBar()
 
         val fm: FragmentManager = supportFragmentManager
 
-        var hotel = intent.getSerializableExtra("hotelInfo") as HotelDetailModel?
-        var tempUriImage = intent.getStringArrayListExtra("uriImage")
-        var uuidHotel = hotel!!.id
+        val hotel = intent.getSerializableExtra("hotelInfo") as HotelDetailModel?
+        val uuidHotel = hotel!!.id
 
-
-
-        var addressTemp = hotel.address
-        var address =  addressTemp["number"].toString()+" "+ addressTemp["street"]+", "+ addressTemp["district"]+", "+ addressTemp["ward"]+", "+addressTemp["city"]
-        findViewById<TextView>(R.id.addressTv).text = address
+        findViewById<TextView>(R.id.addressTv).text = hotel.address["address"]
 
         //save latitude longitude to hotel.map
-        var latitude = intent.getDoubleExtra("latitude", 10.768622999591253)
-        var longitude = intent.getDoubleExtra("longitude", 106.69537279754877)
-
-        if(latitude == 10.768622999591253 && longitude == 106.69537279754877){ // lấy địa chỉ tạm
-            if(!(addressTemp["number"].toString().isEmpty() ||
-                addressTemp["street"].toString().isEmpty() ||
-                addressTemp["district"].toString().isEmpty() ||
-                addressTemp["ward"].toString().isEmpty() ||
-                addressTemp["city"].toString().isEmpty() )   ){
-
-
-                var latlan = getLocationFromAddress(address)!!
-                hotel.map = arrayListOf(latlan.latitude, latlan.longitude)
-                latitude = latlan.latitude
-                longitude = latlan.longitude
-            }
-
-        }
+        val latitude = intent.getDoubleExtra("latitude", 10.768622999591253)
+        val longitude = intent.getDoubleExtra("longitude", 106.69537279754877)
 
         hotel.map = arrayListOf(latitude, longitude)
 
@@ -73,7 +56,6 @@ class AddHotelConfirmActivity : AppCompatActivity() {
         bundle.putSerializable("BookingDetail", hotel)
         bundle.putDouble("latitude", latitude)
         bundle.putDouble("longitude", longitude)
-        bundle.putStringArrayList("uriImage", tempUriImage)
 
         val fragAddress = SubAddressFragment()
         fragAddress.arguments = bundle;
@@ -84,7 +66,7 @@ class AddHotelConfirmActivity : AppCompatActivity() {
 
         //upload to firebase
         findViewById<Button>(R.id.confirmBtn).setOnClickListener {
-            db!!.collection(nameCollection!!).document(uuidHotel!!).set(hotel)
+            db!!.collection(nameCollection).document(uuidHotel!!).set(hotel)
                 .addOnSuccessListener {
                     Toast.makeText(
                         this, "Hotel data added successfully", Toast.LENGTH_SHORT
@@ -97,28 +79,28 @@ class AddHotelConfirmActivity : AppCompatActivity() {
                     ).show()
                 }
 
-            if (tempUriImage != null) {
-                if(tempUriImage.size > 0 ){ // Có hình mới thì xoá hết cập nhật lại
-                    var hotelObj: HotelDetailModel? = null
-                    db!!.collection(nameCollection!!).document(uuidHotel).get()
-                        .addOnSuccessListener { document ->
-                            if (document != null) {
-                                hotelObj = document.toObject(HotelDetailModel::class.java)
-                                hotelObj!!.photoUrl = ArrayList() // delete all image
-
-                                //Update object
-                                db!!.collection(nameCollection!!).document(uuidHotel).set(hotelObj!!)
-                            }
-                        }
-                }
-                for (i in 0 until tempUriImage.size) {
-                    var imgUri = Uri.parse(tempUriImage[i])
-                    val fileName = "$uuidHotel-$i"
-                    Handler().postDelayed({
-                    uploadImg(imgUri, fileName, uuidHotel!!)
-                    }, 2000)
-                }
-            }
+//            if (tempUriImage != null) {
+//                if(tempUriImage.size > 0 ){ // Có hình mới thì xoá hết cập nhật lại
+//                    var hotelObj: HotelDetailModel? = null
+//                    db!!.collection(nameCollection!!).document(uuidHotel).get()
+//                        .addOnSuccessListener { document ->
+//                            if (document != null) {
+//                                hotelObj = document.toObject(HotelDetailModel::class.java)
+//                                hotelObj!!.photoUrl = ArrayList() // delete all image
+//
+//                                //Update object
+//                                db!!.collection(nameCollection!!).document(uuidHotel).set(hotelObj!!)
+//                            }
+//                        }
+//                }
+//                for (i in 0 until tempUriImage.size) {
+//                    var imgUri = Uri.parse(tempUriImage[i])
+//                    val fileName = "$uuidHotel-$i"
+//                    Handler().postDelayed({
+//                    uploadImg(imgUri, fileName, uuidHotel!!)
+//                    }, 2000)
+//                }
+//            }
 
 
             val intent = Intent(this, PartnerMainActivity::class.java)
@@ -127,6 +109,28 @@ class AddHotelConfirmActivity : AppCompatActivity() {
                 finishAffinity()
             }, 10000)
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    private fun initActionBar() {
+        val menu = supportActionBar
+        menu?.setDisplayHomeAsUpEnabled(true)
+        menu?.setHomeButtonEnabled(true)
+        menu?.title = "Hotel Location"
     }
 
     fun getLocationFromAddress( strAddress: String?): LatLng? {

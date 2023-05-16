@@ -1,5 +1,6 @@
 package com.example.stayfinder.partner.booking
 
+import android.content.Intent
 import android.icu.lang.UCharacter.VerticalOrientation
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -9,9 +10,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.stayfinder.BookingAdapter
+import com.example.stayfinder.BookingDetail
+import com.example.stayfinder.DetailListActivity
 import com.example.stayfinder.R
 import com.example.stayfinder.partner.booking.adapter.Booking
 import com.example.stayfinder.partner.booking.adapter.PartnerBookingAdapter
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -31,6 +38,11 @@ class PartnerBookingFragment : Fragment() {
     private lateinit var bookingRV: RecyclerView
     private lateinit var bookingAdapter: PartnerBookingAdapter
 
+    val db = Firebase.firestore
+
+    private val mList = arrayListOf<BookingDetail>()
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -46,7 +58,23 @@ class PartnerBookingFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.partner_fragment_booking, container, false)
         initRV(view)
+        fetchData()
         return view
+    }
+
+    private fun fetchData() {
+        val user: FirebaseUser? = FirebaseAuth.getInstance().currentUser
+
+        db.collection("bookings").whereEqualTo("hotel.owner_id", user?.uid)
+            .get()
+            .addOnSuccessListener { documents ->
+                for (document in documents) {
+                    val bookingDetail = document.toObject(BookingDetail::class.java)
+
+                    mList.add(bookingDetail)
+                    bookingAdapter.notifyItemInserted(mList.size - 1)
+                }
+            }
     }
 
     private fun initRV(view: View) {
@@ -54,36 +82,15 @@ class PartnerBookingFragment : Fragment() {
         bookingRV.layoutManager = LinearLayoutManager(requireContext(),
             LinearLayoutManager.VERTICAL, false)
 
-        val mList = arrayListOf(
-            Booking("Luong Diem made a reservation", "Thanh Huỳnh", "Saturday, April 29, 2023",
-            2, "One-bedroom Apartment", true, "VND 200,000"),
-            Booking("Abishai victor mad a reservation", "Thanh Huỳnh", "Saturday, April 29, 2023",
-                6, "One-bedroom Apartment", true, "VND 200,000"),
-            Booking("Luong Diem made a reservation", "Thanh Huỳnh", "Saturday, April 29, 2023",
-                2, "One-bedroom Apartment", true, "VND 200,000"),
-            Booking("Hai Chu Tran's reservation has beed canceled", "Thanh Huỳnh", "Saturday, April 29, 2023",
-                2, "One-bedroom Apartment", false, "VND 200,000"),
-            Booking("Luong Diem made a reservation", "Thanh Huỳnh", "Saturday, April 29, 2023",
-                2, "One-bedroom Apartment", true, "VND 200,000"),
-            Booking("Luong Diem made a reservation", "Thanh Huỳnh", "Saturday, April 29, 2023",
-                2, "One-bedroom Apartment", true, "VND 200,000"),
-            Booking("Luong Diem made a reservation", "Thanh Huỳnh", "Saturday, April 29, 2023",
-                2, "One-bedroom Apartment", true, "VND 200,000"),
-            Booking("Luong Diem made a reservation", "Thanh Huỳnh", "Saturday, April 29, 2023",
-                2, "One-bedroom Apartment", true, "VND 200,000"),
-            Booking("Luong Diem made a reservation", "Thanh Huỳnh", "Saturday, April 29, 2023",
-                2, "One-bedroom Apartment", true, "VND 200,000"),
-            Booking("Luong Diem made a reservation", "Thanh Huỳnh", "Saturday, April 29, 2023",
-                2, "One-bedroom Apartment", true, "VND 200,000"),
-            Booking("Luong Diem made a reservation", "Thanh Huỳnh", "Saturday, April 29, 2023",
-                2, "One-bedroom Apartment", true, "VND 200,000"),
-            Booking("Luong Diem made a reservation", "Thanh Huỳnh", "Saturday, April 29, 2023",
-                2, "One-bedroom Apartment", true, "VND 200,000"),
-        )
-
         bookingAdapter = PartnerBookingAdapter(mList)
         bookingRV.adapter = bookingAdapter
-
+        bookingAdapter.setOnItemClickListener(object: PartnerBookingAdapter.onItemClickListener{
+            override fun onItemClick(position: Int){
+                val intent = Intent(activity, PartnerBookingDetail::class.java)
+                intent.putExtra("booking_id",mList[position].id)
+                startActivity(intent)
+            }
+        })
     }
 
     companion object {
