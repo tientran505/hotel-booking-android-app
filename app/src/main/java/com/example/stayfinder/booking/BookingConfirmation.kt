@@ -76,6 +76,8 @@ class BookingConfirmation : AppCompatActivity() {
 
     private var total_price: Double = 0.00
 
+    private var numNights: Int = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -201,7 +203,7 @@ class BookingConfirmation : AppCompatActivity() {
             booking_information = bookingInformation,
             date_start = Timestamp(Date(dateStart)),
             date_end = Timestamp(Date(dateEnd)),
-            num_of_nights = nightDays.text.toString().split(" ")[0].toInt(),
+            num_of_nights = numNights,
             user_id = user?.uid ?: "",
             message = notes.text.toString(),
             personal_contact = contact_info,
@@ -304,15 +306,18 @@ class BookingConfirmation : AppCompatActivity() {
 
         val price = if (filtered_price.isNotEmpty()) {filtered_price[0].price} else {null}
 
-        if (room.applied_coupon_id == null || room.applied_coupon_id == "") {
+        numNights = nightDays.text.toString().split(" ")[0].toInt()
+
+
+    if (room.applied_coupon_id == null || room.applied_coupon_id == "") {
             originalSum.visibility = View.GONE
-            total_price = price!!
+            total_price = price!! * numNights
             discountSum.text = numberFormat.format(total_price)
         }
         else {
             originalSum.text = numberFormat.format(price)
             if (price != null) {
-                total_price = price * (1 - room.percentage_discount!! / 100.00)
+                total_price = price * (1 - room.percentage_discount!! / 100.00) * numNights
                 discountSum.text = numberFormat.format(total_price)
             }
         }

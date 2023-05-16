@@ -103,7 +103,6 @@ class Login : AppCompatActivity() {
                         }
 
 
-                        Toast.makeText(this, "Hello from this", Toast.LENGTH_SHORT).show()
                         // Sign in success, update UI with the signed-in user's information
                         Handler().postDelayed(Runnable {
                             val intent = Intent(this, MainActivity::class.java)
@@ -217,17 +216,10 @@ class Login : AppCompatActivity() {
 
                                 db.collection("users").document(user.uid).set(user)
                                     .addOnSuccessListener {
-                                        Toast.makeText(
-                                            this, "User data added successfully",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
+
                                     }
                                     .addOnFailureListener {
-                                        Toast.makeText(
-                                            this, "Error adding user data with" +
-                                                    " exception: $it",
-                                            Toast.LENGTH_SHORT
-                                        ).show()
+
                                     }
                             }
 

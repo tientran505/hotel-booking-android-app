@@ -57,7 +57,7 @@ class SubHotelDetailDescription : Fragment() {
         val noFeedbackTv = view.findViewById<TextView>(R.id.noFeedbackTv)
         if (numOfFeedBack == 0) {
             noFeedbackTv.text = "No guest reviews yet"
-            EvaluateTv.text = "No guest reviews to evaluate"
+            EvaluateTv.text = "No guest reviews"
             ratingTv.text = "?.?"
         }
         else {

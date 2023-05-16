@@ -125,8 +125,7 @@ class HotelSearch : AppCompatActivity() {
                                 val room = doc.toObject(RoomDetailModel::class.java)
 
                                 if (room.room_available > 0 && guest >= room.min_guest
-                                    && guest <= room.guest_available
-                                    && room.available_start_date!!.toDate().time <= start_date) {
+                                    && guest <= room.guest_available) {
                                     hotelList.add(hotel)
                                     hotelSearchAdapter.notifyItemInserted(hotelList.size - 1)
                                     break;
